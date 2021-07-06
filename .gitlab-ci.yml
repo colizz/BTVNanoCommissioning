@@ -140,7 +140,9 @@ runCombine:
         - pip install --user https://github.com/nsmith-/rhalphalib/archive/master.zip
         - python scaleFactorComputation.py --year "${year}" --tpf ${PWD}/pickleFiles/"${pickleFile}" --selection msd100tau06DDB --outputDir ${PWD}/fitdir/
         - cd ${PWD}/fitdir/
-        - bash build.sh
+        - combineCards.py sfpass=sfpass.txt sffail=sffail.txt > sfModel_combined.txt
+        - text2workspace.py sfModel_combined.txt
+        - combine -M FitDiagnostics --expectSignal 1 -d sfModel_combined.root --cminDefaultMinimizerStrategy 0 --robustFit=1 --saveShapes  --rMin 0.5 --rMax 1.5
     artifacts:
         expire_in: 1 week
         paths:
