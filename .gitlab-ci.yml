@@ -40,16 +40,16 @@ build_combine:
         IMAGE_DESTINATION: ${CI_REGISTRY_IMAGE}:combine
         dockerfile: DockerfileCombine
 
-setrhalphalib:
-    stage: createPUfile
-    dependencies: 
-        - build_combine 
-    image: $CI_REGISTRY_IMAGE:combine
-    tags: 
-        - cvmfs
-    script:
-        - pip install flake8 --user
-        - pip install --user https://github.com/nsmith-/rhalphalib/archive/master.zip
+#setrhalphalib:
+#    stage: createPUfile
+#    dependencies: 
+#        - build_combine 
+#    image: $CI_REGISTRY_IMAGE:combine
+#    tags: 
+#        - cvmfs
+#    script:
+#        - pip install flake8 --user
+#        - pip install --user https://github.com/nsmith-/rhalphalib/archive/master.zip
 
 voms_proxy:
     stage: buildimages 
@@ -138,7 +138,7 @@ runCombine:
     script:
         - pip install flake8 --user
         - pip install --user https://github.com/nsmith-/rhalphalib/archive/master.zip
-        - python scaleFactorComputation.py --year "${year}" --tpf pickleFiles/"${pickleFile}" --selection msd100tau06DDB
+        - python scaleFactorComputation.py --year "${year}" --tpf ${PWD}/pickleFiles/"${pickleFile}" --selection msd100tau06DDB --outputDir ${PWD}/fitdir/
     artifacts:
         expire_in: 1 week
         paths:
