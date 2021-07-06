@@ -134,8 +134,10 @@ runCombine:
         - setrhalphalib
         - createPickleFile
     stage: combine
-    #image: $CI_REGISTRY_IMAGE:combine
+    image: $CI_REGISTRY_IMAGE:combine
     script:
+        - pip install flake8 --user
+        - pip install --user https://github.com/nsmith-/rhalphalib/archive/master.zip
         - python scaleFactorComputation.py --year '${year}' --tpf pickleFiles/"${pickleFile}" --selection msd100tau06DDB
     artifacts:
         expire_in: 1 week
