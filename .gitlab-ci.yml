@@ -131,7 +131,7 @@ createPickleFile:
 
 runCombine:
     dependencies:
-        - setrhalphalib
+        #- setrhalphalib
         - createPickleFile
     stage: combine
     image: $CI_REGISTRY_IMAGE:combine
