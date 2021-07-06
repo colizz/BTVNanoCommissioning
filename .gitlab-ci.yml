@@ -139,6 +139,8 @@ runCombine:
         - pip install flake8 --user
         - pip install --user https://github.com/nsmith-/rhalphalib/archive/master.zip
         - python scaleFactorComputation.py --year "${year}" --tpf ${PWD}/pickleFiles/"${pickleFile}" --selection msd100tau06DDB --outputDir ${PWD}/fitdir/
+        - cd ${PWD}/fitdir/
+        - bash build.sh
     artifacts:
         expire_in: 1 week
         paths:
