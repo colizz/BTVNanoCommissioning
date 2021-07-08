@@ -36,3 +36,23 @@ stages:
           workingdir: '$REANA_WORKSPACE/'
       step: {$ref: 'reana_workflows/steps.yaml#/makeplots'}
 
+- name: createPickleFile
+  dependencies: [runcode]
+  scheduler:
+      scheduler_type: 'singlestep-stage'
+      parameters:
+          inputFile: {step: runcode, output: output_files, flatten: true}
+          year: {step: init, output: year}
+          workingdir: '$REANA_WORKSPACE/'
+          outputfile: 'hists_fattag.pkl'
+      step: {$ref: 'reana_workflows/steps.yaml#/createpickle'}
+
+- name: runCombine
+  dependencies: [createPickleFile]
+  scheduler:
+      scheduler_type: 'singlestep-stage'
+      parameters:
+          inputFile: {step: createPickleFile, output: picklefile}
+          year: {step: init, output: year}
+          workingdir: '$REANA_WORKSPACE/'
+      step: {$ref: 'reana_workflows/steps.yaml#/runcombine'}
