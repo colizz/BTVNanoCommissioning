@@ -8,7 +8,7 @@ stages:
           year: {step: init, output: year}
           workingdir: '$REANA_WORKSPACE'
           outputFile: 'nTrueFile.coffea'
-      step: {$ref: 'reana_workflows/steps.yaml#/runpu'}
+      step: {$ref: 'reana_workflows/steps_singlestep.yaml#/runpu'}
 
 - name: runcode
   dependencies: [runpu]
@@ -19,7 +19,7 @@ stages:
           year: {step: init, output: year}
           workingdir: '$REANA_WORKSPACE/'
           nTrueFile: {step: runpu, output: outputCoffea}
-      step: {$ref: 'reana_workflows/steps.yaml#/runcode'}
+      step: {$ref: 'reana_workflows/steps_singlestep.yaml#/runcode'}
 
 - name: makeplots
   dependencies: [runcode]
@@ -29,6 +29,6 @@ stages:
           inputFile: {step: runcode, output: outputCoffea}
           year: {step: init, output: year}
           workingdir: '$REANA_WORKSPACE/'
-      step: {$ref: 'reana_workflows/steps.yaml#/makeplots'}
+      step: {$ref: 'reana_workflows/steps_singlestep.yaml#/makeplots'}
 
 

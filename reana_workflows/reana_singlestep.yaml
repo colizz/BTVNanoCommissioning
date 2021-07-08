@@ -1,0 +1,45 @@
+version: 0.7.4
+inputs:
+    directories:
+        - reana_workflows
+        - correction_files
+    files:
+        - createNTrueForPU.py
+        - simplerunner.py
+        - make_plots.py
+        - utils.py
+        - workflows/fatjet_tagger.py
+        - datasets/datasets_btag2017.json
+    parameters:
+        inputFile: datasets_btag2017
+        year : 2017
+        puFile: correction_files/nTrueInt_datasets_btag2017_2017.coffea
+        datasets:
+            - BTagMuB
+            - QCD_Pt-170to300_MuEnrichedPt5_TuneCP5_13TeV_pythia8
+            - QCD_Pt-300to470_MuEnrichedPt5_TuneCP5_13TeV_pythia8
+            - QCD_Pt-470to600_MuEnrichedPt5_TuneCP5_13TeV_pythia8
+            - QCD_Pt-600to800_MuEnrichedPt5_TuneCP5_13TeV_pythia8
+            - QCD_Pt-800to1000_MuEnrichedPt5_TuneCP5_13TeV_pythia8
+            - QCD_Pt-1000toInf_MuEnrichedPt5_TuneCP5_13TeV_pythia8
+        workingdir: '$REANA_WORKSPACE'
+        outputFile: 'nTrueFile.coffea'
+
+workflow:
+    type: serial
+    specification:
+        steps:
+            - name: runpu
+              environment: 'gitlab-registry.cern.ch/algomez/btvnanocommissioning:latest'
+              #environment: 'coffeateam/coffea-base:latest'
+              voms_proxy: true
+              #compute_backend: kubernetes
+              #kubernetes_memory_limit: '16Gi'
+              #compute_backend: htcondorcern
+              #htcondor_max_runtime: 'espresso'
+              commands:
+                  - cd ${workingdir} && pwd -LP && ls && python createNTrueForPU.py --samples datasets/${inputFile}.json --year ${year} --outputDir ${workingdir} --outputName ${outputFile} && ls 
+
+outputs:
+    directories:
+        - plots 
