@@ -19,6 +19,8 @@ parser.add_argument('--data', type=str, default='BTagMu', help='Data sample name
 parser.add_argument('--selection', type=str, default='all', help='Plot only plots with this selection. ("all" to plot all the selections in file)')
 
 args = parser.parse_args()
+print("Running with options:")
+print("    ", args)
 
 if os.path.isfile( args.input ): accumulator = load(args.input)
 else:
