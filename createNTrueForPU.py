@@ -23,6 +23,8 @@ if __name__ == '__main__':
     except:
         parser.print_help()
         sys.exit(0)
+    print("Running with options:")
+    print("    ", args)
 
     # load dataset
     with open(args.samplejson) as f:

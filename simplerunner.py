@@ -51,6 +51,8 @@ if __name__ == '__main__':
     parser.add_argument('--dataset', type=str, default=None, help='Dataset in the JSON file to process')
 
     args = parser.parse_args()
+    print("Running with options:")
+    print("    ", args)
     if args.output == parser.get_default('output'):
         args.output = f'hists_{args.workflow}_{(args.samplejson).rstrip(".json")}.coffea'
 
