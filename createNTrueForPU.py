@@ -5,9 +5,7 @@ import uproot
 import coffea.hist as hist
 from coffea.util import save
 import concurrent.futures
-import json
-#from root_numpy import root2array, tree2array
-
+import json, psutil
 
 
 #####################################
@@ -25,6 +23,8 @@ if __name__ == '__main__':
     except:
         parser.print_help()
         sys.exit(0)
+    print("Running with options:")
+    print("    ", args)
 
     # load dataset
     with open(args.samplejson) as f:
@@ -54,7 +54,7 @@ if __name__ == '__main__':
 
     puHisto = hist.Hist( 'nTrueInt', hist.Cat('dataset', 'dataset name'), hist.Bin('x', 'nTrueInt', 99, 0, 99) )
 
-    executor = concurrent.futures.ThreadPoolExecutor()
+    #executor = concurrent.futures.ThreadPoolExecutor()   #### this is needed for REANA
     for isample, ifiles in sample_dict.items():
         print(f'processing {isample}')
         if isample.startswith('BTag'): continue
@@ -62,12 +62,12 @@ if __name__ == '__main__':
             print('|--------> Sample '+isample+' does not have files to process')
             continue
         filesToProcess = { k:'Events' for k in ifiles[:10] }
-
-        for array in uproot.iterate([filesToProcess], ['Pileup_nTrueInt']):
+        for array in uproot.iterate([filesToProcess], ['Pileup_nTrueInt']): #, executor=executor):
             puHisto.fill(dataset=isample, x=array['Pileup_nTrueInt'])
 
     outFolder = os.getcwd()+'/correction_files/' if args.outputDir is None else args.outputDir
     outName = outFolder+'/'+( args.outputName if args.outputName else '/nTrueInt_'+args.samplejson.split('/')[-1].split('.json')[0]+'_'+str(args.year)+'.coffea' )
     save( puHisto, outName )
 
+    print(psutil.Process(os.getpid()).memory_info().rss / 1024 ** 2)
 

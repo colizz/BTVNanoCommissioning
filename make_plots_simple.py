@@ -24,6 +24,8 @@ parser.add_argument('--data', type=str, default='BTagMu', help='Data sample name
 parser.add_argument('--selection', type=str, default='all', help='Plot only plots with this selection. ("all" to plot all the selections in file)')
 
 args = parser.parse_args()
+print("Running with options:")
+print("    ", args)
 
 if os.path.isfile( args.input ): accumulator = load(args.input)
 else:
@@ -114,7 +116,7 @@ _mask_DDX = {
             'DDC' : {
                 #'L' : XX,
                 'M' : 0.45
-            }, 
+            },
 }
 for mask_f in _final_mask:
     for DDX in _mask_DDX.keys():
