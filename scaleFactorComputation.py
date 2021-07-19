@@ -60,9 +60,9 @@ def test_sfmodel(tmpdir, inputFile, sel, wp, fittype='single', scale=1, smear=0.
             sType = rl.Sample.SIGNAL if isSignal else rl.Sample.BACKGROUND
             sample = rl.TemplateSample("{}_{}".format(ch.name, sName), sType, template)
             #print('sample',sample)
-            #sample.setParamEffect(lumi, 1.023)
-            #sample.setParamEffect(jecs, 1.02)
-            #sample.setParamEffect(pu, 1.05)
+            sample.setParamEffect(lumi, 1.023)
+            sample.setParamEffect(jecs, 1.02)
+            sample.setParamEffect(pu, 1.05)
             #sample.autoMCStats()
             ch.addSample(sample)
 
