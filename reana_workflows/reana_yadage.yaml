@@ -1,4 +1,4 @@
-version: 0.7.4
+version: 0.7.2
 inputs:
     directories:
         - reana_workflows
@@ -6,9 +6,7 @@ inputs:
     files:
         - createNTrueForPU.py
         - simplerunner.py
-        - make_plots_simple.py
-        - coffeaToPickle.py
-        - scaleFactorComputation.py
+        - make_plots.py
         - utils.py
         - workflows/fatjet_tagger.py
         - datasets/datasets_btag2017.json
@@ -17,29 +15,22 @@ inputs:
             - datasets_btag2017
         year : 
             - 2017
+        puFile:
+            - correction_files/nTrueInt_datasets_btag2017_2017.coffea
         datasets:
             - BTagMuB
-            - BTagMuC
-            - BTagMuD
-            - BTagMuE
-            - BTagMuF
             - QCD_Pt-170to300_MuEnrichedPt5_TuneCP5_13TeV_pythia8
             - QCD_Pt-300to470_MuEnrichedPt5_TuneCP5_13TeV_pythia8
             - QCD_Pt-470to600_MuEnrichedPt5_TuneCP5_13TeV_pythia8
             - QCD_Pt-600to800_MuEnrichedPt5_TuneCP5_13TeV_pythia8
             - QCD_Pt-800to1000_MuEnrichedPt5_TuneCP5_13TeV_pythia8
             - QCD_Pt-1000toInf_MuEnrichedPt5_TuneCP5_13TeV_pythia8
-        workingpoints:
-            - msd100tau06DDB
-            - msd100tau06DDC
 
 workflow:
     type: yadage
     file: reana_workflows/workflow.yaml
+    #file: reana_workflows/workflow_singlestep.yaml
 
 outputs:
-    files:
-        - plots.tar
-        - plots
-        - fitdir/msd100tau06DDB/fitdir.tar
-        - fitdir/msd100tau06DDC/fitdir.tar
+    directories:
+        - plots 

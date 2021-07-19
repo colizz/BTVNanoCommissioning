@@ -10,8 +10,8 @@ runpu:
             ls 
     environment: 
         environment_type: 'docker-encapsulated'
-        image: coffeateam/coffea-base
-        #image: gitlab-registry.cern.ch/algomez/btvnanocommissioning
+        #image: coffeateam/coffea-base
+        image: gitlab-registry.cern.ch/algomez/btvnanocommissioning
         imagetag: latest
         resources:
             - voms_proxy: true
@@ -26,21 +26,24 @@ runcode:
         interpreter: bash
         script: |
             cd {workingdir}
+            export XRD_NETWORKSTACK=IPv4
             pwd -LP
             ls 
-            python simplerunner.py --workflow fattag --executor futures --samples datasets/{inputFile}.json --output {dataset}.coffea7 --year {year} --nTrueFile {nTrueFile} --outputDir {workingdir} --dataset {dataset} --limit 10
+            python simplerunner.py --workflow fattag --executor iterative --samples datasets/{inputFile}.json --output {dataset}.coffea7 --year {year} --nTrueFile {nTrueFile} --outputDir {workingdir}/histograms/ --dataset {dataset} --workers 6 --limit 10
             ls 
     environment: 
         environment_type: 'docker-encapsulated'
-        #image: gitlab-registry.cern.ch/algomez/btvnanocommissioning
-        image: coffeateam/coffea-base
+        image: gitlab-registry.cern.ch/algomez/btvnanocommissioning
         imagetag: latest
         resources:
             - voms_proxy: true
+            - compute_backend: kubernetes
+            - kubernetes_memory_limit: '16Gi'
     publisher:
-        publisher_type: 'fromglob-pub'
-        outputkey: output_files
-        globexpression: '{workingdir}/*coffea7'
+        publisher_type: interpolated-pub
+        glob: true
+        publish:
+            output_dir: '{workingdir}/histograms/'
 
 makeplots:
     process:
@@ -49,16 +52,68 @@ makeplots:
         script: |
             cd {workingdir}
             pwd -LP
-            ls 
-            python make_plots.py -i {inputFile} -o test --outputDir {workingdir} -d --year {year} --selection basic 
+            ls {inputFolder}
+            python make_plots_simple.py -i {workingdir}/histograms/ --outputDir {workingdir}/plots/ -d --year {year} --selection msd100tau06
+            tar -cvf {outputtar} {workingdir}/plots/
             ls 
     environment: 
         environment_type: 'docker-encapsulated'
-        #image: gitlab-registry.cern.ch/algomez/btvnanocommissioning
-        image: coffeateam/coffea-base
+        image: gitlab-registry.cern.ch/algomez/btvnanocommissioning
         imagetag: latest
     publisher:
         publisher_type: interpolated-pub
+        glob: true
         publish:
-            plots: '{workingdir}/*png'
+            plots: '{outputtar}'
 
+createpickle:
+    process:
+        process_type: 'interpolated-script-cmd'
+        interpreter: bash
+        script: |
+            cd {workingdir}
+            pwd -LP
+            ls {inputFolder}
+            python coffeaToPickle.py -i {workingdir}/histograms/ --year {year} --outputDir {workingdir}/pickleFiles/ -o {outputfile}
+            ls 
+    environment: 
+        environment_type: 'docker-encapsulated'
+        image: gitlab-registry.cern.ch/algomez/btvnanocommissioning
+        imagetag: latest
+    publisher:
+        publisher_type: interpolated-pub
+        glob: true
+        publish:
+            picklefile: '{workingdir}/pickleFiles/{outputfile}'
+
+runcombine:
+    process:
+        process_type: 'interpolated-script-cmd'
+        interpreter: bash
+        script: |
+            cd /home/cmsusr/CMSSW_10_2_21/src/
+            source /opt/cms/cmsset_default.sh
+            eval `scramv1 runtime -sh`
+            cd {workingdir}
+            pwd -LP
+            ls 
+            pip install flake8 --user
+            pip install --user https://github.com/nsmith-/rhalphalib/archive/master.zip
+            python scaleFactorComputation.py --tpf {inputFile} --selection {wp} --outputDir {workingdir}/fitdir/{wp}
+            cd {workingdir}/fitdir/{wp}/
+            combineCards.py sfpass=sfpass.txt sffail=sffail.txt > sfModel_combined.txt
+            text2workspace.py sfModel_combined.txt
+            combine -M FitDiagnostics --expectSignal 1 -d sfModel_combined.root --cminDefaultMinimizerStrategy 0 --robustFit=1 --saveShapes  --rMin 0.5 --rMax 1.5
+            tar -cvf fitdir.tar *
+            ls 
+    environment: 
+        environment_type: 'docker-encapsulated'
+        image: gitlab-registry.cern.ch/algomez/btvnanocommissioning
+        imagetag: combine
+        resources:
+            - cvmfs: cms.cern.ch
+    publisher:
+        publisher_type: interpolated-pub
+        glob: true
+        publish:
+            fitdir: '{workingdir}/{wp}/'

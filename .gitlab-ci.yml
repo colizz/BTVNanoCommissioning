@@ -23,13 +23,13 @@ variables:
         # Print the full registry path of the pushed image
         - echo "Image pushed successfully to ${IMAGE_DESTINATION}"
 
-#build_image:
-#    stage: buildimages
-#    extends: .docker_build
-#    variables:
-#        IMAGE_DESTINATION: $CI_REGISTRY_IMAGE:latest
-#        #IMAGE_DESTINATION: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
-#        dockerfile: Dockerfile
+build_image:
+    stage: buildimages
+    extends: .docker_build
+    variables:
+        IMAGE_DESTINATION: $CI_REGISTRY_IMAGE:coffea
+        #IMAGE_DESTINATION: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
+        dockerfile: Dockerfile
 
 build_combine:
     stage: buildimages
@@ -40,16 +40,16 @@ build_combine:
         IMAGE_DESTINATION: ${CI_REGISTRY_IMAGE}:combine
         dockerfile: DockerfileCombine
 
-setrhalphalib:
-    stage: createPUfile
-    dependencies: 
-        - build_combine 
-    image: $CI_REGISTRY_IMAGE:combine
-    tags: 
-        - cvmfs
-    script:
-        - pip install flake8 --user
-        - pip install --user https://github.com/nsmith-/rhalphalib/archive/master.zip
+#setrhalphalib:
+#    stage: createPUfile
+#    dependencies: 
+#        - build_combine 
+#    image: $CI_REGISTRY_IMAGE:combine
+#    tags: 
+#        - cvmfs
+#    script:
+#        - pip install flake8 --user
+#        - pip install --user https://github.com/nsmith-/rhalphalib/archive/master.zip
 
 voms_proxy:
     stage: buildimages 
@@ -74,8 +74,8 @@ runPU:
     stage: createPUfile
     tags:
         - cvmfs
-    image: coffeateam/coffea-base:latest
-    #image: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
+    #image: coffeateam/coffea-base:latest
+    image: $CI_REGISTRY_IMAGE:coffea
     script:
         - export X509_USER_PROXY=${PWD}/proxy/x509_proxy
         - mkdir test
@@ -92,8 +92,8 @@ runcode:
     stage: runCode
     tags:
         - cvmfs
-    #image: $CI_REGISTRY_IMAGE:latest
-    image: coffeateam/coffea-base:latest
+    #image: coffeateam/coffea-base:latest
+    image: $CI_REGISTRY_IMAGE:coffea
     script:
         - export X509_USER_PROXY=${PWD}/proxy/x509_proxy
         - pwd -LP
@@ -107,8 +107,8 @@ runplots:
     dependencies:
         - runcode
     stage: makePlots
-    image: coffeateam/coffea-base:latest
-    #image: $CI_REGISTRY_IMAGE:latest
+    #image: coffeateam/coffea-base:latest
+    image: $CI_REGISTRY_IMAGE:coffea
     script:
         - python make_plots_simple.py -i ${PWD}/histograms/"${coffeaFile}" --outputDir ${PWD}/plots/ -d --year "${year}" --selection msd100tau06 --test
     artifacts:
@@ -120,8 +120,8 @@ createPickleFile:
     dependencies:
         - runcode
     stage: makePlots
-    #image: $CI_REGISTRY_IMAGE:latest
-    image: coffeateam/coffea-base:latest
+    image: $CI_REGISTRY_IMAGE:coffea
+    #image: coffeateam/coffea-base:latest
     script:
         - python coffeaToPickle.py -i ${PWD}/histograms/"${coffeaFile}" --year "${year}" --outputDir ${PWD}/pickleFiles/ -o "${pickleFile}"
     artifacts:
@@ -131,12 +131,18 @@ createPickleFile:
 
 runCombine:
     dependencies:
-        - setrhalphalib
+        #- setrhalphalib
         - createPickleFile
     stage: combine
-    #image: $CI_REGISTRY_IMAGE:combine
+    image: $CI_REGISTRY_IMAGE:combine
     script:
-        - python scaleFactorComputation.py --year '${year}' --tpf pickleFiles/"${pickleFile}" --selection msd100tau06DDB
+        - pip install flake8 --user
+        - pip install --user https://github.com/nsmith-/rhalphalib/archive/master.zip
+        - python scaleFactorComputation.py --year "${year}" --tpf ${PWD}/pickleFiles/"${pickleFile}" --selection msd100tau06DDB --outputDir ${PWD}/fitdir/
+        - cd ${PWD}/fitdir/
+        - combineCards.py sfpass=sfpass.txt sffail=sffail.txt > sfModel_combined.txt
+        - text2workspace.py sfModel_combined.txt
+        - combine -M FitDiagnostics --expectSignal 1 -d sfModel_combined.root --cminDefaultMinimizerStrategy 0 --robustFit=1 --saveShapes  --rMin 0.5 --rMax 1.5
     artifacts:
         expire_in: 1 week
         paths:

@@ -5,6 +5,7 @@ import argparse
 import time
 import tarfile
 import tempfile
+import psutil
 
 import numpy as np
 
@@ -51,6 +52,8 @@ if __name__ == '__main__':
     parser.add_argument('--dataset', type=str, default=None, help='Dataset in the JSON file to process')
 
     args = parser.parse_args()
+    print("Running with options:")
+    print("    ", args)
     if args.output == parser.get_default('output'):
         args.output = f'hists_{args.workflow}_{(args.samplejson).rstrip(".json")}.coffea'
 
@@ -137,6 +140,8 @@ if __name__ == '__main__':
                     'skipbadfiles':args.skipbadfiles,
                     'schema': PFNanoAODSchema,
                     'workers': args.workers}
+                    #'xrootdtimeout': 7200,
+                    #'retries': 2,
     if args.executor.startswith('iterative'): _exec = processor.iterative_executor
     elif args.executor.startswith('futures'): _exec = processor.futures_executor
 #    elif args.executor.startswith('dask/condor'):
@@ -181,3 +186,4 @@ if __name__ == '__main__':
     filepath = hist_dir + args.output
     save(output, filepath)
     print(f"Saving output to {filepath}")
+    print(psutil.Process(os.getpid()).memory_info().rss / 1024 ** 2)

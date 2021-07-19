@@ -54,10 +54,12 @@ def test_sfmodel(tmpdir, inputFile, sel, wp, fittype='single', scale=1, smear=0.
         ch = rl.Channel("sf{}".format(region))
         for sName in sample_names:
             template = get_templ(fout, 'fatjet_jetproba_{}{}{}wp_QCD_{}'.format(sel, region, wp, sName), jetproba)
+            #print('template', template)
 
             isSignal = True if sName == ('bb' if sel.endswith('DDB') else 'cc') else False
             sType = rl.Sample.SIGNAL if isSignal else rl.Sample.BACKGROUND
             sample = rl.TemplateSample("{}_{}".format(ch.name, sName), sType, template)
+            #print('sample',sample)
             sample.setParamEffect(lumi, 1.023)
             sample.setParamEffect(jecs, 1.02)
             sample.setParamEffect(pu, 1.05)
@@ -69,18 +71,12 @@ def test_sfmodel(tmpdir, inputFile, sel, wp, fittype='single', scale=1, smear=0.
 
         model.addChannel(ch)
 
-    # for sample, SF in zip(sample_names, [indep_bb, indep_cc, indep_o]):
-    #     pass_sample = model['sfpass'][sample]
-    #     fail_sample = model['sffail'][sample]
-    #     pass_fail = pass_sample.getExpectation(nominal=True).sum() / fail_sample.getExpectation(nominal=True).sum()
-    #     pass_sample.setParamEffect(SF, 1.0 * SF)
-    #     fail_sample.setParamEffect(SF, (1 - SF) * pass_fail + 1)
     for sample, SF in zip(sample_names, [indep_bb, indep_cc, indep_b, indep_c, indep_l]):
         pass_sample = model['sfpass'][sample]
-        pass_sample.setParamEffect(SF, 1.0 * SF)
-    for sample, SF in zip(sample_names, [indep_bbf, indep_ccf, indep_bf, indep_cf, indep_lf]):
         fail_sample = model['sffail'][sample]
-        fail_sample.setParamEffect(SF, 1.0 * SF)
+        pass_fail = pass_sample.getExpectation(nominal=True).sum() / fail_sample.getExpectation(nominal=True).sum()
+        pass_sample.setParamEffect(SF, 1.0 * SF)
+        fail_sample.setParamEffect(SF, (1 - SF) * pass_fail + 1)
 
     model.renderCombine(tmpdir)
     with open(tmpdir+'/build.sh', 'a') as ifile:
