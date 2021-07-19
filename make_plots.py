@@ -82,12 +82,12 @@ selection = {
                      r"$p_T > 250 GeV$"+"\n"+
                      r"$m_{SD} > 20 GeV$"+"\n"+
                      r"$\geq$2 $\mu$-tagged subjets"+"\n"),
-    'pt350msd50' :  (r"$\geq$1 AK8 jets"+"\n"+
-                     r"$p_T > 350 GeV$"+"\n"+
+    'pt400msd50' :  (r"$\geq$1 AK8 jets"+"\n"+
+                     r"$p_T > 400 GeV$"+"\n"+
                      r"$m_{SD} > 50 GeV$"+"\n"+
                      r"$\geq$2 $\mu$-tagged subjets"+"\n"),
     'msd100tau06' : (r"$\geq$1 AK8 jets"+"\n"+
-                     r"$p_T > 350 GeV$"+"\n"+
+                     r"$p_T > 400 GeV$"+"\n"+
                      r"$m_{SD} > 100 GeV$"+"\n"+
                      r"$\tau_{21} < 0.6$"+"\n"+
                      r"$\geq$2 $\mu$-tagged subjets"+"\n")
