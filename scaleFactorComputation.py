@@ -7,6 +7,12 @@ import scipy.stats
 import pickle
 import uproot
 
+pt_bins = {
+    #'L' : [0, 350],
+    'M' : (350, 500),
+    'H' : (500, 'Inf'),
+}
+
 def exec_me(command, dryRun=False, folder=False):
     print(command)
     if not dryRun:
@@ -20,43 +26,66 @@ def get_templ(f, sample, obs, syst=None, sumw2=True):
         hist_name += "_" + syst
     h_vals = f[hist_name][0]
     h_sumw2 = f[hist_name][1]
+    binning = obs.binning
+    # HARDCODED
+    if (obs.name == 'logsv1mass') & (len(h_vals) == 80):
+        h_vals = h_vals[32:-8]
+        h_sumw2 = h_sumw2[32:-8]
+        binning = binning[32:-8]
+
     if not sumw2:
-        return (h_vals, obs.binning, obs.name)
+        return (h_vals, binning, obs.name)
     else:
-        return (h_vals, obs.binning, obs.name, h_sumw2)
+        return (h_vals, binning, obs.name, h_sumw2)
 
 
-def test_sfmodel(tmpdir, inputFile, sel, wp, fittype='single', scale=1, smear=0.1):
+def test_sfmodel(tmpdir, var, inputFile, sel, wp, wpt='', fittype='single', scale=1, smear=0.1):
     lumi = rl.NuisanceParameter('CMS_lumi', 'lnN')
     jecs = rl.NuisanceParameter('CMS_jecs', 'lnN')
     pu = rl.NuisanceParameter('CMS_pu', 'lnN')
 
     # Indeps
-    indep_bb = rl.IndependentParameter('bb', 1., -20, 20)
-    indep_cc = rl.IndependentParameter('cc', 1., -20, 20)
-    indep_b = rl.IndependentParameter('b', 1., -20, 20)
-    indep_c = rl.IndependentParameter('c', 1., -20, 20)
+    #indep_bb = rl.IndependentParameter('bb', 1., -20, 20)
+    #indep_cc = rl.IndependentParameter('cc', 1., -20, 20)
+    #indep_b = rl.IndependentParameter('b', 1., -20, 20)
+    #indep_c = rl.IndependentParameter('c', 1., -20, 20)
     indep_l = rl.IndependentParameter('l', 1., -20, 20)
-    indep_bbf = rl.IndependentParameter('bbf', 1., -20, 20)
-    indep_ccf = rl.IndependentParameter('ccf', 1., -20, 20)
-    indep_bf = rl.IndependentParameter('bf', 1., -20, 20)
-    indep_cf = rl.IndependentParameter('cf', 1., -20, 20)
-    indep_lf = rl.IndependentParameter('lf', 1., -20, 20)
+    indep_b_bb = rl.IndependentParameter('b_bb', 1., -20, 20)
+    indep_c_cc = rl.IndependentParameter('c_cc', 1., -20, 20)
+    #indep_bbf = rl.IndependentParameter('bbf', 1., -20, 20)
+    #indep_ccf = rl.IndependentParameter('ccf', 1., -20, 20)
+    #indep_bf = rl.IndependentParameter('bf', 1., -20, 20)
+    #indep_cf = rl.IndependentParameter('cf', 1., -20, 20)
+    #indep_lf = rl.IndependentParameter('lf', 1., -20, 20)
 
-    jetprobabins = np.linspace(0, 2.55, 51)
-    jetproba = rl.Observable('jetproba', jetprobabins)
+    if var == 'fatjet_jetproba':
+        bins = np.linspace(0, 2.5, 26)
+        #jetproba = rl.Observable('jetproba', jetprobabins)
+    if var == 'sv_logsv1mass':
+        bins = np.linspace(-4, 4, 81)
+        #binwidth = 0.1
+        #logsv1massbins = np.arange(-0.8, 3.2 + binwidth, binwidth)
+    observable = rl.Observable(var.split('_')[-1], bins)
     model = rl.Model("sfModel")
 
     regions = ['pass', 'fail']
     fout = np.load(inputFile, allow_pickle=True)
-    sample_names = ['bb', 'cc', 'b', 'c', 'l']
+    #tagger = 'DDB' if 'DDB' in sel else 'DDC'
+    #sample_names = ['bb', 'cc', 'b', 'c', 'l']
+    #if tagger == 'DDC':
+    sample_names = ['b_bb', 'c_cc', 'l']
     for region in regions:
         ch = rl.Channel("sf{}".format(region))
         for sName in sample_names:
-            template = get_templ(fout, 'fatjet_jetproba_{}{}{}wp_QCD_{}'.format(sel, region, wp, sName), jetproba)
+            if wpt == '':
+                template = get_templ(fout, '{}_{}{}{}wp_QCD_{}'.format(var, sel, region, wp, sName), observable)
+            else:
+                (pt_low, pt_high) = pt_bins[wpt]
+                template = get_templ(fout, '{}_{}{}{}wpPt-{}to{}_QCD_{}'.format(var, sel, region, wp, pt_low, pt_high, sName), observable)
             #print('template', template)
 
-            isSignal = True if sName == ('bb' if sel.endswith('DDB') else 'cc') else False
+            #isSignal = True if sName == ('bb' if sel.endswith('DDB') else 'cc') else False
+            isSignal = True if sName == ('b_bb' if sel.endswith('DDB') else 'c_cc') else False
             sType = rl.Sample.SIGNAL if isSignal else rl.Sample.BACKGROUND
             sample = rl.TemplateSample("{}_{}".format(ch.name, sName), sType, template)
             #print('sample',sample)
@@ -66,12 +95,19 @@ def test_sfmodel(tmpdir, inputFile, sel, wp, fittype='single', scale=1, smear=0.
             #sample.autoMCStats()
             ch.addSample(sample)
 
-        data_obs = get_templ(fout, 'fatjet_jetproba_{}{}{}wp_BtagMu'.format(sel, region, wp), jetproba)[:-1]
+        if wpt == '':
+            #data_obs = get_templ(fout, 'fatjet_jetproba_{}{}{}wp_BtagMu'.format(sel, region, wp), jetproba)[:-1]
+            data_obs = get_templ(fout, '{}_{}{}{}wp_BtagMu'.format(var, sel, region, wp), observable)[:-1]
+        else:
+            data_obs = get_templ(fout, '{}_{}{}{}wpPt-{}to{}_BtagMu'.format(var, sel, region, wp, pt_low, pt_high), observable)[:-1]
         ch.setObservation(data_obs)
 
         model.addChannel(ch)
 
-    for sample, SF in zip(sample_names, [indep_bb, indep_cc, indep_b, indep_c, indep_l]):
+    #parameters = [indep_bb, indep_cc, indep_b, indep_c, indep_l]
+    #if tagger == 'DDC':
+    parameters = [indep_b_bb, indep_c_cc, indep_l]
+    for sample, SF in zip(sample_names, parameters):
         pass_sample = model['sfpass'][sample]
         fail_sample = model['sffail'][sample]
         pass_fail = pass_sample.getExpectation(nominal=True).sum() / fail_sample.getExpectation(nominal=True).sum()
@@ -80,7 +116,9 @@ def test_sfmodel(tmpdir, inputFile, sel, wp, fittype='single', scale=1, smear=0.
 
     model.renderCombine(tmpdir)
     with open(tmpdir+'/build.sh', 'a') as ifile:
-        ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d sfModel_combined.root --cminDefaultMinimizerStrategy 0 --robustFit=1 --saveShapes  --rMin 0.5 --rMax 1.5')
+        if wpt == '':
+            wpt = 'Inclusive'
+        ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name {}Pt --cminDefaultMinimizerStrategy 0 --robustFit=1 --saveShapes  --rMin 0.5 --rMax 1.5'.format(wpt))
 
     exec_me( 'bash build.sh', folder=tmpdir )
 
@@ -91,8 +129,10 @@ if __name__ == '__main__':
 
     parser.add_argument('--outputDir', type=str, default=None, help='Output directory')
     parser.add_argument('--year', type=str, choices=['2016', '2017', '2018'], help='Year of data/MC samples')
+    parser.add_argument('--var', type=str, default='sv_logsv1mass', help='Variable used in the template fit.')
     parser.add_argument('--selection', type=str, default='msd100tau06DDB', help='Selection to compute SF.')
     parser.add_argument('--wp', type=str, default='M', help='Working point')
+    parser.add_argument('--wpt', type=str, choices={'', 'M', 'H'}, default='', help='Pt bin')
     parser.add_argument("--fit", type=str, choices={'single', 'double'}, default='double',
                         help="Fit type")  ##not used
     parser.add_argument("--scale", type=float, default='1',
@@ -100,17 +140,17 @@ if __name__ == '__main__':
     parser.add_argument("--smear", type=float, default='0.1',
                         help="Datacard magnitude for smear shift.")  ##not used yet
 
-    parser.add_argument("--tp", "--template-pass", dest='tp', type=str,
-                        default='histograms/hists_fattag_pileupJEC_2017_WPcuts_v01.pkl',
-                        help="Pass(Pass/Pass) templates")  ##not used
+    #parser.add_argument("--tp", "--template-pass", dest='tp', type=str,
+    #                    default='histograms/hists_fattag_pileupJEC_2017_WPcuts_v01.pkl',
+    #                    help="Pass(Pass/Pass) templates")  ##not used
 
     parser.add_argument("--tpf", "--template-passfail", dest='tpf', type=str,
                         default='histograms/hists_fattag_pileupJEC_2017_WPcuts_v01.pkl',
                         help="Pass/Fail templates, only for `fit=double`")
 
-    parser.add_argument("--tf", "--template-fail", dest='tf', type=str,
-                        default='histograms/hists_fattag_pileupJEC_2017_WPcuts_v01.pkl',
-                        help="Fail templates")  ##not used
+    #parser.add_argument("--tf", "--template-fail", dest='tf', type=str,
+    #                    default='histograms/hists_fattag_pileupJEC_2017_WPcuts_v01.pkl',
+    #                    help="Fail templates")  ##not used
 
     args = parser.parse_args()
     print("Running with options:")
@@ -120,4 +160,4 @@ if __name__ == '__main__':
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    test_sfmodel(output_dir, args.tpf, args.selection, args.wp)
+    test_sfmodel(output_dir, args.var, args.tpf, args.selection, args.wp, args.wpt)
