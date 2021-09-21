@@ -29,9 +29,32 @@ def get_templ(f, sample, obs, syst=None, sumw2=True):
     binning = obs.binning
     # HARDCODED
     if (obs.name == 'logsv1mass') & (len(h_vals) == 80):
-        h_vals = h_vals[32:-8]
+        h_vals  = h_vals[32:-8]
         h_sumw2 = h_sumw2[32:-8]
         binning = binning[32:-8]
+        # rebinning
+        val_N     = np.sum(h_vals[-7:])
+        val_N_1   = np.sum(h_vals[-14:-7])
+        sumw2_N   = np.sum(h_sumw2[-7:])
+        sumw2_N_1 = np.sum(h_sumw2[-14:-7])
+        bin_N   = 3.2
+        bin_N_1 = 2.5
+        h_vals  = h_vals[:-14]
+        h_sumw2 = h_sumw2[:-14]
+        binning = binning[:-14]
+        h_vals  = np.concatenate((h_vals, [val_N_1, val_N]))
+        h_sumw2 = np.concatenate((h_sumw2, [sumw2_N_1, sumw2_N]))
+        binning = np.concatenate((binning, [2.5, 3.2]))
+
+    if (obs.name == 'logsv1mass') & (len(h_vals) == 40):
+        h_vals  = h_vals[16:-4]
+        h_sumw2 = h_sumw2[16:-4]
+        binning = binning[16:-4]
+
+    if (obs.name == 'logsv1mass') & (len(h_vals) == 20):
+        h_vals  = h_vals[8:-2]
+        h_sumw2 = h_sumw2[8:-2]
+        binning = binning[8:-2]
 
     if not sumw2:
         return (h_vals, binning, obs.name)
@@ -45,24 +68,29 @@ def test_sfmodel(tmpdir, var, inputFile, sel, wp, wpt='', fittype='single', scal
     pu = rl.NuisanceParameter('CMS_pu', 'lnN')
 
     # Indeps
-    #indep_bb = rl.IndependentParameter('bb', 1., -20, 20)
-    #indep_cc = rl.IndependentParameter('cc', 1., -20, 20)
-    #indep_b = rl.IndependentParameter('b', 1., -20, 20)
-    #indep_c = rl.IndependentParameter('c', 1., -20, 20)
-    indep_l = rl.IndependentParameter('l', 1., -20, 20)
-    indep_b_bb = rl.IndependentParameter('b_bb', 1., -20, 20)
-    indep_c_cc = rl.IndependentParameter('c_cc', 1., -20, 20)
-    #indep_bbf = rl.IndependentParameter('bbf', 1., -20, 20)
-    #indep_ccf = rl.IndependentParameter('ccf', 1., -20, 20)
-    #indep_bf = rl.IndependentParameter('bf', 1., -20, 20)
-    #indep_cf = rl.IndependentParameter('cf', 1., -20, 20)
-    #indep_lf = rl.IndependentParameter('lf', 1., -20, 20)
+    if 'DDB' in sel:
+        indep_l = rl.IndependentParameter('l', 1., 0, 2)
+        indep_b_bb = rl.IndependentParameter('b_bb', 1., -20, 20)
+        if '2018' in inputFile:
+            indep_c_cc = rl.IndependentParameter('c_cc', 1., -20, 20)
+        else:
+            indep_c_cc = rl.IndependentParameter('c_cc', 1., 0, 2)
+    elif 'DDC' in sel:
+        indep_l = rl.IndependentParameter('l', 1., 0, 2)
+        if '2018' in inputFile:
+            indep_b_bb = rl.IndependentParameter('b_bb', 1., -20, 20)
+        elif '2017' in inputFile:
+            indep_b_bb = rl.IndependentParameter('b_bb', 1., 0, 2)
+            #indep_b_bb = rl.IndependentParameter('b_bb', 1., -20, 20)
+        indep_c_cc = rl.IndependentParameter('c_cc', 1., -20, 20)
 
     if var == 'fatjet_jetproba':
         bins = np.linspace(0, 2.5, 26)
         #jetproba = rl.Observable('jetproba', jetprobabins)
     if var == 'sv_logsv1mass':
-        bins = np.linspace(-4, 4, 81)
+        #bins = np.linspace(-4, 4, 81)
+        bins = np.linspace(-4, 4, 41)
+        #bins = np.linspace(-4, 4, 21)
         #binwidth = 0.1
         #logsv1massbins = np.arange(-0.8, 3.2 + binwidth, binwidth)
     observable = rl.Observable(var.split('_')[-1], bins)
@@ -74,6 +102,12 @@ def test_sfmodel(tmpdir, var, inputFile, sel, wp, wpt='', fittype='single', scal
     #sample_names = ['bb', 'cc', 'b', 'c', 'l']
     #if tagger == 'DDC':
     sample_names = ['b_bb', 'c_cc', 'l']
+    if sel.endswith('DDB'):
+        signalName = 'b_bb'
+    else:
+        signalName = 'c_cc'
+    Nevts = 0
+    Nl = 0
     for region in regions:
         ch = rl.Channel("sf{}".format(region))
         for sName in sample_names:
@@ -83,16 +117,22 @@ def test_sfmodel(tmpdir, var, inputFile, sel, wp, wpt='', fittype='single', scal
                 (pt_low, pt_high) = pt_bins[wpt]
                 template = get_templ(fout, '{}_{}{}{}wpPt-{}to{}_QCD_{}'.format(var, sel, region, wp, pt_low, pt_high, sName), observable)
             #print('template', template)
+            if region == 'pass':
+                Nevts += np.sum(template[0])
+                if sName == 'l':
+                    Nl += np.sum(template[0])
 
             #isSignal = True if sName == ('bb' if sel.endswith('DDB') else 'cc') else False
-            isSignal = True if sName == ('b_bb' if sel.endswith('DDB') else 'c_cc') else False
+
+            isSignal = True if sName == signalName else False
             sType = rl.Sample.SIGNAL if isSignal else rl.Sample.BACKGROUND
             sample = rl.TemplateSample("{}_{}".format(ch.name, sName), sType, template)
             #print('sample',sample)
             sample.setParamEffect(lumi, 1.023)
             sample.setParamEffect(jecs, 1.02)
             sample.setParamEffect(pu, 1.05)
-            #sample.autoMCStats()
+            sample.autoMCStats(lnN=True)
+            #sample.autoMCStats(epsilon=1e-4)
             ch.addSample(sample)
 
         if wpt == '':
@@ -103,6 +143,13 @@ def test_sfmodel(tmpdir, var, inputFile, sel, wp, wpt='', fittype='single', scal
         ch.setObservation(data_obs)
 
         model.addChannel(ch)
+
+    fractionL = float(Nl)/float(Nevts)
+    freezeL = False
+    print("fractionL = ", fractionL)
+    if fractionL < 1e-3:
+        freezeL = True
+        print("The parameter 'l' will be frozen.")
 
     #parameters = [indep_bb, indep_cc, indep_b, indep_c, indep_l]
     #if tagger == 'DDC':
@@ -118,10 +165,37 @@ def test_sfmodel(tmpdir, var, inputFile, sel, wp, wpt='', fittype='single', scal
     with open(tmpdir+'/build.sh', 'a') as ifile:
         if wpt == '':
             wpt = 'Inclusive'
-        ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name {}Pt --cminDefaultMinimizerStrategy 0 --robustFit=1 --saveShapes  --rMin 0.5 --rMax 1.5'.format(wpt))
+        #ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name {}Pt --cminDefaultMinimizerStrategy 0 --robustFit=1 --saveShapes  --rMin 0.5 --rMax 1.5'.format(wpt))
+        if freezeL:
+            ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name {}Pt --cminDefaultMinimizerStrategy 0 --robustFit=1 --saveShapes --redefineSignalPOIs={} --setParameters r=1,l=1 --freezeParameters r,l'.format(wpt, signalName))
+        else:
+            ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name {}Pt --cminDefaultMinimizerStrategy 0 --robustFit=1 --saveShapes --redefineSignalPOIs={} --setParameters r=1 --freezeParameters r'.format(wpt, signalName))
+        #ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name {}Pt --cminDefaultMinimizerStrategy 0 --robustFit=1 --robustHesse 1 --saveShapes --redefineSignalPOIs={} --setParameters r=1 --freezeParameters r'.format(wpt, signalName))
 
     exec_me( 'bash build.sh', folder=tmpdir )
 
+def save_results(output_dir, sel, wpt):
+
+    if wpt == '':
+        wpt = 'Inclusive'
+    combineFile = uproot.open(output_dir + "higgsCombine{}Pt.FitDiagnostics.mH120.root".format(wpt))
+    combineTree = combineFile['limit']
+    combineBranches = combineTree.arrays()
+    results = combineBranches['limit']
+
+    combineCont, low, high, temp = results
+    combineErrUp = high - combineCont
+    combineErrDown = combineCont - low
+
+    if 'DDB' in sel:
+        POI = 'b_bb'
+    elif 'DDC' in sel:
+        POI = 'c_cc'
+    f = open(output_dir + "fitResults{}Pt.txt".format(wpt), 'w')
+    f.write('Best fit {}: {}  -{}/+{}  (68%  CL)\n'.format(POI, combineCont, combineErrDown, combineErrUp))
+    f.close()
+
+    return combineCont, combineErrDown, combineErrUp
 
 if __name__ == '__main__':
     import argparse
@@ -161,3 +235,4 @@ if __name__ == '__main__':
         os.makedirs(output_dir)
 
     test_sfmodel(output_dir, args.var, args.tpf, args.selection, args.wp, args.wpt)
+    save_results(output_dir, args.selection, args.wpt)
