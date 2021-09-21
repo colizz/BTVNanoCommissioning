@@ -131,6 +131,13 @@ if __name__ == '__main__':
         ##### Untar JECs
         ##### Correction files in https://twiki.cern.ch/twiki/bin/viewauth/CMS/JECDataMC
 	jesInputFilePath = tempfile.mkdtemp()
+	if args.year==2016:
+		jecTarFiles = [
+                    '/correction_files/JEC/Summer16_07Aug2017BCD_V11_DATA.tar.gz',
+                    '/correction_files/JEC/Summer16_07Aug2017EF_V11_DATA.tar.gz',
+                    '/correction_files/JEC/Summer16_07Aug2017GH_V11_DATA.tar.gz',
+                    '/correction_files/JEC/Summer16_07Aug2017_V11_MC.tar.gz',
+                    ]
 	if args.year==2017:
 		jecTarFiles = [
                     '/correction_files/JEC/Fall17_17Nov2017B_V32_DATA.tar.gz',
@@ -255,9 +262,10 @@ if __name__ == '__main__':
 							#launcher=SingleNodeLauncher(),
 							max_blocks=(args.scaleout)+10,
 							init_blocks=args.scaleout,
-							partition='wn',
+							#partition='wn',
+							partition='long',
 							worker_init="\n".join(env_extra) + "\nexport PYTHONPATH=$PYTHONPATH:$PWD",
-							walltime='02:00:00'
+							walltime='12:00:00'
 						),
 					)
 				],

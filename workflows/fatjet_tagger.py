@@ -24,7 +24,6 @@ class NanoProcessor(processor.ProcessorABC):
                     },
             'pt350msd50'       : {
                 'pt_cut' : 350.,
-                #'pt_cut' : 400.,
                 'eta_cut': 2.4,
                 'jetId_cut': 3 if self.year==2016 else 2,
                 'mass_cut' : 50.,
@@ -67,8 +66,9 @@ class NanoProcessor(processor.ProcessorABC):
         ############
         # PU files
         if self.year == 2016:
-            self.puFile = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions16/13TeV/PileUp/PrelLum15And1613TeV/PileupHistogram-goldenJSON-13tev-2016-69200ub-99bins.root'
-            self.nTrueFile = os.getcwd()+'/correction_files/nTrueInt_datasets_btag2017_2016.coffea'
+            self.puFile = os.getcwd()+'/correction_files/PileupHistogram-goldenJSON-13tev-2016-69200ub-99bins.root'
+            #self.puFile = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions16/13TeV/PileUp/PrelLum15And1613TeV/PileupHistogram-goldenJSON-13tev-2016-69200ub-99bins.root'
+            self.nTrueFile = os.getcwd()+'/correction_files/nTrueInt_datasets_local_fixed_btag2016_2016.coffea'
         if self.year == 2017:
             self.puFile = os.getcwd()+'/correction_files/PileupHistogram-goldenJSON-13tev-2017-69200ub-99bins.root'
             #self.puFile = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions17/13TeV/PileUp/PileupHistogram-goldenJSON-13tev-2017-69200ub-99bins.root'
@@ -370,6 +370,10 @@ class NanoProcessor(processor.ProcessorABC):
         if self.year == 2016:
             if 'BTagMu_AK4Jet300_Mu5' not in events.HLT.fields:
                 self.triggers = [trigger.replace('AK4', '') for trigger in self.triggers]
+            if 'BTagMu_AK8Jet300_Mu5' not in events.HLT.fields:
+                self.triggers = [trigger.replace('AK8', '') for trigger in self.triggers]
+            #print("self.triggers", self.triggers)
+            #print("events.HLT.fields", [item for item in events.HLT.fields if 'BTagMu' in item])
         elif self.year == 2018:
             for (i, trigger) in enumerate(self.triggers):
                 if trigger.strip("HLT_") not in events.HLT.fields:
@@ -379,6 +383,7 @@ class NanoProcessor(processor.ProcessorABC):
         req_trig = np.zeros(len(events), dtype='bool')
         for t in trig_arrs:
             req_trig = req_trig | t
+        #print("any(req_trig)", any(req_trig))
         cuts.add('trigger', ak.to_numpy(req_trig))
 
         ############
@@ -484,6 +489,7 @@ class NanoProcessor(processor.ProcessorABC):
             if ((histname in self.fatjet_hists) | ('hist2d_fatjet' in histname)):
                 for flav, mask in flavors.items():
                     weight = weights.weight() * cuts.all(*selection[sel[0]]) * ak.to_numpy(mask)
+                    print("weight", weight)
                     fields = {k: ak.fill_none(leadfatjet[k], -9999) for k in h.fields if k in dir(leadfatjet)}
                     h.fill(dataset=dataset, flavor=flav, **fields, weight=weight)
             if histname in self.event_hists:

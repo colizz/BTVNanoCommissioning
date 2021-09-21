@@ -30,6 +30,14 @@ xsecs = {
     "QCD_Pt-800to1000_MuEnrichedPt5_TuneCP5_13TeV_pythia8" : 3.275,
     "QCD_Pt-1000toInf_MuEnrichedPt5_TuneCP5_13TeV_pythia8" : 1.078,
 
+    "QCD_Pt-120to170_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8" : 25700.0,
+    "QCD_Pt-170to300_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8" : 8683.0,
+    "QCD_Pt-300to470_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8" : 800.9,
+    "QCD_Pt-470to600_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8" : 79.25,
+    "QCD_Pt-600to800_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8" : 25.25,
+    "QCD_Pt-800to1000_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8" : 4.723,
+    "QCD_Pt-1000toInf_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8" : 1.613,
+
     "GluGluHToBB_M-125_13TeV"  : 27.8,
     "GluGluHToCC_M-125_13TeV"  : 27.8,
     "GluGluHToBB_M-125_13TeV_powheg_MINLO_NNLOPS_pythia8"  : 27.8,
@@ -37,6 +45,18 @@ xsecs = {
 }
 
 JECversions = {
+        '2016' : {
+            'MC' : 'Summer16_07Aug2017_V11_MC',
+            'Data' : {
+                'B' : 'Summer16_07Aug2017BCD_V11_DATA',
+                'C' : 'Summer16_07Aug2017BCD_V11_DATA',
+                'D' : 'Summer16_07Aug2017BCD_V11_DATA',
+                'E' : 'Summer16_07Aug2017EF_V11_DATA',
+                'F' : 'Summer16_07Aug2017EF_V11_DATA',
+                'G' : 'Summer16_07Aug2017GH_V11_DATA',
+                'H' : 'Summer16_07Aug2017GH_V11_DATA'
+                }
+            },
         '2017' : {
             'MC' : 'Fall17_17Nov2017_V32_MC',
             'Data' : {
@@ -58,6 +78,8 @@ JECversions = {
             }
         }
 
+#logsv1mass_bins = np.concatenate( ( (-4, -3.6, -3.2, -2.8, -2.4, -2, -1.59, -1.2, -0.8, -0.4), np.arange(0., 1.8, 0.1), (1.8, 2.5, 3.2) ) )
+
 histogram_settings = {
     'variables' : {
         'fatjet_pt'    : {'binning' : {'n_or_arr' : 40,  'lo' : 0,      'hi' : 2000},  'xlim' : {'xmin' : 0,      'xmax' : 2000}},
@@ -72,7 +94,12 @@ histogram_settings = {
         'fatjet_nsv2'         : {'binning' : {'n_or_arr' : 30,  'lo' : 0,      'hi' : 30},    'xlim' : {'xmin' : 0, 'xmax' : 10}},
         'fatjet_nmusj1'       : {'binning' : {'n_or_arr' : 30,  'lo' : 0,      'hi' : 30},    'xlim' : {'xmin' : 0, 'xmax' : 10}},
         'fatjet_nmusj2'       : {'binning' : {'n_or_arr' : 30,  'lo' : 0,      'hi' : 30},    'xlim' : {'xmin' : 0, 'xmax' : 10}},
-        'fatjet_jetproba'       : {'binning' : {'n_or_arr' : 50,  'lo' : 0,      'hi' : 2.5},    'xlim' : {'xmin' : 0, 'xmax' : 2.5}},
+        'fatjet_jetproba'     : {'binning' : {'n_or_arr' : 25,  'lo' : 0,      'hi' : 2.5},   'xlim' : {'xmin' : 0, 'xmax' : 2.5}},
+        'sv_sv1mass'          : {'binning' : {'n_or_arr' : 50,  'lo' : 0,      'hi' : 50},    'xlim' : {'xmin' : 0, 'xmax' : 50}},
+        #'sv_logsv1mass'       : {'binning' : {'n_or_arr' : 80,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -0.8, 'xmax' : 3.2}},
+        #'sv_logsv1mass'       : {'binning' : {'n_or_arr' : 40,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -0.8, 'xmax' : 3.2}},
+        #'sv_logsv1mass'       : {'binning' : {'n_or_arr' : 20,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -0.8, 'xmax' : 3.2}},
+        'sv_logsv1mass'       : {'binning' : {'n_or_arr' : np.concatenate((np.arange(-4,1.9,0.1), [2.5,3.2]))},     'xlim' : {'xmin' : -0.8, 'xmax' : 3.2}},
     }
 }
 
@@ -112,6 +139,13 @@ def get_nsv(sj, sv, R=0.4):
     nsv = ak.count(sv_dr[sv_dr < R], axis=1)
 
     return nsv
+
+def get_sv_in_jet(jet, sv, R=0.8):
+
+    sv_dr = jet.delta_r(sv)
+    sv_in_jet = sv_dr < R
+
+    return sv_in_jet
 
 """
 def xSecReader(fname):
