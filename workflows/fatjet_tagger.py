@@ -12,34 +12,39 @@ from utils import rescale, get_nsv, get_sv_in_jet, lumi, xsecs, JECversions
 
 class NanoProcessor(processor.ProcessorABC):
     # Define histograms
-    def __init__(self, year=2017, JECfolder='correction_files', nTrueFile=''):
+    def __init__(self, year=2017, UL=False, pt=500, JECfolder='correction_files', nTrueFile=''):
         self.year = year
+        self.sample = 'EOY'
+        if UL:
+            self.sample = 'UL'
+        else:
+            self.sample = 'EOY'
         self._mask_fatjets = {
             'basic'       : {
                 'pt_cut' : 250.,
                 'eta_cut': 2.4,
-                'jetId_cut': 3 if self.year==2016 else 2,
+                'jetId_cut': 2,
                 'mass_cut' : 20.,
                 'tau21_cut' : 1.1
                     },
             'pt350msd50'       : {
                 'pt_cut' : 350.,
                 'eta_cut': 2.4,
-                'jetId_cut': 3 if self.year==2016 else 2,
+                'jetId_cut': 2,
                 'mass_cut' : 50.,
                 'tau21_cut' : 1.1
                     },
             'msd100tau06'       : {
                 'pt_cut' : 350.,
                 'eta_cut': 2.4,
-                'jetId_cut': 3 if self.year==2016 else 2,
+                'jetId_cut': 2,
                 'mass_cut' : 100.,
                 'tau21_cut' : 0.6
                     },
             'pt400msd100tau06'       : {
                 'pt_cut' : 400.,
                 'eta_cut': 2.4,
-                'jetId_cut': 3 if self.year==2016 else 2,
+                'jetId_cut': 2,
                 'mass_cut' : 100.,
                 'tau21_cut' : 0.6
                     },
@@ -57,27 +62,38 @@ class NanoProcessor(processor.ProcessorABC):
         }
         self._pt_bins = {
             #'L' : [0, 350],
-            'M' : (350, 500),
-            'H' : (500, 'Inf'),
+            'M' : (350, pt),
+            #'M' : (350, 450),
+            'H' : (pt, 'Inf'),
+            #'H' : (450, 'Inf'),
         }
         self.year = year
         self.corrJECfolder = JECfolder
 
         ############
         # PU files
-        if self.year == 2016:
-            self.puFile = os.getcwd()+'/correction_files/PileupHistogram-goldenJSON-13tev-2016-69200ub-99bins.root'
-            #self.puFile = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions16/13TeV/PileUp/PrelLum15And1613TeV/PileupHistogram-goldenJSON-13tev-2016-69200ub-99bins.root'
-            self.nTrueFile = os.getcwd()+'/correction_files/nTrueInt_datasets_local_fixed_btag2016_2016.coffea'
-        if self.year == 2017:
-            self.puFile = os.getcwd()+'/correction_files/PileupHistogram-goldenJSON-13tev-2017-69200ub-99bins.root'
-            #self.puFile = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions17/13TeV/PileUp/PileupHistogram-goldenJSON-13tev-2017-69200ub-99bins.root'
-            self.nTrueFile = os.getcwd()+'/correction_files/nTrueInt_datasets_local_fixed_btag2017_2017.coffea'
-        if self.year == 2018:
-            #self.puFile = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions18/13TeV/PileUp/PileupHistogram-goldenJSON-13tev-2018-69200ub-99bins.root'
-            self.puFile = os.getcwd()+'/correction_files/PileupHistogram-goldenJSON-13tev-2018-69200ub-99bins.root'
-            self.nTrueFile = os.getcwd()+'/correction_files/nTrueInt_datasets_local_fixed_btag2018_2018.coffea'
-        if nTrueFile: self.nTrueFile = nTrueFile
+        if UL:
+            #if self.year == 2016:
+            if self.year == 2017:
+                self.puFile = os.getcwd()+'/correction_files/UltraLegacy/PileupHistogram-goldenJSON-13tev-2017-69200ub-99bins.root'
+                #self.puFile = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions17/13TeV/PileUp/PileupHistogram-goldenJSON-13tev-2017-69200ub-99bins.root'
+                self.nTrueFile = os.getcwd()+'/correction_files/nTrueInt_datasets_local_btag2017UL_2017.coffea'
+            #if self.year == 2018:
+            if nTrueFile: self.nTrueFile = nTrueFile
+        else:
+            if self.year == 2016:
+                self.puFile = os.getcwd()+'/correction_files/PileupHistogram-goldenJSON-13tev-2016-69200ub-99bins.root'
+                #self.puFile = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions16/13TeV/PileUp/PrelLum15And1613TeV/PileupHistogram-goldenJSON-13tev-2016-69200ub-99bins.root'
+                self.nTrueFile = os.getcwd()+'/correction_files/nTrueInt_datasets_local_fixed_btag2016_2016.coffea'
+            if self.year == 2017:
+                self.puFile = os.getcwd()+'/correction_files/PileupHistogram-goldenJSON-13tev-2017-69200ub-99bins.root'
+                #self.puFile = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions17/13TeV/PileUp/PileupHistogram-goldenJSON-13tev-2017-69200ub-99bins.root'
+                self.nTrueFile = os.getcwd()+'/correction_files/nTrueInt_datasets_local_fixed_btag2017_2017.coffea'
+            if self.year == 2018:
+                #self.puFile = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions18/13TeV/PileUp/PileupHistogram-goldenJSON-13tev-2018-69200ub-99bins.root'
+                self.puFile = os.getcwd()+'/correction_files/PileupHistogram-goldenJSON-13tev-2018-69200ub-99bins.root'
+                self.nTrueFile = os.getcwd()+'/correction_files/nTrueInt_datasets_local_fixed_btag2018_2018.coffea'
+            if nTrueFile: self.nTrueFile = nTrueFile
 
         ##############
         # Trigger level
@@ -125,7 +141,7 @@ class NanoProcessor(processor.ProcessorABC):
 
         # Define similar axes dynamically
         disc_list = ["btagCMVA", "btagCSVV2", 'btagDeepB', 'btagDeepC', 'btagDeepFlavB', 'btagDeepFlavC',]
-        disc_list_fj = ['btagDDBvLV2', 'btagDDCvLV2', 'btagDDCvBV2',]
+        disc_list_fj = ['btagDDBvLV2', 'btagDDCvLV2', 'btagDDCvBV2', 'btagHbb', 'particleNet_HbbvsQCD', 'particleNet_HccvsQCD', 'deepTag_H', 'deepTagMD_ccvsLight']
         btag_axes = []
         btag_axes_fj = []
         for d in disc_list:
@@ -348,10 +364,10 @@ class NanoProcessor(processor.ProcessorABC):
         isRealData = 'genWeight' not in events.fields
         if not isRealData:
             output['sumw'][dataset] += sum(events.genWeight)
-            JECversion = JECversions[str(self.year)]['MC']
+            JECversion = JECversions[self.sample][str(self.year)]['MC']
         else:
             output['nbtagmu'][dataset] += ak.count(events.event)
-            JECversion = JECversions[str(self.year)]['Data'][dataset.split('BTagMu')[1]]
+            JECversion = JECversions[self.sample][str(self.year)]['Data'][dataset.split('BTagMu')[1]]
 
         ############
         # Some corrections
@@ -489,7 +505,6 @@ class NanoProcessor(processor.ProcessorABC):
             if ((histname in self.fatjet_hists) | ('hist2d_fatjet' in histname)):
                 for flav, mask in flavors.items():
                     weight = weights.weight() * cuts.all(*selection[sel[0]]) * ak.to_numpy(mask)
-                    print("weight", weight)
                     fields = {k: ak.fill_none(leadfatjet[k], -9999) for k in h.fields if k in dir(leadfatjet)}
                     h.fill(dataset=dataset, flavor=flav, **fields, weight=weight)
             if histname in self.event_hists:
