@@ -22,6 +22,7 @@ parser.add_argument('--only', action='store', default='', help='Plot only one hi
 parser.add_argument('--test', action='store_true', default=False, help='Test with lower stats.')
 parser.add_argument('--data', type=str, default='BTagMu', help='Data sample name')
 parser.add_argument('--selection', type=str, default='all', help='Plot only plots with this selection. ("all" to plot all the selections in file)')
+parser.add_argument('-n', '--normed', action='store_true', default=False, help='Normalized overlayed plots')
 
 args = parser.parse_args()
 print("Running with options:")
@@ -155,6 +156,9 @@ for histname in accumulator:
     if histname.startswith( tuple(histogram_settings['variables'].keys()) ):
         varname = h.fields[-1]
         varlabel = h.axis(varname).label
+        #print(h.identifiers(axis=varname))
+        #print(hist.Bin(varname, varlabel, **histogram_settings['variables']['_'.join(histname.split('_')[:-1])]['binning']))
+        #print(hist.Bin(varname, varlabel, **histogram_settings['variables']['_'.join(histname.split('_')[:-1])]['binning']).identifiers())
         h = h.rebin(varname, hist.Bin(varname, varlabel, **histogram_settings['variables']['_'.join(histname.split('_')[:-1])]['binning']))
         h.scale( scaleXS, axis='dataset' )
     datasets = [str(s) for s in h.axis('dataset').identifiers() if str(s) != 'dataset']
@@ -190,6 +194,7 @@ for histname in accumulator:
         maxY = 1.2 *max( [ max(h[args.data].sum('flavor').values()[('BTagMu',)]),  max(QCDALL_rescaled.values()[()]) ] )
 
         fig, (ax, rax) = plt.subplots(2, 1, figsize=(12,12), gridspec_kw={"height_ratios": (3, 1)}, sharex=True)
+        #fig_normed, (ax_normed, rax_normed) = plt.subplots(2, 1, figsize=(12,12), gridspec_kw={"height_ratios": (3, 1)}, sharex=True)
         fig.subplots_adjust(hspace=.07)
         plot.plot1d(QCD_rescaled, ax=ax, legend_opts={'loc':1}, fill_opts=flavor_opts, order=flavors, stack=True)
         plot.plot1d(h[args.data].sum('flavor'), ax=ax, legend_opts={'loc':1}, error_opts=data_err_opts, clear=False)
@@ -208,9 +213,14 @@ for histname in accumulator:
         ax.legend(handles, labels)
         rax.set_ylabel('Data/MC')
         rax.set_ylim(0.5,1.5)
-        if histname in histogram_settings['variables'].keys():
-            ax.set_xlim(**histogram_settings['variables'][histname]['xlim'])
-            rax.set_xlim(**histogram_settings['variables'][histname]['xlim'])
+        if histname.startswith( tuple(histogram_settings['variables'].keys()) ):
+            ax.set_xlim(**histogram_settings['variables']['_'.join(histname.split('_')[:-1])]['xlim'])
+            rax.set_xlim(**histogram_settings['variables']['_'.join(histname.split('_')[:-1])]['xlim'])
+        if (not histname.split('_')[-1] in selection.keys()) & ('Pt-' in histname.split('_')[-1]):
+            pt_low, pt_high = [pt for pt in histname.split('_')[-1].split('Pt-')[-1].split('to')]
+            if pt_high == 'Inf':
+                pt_high = r'$\infty$'
+            selection[histname.split('_')[-1]] = selection[histname.split('_')[-1].split('Pt-')[0]] + r"$p_T$ bin:" + f" ({pt_low}, {pt_high}) [GeV]"+"\n"
         at = AnchoredText(selection[histname.split('_')[-1]], loc=2, frameon=False)
         ax.add_artist(at)
         if histname.startswith("btag"):

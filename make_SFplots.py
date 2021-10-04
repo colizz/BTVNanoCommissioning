@@ -1,9 +1,11 @@
 import argparse
 import numpy as np
+import math
 import uproot
 import matplotlib.pyplot as plt
 from matplotlib.offsetbox import AnchoredText
 import mplhep as hep
+from copy import deepcopy
 from coffea.util import load
 from coffea.hist import plot
 import coffea.hist as hist
@@ -148,10 +150,7 @@ if tagger == 'DDB':
 elif tagger == 'DDC':
     flavors = ['l', 'b_bb', 'c_cc']
 flavor_opts['facecolor'] = [flavors_color[f.split('_')[-1]] for f in flavors]
-flavors_to_remove = []
 flavor_axis  = hist.Cat("flavor",   "Flavor")
-#jetproba_axis  = hist.Bin("jetproba",  r"jet Probability", **histogram_settings['variables']['fatjet_jetproba']['binning'])
-#logsv1mass_axis  = hist.Bin("logsv1mass",  r"lead. FatJet log($m_{SV,1}$/GeV)", **histogram_settings['variables']['sv_logsv1mass']['binning'])
 observable_axis  = hist.Bin(args.var.split('_')[1],  xlabel[args.var], **histogram_settings['variables'][args.var]['binning'])
 output = {}
 
@@ -162,12 +161,11 @@ for region in ['sfpass', 'sffail']:
 fitdir = '/work/mmarcheg/BTVNanoCommissioning/fitdir/{}/msd100tau06{}_{}/'.format(args.year, tagger, args.var.split('_')[1])
 f = uproot.open(args.input)
 for region in ['sfpass', 'sffail']:
-    #fig, axes = plt.subplots(2, 2, figsize=(12,8), gridspec_kw={"height_ratios": (3, 1)}, sharex=True)
-    #fig_normed, axes_normed = plt.subplots(2, 2, figsize=(12,8), gridspec_kw={"height_ratios": (3, 1)}, sharex=True)
     fig, axes = plt.subplots(2, 2, figsize=(12,7), gridspec_kw={"height_ratios": (2.5, 1)}, sharex=True)
     fig_normed, axes_normed = plt.subplots(2, 2, figsize=(12,7), gridspec_kw={"height_ratios": (2.5, 1)}, sharex=True)
-    #fig, axes = plt.subplots(1, 2, figsize=(16,6), sharey=True)
+    flavors_to_remove = []
     for i, fit in enumerate(['prefit', 'fit_s']):
+    #for i, fit in enumerate(['prefit']):
         #ax = axes[i]
         for (j, flavor) in enumerate(flavors):
             histname = 'shapes_{}/{}/{};1'.format(fit, region, flavor)
@@ -180,20 +178,30 @@ for region in ['sfpass', 'sffail']:
             binwidth = np.diff(bins)
             weights = weights*binwidth
             values = (bins[1:] - 0.5*binwidth)
-            print(flavor, weights)
+            print(values)
+            print(flavor, region, fit, weights)
             
-            values_to_fill = np.concatenate(np.array([values[i]*np.ones(round(abs(w))) for i,w in enumerate(weights)], dtype=object))
-            weights_to_fill = np.concatenate(np.array([w/round(abs(w))*np.ones(round(abs(w))) for i,w in enumerate(weights)], dtype=object))
+            values_to_fill = np.concatenate(np.array([values[i]*np.ones(math.ceil(abs(w))) for i,w in enumerate(weights)], dtype=object))
+            weights_to_fill = np.concatenate(np.array([w/math.ceil(abs(w))*np.ones(math.ceil(abs(w))) for i,w in enumerate(weights)], dtype=object))
+            print(flavor, region, fit, values_to_fill)
+            print(flavor, region, fit, weights_to_fill)
             #output[f'shape_{fit}_{region}{tagger}{args.year}'].fill(flavor=flavor, jetproba=values, weight=weights)
             #output['shape_{}_{}{}{}'.format(fit, region, tagger, args.year)].fill(flavor=flavor, logsv1mass=values, weight=weights)
-            output['shape_{}_{}{}{}'.format(fit, region, tagger, args.year)].fill(flavor=flavor, logsv1mass=values_to_fill, weight=weights_to_fill)
+            #output['shape_{}_{}{}{}'.format(fit, region, tagger, args.year)].fill(flavor=flavor, logsv1mass=values_to_fill, weight=weights_to_fill)
+            output['shape_{}_{}{}{}'.format(fit, region, tagger, args.year)].fill(flavor=flavor, logsv1mass=np.array(values_to_fill), weight=np.array(weights_to_fill))
+            print(flavor_opts)
             axes_normed[0][i].hist(values, bins, weights=weights, edgecolor=flavor_opts['facecolor'][j], histtype='step', density=True, stacked=False, label=flavor)
 
+        flavors_to_plot = flavors[:]
+        flavor_opts_to_plot = deepcopy(flavor_opts)
         for flavor in flavors:
             if flavor in flavors_to_remove:
-                flavor_opts['facecolor'].pop(flavors.index(flavor))
-                flavors.remove(flavor)
-        plot.plot1d(output['shape_{}_{}{}{}'.format(fit, region, tagger, args.year)][flavors], ax=axes[0][i], legend_opts={'loc':1}, fill_opts=flavor_opts, order=flavors, stack=True)
+                flavor_opts_to_plot['facecolor'].pop(flavors.index(flavor))
+                #flavor_opts['facecolor'].pop(flavors.index(flavor))
+                flavors_to_plot.remove(flavor)
+                #flavors.remove(flavor)
+
+        plot.plot1d(output['shape_{}_{}{}{}'.format(fit, region, tagger, args.year)][flavors_to_plot], ax=axes[0][i], legend_opts={'loc':1}, fill_opts=flavor_opts_to_plot, order=flavors_to_plot, stack=True)
         #for (j, flavor) in enumerate(flavors):
             #flavor_normed_opts['facecolor'] = flavor_opts['facecolor'][j]
             #flavor_normed_opts['edgecolor'] = flavor_opts['facecolor'][j]
@@ -203,14 +211,15 @@ for region in ['sfpass', 'sffail']:
         data = f['shapes_{}/{}/data;1'.format(fit, region)]
         data_values = data.values()[0]
         data_weights = data.values()[1]*binwidth
-        data_values_to_fill = np.concatenate(np.array([data_values[i]*np.ones(round(w)) for i,w in enumerate(data_weights)], dtype=object))
+        data_values_to_fill = np.concatenate(np.array([data_values[i]*np.ones(math.ceil(w)) for i,w in enumerate(data_weights)], dtype=object))
         data_sum = np.sum(data_weights*binwidth)
         data_weights_normed = data.values()[1]*binwidth/data_sum
         errors = data.errors('mean')[1]*binwidth
         errors_normed = data.errors('mean')[1]*binwidth/data_sum
         #output[f'shape_{fit}_{region}{tagger}{args.year}'].fill(flavor=args.data, jetproba=data.values()[0], weight=data_weights)
         #output['shape_{}_{}{}{}'.format(fit, region, tagger, args.year)].fill(flavor=args.data, logsv1mass=data_values, weight=data_weights)
-        output['shape_{}_{}{}{}'.format(fit, region, tagger, args.year)].fill(flavor=args.data, logsv1mass=data_values_to_fill)
+        #output['shape_{}_{}{}{}'.format(fit, region, tagger, args.year)].fill(flavor=args.data, logsv1mass=data_values_to_fill)
+        output['shape_{}_{}{}{}'.format(fit, region, tagger, args.year)].fill(flavor=args.data, logsv1mass=np.array(data_values_to_fill))
         axes[0][i].errorbar(data_values, data_weights, yerr=errors, marker='.', linestyle='', markersize=10, elinewidth=1, color='black', label=args.data)
         axes_normed[0][i].errorbar(data_values, data_weights_normed, yerr=errors_normed, marker='.', linestyle='', markersize=10, elinewidth=1, color='black', label=args.data)
         #plot.plot1d(output[f'shape_{fit}_{region}{tagger}{args.year}'][args.data], ax=ax'es[0][i], legend_opts={'loc':1}, error_opts=data_err_opts, clear=False)
