@@ -7,12 +7,6 @@ import scipy.stats
 import pickle
 import uproot
 
-pt_bins = {
-    #'L' : [0, 350],
-    'M' : (350, 500),
-    'H' : (500, 'Inf'),
-}
-
 def exec_me(command, dryRun=False, folder=False):
     print(command)
     if not dryRun:
@@ -45,13 +39,16 @@ def get_templ(f, sample, obs, syst=None, sumw2=True):
         h_vals  = np.concatenate((h_vals, [val_N_1, val_N]))
         h_sumw2 = np.concatenate((h_sumw2, [sumw2_N_1, sumw2_N]))
         binning = np.concatenate((binning, [2.5, 3.2]))
-
-    if (obs.name == 'logsv1mass') & (len(h_vals) == 40):
+    elif (obs.name == 'logsv1mass') & (len(h_vals) == 40):
+        """
         h_vals  = h_vals[16:-4]
         h_sumw2 = h_sumw2[16:-4]
         binning = binning[16:-4]
-
-    if (obs.name == 'logsv1mass') & (len(h_vals) == 20):
+        """
+        h_vals  = h_vals[16:-10]
+        h_sumw2 = h_sumw2[16:-10]
+        binning = binning[16:-10]
+    elif (obs.name == 'logsv1mass') & (len(h_vals) == 20):
         h_vals  = h_vals[8:-2]
         h_sumw2 = h_sumw2[8:-2]
         binning = binning[8:-2]
@@ -62,37 +59,69 @@ def get_templ(f, sample, obs, syst=None, sumw2=True):
         return (h_vals, binning, obs.name, h_sumw2)
 
 
-def test_sfmodel(tmpdir, var, inputFile, sel, wp, wpt='', fittype='single', scale=1, smear=0.1):
+def test_sfmodel(tmpdir, var, inputFile, sel, wp, wpt='', pt=500, fittype='single', scale=1, smear=0.1):
     lumi = rl.NuisanceParameter('CMS_lumi', 'lnN')
     jecs = rl.NuisanceParameter('CMS_jecs', 'lnN')
     pu = rl.NuisanceParameter('CMS_pu', 'lnN')
 
-    # Indeps
-    if 'DDB' in sel:
-        indep_l = rl.IndependentParameter('l', 1., 0, 2)
-        indep_b_bb = rl.IndependentParameter('b_bb', 1., -20, 20)
-        if '2018' in inputFile:
-            indep_c_cc = rl.IndependentParameter('c_cc', 1., -20, 20)
-        else:
-            indep_c_cc = rl.IndependentParameter('c_cc', 1., 0, 2)
-    elif 'DDC' in sel:
-        indep_l = rl.IndependentParameter('l', 1., 0, 2)
-        if '2018' in inputFile:
-            indep_b_bb = rl.IndependentParameter('b_bb', 1., -20, 20)
-        elif '2017' in inputFile:
-            indep_b_bb = rl.IndependentParameter('b_bb', 1., 0, 2)
-            #indep_b_bb = rl.IndependentParameter('b_bb', 1., -20, 20)
-        indep_c_cc = rl.IndependentParameter('c_cc', 1., -20, 20)
+    pt_bins = {
+        #'L' : [0, 350],
+        'M' : (350, pt),
+        'H' : (pt, 'Inf'),
+    }
 
     if var == 'fatjet_jetproba':
         bins = np.linspace(0, 2.5, 26)
         #jetproba = rl.Observable('jetproba', jetprobabins)
     if var == 'sv_logsv1mass':
-        #bins = np.linspace(-4, 4, 81)
-        bins = np.linspace(-4, 4, 41)
+        bins = np.linspace(-4, 4, 81)
+        #bins = np.linspace(-4, 4, 41)
         #bins = np.linspace(-4, 4, 21)
         #binwidth = 0.1
         #logsv1massbins = np.arange(-0.8, 3.2 + binwidth, binwidth)
+        binwidth = float(bins[1] - bins[0])
+
+    # Indeps
+    if abs(binwidth - 0.1) < 0.01:
+        if 'DDB' in sel:
+            indep_l = rl.IndependentParameter('l', 1., 0, 2)
+            indep_b_bb = rl.IndependentParameter('b_bb', 1., -20, 20)
+            if '2018' in inputFile:
+                indep_c_cc = rl.IndependentParameter('c_cc', 1., -20, 20)
+            else:
+                indep_c_cc = rl.IndependentParameter('c_cc', 1., 0, 2)
+        elif 'DDC' in sel:
+            indep_l = rl.IndependentParameter('l', 1., 0, 2)
+            if '2018' in inputFile:
+                indep_b_bb = rl.IndependentParameter('b_bb', 1., -20, 20)
+            #elif '2017' in inputFile:
+            else:
+                indep_b_bb = rl.IndependentParameter('b_bb', 1., 0, 2)
+                #indep_b_bb = rl.IndependentParameter('b_bb', 1., -20, 20)
+            #if '2016' in inputFile:
+            #    indep_l = rl.IndependentParameter('l', 1., -20, 20)
+            if '2016' in inputFile:
+                indep_c_cc = rl.IndependentParameter('c_cc', 1., 0, 20)
+            else:
+                indep_c_cc = rl.IndependentParameter('c_cc', 1., -20, 20)
+            #indep_c_cc = rl.IndependentParameter('c_cc', 1., -20, 20)
+    elif abs(binwidth - 0.2) < 0.01:
+        if 'DDB' in sel:
+            indep_l = rl.IndependentParameter('l', 1., -20, 20)
+            indep_b_bb = rl.IndependentParameter('b_bb', 1., 0, 20)
+            if '2017' in inputFile:
+                indep_c_cc = rl.IndependentParameter('c_cc', 1., 0, 20)
+            else:
+                indep_c_cc = rl.IndependentParameter('c_cc', 1., -20, 20)
+        elif 'DDC' in sel:
+            if '2016' in inputFile:
+                indep_l = rl.IndependentParameter('l', 1., -20, 20)
+                indep_b_bb = rl.IndependentParameter('b_bb', 1., -20, 20)
+            else:
+                indep_b_bb = rl.IndependentParameter('b_bb', 1., -20, 20)
+                indep_l = rl.IndependentParameter('l', 1., -20, 20)
+            indep_c_cc = rl.IndependentParameter('c_cc', 1., 0, 20)
+    
     observable = rl.Observable(var.split('_')[-1], bins)
     model = rl.Model("sfModel")
 
@@ -147,7 +176,7 @@ def test_sfmodel(tmpdir, var, inputFile, sel, wp, wpt='', fittype='single', scal
     fractionL = float(Nl)/float(Nevts)
     freezeL = False
     print("fractionL = ", fractionL)
-    if fractionL < 1e-3:
+    if fractionL < 1.5e-3:
         freezeL = True
         print("The parameter 'l' will be frozen.")
 
@@ -203,6 +232,7 @@ if __name__ == '__main__':
 
     parser.add_argument('--outputDir', type=str, default=None, help='Output directory')
     parser.add_argument('--year', type=str, choices=['2016', '2017', '2018'], help='Year of data/MC samples')
+    parser.add_argument('--pt', type=int, default=500, help='Pt cut.')
     parser.add_argument('--var', type=str, default='sv_logsv1mass', help='Variable used in the template fit.')
     parser.add_argument('--selection', type=str, default='msd100tau06DDB', help='Selection to compute SF.')
     parser.add_argument('--wp', type=str, default='M', help='Working point')
@@ -231,8 +261,10 @@ if __name__ == '__main__':
     print("    ", args)
 
     output_dir = args.outputDir if args.outputDir else os.getcwd()+"/fitdir/"+args.year+'/'+args.selection+'/'
+    if not output_dir.endswith('/'):
+        output_dir = output_dir + '/'
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    test_sfmodel(output_dir, args.var, args.tpf, args.selection, args.wp, args.wpt)
+    test_sfmodel(output_dir, args.var, args.tpf, args.selection, args.wp, args.wpt, args.pt)
     save_results(output_dir, args.selection, args.wpt)

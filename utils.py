@@ -45,37 +45,62 @@ xsecs = {
 }
 
 JECversions = {
-        '2016' : {
-            'MC' : 'Summer16_07Aug2017_V11_MC',
-            'Data' : {
-                'B' : 'Summer16_07Aug2017BCD_V11_DATA',
-                'C' : 'Summer16_07Aug2017BCD_V11_DATA',
-                'D' : 'Summer16_07Aug2017BCD_V11_DATA',
-                'E' : 'Summer16_07Aug2017EF_V11_DATA',
-                'F' : 'Summer16_07Aug2017EF_V11_DATA',
-                'G' : 'Summer16_07Aug2017GH_V11_DATA',
-                'H' : 'Summer16_07Aug2017GH_V11_DATA'
+        'EOY': {
+            '2016' : {
+                'MC' : 'Summer16_07Aug2017_V11_MC',
+                'Data' : {
+                    'B' : 'Summer16_07Aug2017BCD_V11_DATA',
+                    'C' : 'Summer16_07Aug2017BCD_V11_DATA',
+                    'D' : 'Summer16_07Aug2017BCD_V11_DATA',
+                    'E' : 'Summer16_07Aug2017EF_V11_DATA',
+                    'F' : 'Summer16_07Aug2017EF_V11_DATA',
+                    'G' : 'Summer16_07Aug2017GH_V11_DATA',
+                    'H' : 'Summer16_07Aug2017GH_V11_DATA'
+                    }
+                },
+            '2017' : {
+                'MC' : 'Fall17_17Nov2017_V32_MC',
+                'Data' : {
+                    'B' : 'Fall17_17Nov2017B_V32_DATA',
+                    'C' : 'Fall17_17Nov2017C_V32_DATA',
+                    'D' : 'Fall17_17Nov2017DE_V32_DATA',
+                    'E' : 'Fall17_17Nov2017DE_V32_DATA',
+                    'F' : 'Fall17_17Nov2017F_V32_DATA'
+                    }
+                },
+            '2018' : {
+                'MC' : 'Autumn18_V19_MC',
+                'Data' : {
+                    'A' : 'Autumn18_RunA_V19_DATA',
+                    'B' : 'Autumn18_RunB_V19_DATA',
+                    'C' : 'Autumn18_RunC_V19_DATA',
+                    'D' : 'Autumn18_RunD_V19_DATA'
+                    }
                 }
             },
-        '2017' : {
-            'MC' : 'Fall17_17Nov2017_V32_MC',
-            'Data' : {
-                'B' : 'Fall17_17Nov2017B_V32_DATA',
-                'C' : 'Fall17_17Nov2017C_V32_DATA',
-                'D' : 'Fall17_17Nov2017DE_V32_DATA',
-                'E' : 'Fall17_17Nov2017DE_V32_DATA',
-                'F' : 'Fall17_17Nov2017F_V32_DATA'
+        'UL': {
+            '2017' : {
+                'MC' : 'Summer19UL17_V5_MC',
+                'Data' : {
+                    'B' : 'Summer19UL17_RunB_V5_DATA',
+                    'C' : 'Summer19UL17_RunC_V5_DATA',
+                    'D' : 'Summer19UL17_RunD_V5_DATA',
+                    'E' : 'Summer19UL17_RunE_V5_DATA',
+                    'F' : 'Summer19UL17_RunF_V5_DATA'
+                    }
+                },
+            '2018' : {
+                'MC' : 'Summer19UL18_V5_MC',
+                'Data' : {
+                    'A' : 'Summer19UL18_RunA_V5_DATA',
+                    'B' : 'Summer19UL18_RunB_V5_DATA',
+                    'C' : 'Summer19UL18_RunC_V5_DATA',
+                    'D' : 'Summer19UL18_RunD_V5_DATA',
+                    }
                 }
             },
-        '2018' : {
-            'MC' : 'Autumn18_V19_MC',
-            'Data' : {
-                'A' : 'Autumn18_RunA_V19_DATA',
-                'B' : 'Autumn18_RunB_V19_DATA',
-                'C' : 'Autumn18_RunC_V19_DATA',
-                'D' : 'Autumn18_RunD_V19_DATA'
-                }
-            }
+
+
         }
 
 #logsv1mass_bins = np.concatenate( ( (-4, -3.6, -3.2, -2.8, -2.4, -2, -1.59, -1.2, -0.8, -0.4), np.arange(0., 1.8, 0.1), (1.8, 2.5, 3.2) ) )
@@ -96,10 +121,10 @@ histogram_settings = {
         'fatjet_nmusj2'       : {'binning' : {'n_or_arr' : 30,  'lo' : 0,      'hi' : 30},    'xlim' : {'xmin' : 0, 'xmax' : 10}},
         'fatjet_jetproba'     : {'binning' : {'n_or_arr' : 25,  'lo' : 0,      'hi' : 2.5},   'xlim' : {'xmin' : 0, 'xmax' : 2.5}},
         'sv_sv1mass'          : {'binning' : {'n_or_arr' : 50,  'lo' : 0,      'hi' : 50},    'xlim' : {'xmin' : 0, 'xmax' : 50}},
-        #'sv_logsv1mass'       : {'binning' : {'n_or_arr' : 80,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -0.8, 'xmax' : 3.2}},
+        'sv_logsv1mass'       : {'binning' : {'n_or_arr' : 80,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -0.8, 'xmax' : 3.2}},
         #'sv_logsv1mass'       : {'binning' : {'n_or_arr' : 40,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -0.8, 'xmax' : 3.2}},
         #'sv_logsv1mass'       : {'binning' : {'n_or_arr' : 20,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -0.8, 'xmax' : 3.2}},
-        'sv_logsv1mass'       : {'binning' : {'n_or_arr' : np.concatenate((np.arange(-4,1.9,0.1), [2.5,3.2]))},     'xlim' : {'xmin' : -0.8, 'xmax' : 3.2}},
+        #'sv_logsv1mass'       : {'binning' : {'n_or_arr' : np.concatenate((np.arange(-4,1.9,0.1), [2.5,3.2]))},     'xlim' : {'xmin' : -0.8, 'xmax' : 3.2}},
     }
 }
 

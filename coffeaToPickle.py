@@ -17,6 +17,7 @@ parser.add_argument('--only', action='store', default='', help='Plot only one hi
 parser.add_argument('--test', action='store_true', default=False, help='Test with lower stats.')
 parser.add_argument('--data', type=str, default='BTagMu', help='Data sample name')
 parser.add_argument('--selection', type=str, default='all', help='Plot only plots with this selection. ("all" to plot all the selections in file)')
+parser.add_argument('--pt', type=int, default=500, help='Pt cut.')
 
 args = parser.parse_args()
 print("Running with options:")
@@ -42,14 +43,17 @@ for ivar in [ 'fatjet_jetproba', 'sv_logsv1mass' ]:
     for isel in [ 'msd100tau06' ]:
         for DDX in [ 'DDB', 'DDC' ]:
             for wp in [ 'M' ]:
-                for (pt_low, pt_high) in [('', ''), (350, 500), (500, 'Inf')]:
+                for (pt_low, pt_high) in [('', ''), (350, args.pt), (args.pt, 'Inf')]:
                     for passfail in ['pass', 'fail']:
 
                         if pt_low == '':
                             histname=f'{ivar}_{isel}{DDX}{passfail}{wp}wp'
                         else:
                             histname=f'{ivar}_{isel}{DDX}{passfail}{wp}wpPt-{pt_low}to{pt_high}'
-                        h = accumulator[histname]
+                        if histname not in accumulator.keys():
+                            h = accumulator[histname.replace(f'{args.pt}', f'{args.pt}.0')]
+                        else:
+                            h = accumulator[histname]                            
                         h.scale( scaleXS, axis='dataset' )
                         h = h.rebin(h.fields[-1], hist.Bin(h.fields[-1], h.axis(h.fields[-1]).label, **histogram_settings['variables']['_'.join(histname.split('_')[:-1])]['binning']))
 
