@@ -14,7 +14,7 @@ if not args.input.endswith(".json"):
 files = []
 with open(args.input) as f:
 	files = json.load(f)
-files_to_check = files[args.dataset]
+files_to_check = dict((k, files[k]) for k in files.keys() if args.dataset in k)
 
 keys_broken = []
 for file in files_to_check:
