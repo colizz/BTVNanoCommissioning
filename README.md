@@ -94,3 +94,10 @@ For the rest, migrate to the environment with combine. The script [scaleFactorCo
 ```
 python scaleFactorComputation.py --year 2017 --tpf histograms/hists_fattag_pileupJEC_2017_WPcuts_v01.pkl --selection msd100tau06DDB
 ```
+
+### Run fits for DDB+DDC Scale Factors for a whole year
+
+The wrapped up script [runSF.py](runSF.py) performs the fits for a given data taking year, in all pT bins and for DDB and DDC taggers. As example:
+```
+python runSF.py --year 2018 --tpf histograms/hists_fattag_pileupJEC_2018UL_WPcuts_sv1mass_pt500.pkl --outputDir /work/mmarcheg/BTVNanoCommissioning/fitdir/2018ULpt500 --pt 500
+```

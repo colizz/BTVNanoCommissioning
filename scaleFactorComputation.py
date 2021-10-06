@@ -140,7 +140,7 @@ def test_sfmodel(tmpdir, var, inputFile, sel, wp, wpt='', pt=500, fittype='singl
     for region in regions:
         ch = rl.Channel("sf{}".format(region))
         for sName in sample_names:
-            if wpt == '':
+            if wpt == 'Inclusive':
                 template = get_templ(fout, '{}_{}{}{}wp_QCD_{}'.format(var, sel, region, wp, sName), observable)
             else:
                 (pt_low, pt_high) = pt_bins[wpt]
@@ -164,7 +164,7 @@ def test_sfmodel(tmpdir, var, inputFile, sel, wp, wpt='', pt=500, fittype='singl
             #sample.autoMCStats(epsilon=1e-4)
             ch.addSample(sample)
 
-        if wpt == '':
+        if wpt == 'Inclusive':
             #data_obs = get_templ(fout, 'fatjet_jetproba_{}{}{}wp_BtagMu'.format(sel, region, wp), jetproba)[:-1]
             data_obs = get_templ(fout, '{}_{}{}{}wp_BtagMu'.format(var, sel, region, wp), observable)[:-1]
         else:
@@ -192,22 +192,18 @@ def test_sfmodel(tmpdir, var, inputFile, sel, wp, wpt='', pt=500, fittype='singl
 
     model.renderCombine(tmpdir)
     with open(tmpdir+'/build.sh', 'a') as ifile:
-        if wpt == '':
-            wpt = 'Inclusive'
         #ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name {}Pt --cminDefaultMinimizerStrategy 0 --robustFit=1 --saveShapes  --rMin 0.5 --rMax 1.5'.format(wpt))
         if freezeL:
-            ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name {}Pt --cminDefaultMinimizerStrategy 0 --robustFit=1 --saveShapes --redefineSignalPOIs={} --setParameters r=1,l=1 --freezeParameters r,l'.format(wpt, signalName))
+            ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name {}wp{}Pt --cminDefaultMinimizerStrategy 0 --robustFit=1 --saveShapes --redefineSignalPOIs={} --setParameters r=1,l=1 --freezeParameters r,l'.format(wp, wpt, signalName))
         else:
-            ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name {}Pt --cminDefaultMinimizerStrategy 0 --robustFit=1 --saveShapes --redefineSignalPOIs={} --setParameters r=1 --freezeParameters r'.format(wpt, signalName))
+            ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name {}wp{}Pt --cminDefaultMinimizerStrategy 0 --robustFit=1 --saveShapes --redefineSignalPOIs={} --setParameters r=1 --freezeParameters r'.format(wp, wpt, signalName))
         #ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name {}Pt --cminDefaultMinimizerStrategy 0 --robustFit=1 --robustHesse 1 --saveShapes --redefineSignalPOIs={} --setParameters r=1 --freezeParameters r'.format(wpt, signalName))
 
     exec_me( 'bash build.sh', folder=tmpdir )
 
-def save_results(output_dir, sel, wpt):
+def save_results(output_dir, sel, wp, wpt):
 
-    if wpt == '':
-        wpt = 'Inclusive'
-    combineFile = uproot.open(output_dir + "higgsCombine{}Pt.FitDiagnostics.mH120.root".format(wpt))
+    combineFile = uproot.open(output_dir + "higgsCombine{}wp{}Pt.FitDiagnostics.mH120.root".format(wp, wpt))
     combineTree = combineFile['limit']
     combineBranches = combineTree.arrays()
     results = combineBranches['limit']
@@ -220,7 +216,7 @@ def save_results(output_dir, sel, wpt):
         POI = 'b_bb'
     elif 'DDC' in sel:
         POI = 'c_cc'
-    f = open(output_dir + "fitResults{}Pt.txt".format(wpt), 'w')
+    f = open(output_dir + "fitResults{}wp{}Pt.txt".format(wp, wpt), 'w')
     f.write('Best fit {}: {}  -{}/+{}  (68%  CL)\n'.format(POI, combineCont, combineErrDown, combineErrUp))
     f.close()
 
@@ -236,7 +232,7 @@ if __name__ == '__main__':
     parser.add_argument('--var', type=str, default='sv_logsv1mass', help='Variable used in the template fit.')
     parser.add_argument('--selection', type=str, default='msd100tau06DDB', help='Selection to compute SF.')
     parser.add_argument('--wp', type=str, default='M', help='Working point')
-    parser.add_argument('--wpt', type=str, choices={'', 'M', 'H'}, default='', help='Pt bin')
+    parser.add_argument('--wpt', type=str, choices={'Inclusive', 'M', 'H'}, default='', help='Pt bin')
     parser.add_argument("--fit", type=str, choices={'single', 'double'}, default='double',
                         help="Fit type")  ##not used
     parser.add_argument("--scale", type=float, default='1',
@@ -257,6 +253,7 @@ if __name__ == '__main__':
     #                    help="Fail templates")  ##not used
 
     args = parser.parse_args()
+
     print("Running with options:")
     print("    ", args)
 
@@ -267,4 +264,4 @@ if __name__ == '__main__':
         os.makedirs(output_dir)
 
     test_sfmodel(output_dir, args.var, args.tpf, args.selection, args.wp, args.wpt, args.pt)
-    save_results(output_dir, args.selection, args.wpt)
+    save_results(output_dir, args.selection, args.wp, args.wpt)
