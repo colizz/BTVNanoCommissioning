@@ -26,16 +26,23 @@ with open(args.input) as f:
 f.close()
 
 nBroken = 0
+nCorrupted = 0
 for name in files.keys():
 	outputjson[ name ] = []
 	for ifile in files[ name ]:
-		f = uproot.open(ifile)['Events'].keys()
-		if len(f) > 10:
-			outputjson[ name ].append( ifile )
-		else:
-			nBroken += 1
+		try:
+			f = uproot.open(ifile)['Events'].keys()
+			if len(f) > 10:
+				outputjson[ name ].append( ifile )
+			else:
+				nBroken += 1
+				print(f'nBroken = {nBroken}\tnCorrupted = {nCorrupted}')
+		except:
+			nCorrupted += 1
+			print(f'nBroken = {nBroken}\tnCorrupted = {nCorrupted}')
 
 print(f'{nBroken} broken files found')
+print(f'{nCorrupted} corrupted files found')
 print(f'Saving file {args.output}')
 with open(outName, 'w') as outFile:
 	json.dump(outputjson, outFile, indent=4)

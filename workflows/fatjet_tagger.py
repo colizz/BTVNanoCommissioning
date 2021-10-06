@@ -76,9 +76,10 @@ class NanoProcessor(processor.ProcessorABC):
             #if self.year == 2016:
             if self.year == 2017:
                 self.puFile = os.getcwd()+'/correction_files/UltraLegacy/PileupHistogram-goldenJSON-13tev-2017-69200ub-99bins.root'
-                #self.puFile = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions17/13TeV/PileUp/PileupHistogram-goldenJSON-13tev-2017-69200ub-99bins.root'
-                self.nTrueFile = os.getcwd()+'/correction_files/nTrueInt_datasets_local_btag2017UL_2017.coffea'
-            #if self.year == 2018:
+                #self.nTrueFile = os.getcwd()+'/correction_files/nTrueInt_datasets_local_btag2017UL_2017.coffea'
+            if self.year == 2018:
+                self.puFile = os.getcwd()+'/correction_files/UltraLegacy/PileupHistogram-goldenJSON-13tev-2018-69200ub-99bins.root'
+                self.nTrueFile = os.getcwd()+'/correction_files/nTrueInt_datasets_local_fixed_btag2018UL_2018.coffea'
             if nTrueFile: self.nTrueFile = nTrueFile
         else:
             if self.year == 2016:
