@@ -3,9 +3,14 @@ import sys
 import os
 import rhalphalib as rl
 import numpy as np
+import pandas as pd
 import scipy.stats
 import pickle
 import uproot
+import ROOT
+from parameters import fit_parameters, sample_names
+
+nPtBins = 3
 
 def exec_me(command, dryRun=False, folder=False):
     print(command)
@@ -59,7 +64,7 @@ def get_templ(f, sample, obs, syst=None, sumw2=True):
         return (h_vals, binning, obs.name, h_sumw2)
 
 
-def test_sfmodel(tmpdir, var, inputFile, sel, wp, wpt='', pt=500, fittype='single', scale=1, smear=0.1):
+def test_sfmodel(tmpdir, var, inputFile, year, campaign, sel, wp, wpt='', pt=500, fittype='single', scale=1, smear=0.1):
     lumi = rl.NuisanceParameter('CMS_lumi', 'lnN')
     jecs = rl.NuisanceParameter('CMS_jecs', 'lnN')
     pu = rl.NuisanceParameter('CMS_pu', 'lnN')
@@ -82,59 +87,21 @@ def test_sfmodel(tmpdir, var, inputFile, sel, wp, wpt='', pt=500, fittype='singl
         binwidth = float(bins[1] - bins[0])
 
     # Indeps
-    if abs(binwidth - 0.1) < 0.01:
-        if 'DDB' in sel:
-            indep_l = rl.IndependentParameter('l', 1., 0, 2)
-            indep_b_bb = rl.IndependentParameter('b_bb', 1., -20, 20)
-            if '2018' in inputFile:
-                indep_c_cc = rl.IndependentParameter('c_cc', 1., -20, 20)
-            else:
-                indep_c_cc = rl.IndependentParameter('c_cc', 1., 0, 2)
-        elif 'DDC' in sel:
-            indep_l = rl.IndependentParameter('l', 1., 0, 2)
-            if '2018' in inputFile:
-                indep_b_bb = rl.IndependentParameter('b_bb', 1., -20, 20)
-            #elif '2017' in inputFile:
-            else:
-                indep_b_bb = rl.IndependentParameter('b_bb', 1., 0, 2)
-                #indep_b_bb = rl.IndependentParameter('b_bb', 1., -20, 20)
-            #if '2016' in inputFile:
-            #    indep_l = rl.IndependentParameter('l', 1., -20, 20)
-            if '2016' in inputFile:
-                indep_c_cc = rl.IndependentParameter('c_cc', 1., 0, 20)
-            else:
-                indep_c_cc = rl.IndependentParameter('c_cc', 1., -20, 20)
-            #indep_c_cc = rl.IndependentParameter('c_cc', 1., -20, 20)
-    elif abs(binwidth - 0.2) < 0.01:
-        if 'DDB' in sel:
-            indep_l = rl.IndependentParameter('l', 1., -20, 20)
-            indep_b_bb = rl.IndependentParameter('b_bb', 1., 0, 20)
-            if '2017' in inputFile:
-                indep_c_cc = rl.IndependentParameter('c_cc', 1., 0, 20)
-            else:
-                indep_c_cc = rl.IndependentParameter('c_cc', 1., -20, 20)
-        elif 'DDC' in sel:
-            if '2016' in inputFile:
-                indep_l = rl.IndependentParameter('l', 1., -20, 20)
-                indep_b_bb = rl.IndependentParameter('b_bb', 1., -20, 20)
-            else:
-                indep_b_bb = rl.IndependentParameter('b_bb', 1., -20, 20)
-                indep_l = rl.IndependentParameter('l', 1., -20, 20)
-            indep_c_cc = rl.IndependentParameter('c_cc', 1., 0, 20)
+    (indep_c_cc, indep_b_bb, indep_l) = (rl.IndependentParameter(sName, **fit_parameters['{}pt{}'.format(campaign, pt)][year][sel[-3:]][sName]) for sName in sample_names)
+    print('cc', indep_c_cc.name)
+    print('bb', indep_b_bb.name)
+    print('l', indep_l.name)
     
     observable = rl.Observable(var.split('_')[-1], bins)
     model = rl.Model("sfModel")
 
     regions = ['pass', 'fail']
     fout = np.load(inputFile, allow_pickle=True)
-    #tagger = 'DDB' if 'DDB' in sel else 'DDC'
-    #sample_names = ['bb', 'cc', 'b', 'c', 'l']
-    #if tagger == 'DDC':
-    sample_names = ['b_bb', 'c_cc', 'l']
     if sel.endswith('DDB'):
         signalName = 'b_bb'
     else:
         signalName = 'c_cc'
+    print("signalName", signalName)
     Nevts = 0
     Nl = 0
     for region in regions:
@@ -176,14 +143,13 @@ def test_sfmodel(tmpdir, var, inputFile, sel, wp, wpt='', pt=500, fittype='singl
     fractionL = float(Nl)/float(Nevts)
     freezeL = False
     print("fractionL = ", fractionL)
-    if fractionL < 1.5e-3:
+    if fractionL < 3e-3:
         freezeL = True
         print("The parameter 'l' will be frozen.")
 
-    #parameters = [indep_bb, indep_cc, indep_b, indep_c, indep_l]
-    #if tagger == 'DDC':
-    parameters = [indep_b_bb, indep_c_cc, indep_l]
-    for sample, SF in zip(sample_names, parameters):
+    for sample, SF in zip(sample_names, [indep_c_cc, indep_b_bb, indep_l]):
+        if sample != SF.name:
+            sys.exit("Sample and scale factor names are not matching.")
         pass_sample = model['sfpass'][sample]
         fail_sample = model['sffail'][sample]
         pass_fail = pass_sample.getExpectation(nominal=True).sum() / fail_sample.getExpectation(nominal=True).sum()
@@ -201,7 +167,7 @@ def test_sfmodel(tmpdir, var, inputFile, sel, wp, wpt='', pt=500, fittype='singl
 
     exec_me( 'bash build.sh', folder=tmpdir )
 
-def save_results(output_dir, sel, wp, wpt):
+def save_results(output_dir, year, campaign, sel, wp, wpt, pt, createcsv=False):
 
     combineFile = uproot.open(output_dir + "higgsCombine{}wp{}Pt.FitDiagnostics.mH120.root".format(wp, wpt))
     combineTree = combineFile['limit']
@@ -211,14 +177,43 @@ def save_results(output_dir, sel, wp, wpt):
     combineCont, low, high, temp = results
     combineErrUp = high - combineCont
     combineErrDown = combineCont - low
+    d = {}
 
     if 'DDB' in sel:
         POI = 'b_bb'
     elif 'DDC' in sel:
         POI = 'c_cc'
+    columns = ['year', 'campaign', 'selection', 'wp', 'pt', POI, '{}ErrUp'.format(POI), '{}ErrDown'.format(POI)]
+    d = {'year' : [year], 'campaign' : [campaign], 'selection' : [sel], 'wp' : [wp], 'pt' : [wpt], POI : [combineCont], '{}ErrUp'.format(POI) : [combineErrUp], '{}ErrDown'.format(POI) : [combineErrDown]}
+    value, lo, hi = (fit_parameters['{}pt{}'.format(campaign, pt)][year][sel[-3:]][POI]['value'], fit_parameters['{}pt{}'.format(campaign, pt)][year][sel[-3:]][POI]['lo'], fit_parameters['{}pt{}'.format(campaign, pt)][year][sel[-3:]][POI]['hi'])
     f = open(output_dir + "fitResults{}wp{}Pt.txt".format(wp, wpt), 'w')
-    f.write('Best fit {}: {}  -{}/+{}  (68%  CL)\n'.format(POI, combineCont, combineErrDown, combineErrUp))
+    lineIntro = 'Best fit '
+    firstline = '{}{}: {}  -{}/+{}  (68%  CL)  range = [{}, {}]\n'.format(lineIntro, POI, combineCont, combineErrDown, combineErrUp, lo, hi)
+    f.write(firstline)
+    fitResults = ROOT.TFile.Open(output_dir + "fitDiagnostics{}wp{}Pt.root".format(wp, wpt))
+    fit_s = fitResults.Get('fit_s')
+    for sName in sample_names:
+        if (sName == POI): continue
+        par_result = fit_s.floatParsFinal().find(sName)
+        if par_result == None: continue
+        parVal = par_result.getVal()
+        parErr = par_result.getAsymErrorHi()
+        value, lo, hi = (fit_parameters['{}pt{}'.format(campaign, pt)][year][sel[-3:]][sName]['value'], fit_parameters['{}pt{}'.format(campaign, pt)][year][sel[-3:]][sName]['lo'], fit_parameters['{}pt{}'.format(campaign, pt)][year][sel[-3:]][sName]['hi'])
+        gapSpace = ''.join( (len(lineIntro) + len(POI) - len(sName) )*[' '])
+        lineResult = '{}{}: {}  -+{}'.format(gapSpace, sName, parVal, parErr)
+        gapSpace2 = ''.join( (firstline.find('(') - len(lineResult) )*[' '])
+        line = lineResult + gapSpace2 + '(68%  CL)  range = [{}, {}]\n'.format(lo, hi)
+        f.write(line)
+        columns.append(sName)
+        columns.append('{}Err'.format(sName))
+        d.update({sName : parVal, '{}Err'.format(sName) : parErr})
     f.close()
+    df = pd.DataFrame(data=d)
+    csv_file = output_dir + "fitResults{}wp.csv".format(wp)
+    if createcsv:
+        df.to_csv(csv_file, columns=columns, mode='w', header=True)
+    else:
+        df.to_csv(csv_file, columns=columns, mode='a', header=False)
 
     return combineCont, combineErrDown, combineErrUp
 
@@ -227,12 +222,13 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--outputDir', type=str, default=None, help='Output directory')
-    parser.add_argument('--year', type=str, choices=['2016', '2017', '2018'], help='Year of data/MC samples')
-    parser.add_argument('--pt', type=int, default=500, help='Pt cut.')
+    parser.add_argument('--campaign', type=str, choices={'EOY', 'UL'}, help='Dataset campaign.', required=True)
+    parser.add_argument('--year', type=str, choices=['2016', '2017', '2018'], help='Year of data/MC samples', required=True)
+    parser.add_argument('--pt', type=int, default=500, help='Pt cut.', required=True)
     parser.add_argument('--var', type=str, default='sv_logsv1mass', help='Variable used in the template fit.')
-    parser.add_argument('--selection', type=str, default='msd100tau06DDB', help='Selection to compute SF.')
-    parser.add_argument('--wp', type=str, default='M', help='Working point')
-    parser.add_argument('--wpt', type=str, choices={'Inclusive', 'M', 'H'}, default='', help='Pt bin')
+    parser.add_argument('--selection', type=str, default='msd100tau06DDB', help='Selection to compute SF.', required=True)
+    parser.add_argument('--wp', type=str, default='M', help='Working point', required=True)
+    parser.add_argument('--wpt', type=str, choices={'Inclusive', 'M', 'H'}, default='', help='Pt bin', required=True)
     parser.add_argument("--fit", type=str, choices={'single', 'double'}, default='double',
                         help="Fit type")  ##not used
     parser.add_argument("--scale", type=float, default='1',
@@ -247,6 +243,7 @@ if __name__ == '__main__':
     parser.add_argument("--tpf", "--template-passfail", dest='tpf', type=str,
                         default='histograms/hists_fattag_pileupJEC_2017_WPcuts_v01.pkl',
                         help="Pass/Fail templates, only for `fit=double`")
+    parser.add_argument('--createcsv', action='store_true', default=False, help='Create new csv file')
 
     #parser.add_argument("--tf", "--template-fail", dest='tf', type=str,
     #                    default='histograms/hists_fattag_pileupJEC_2017_WPcuts_v01.pkl',
@@ -257,11 +254,13 @@ if __name__ == '__main__':
     print("Running with options:")
     print("    ", args)
 
+    if not args.selection[-3:] in ['DDB', 'DDC']:
+        raise NotImplementedError
     output_dir = args.outputDir if args.outputDir else os.getcwd()+"/fitdir/"+args.year+'/'+args.selection+'/'
     if not output_dir.endswith('/'):
         output_dir = output_dir + '/'
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    test_sfmodel(output_dir, args.var, args.tpf, args.selection, args.wp, args.wpt, args.pt)
-    save_results(output_dir, args.selection, args.wp, args.wpt)
+    test_sfmodel(output_dir, args.var, args.tpf, args.year, args.campaign, args.selection, args.wp, args.wpt, args.pt)
+    save_results(output_dir, args.year, args.campaign, args.selection, args.wp, args.wpt, args.pt, args.createcsv)

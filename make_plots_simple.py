@@ -8,7 +8,8 @@ from coffea.hist import plot
 import coffea.hist as hist
 import itertools
 import os
-from utils import histogram_settings, lumi, rescale, xsecs
+from utils import rescale
+from parameters import histogram_settings, lumi, xsecs
 
 parser = argparse.ArgumentParser(description='Plot histograms from coffea file')
 parser.add_argument('-i', '--input', type=str, help='Input histogram filename', required=True)

@@ -14,7 +14,8 @@ from coffea import hist
 from coffea.nanoevents import NanoEventsFactory
 from coffea.util import load, save
 from coffea import processor
-from utils import rescale, lumi, xsecs
+from utils import rescale
+from parameters import lumi, xsecs
 
 
 wrk_init = '''
@@ -49,6 +50,7 @@ if __name__ == '__main__':
     parser.add_argument('--nTrueFile', type=str, default='', help='To specify nTrue file. To use the default leave it empty')
     parser.add_argument('--ul', default=False, action='store_true', help='Process UL samples.')
     parser.add_argument('--pt', type=int, default=500, help='Pt cut.')
+    parser.add_argument('--MwpDDB', type=float, default=0.7, help='Medium working point for DDB.', required=True)
 
     # Scale out
     parser.add_argument('--executor', choices=['iterative', 'futures', 'parsl/condor', 'parsl/slurm', 'dask/condor', 'dask/slurm'], default='futures', help='The type of executor to use (default: %(default)s)')
@@ -185,7 +187,7 @@ if __name__ == '__main__':
         processor_instance = NanoProcessor()
     elif args.workflow == "fattag":
         from workflows.fatjet_tagger import NanoProcessor
-        processor_instance = NanoProcessor(year=args.year, UL=args.ul, pt=args.pt, JECfolder=jesInputFilePath, nTrueFile=args.nTrueFile)
+        processor_instance = NanoProcessor(year=args.year, UL=args.ul, pt=args.pt, MwpDDB=args.MwpDDB, JECfolder=jesInputFilePath, nTrueFile=args.nTrueFile)
     else:
         raise NotImplemented
 

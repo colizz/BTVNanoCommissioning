@@ -10,7 +10,7 @@ import itertools
 import os
 import time
 import awkward as ak
-from utils import histogram_settings, lumi
+from parameters import histogram_settings, lumi
 from multiprocessing import Pool
 
 parser = argparse.ArgumentParser(description='Plot histograms from coffea file')
