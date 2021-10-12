@@ -7,12 +7,13 @@ import os
 import numpy as np
 import awkward as ak
 import uproot
-from utils import rescale, get_nsv, get_sv_in_jet, lumi, xsecs, JECversions
+from utils import rescale, get_nsv, get_sv_in_jet
+from parameters import lumi, xsecs, JECversions
 
 
 class NanoProcessor(processor.ProcessorABC):
     # Define histograms
-    def __init__(self, year=2017, UL=False, pt=500, JECfolder='correction_files', nTrueFile=''):
+    def __init__(self, year=2017, UL=False, pt=500, MwpDDB=0.7, JECfolder='correction_files', nTrueFile=''):
         self.year = year
         self.sample = 'EOY'
         if UL:
@@ -53,7 +54,8 @@ class NanoProcessor(processor.ProcessorABC):
         self._mask_DDX = {
             'DDB' : {
                 #'L' : XX,
-                'M' : 0.7
+                #'M' : 0.7
+                'M' : MwpDDB
             },
             'DDC' : {
                 #'L' : XX,
