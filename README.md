@@ -99,3 +99,9 @@ Alternatively, the wrapped-up script [runSF.py](runSF.py) performs the fits for 
 ```
 python runSF.py --year 2018 --tpf histograms/hists_fattag_pileupJEC_2018UL_WPcuts_sv1mass_pt500.pkl --outputDir /work/mmarcheg/BTVNanoCommissioning/fitdir/2018ULpt500 --pt 500
 ```
+
+### Create pre/post-fit plots
+After extracting the SF for all the pT bins and for all the taggers, the pre/post-fit plots in the pass and fail regions can be created by running the script [make_SFplots.py](make_SFplots.py):
+```
+python make_SFplots.py -i /work/mmarcheg/BTVNanoCommissioning/fitdir/2017EOYpt450 --year 2017 --pt 450 --MwpDDB 0.70
+```
