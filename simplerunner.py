@@ -36,6 +36,9 @@ if __name__ == '__main__':
     parser.add_argument('--year', type=int, choices=[2016, 2017, 2018], help='Year of data/MC samples', required=True)
     parser.add_argument('--outputDir', type=str, default=None, help='Output directory')
     parser.add_argument('--nTrueFile', type=str, default='', help='To specify nTrue file. To use the default leave it empty')
+    parser.add_argument('--ul', default=False, action='store_true', help='Process UL samples.')
+    parser.add_argument('--pt', type=int, default=500, help='Pt cut.')
+    parser.add_argument('--MwpDDB', type=float, default=0.7, help='Medium working point for DDB.', required=True)
 
     # Scale out
     parser.add_argument('--executor', choices=['iterative', 'futures', 'parsl/condor', 'parsl/slurm', 'dask/condor', 'dask/slurm'], default='futures', help='The type of executor to use (default: %(default)s)')
@@ -102,22 +105,47 @@ if __name__ == '__main__':
     ##### Untar JECs
     ##### Correction files in https://twiki.cern.ch/twiki/bin/viewauth/CMS/JECDataMC
     jesInputFilePath = tempfile.mkdtemp()
+    if args.year==2016:
+        jecTarFiles = [
+                    '/correction_files/JEC/Summer16_07Aug2017BCD_V11_DATA.tar.gz',
+                    '/correction_files/JEC/Summer16_07Aug2017EF_V11_DATA.tar.gz',
+                    '/correction_files/JEC/Summer16_07Aug2017GH_V11_DATA.tar.gz',
+                    '/correction_files/JEC/Summer16_07Aug2017_V11_MC.tar.gz',
+                    ]
     if args.year==2017:
-        jecTarFiles = [
-            '/correction_files/JEC/Fall17_17Nov2017B_V32_DATA.tar.gz',
-            '/correction_files/JEC/Fall17_17Nov2017C_V32_DATA.tar.gz',
-            '/correction_files/JEC/Fall17_17Nov2017DE_V32_DATA.tar.gz',
-            '/correction_files/JEC/Fall17_17Nov2017F_V32_DATA.tar.gz',
-            '/correction_files/JEC/Fall17_17Nov2017_V32_MC.tar.gz',
-            ]
+        if args.ul:
+            jecTarFiles = [
+                        '/correction_files/JEC/Summer19UL17_RunB_V5_DATA.tar.gz',
+                        '/correction_files/JEC/Summer19UL17_RunC_V5_DATA.tar.gz',
+                        '/correction_files/JEC/Summer19UL17_RunD_V5_DATA.tar.gz',
+                        '/correction_files/JEC/Summer19UL17_RunE_V5_DATA.tar.gz',
+                        '/correction_files/JEC/Summer19UL17_RunF_V5_DATA.tar.gz',
+                        ]
+        else:
+            jecTarFiles = [
+                        '/correction_files/JEC/Fall17_17Nov2017B_V32_DATA.tar.gz',
+                        '/correction_files/JEC/Fall17_17Nov2017C_V32_DATA.tar.gz',
+                        '/correction_files/JEC/Fall17_17Nov2017DE_V32_DATA.tar.gz',
+                        '/correction_files/JEC/Fall17_17Nov2017F_V32_DATA.tar.gz',
+                        '/correction_files/JEC/Fall17_17Nov2017_V32_MC.tar.gz',
+                        ]
     if args.year==2018:
-        jecTarFiles = [
-            '/correction_files/JEC/Autumn18_RunA_V19_DATA.tar.gz',
-            '/correction_files/JEC/Autumn18_RunB_V19_DATA.tar.gz',
-            '/correction_files/JEC/Autumn18_RunC_V19_DATA.tar.gz',
-            '/correction_files/JEC/Autumn18_RunD_V19_DATA.tar.gz',
-            '/correction_files/JEC/Autumn18_V19_MC.tar.gz',
-            ]
+        if args.ul:
+            jecTarFiles = [
+                        '/correction_files/JEC/Summer19UL18_RunA_V5_DATA.tar.gz',
+                        '/correction_files/JEC/Summer19UL18_RunB_V5_DATA.tar.gz',
+                        '/correction_files/JEC/Summer19UL18_RunC_V5_DATA.tar.gz',
+                        '/correction_files/JEC/Summer19UL18_RunD_V5_DATA.tar.gz',
+                        '/correction_files/JEC/Summer19UL18_V5_MC.tar.gz',
+                        ]
+        else:
+            jecTarFiles = [
+                        '/correction_files/JEC/Autumn18_RunA_V19_DATA.tar.gz',
+                        '/correction_files/JEC/Autumn18_RunB_V19_DATA.tar.gz',
+                        '/correction_files/JEC/Autumn18_RunC_V19_DATA.tar.gz',
+                        '/correction_files/JEC/Autumn18_RunD_V19_DATA.tar.gz',
+                        '/correction_files/JEC/Autumn18_V19_MC.tar.gz',
+                        ]
     for itar in jecTarFiles:
         jecFile = os.getcwd()+itar
         jesArchive = tarfile.open( jecFile, "r:gz")
@@ -129,7 +157,8 @@ if __name__ == '__main__':
         processor_instance = NanoProcessor()
     elif args.workflow == "fattag":
         from workflows.fatjet_tagger import NanoProcessor
-        processor_instance = NanoProcessor(year=args.year, JECfolder=jesInputFilePath, nTrueFile=args.nTrueFile)
+        #processor_instance = NanoProcessor(year=args.year, JECfolder=jesInputFilePath, nTrueFile=args.nTrueFile)
+        processor_instance = NanoProcessor(year=args.year, UL=args.ul, pt=args.pt, MwpDDB=args.MwpDDB, JECfolder=jesInputFilePath, nTrueFile=args.nTrueFile)
     else:
         raise NotImplemented
 
@@ -144,6 +173,7 @@ if __name__ == '__main__':
                     #'retries': 2,
     if args.executor.startswith('iterative'): _exec = processor.iterative_executor
     elif args.executor.startswith('futures'): _exec = processor.futures_executor
+    elif args.executor.startswith('parsl'): _exec = processor.futures_executor
 #    elif args.executor.startswith('dask/condor'):
 #        _exec = processor.dask_executor
 #        n_port = 8786
