@@ -119,13 +119,17 @@ histogram_settings = {
         'fatjet_nmusj2'       : {'binning' : {'n_or_arr' : 30,  'lo' : 0,      'hi' : 30},    'xlim' : {'xmin' : 0, 'xmax' : 10}},
         'fatjet_jetproba'     : {'binning' : {'n_or_arr' : 25,  'lo' : 0,      'hi' : 2.5},   'xlim' : {'xmin' : 0, 'xmax' : 2.5}},
         'sv_sv1mass'          : {'binning' : {'n_or_arr' : 50,  'lo' : 0,      'hi' : 50},    'xlim' : {'xmin' : 0, 'xmax' : 50}},
-        'sv_logsv1mass'       : {'binning' : {'n_or_arr' : 80,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -0.8, 'xmax' : 3.2}},
+        'sv_logsv1mass'       : {'binning' : {'n_or_arr' : 80,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -4, 'xmax' : 4}},
         #'sv_logsv1mass'       : {'binning' : {'n_or_arr' : 40,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -0.8, 'xmax' : 3.2}},
         #'sv_logsv1mass'       : {'binning' : {'n_or_arr' : 20,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -0.8, 'xmax' : 3.2}},
         #'sv_logsv1mass'       : {'binning' : {'n_or_arr' : np.concatenate((np.arange(-4,1.9,0.1), [2.5,3.2]))},     'xlim' : {'xmin' : -0.8, 'xmax' : 3.2}},
     },
     'postfit' : {
         'sv_logsv1mass'       : {'binning' : {'n_or_arr' : np.concatenate((np.arange(-4,1.9,0.1), [2.5,3.2]))},     'xlim' : {'xmin' : -0.8, 'xmax' : 3.2}},
+    },
+    'crop' : {
+        'sfpass' : {'length' : 1780, 'height' : 2100},
+        'sffail' : {'length' : 1725, 'height' : 2100},
     }
 }
 
@@ -147,6 +151,20 @@ fit_parameters = {
             'DDC': {'c_cc': {'value' : 1, 'lo' : -20, 'hi' : 20}, 'b_bb': {'value' : 1, 'lo' : -20, 'hi' : 20}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}}
         }
     },
+    'EOYwp064pt450': {
+        '2016': {
+            'DDB': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'b_bb': {'value' : 1, 'lo' : 0.5, 'hi' : 2}, 'l': {'value' : 1, 'lo' : 0.5, 'hi' : 2}},
+            'DDC': {'c_cc': {'value' : 1, 'lo' : 0.5, 'hi' : 2}, 'b_bb': {'value' : 1, 'lo' : 0.5, 'hi' : 2}, 'l': {'value' : 1, 'lo' : 0.5, 'hi' : 2}}
+        },
+        '2017': {
+            'DDB': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'b_bb': {'value' : 1, 'lo' : 0.5, 'hi' : 2}, 'l': {'value' : 1, 'lo' : 0.5, 'hi' : 2}},
+            'DDC': {'c_cc': {'value' : 1, 'lo' : 0.5, 'hi' : 2}, 'b_bb': {'value' : 1, 'lo' : 0.5, 'hi' : 2}, 'l': {'value' : 1, 'lo' : 0.5, 'hi' : 2}}
+        },
+        '2018': {
+            'DDB': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'b_bb': {'value' : 1, 'lo' : 0.5, 'hi' : 2}, 'l': {'value' : 1, 'lo' : 0.5, 'hi' : 2}},
+            'DDC': {'c_cc': {'value' : 1, 'lo' : 0.5, 'hi' : 2}, 'b_bb': {'value' : 1, 'lo' : 0.5, 'hi' : 2}, 'l': {'value' : 1, 'lo' : 0.5, 'hi' : 2}}
+        }
+    },
     'EOYpt450': {
         '2016': {
             'DDB': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 10}, 'b_bb': {'value' : 1, 'lo' : -20, 'hi' : 20}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}},
@@ -155,6 +173,20 @@ fit_parameters = {
         '2017': {
             'DDB': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 10}, 'b_bb': {'value' : 1, 'lo' : -20, 'hi' : 20}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}},
             'DDC': {'c_cc': {'value' : 1, 'lo' : -50, 'hi' : 50}, 'b_bb': {'value' : 1, 'lo' : -20, 'hi' : 20}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}}
+        },
+        '2018': {
+            'DDB': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 10}, 'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 20}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+            'DDC': {'c_cc': {'value' : 1, 'lo' : -20, 'hi' : 20}, 'b_bb': {'value' : 1, 'lo' : -20, 'hi' : 20}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}}
+        }
+    },
+    'EOYpt450shapeunc': {
+        '2016': {
+            'DDB': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 10}, 'b_bb': {'value' : 1, 'lo' : -20, 'hi' : 20}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+            'DDC': {'c_cc': {'value' : 1, 'lo' : -20, 'hi' : 20}, 'b_bb': {'value' : 1, 'lo' : -20, 'hi' : 20}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}}
+        },
+        '2017': {
+            'DDB': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 10}, 'b_bb': {'value' : 1, 'lo' : -20, 'hi' : 20}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+            'DDC': {'c_cc': {'value' : 1, 'lo' : -28, 'hi' : 50}, 'b_bb': {'value' : 1, 'lo' : -20, 'hi' : 20}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}}
         },
         '2018': {
             'DDB': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 10}, 'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 20}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}},
