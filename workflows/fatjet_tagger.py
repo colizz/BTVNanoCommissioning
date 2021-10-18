@@ -42,6 +42,13 @@ class NanoProcessor(processor.ProcessorABC):
                 'mass_cut' : 100.,
                 'tau21_cut' : 0.6
                     },
+            'msd100tau03'       : {
+                'pt_cut' : 350.,
+                'eta_cut': 2.4,
+                'jetId_cut': 2,
+                'mass_cut' : 100.,
+                'tau21_cut' : 0.3
+                    },
             'pt400msd100tau06'       : {
                 'pt_cut' : 400.,
                 'eta_cut': 2.4,
@@ -50,7 +57,8 @@ class NanoProcessor(processor.ProcessorABC):
                 'tau21_cut' : 0.6
                     },
         }
-        self._final_mask = ['msd100tau06', 'pt400msd100tau06']
+        self._final_mask = ['msd100tau06', 'msd100tau03']
+        #self._final_mask = ['msd100tau06', 'pt400msd100tau06']
         self._mask_DDX = {
             'DDB' : {
                 #'L' : XX,
@@ -378,9 +386,9 @@ class NanoProcessor(processor.ProcessorABC):
         corrections = {}
         if not isRealData:
             weights.add( 'genWeight', events.genWeight)
-            #weights.add( 'pileup_weight', self.puReweight( self.puFile, self.nTrueFile, dataset )( events.Pileup.nPU )  )
+            weights.add( 'pileup_weight', self.puReweight( self.puFile, self.nTrueFile, dataset )( events.Pileup.nPU )  )
 
-        #events.FatJet = self.applyJEC( events.FatJet, events.fixedGridRhoFastjetAll, events.caches[0], 'AK8PFPuppi', isRealData, JECversion )
+        events.FatJet = self.applyJEC( events.FatJet, events.fixedGridRhoFastjetAll, events.caches[0], 'AK8PFPuppi', isRealData, JECversion )
 
         cuts = processor.PackedSelection()
 
@@ -488,6 +496,7 @@ class NanoProcessor(processor.ProcessorABC):
         selection['basic'] = { 'trigger', 'basic' }
         selection['pt350msd50'] = { 'trigger', 'fatjet_mutag', 'pt350msd50' }
         selection['msd100tau06'] = { 'trigger', 'fatjet_mutag', 'msd100tau06' }
+        selection['msd100tau03'] = { 'trigger', 'fatjet_mutag', 'msd100tau03' }
         selection['pt400msd100tau06'] = { 'trigger', 'fatjet_mutag', 'pt400msd100tau06' }
         for mask_f in self._final_mask:
             for DDX in self._mask_DDX.keys():
