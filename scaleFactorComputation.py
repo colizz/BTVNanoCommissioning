@@ -64,7 +64,7 @@ def get_templ(f, sample, obs, syst=None, sumw2=True):
         return (h_vals, binning, obs.name, h_sumw2)
 
 
-def test_sfmodel(tmpdir, var, inputFile, year, campaign, sel, wp, wpt='', pt=500, fittype='single', scale=1, smear=0.1):
+def test_sfmodel(tmpdir, var, inputFile, year, campaign, sel, wp, wpt='', pt=500, fittype='single', scale=1, smear=0.1, pars=None):
     lumi = rl.NuisanceParameter('CMS_lumi', 'lnN')
     jecs = rl.NuisanceParameter('CMS_jecs', 'lnN')
     pu = rl.NuisanceParameter('CMS_pu', 'lnN')
@@ -87,7 +87,9 @@ def test_sfmodel(tmpdir, var, inputFile, year, campaign, sel, wp, wpt='', pt=500
         binwidth = float(bins[1] - bins[0])
 
     # Indeps
-    (indep_c_cc, indep_b_bb, indep_l) = (rl.IndependentParameter(sName, **fit_parameters['{}pt{}'.format(campaign, pt)][year][sel[-3:]][sName]) for sName in sample_names)
+    if not pars:
+        pars = fit_parameters['{}pt{}'.format(campaign, pt)]
+    (indep_c_cc, indep_b_bb, indep_l) = (rl.IndependentParameter(sName, **pars[year][sel[-3:]][sName]) for sName in sample_names)
     print('cc', indep_c_cc.name)
     print('bb', indep_b_bb.name)
     print('l', indep_l.name)
@@ -127,6 +129,8 @@ def test_sfmodel(tmpdir, var, inputFile, year, campaign, sel, wp, wpt='', pt=500
             sample.setParamEffect(lumi, 1.023)
             sample.setParamEffect(jecs, 1.02)
             sample.setParamEffect(pu, 1.05)
+            fracX = rl.NuisanceParameter('frac'+sName, 'shape')
+            sample.setParamEffect(fracX, 1.2)
             sample.autoMCStats(lnN=True)
             #sample.autoMCStats(epsilon=1e-4)
             ch.addSample(sample)
@@ -160,14 +164,16 @@ def test_sfmodel(tmpdir, var, inputFile, year, campaign, sel, wp, wpt='', pt=500
     with open(tmpdir+'/build.sh', 'a') as ifile:
         #ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name {}Pt --cminDefaultMinimizerStrategy 0 --robustFit=1 --saveShapes  --rMin 0.5 --rMax 1.5'.format(wpt))
         if freezeL:
-            ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name {}wp{}Pt --cminDefaultMinimizerStrategy 0 --robustFit=1 --saveShapes --redefineSignalPOIs={} --setParameters r=1,l=1 --freezeParameters r,l'.format(wp, wpt, signalName))
+            #ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name {}wp{}Pt --cminDefaultMinimizerStrategy 0 --robustFit=1 --saveShapes --redefineSignalPOIs={} --setParameters r=1,l=1 --freezeParameters r,l'.format(wp, wpt, signalName))
+            ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name {}wp{}Pt --cminDefaultMinimizerStrategy 0 --robustFit=1 --saveShapes --saveWithUncertainties --saveOverallShapes --redefineSignalPOIs={} --setParameters r=1,l=1 --freezeParameters r,l'.format(wp, wpt, signalName))        
         else:
-            ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name {}wp{}Pt --cminDefaultMinimizerStrategy 0 --robustFit=1 --saveShapes --redefineSignalPOIs={} --setParameters r=1 --freezeParameters r'.format(wp, wpt, signalName))
+            #ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name {}wp{}Pt --cminDefaultMinimizerStrategy 0 --robustFit=1 --saveShapes --redefineSignalPOIs={} --setParameters r=1 --freezeParameters r'.format(wp, wpt, signalName))
+            ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name {}wp{}Pt --cminDefaultMinimizerStrategy 0 --robustFit=1 --saveShapes --saveWithUncertainties --saveOverallShapes --redefineSignalPOIs={} --setParameters r=1 --freezeParameters r'.format(wp, wpt, signalName))
         #ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name {}Pt --cminDefaultMinimizerStrategy 0 --robustFit=1 --robustHesse 1 --saveShapes --redefineSignalPOIs={} --setParameters r=1 --freezeParameters r'.format(wpt, signalName))
 
     exec_me( 'bash build.sh', folder=tmpdir )
 
-def save_results(output_dir, year, campaign, sel, wp, wpt, pt, createcsv=False):
+def save_results(output_dir, year, campaign, sel, wp, wpt, pt, pars=None, createcsv=False, createtex=False):
 
     combineFile = uproot.open(output_dir + "higgsCombine{}wp{}Pt.FitDiagnostics.mH120.root".format(wp, wpt))
     combineTree = combineFile['limit']
@@ -183,9 +189,17 @@ def save_results(output_dir, year, campaign, sel, wp, wpt, pt, createcsv=False):
         POI = 'b_bb'
     elif 'DDC' in sel:
         POI = 'c_cc'
-    columns = ['year', 'campaign', 'selection', 'wp', 'pt', POI, '{}ErrUp'.format(POI), '{}ErrDown'.format(POI)]
-    d = {'year' : [year], 'campaign' : [campaign], 'selection' : [sel], 'wp' : [wp], 'pt' : [wpt], POI : [combineCont], '{}ErrUp'.format(POI) : [combineErrUp], '{}ErrDown'.format(POI) : [combineErrDown]}
-    value, lo, hi = (fit_parameters['{}pt{}'.format(campaign, pt)][year][sel[-3:]][POI]['value'], fit_parameters['{}pt{}'.format(campaign, pt)][year][sel[-3:]][POI]['lo'], fit_parameters['{}pt{}'.format(campaign, pt)][year][sel[-3:]][POI]['hi'])
+    columns = ['year', 'campaign', 'selection', 'wp', 'pt',
+                POI, '{}ErrUp'.format(POI), '{}ErrDown'.format(POI),
+                'SF({})'.format(POI)]
+    columns_for_latex = ['year', 'pt', 'SF({})'.format(POI)]
+    d = {'year' : [year], 'campaign' : [campaign], 'selection' : [sel], 'wp' : [wp], 'pt' : [wpt],
+        POI : [combineCont], '{}ErrUp'.format(POI) : [combineErrUp], '{}ErrDown'.format(POI) : [combineErrDown],
+        'SF({})'.format(POI) : ['{}$^{{+{}}}_{{-{}}}$'.format(combineCont, combineErrUp, combineErrDown)]}
+
+    if not pars:
+        pars = fit_parameters['{}pt{}'.format(campaign, pt)]
+    value, lo, hi = (pars[year][sel[-3:]][POI]['value'], pars[year][sel[-3:]][POI]['lo'], pars[year][sel[-3:]][POI]['hi'])
     f = open(output_dir + "fitResults{}wp{}Pt.txt".format(wp, wpt), 'w')
     lineIntro = 'Best fit '
     firstline = '{}{}: {}  -{}/+{}  (68%  CL)  range = [{}, {}]\n'.format(lineIntro, POI, combineCont, combineErrDown, combineErrUp, lo, hi)
@@ -198,7 +212,7 @@ def save_results(output_dir, year, campaign, sel, wp, wpt, pt, createcsv=False):
         if par_result == None: continue
         parVal = par_result.getVal()
         parErr = par_result.getAsymErrorHi()
-        value, lo, hi = (fit_parameters['{}pt{}'.format(campaign, pt)][year][sel[-3:]][sName]['value'], fit_parameters['{}pt{}'.format(campaign, pt)][year][sel[-3:]][sName]['lo'], fit_parameters['{}pt{}'.format(campaign, pt)][year][sel[-3:]][sName]['hi'])
+        value, lo, hi = (pars[year][sel[-3:]][sName]['value'], pars[year][sel[-3:]][sName]['lo'], pars[year][sel[-3:]][sName]['hi'])
         gapSpace = ''.join( (len(lineIntro) + len(POI) - len(sName) )*[' '])
         lineResult = '{}{}: {}  -+{}'.format(gapSpace, sName, parVal, parErr)
         gapSpace2 = ''.join( (firstline.find('(') - len(lineResult) )*[' '])
@@ -206,7 +220,9 @@ def save_results(output_dir, year, campaign, sel, wp, wpt, pt, createcsv=False):
         f.write(line)
         columns.append(sName)
         columns.append('{}Err'.format(sName))
-        d.update({sName : parVal, '{}Err'.format(sName) : parErr})
+        columns.append('SF({})'.format(sName))
+        columns_for_latex.append('SF({})'.format(sName))
+        d.update({sName : parVal, '{}Err'.format(sName) : parErr, 'SF({})'.format(sName) : r'{}$\pm${}'.format(parVal, parErr)})
     f.close()
     df = pd.DataFrame(data=d)
     csv_file = output_dir + "fitResults{}wp.csv".format(wp)
@@ -214,6 +230,12 @@ def save_results(output_dir, year, campaign, sel, wp, wpt, pt, createcsv=False):
         df.to_csv(csv_file, columns=columns, mode='w', header=True)
     else:
         df.to_csv(csv_file, columns=columns, mode='a', header=False)
+    if createtex:
+        df_csv = pd.read_csv(csv_file)
+        f = open(csv_file.replace('.csv', '.tex'), 'w')
+        with pd.option_context("max_colwidth", 1000):
+            f.write(df_csv.to_latex(columns=columns_for_latex, header=True, index=False, escape=False, float_format="%.4f"))
+        f.close()
 
     return combineCont, combineErrDown, combineErrUp
 
@@ -244,6 +266,8 @@ if __name__ == '__main__':
                         default='histograms/hists_fattag_pileupJEC_2017_WPcuts_v01.pkl',
                         help="Pass/Fail templates, only for `fit=double`")
     parser.add_argument('--createcsv', action='store_true', default=False, help='Create new csv file')
+    parser.add_argument('--createtex', action='store_true', default=False, help='Create tex file with table')
+    parser.add_argument("--parameters", type=str, default=None, help='Run with custom parameters')
 
     #parser.add_argument("--tf", "--template-fail", dest='tf', type=str,
     #                    default='histograms/hists_fattag_pileupJEC_2017_WPcuts_v01.pkl',
@@ -256,11 +280,14 @@ if __name__ == '__main__':
 
     if not args.selection[-3:] in ['DDB', 'DDC']:
         raise NotImplementedError
+    if args.parameters:
+        if not args.parameters in fit_parameters.keys():
+            raise NotImplementedError
     output_dir = args.outputDir if args.outputDir else os.getcwd()+"/fitdir/"+args.year+'/'+args.selection+'/'
     if not output_dir.endswith('/'):
         output_dir = output_dir + '/'
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    test_sfmodel(output_dir, args.var, args.tpf, args.year, args.campaign, args.selection, args.wp, args.wpt, args.pt)
-    save_results(output_dir, args.year, args.campaign, args.selection, args.wp, args.wpt, args.pt, args.createcsv)
+    test_sfmodel(output_dir, args.var, args.tpf, args.year, args.campaign, args.selection, args.wp, args.wpt, args.pt, args.parameters)
+    save_results(output_dir, args.year, args.campaign, args.selection, args.wp, args.wpt, args.pt, args.parameters, args.createcsv, args.createtex)
