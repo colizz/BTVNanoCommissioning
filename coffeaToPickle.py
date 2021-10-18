@@ -19,6 +19,7 @@ parser.add_argument('--test', action='store_true', default=False, help='Test wit
 parser.add_argument('--data', type=str, default='BTagMu', help='Data sample name')
 parser.add_argument('--selection', type=str, default='all', help='Plot only plots with this selection. ("all" to plot all the selections in file)')
 parser.add_argument('--pt', type=int, default=500, help='Pt cut.')
+parser.add_argument('--scaleFail', type=float, default=None, help='Artificial scaling factor for distributions in the fail region.', required=False)
 
 args = parser.parse_args()
 print("Running with options:")
@@ -56,6 +57,10 @@ for ivar in [ 'fatjet_jetproba', 'sv_logsv1mass' ]:
                         else:
                             h = accumulator[histname]                            
                         h.scale( scaleXS, axis='dataset' )
+                        if (args.scaleFail != None) & (passfail == 'fail'):
+                            print(f"Scaling fail distributions by a factor {args.scaleFail}")
+                            #h.scale( args.scaleFail, axis='dataset' )
+                            h.scale( args.scaleFail )
                         h = h.rebin(h.fields[-1], hist.Bin(h.fields[-1], h.axis(h.fields[-1]).label, **histogram_settings['variables']['_'.join(histname.split('_')[:-1])]['binning']))
 
                         ##### grouping flavor
