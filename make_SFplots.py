@@ -8,6 +8,7 @@ import mplhep as hep
 from copy import deepcopy
 from coffea.util import load
 from coffea.hist import plot
+from coffea.hist.plot import poisson_interval
 import coffea.hist as hist
 import os
 import sys
@@ -29,7 +30,10 @@ parser.add_argument('--data', type=str, default='BTagMu', help='Data sample name
 parser.add_argument('--selection', type=str, help='Plot only plots with this selection.', required=False)
 parser.add_argument('--pt', type=int, default=500, help='Pt cut.', required=True)
 parser.add_argument('--MwpDDB', type=float, default=0.7, help='Medium working point for DDB.', required=True)
+parser.add_argument('--passonly', action='store_true', default=False, help='Fit pass region only')
 parser.add_argument('--debug', action='store_true', default=False, help='Activate debug printout', required=False)
+parser.add_argument('--crop', action='store_true', default=False, help='Produce cropped plots in dedicated sub-directories', required=False)
+
 
 args = parser.parse_args()
 pt_interval = {
@@ -61,6 +65,10 @@ elif os.path.isfile(args.input):
         else:
             taggers = [tagger for tagger in taggers if tagger in args.selection]
             ptbins = [ptbin for ptbin in ptbins if ptbin in args.input.split('/')[-1]]
+
+regions = ['sfpass', 'sffail']
+if args.passonly:
+    regions = ['sfpass']
 
 data_err_opts = {
     'linestyle': 'none',
@@ -98,6 +106,10 @@ err_opts = {
     'markersize': 10,
     'color': 'k',
     'elinewidth': 0,
+}
+
+MC_opts = {
+    'facecolor': (0, 0, 0, 0),
 }
 
 selection = {}
@@ -171,6 +183,8 @@ for tagger in taggers:
             plot_dir = args.outputDir if args.outputDir else inputDir + selDir
             if not os.path.exists(plot_dir):
                 sys.exit("Plot directory does not exist")
+            if not plot_dir.endswith('/'):
+                plot_dir = plot_dir + '/'
 
             filename = 'fitDiagnostics{}wp{}Pt.root'.format(wp, wpt)
 
@@ -180,7 +194,8 @@ for tagger in taggers:
                 flavors = ['l', 'b_bb', 'c_cc']
             flavor_opts['facecolor'] = [flavors_color[f.split('_')[-1]] for f in flavors]
             flavor_axis  = hist.Cat("flavor",   "Flavor")
-            observable_axis  = hist.Bin(args.var.split('_')[1],  xlabel[args.var], **histogram_settings['postfit'][args.var]['binning'])
+            varname = args.var.split('_')[1]
+            observable_axis  = hist.Bin(varname,  xlabel[args.var], **histogram_settings['postfit'][args.var]['binning'])
             output = {}
 
             for region in ['sfpass', 'sffail']:
@@ -188,17 +203,25 @@ for tagger in taggers:
                     output['shape_{}_{}{}{}'.format(fit, region, tagger, args.year)] = hist.Hist("entries", flavor_axis, observable_axis)
 
             filepath = inputDir + selDir + filename
-            line = ''.join(200*['-'])
+            line = ''.join((8 + len(filepath))*['-'])
             print(line)
             print(f"Opening {filepath}")
             f = uproot.open(filepath)
-            for region in ['sfpass', 'sffail']:
+            failedFit = False
+            if 'shapes_fit_s;1' not in f.keys():
+                failedFit = True
+                print("Fit failed.")
+                continue
+            for region in regions:
                 fig, axes = plt.subplots(2, 2, figsize=(12,7), gridspec_kw={"height_ratios": (2.5, 1)}, sharex=True)
                 fig_normed, axes_normed = plt.subplots(2, 2, figsize=(12,7), gridspec_kw={"height_ratios": (2.5, 1)}, sharex=True)
-                flavors_to_remove = []
+                #flavors_to_remove = []
                 for i, fit in enumerate(['prefit', 'fit_s']):
                 #for i, fit in enumerate(['prefit']):
                     #ax = axes[i]
+                    covar, binsX, binsY = f['shapes_{}/{}/total_covar;1'.format(fit, region)].to_numpy()
+                    flavors_to_remove = []
+                    max_weights_normed = []
                     for (j, flavor) in enumerate(flavors):
                         histname = 'shapes_{}/{}/{};1'.format(fit, region, flavor)
                         if histname not in f.keys():
@@ -206,9 +229,8 @@ for tagger in taggers:
                             continue
                         h = f[histname]
                         weights, bins = h.to_numpy()
-                        #binwidth = bins[1] - bins[0]
                         binwidth = np.diff(bins)
-                        weights = weights*binwidth
+                        weights = weights*binwidth                        
                         values = (bins[1:] - 0.5*binwidth)
                         if args.debug:
                             print(values)
@@ -225,10 +247,12 @@ for tagger in taggers:
                         output['shape_{}_{}{}{}'.format(fit, region, tagger, args.year)].fill(flavor=flavor, logsv1mass=np.array(values_to_fill, dtype='float64'), weight=np.array(weights_to_fill, dtype='float64'))
                         if args.debug:
                             print(flavor_opts)
-                        axes_normed[0][i].hist(values, bins, weights=weights, edgecolor=flavor_opts['facecolor'][j], histtype='step', density=True, stacked=False, label=flavor)
+                        weights_normed, bins, patches = axes_normed[0][i].hist(values, bins, weights=weights, edgecolor=flavor_opts['facecolor'][j], histtype='step', density=True, stacked=False, label=flavor)
+                        max_weights_normed.append(max(weights_normed))
 
                     flavors_to_plot = flavors[:]
                     flavor_opts_to_plot = deepcopy(flavor_opts)
+                    #print(flavors_to_remove)
                     for flavor in flavors:
                         if flavor in flavors_to_remove:
                             flavor_opts_to_plot['facecolor'].pop(flavors.index(flavor))
@@ -237,6 +261,17 @@ for tagger in taggers:
                             #flavors.remove(flavor)
 
                     plot.plot1d(output['shape_{}_{}{}{}'.format(fit, region, tagger, args.year)][flavors_to_plot], ax=axes[0][i], legend_opts={'loc':1}, fill_opts=flavor_opts_to_plot, order=flavors_to_plot, stack=True)
+                    MC_sum = output['shape_{}_{}{}{}'.format(fit, region, tagger, args.year)][flavors_to_plot].sum('flavor')
+                    MC_var = np.diag(covar)
+                    MC_values = MC_sum.values()[()]
+                    edges = MC_sum.axis(varname).edges(overflow='none')
+                    MC_unc = np.diff(edges) * np.concatenate( (np.zeros(len(MC_values) - len(MC_var)), np.sqrt(MC_var)) )
+                    lo = MC_values - MC_unc
+                    hi = MC_values + MC_unc
+                    MC_unc_band = np.array([lo, hi])
+                    hatch_density = 4
+                    MC_unc_opts = {"step": "post", "color": (0, 0, 0, 0.4), "facecolor": (0, 0, 0, 0.0), "linewidth": 0, "hatch": '/'*hatch_density, "zorder": 2}
+                    axes[0][i].fill_between(edges, np.r_[MC_unc_band[0], MC_unc_band[0, -1]], np.r_[MC_unc_band[1], MC_unc_band[1, -1]], **MC_unc_opts, label='MC unc.')
                     #for (j, flavor) in enumerate(flavors):
                         #flavor_normed_opts['facecolor'] = flavor_opts['facecolor'][j]
                         #flavor_normed_opts['edgecolor'] = flavor_opts['facecolor'][j]
@@ -260,7 +295,11 @@ for tagger in taggers:
                     #plot.plot1d(output[f'shape_{fit}_{region}{tagger}{args.year}'][args.data], ax=ax'es[0][i], legend_opts={'loc':1}, error_opts=data_err_opts, clear=False)
                     #axes[0][i].set_title('shapes_{} '.format(fit) + region + ' ({}, {})'.format(tagger, args.year))
                     #axes_normed[0][i].set_title('shapes_{} '.format(fit) + region + ' ({}, {})'.format(tagger, args.year))
-                    if i == 1:
+                    resize = 1.8
+                    if i == 0:
+                        axes[0][i].set_ylim(0.0, resize*max(data_weights))
+                        axes_normed[0][i].set_ylim(0.0, resize*max(max(data_weights_normed), max(max_weights_normed)))
+                    elif i == 1:
                         axes[0][i].set_ylim(axes[0][0].get_ylim())
                         axes_normed[0][i].set_ylim(axes_normed[0][0].get_ylim())
                     handles, labels = axes[0][i].get_legend_handles_labels()
@@ -272,6 +311,8 @@ for tagger in taggers:
                         if label == args.data:
                             labels[l] = 'data'
                     axes[0][i].legend(handles, labels, loc='upper right')
+                    handles.pop(-2)
+                    labels.pop(-2)
                     axes_normed[0][i].legend(handles, labels, loc='upper right')
                     hep.cms.text("Preliminary", ax=axes[0][i], fontsize=fontsize)
                     hep.cms.lumitext(text=f'{totalLumi}' + r' fb$^{-1}$, 13 TeV,' + f' {args.year}', fontsize=fontsize, ax=axes[0][i])
@@ -281,21 +322,38 @@ for tagger in taggers:
                     if pt_high == 'Inf':
                         pt_high = r'$\infty$'
                     text = selection[f'msd100tau06{tagger}{region[2:]}{wp}wp'] + r"$p_T$:" + f" ({pt_low}, {pt_high}) [GeV]"+"\n"
-                    at = AnchoredText(text, loc='center right', prop={'fontsize' : fontsize}, frameon=False)
-                    at_normed = AnchoredText(text, loc='center right', prop={'fontsize' : fontsize}, frameon=False)
+                    at = AnchoredText(text, loc='upper left', prop={'fontsize' : fontsize}, frameon=False)
+                    at_normed = AnchoredText(text, loc='upper left', prop={'fontsize' : fontsize}, frameon=False)
                     axes[0][i].add_artist(at)
                     axes_normed[0][i].add_artist(at_normed)
                     num = output['shape_{}_{}{}{}'.format(fit, region, tagger, args.year)][args.data].sum('flavor')
-                    plot.plotratio(num=output['shape_{}_{}{}{}'.format(fit, region, tagger, args.year)][args.data].sum('flavor'),
-                                   denom=output['shape_{}_{}{}{}'.format(fit, region, tagger, args.year)][flavors].sum('flavor'),
-                                   ax=axes[1][i],
-                                   error_opts=data_err_opts, denom_fill_opts={}, guide_opts={},
-                                   unc='num')
-                    plot.plotratio(num=output['shape_{}_{}{}{}'.format(fit, region, tagger, args.year)][args.data].sum('flavor'),
-                                   denom=output['shape_{}_{}{}{}'.format(fit, region, tagger, args.year)][flavors].sum('flavor'),
-                                   ax=axes_normed[1][i],
-                                   error_opts=data_err_opts, denom_fill_opts={}, guide_opts={},
-                                   unc='num')
+                    if fit == 'prefit':
+                        plot.plotratio(num=output['shape_{}_{}{}{}'.format(fit, region, tagger, args.year)][args.data].sum('flavor'),
+                                       denom=output['shape_{}_{}{}{}'.format(fit, region, tagger, args.year)][flavors].sum('flavor'),
+                                       ax=axes[1][i],
+                                       error_opts=data_err_opts, denom_fill_opts=None, guide_opts={},
+                                       unc='num')
+                        plot.plotratio(num=output['shape_{}_{}{}{}'.format(fit, region, tagger, args.year)][args.data].sum('flavor'),
+                                       denom=output['shape_{}_{}{}{}'.format(fit, region, tagger, args.year)][flavors].sum('flavor'),
+                                       ax=axes_normed[1][i],
+                                       error_opts=data_err_opts, denom_fill_opts=None, guide_opts={},
+                                       unc='num')
+                    elif fit == 'fit_s':
+                        plot.plotratio(num=output['shape_{}_{}{}{}'.format(fit, region, tagger, args.year)][args.data].sum('flavor'),
+                                       denom=output['shape_{}_{}{}{}'.format(fit, region, tagger, args.year)][flavors].sum('flavor'),
+                                       ax=axes[1][i],
+                                       error_opts=data_err_opts, denom_fill_opts=None, guide_opts={},
+                                       #error_opts=data_err_opts, denom_fill_opts=MC_opts, guide_opts={},
+                                       unc='num')
+                        plot.plotratio(num=output['shape_{}_{}{}{}'.format(fit, region, tagger, args.year)][args.data].sum('flavor'),
+                                       denom=output['shape_{}_{}{}{}'.format(fit, region, tagger, args.year)][flavors].sum('flavor'),
+                                       ax=axes_normed[1][i],
+                                       error_opts=data_err_opts, denom_fill_opts=None, guide_opts={},
+                                       #error_opts=data_err_opts, denom_fill_opts=MC_opts, guide_opts={},
+                                       unc='num')
+                    unity = np.ones_like(MC_values)
+                    denom_unc = poisson_interval(unity, MC_unc**2 / MC_values ** 2)
+                    axes[1][i].fill_between(edges, np.r_[denom_unc[0], denom_unc[0, -1]], np.r_[denom_unc[1], denom_unc[1, -1]], **MC_unc_opts, label='MC unc.')
                     axes[1][i].set_xlim(**histogram_settings['postfit']['sv_logsv1mass']['xlim'])
                     axes_normed[1][i].set_xlim(**histogram_settings['postfit']['sv_logsv1mass']['xlim'])
                     axes[1][i].set_ylim(0.0, 2.0)
@@ -308,3 +366,25 @@ for tagger in taggers:
                 fig.savefig(plot_dir + histname, dpi=300, format="png")
                 fig_normed.savefig(plot_dir + histname.replace('.png', '_normed.png'), dpi=300, format="png")
             f.close()
+
+            if args.crop:
+                for region in regions:
+                    length = histogram_settings['crop'][region]['length']
+                    height = histogram_settings['crop'][region]['height']
+                    cropCommand = f"convert -crop {length}x{height} {plot_dir}shapes_{region}{tagger}{wpt}Pt_{args.year}.png {plot_dir}shapes_{region}{tagger}{wpt}Pt_{args.year}_%d.png"
+                    rmCommand = f"rm {plot_dir}*_2.png"
+                    for command in [cropCommand, rmCommand]:
+                        os.system( command )
+                    for (i, fit) in enumerate(['prefit', 'postfit']):
+                        sub_dir = plot_dir + fit + '/'
+                        if not os.path.exists(sub_dir):
+                            os.makedirs(sub_dir)
+                        moveCommand = f"mv {plot_dir}*_{i}.png {sub_dir}/."
+                        trimCommand = f"convert -trim {sub_dir}shapes_{region}{tagger}{wpt}Pt_{args.year}_{i}.png {sub_dir}shapes_{region}{tagger}{wpt}Pt_{args.year}_{fit}.png"
+                        rmCommand = f"rm {sub_dir}*_{i}.png"
+                        for command in [moveCommand, trimCommand, rmCommand]:
+                            os.system( command )
+
+
+
+                    
