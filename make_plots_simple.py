@@ -18,7 +18,7 @@ parser.add_argument('--outputDir', type=str, default=None, help='Output director
 parser.add_argument('-s', '--scale', type=str, default='linear', help='Plot y-axis scale', required=False)
 parser.add_argument('-d', '--dense', action='store_true', default=False, help='Normalized plots')
 parser.add_argument('--year', type=int, choices=[2016, 2017, 2018], help='Year of data/MC samples', required=True)
-parser.add_argument('--hist2d', action='store_true', help='Plot only 2D histograms')
+parser.add_argument('--hist2d', action='store_true', default=False, help='Plot only 2D histograms')
 parser.add_argument('--only', action='store', default='', help='Plot only one histogram')
 parser.add_argument('--test', action='store_true', default=False, help='Test with lower stats.')
 parser.add_argument('--data', type=str, default='BTagMu', help='Data sample name')
@@ -102,6 +102,11 @@ selection = {
                   r"$m_{SD} > 100 GeV$"+"\n"+
                   r"$\tau_{21} < 0.6$"+"\n"+
                   r"$\geq$2 $\mu$-tagged AK4 subjets"+"\n"),
+    'msd100tau03' : (r"$\geq$1 AK8 jets"+"\n"+
+                  r"$p_T > 350 GeV$"+"\n"+
+                  r"$m_{SD} > 100 GeV$"+"\n"+
+                  r"$\tau_{21} < 0.3$"+"\n"+
+                  r"$\geq$2 $\mu$-tagged AK4 subjets"+"\n"),
     'pt400msd100tau06' : (r"$\geq$1 AK8 jets"+"\n"+
                   r"$p_T > 400 GeV$"+"\n"+
                   r"$m_{SD} > 100 GeV$"+"\n"+
@@ -109,7 +114,8 @@ selection = {
                   r"$\geq$2 $\mu$-tagged AK4 subjets"+"\n"),
 }
 
-_final_mask = ['msd100tau06', 'pt400msd100tau06']
+#_final_mask = ['msd100tau06', 'pt400msd100tau06']
+_final_mask = ['msd100tau06', 'msd100tau03']
 _mask_DDX = {
             'DDB' : {
                 #'L' : XX,
@@ -179,7 +185,7 @@ for histname in accumulator:
     h = h.group("dataset", hist.Cat("dataset", "Dataset"), mapping)
     flavors = ['bb', 'cc', 'b', 'c', 'l']
 
-    if not 'hist2d' in histname:
+    if (not 'hist2d' in histname) & (not args.hist2d):
 
         print("Plotting", histname)
         dataSum = np.sum( h[args.data].sum('flavor').values()[('BTagMu',)] )
@@ -239,6 +245,10 @@ for histname in accumulator:
         plt.close(fig)
 
     if args.hist2d:
+        if not 'btag' in histname:
+            continue
+        if not 'hist2d' in histname:
+            continue
         print("Plotting", histname)
         for dataset in datasets:
             if 'QCD' in dataset:
