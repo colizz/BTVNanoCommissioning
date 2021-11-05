@@ -28,13 +28,6 @@ class NanoProcessor(processor.ProcessorABC):
                 'mass_cut' : 20.,
                 'tau21_cut' : 1.1
                     },
-            'pt350msd50'       : {
-                'pt_cut' : 350.,
-                'eta_cut': 2.4,
-                'jetId_cut': 2,
-                'mass_cut' : 50.,
-                'tau21_cut' : 1.1
-                    },
             'msd100tau06'       : {
                 'pt_cut' : 350.,
                 'eta_cut': 2.4,
