@@ -134,7 +134,9 @@ if __name__ == '__main__':
 
         ##### Untar JECs
         ##### Correction files in https://twiki.cern.ch/twiki/bin/viewauth/CMS/JECDataMC
-    jesInputFilePath = tempfile.mkdtemp()
+    jesInputFilePath = os.getcwd()+"/correction_files/tmp"
+    if not os.path.exists(jesInputFilePath):
+        os.makedirs(jesInputFilePath)
     if args.year==2016:
         jecTarFiles = [
                     '/correction_files/JEC/Summer16_07Aug2017BCD_V11_DATA.tar.gz',
