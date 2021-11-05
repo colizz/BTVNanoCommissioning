@@ -64,7 +64,7 @@ def get_templ(f, sample, obs, syst=None, sumw2=True):
         return (h_vals, binning, obs.name, h_sumw2)
 
 
-def test_sfmodel(tmpdir, var, inputFile, year, campaign, sel, wp, wpt='', pt=500, fittype='single', scale=1, smear=0.1, pars=None):
+def test_sfmodel(tmpdir, var, inputFile, year, campaign, sel, wp, wpt='', pt=500, pars_key=None, epsilon=0.0001, passonly=False, fittype='single', scale=1, smear=0.1):
     lumi = rl.NuisanceParameter('CMS_lumi', 'lnN')
     jecs = rl.NuisanceParameter('CMS_jecs', 'lnN')
     pu = rl.NuisanceParameter('CMS_pu', 'lnN')
@@ -87,8 +87,10 @@ def test_sfmodel(tmpdir, var, inputFile, year, campaign, sel, wp, wpt='', pt=500
         binwidth = float(bins[1] - bins[0])
 
     # Indeps
-    if not pars:
+    if not pars_key:
         pars = fit_parameters['{}pt{}'.format(campaign, pt)]
+    else:
+        pars = fit_parameters[pars_key]
     (indep_c_cc, indep_b_bb, indep_l) = (rl.IndependentParameter(sName, **pars[year][sel[-3:]][sName]) for sName in sample_names)
     print('cc', indep_c_cc.name)
     print('bb', indep_b_bb.name)
@@ -98,6 +100,8 @@ def test_sfmodel(tmpdir, var, inputFile, year, campaign, sel, wp, wpt='', pt=500
     model = rl.Model("sfModel")
 
     regions = ['pass', 'fail']
+    if passonly:
+        regions = ['pass']
     fout = np.load(inputFile, allow_pickle=True)
     if sel.endswith('DDB'):
         signalName = 'b_bb'
@@ -126,13 +130,17 @@ def test_sfmodel(tmpdir, var, inputFile, year, campaign, sel, wp, wpt='', pt=500
             sType = rl.Sample.SIGNAL if isSignal else rl.Sample.BACKGROUND
             sample = rl.TemplateSample("{}_{}".format(ch.name, sName), sType, template)
             #print('sample',sample)
+            
             sample.setParamEffect(lumi, 1.023)
             sample.setParamEffect(jecs, 1.02)
             sample.setParamEffect(pu, 1.05)
-            fracX = rl.NuisanceParameter('frac'+sName, 'shape')
-            sample.setParamEffect(fracX, 1.2)
-            sample.autoMCStats(lnN=True)
-            #sample.autoMCStats(epsilon=1e-4)
+            
+            if isSignal:
+                sample.autoMCStats(epsilon=args.epsilon)
+            #    fracX = rl.NuisanceParameter('frac_'+sName, 'shape')
+            #    sample.setParamEffect(fracX, 1.2*template[0])
+            else:
+                sample.autoMCStats(lnN=True)
             ch.addSample(sample)
 
         if wpt == 'Inclusive':
@@ -151,29 +159,36 @@ def test_sfmodel(tmpdir, var, inputFile, year, campaign, sel, wp, wpt='', pt=500
         freezeL = True
         print("The parameter 'l' will be frozen.")
 
-    for sample, SF in zip(sample_names, [indep_c_cc, indep_b_bb, indep_l]):
-        if sample != SF.name:
-            sys.exit("Sample and scale factor names are not matching.")
-        pass_sample = model['sfpass'][sample]
-        fail_sample = model['sffail'][sample]
-        pass_fail = pass_sample.getExpectation(nominal=True).sum() / fail_sample.getExpectation(nominal=True).sum()
-        pass_sample.setParamEffect(SF, 1.0 * SF)
-        fail_sample.setParamEffect(SF, (1 - SF) * pass_fail + 1)
+    if not passonly:
+        for sample, SF in zip(sample_names, [indep_c_cc, indep_b_bb, indep_l]):
+            if sample != SF.name:
+                sys.exit("Sample and scale factor names are not matching.")
+            pass_sample = model['sfpass'][sample]
+            fail_sample = model['sffail'][sample]
+            pass_fail = pass_sample.getExpectation(nominal=True).sum() / fail_sample.getExpectation(nominal=True).sum()
+            pass_sample.setParamEffect(SF, 1.0 * SF)
+            fail_sample.setParamEffect(SF, (1 - SF) * pass_fail + 1)
+    else:
+        for sample, SF in zip(sample_names, [indep_c_cc, indep_b_bb, indep_l]):
+            if sample != SF.name:
+                sys.exit("Sample and scale factor names are not matching.")
+            pass_sample = model['sfpass'][sample]
+            pass_sample.setParamEffect(SF, 1.0 * SF)
 
     model.renderCombine(tmpdir)
     with open(tmpdir+'/build.sh', 'a') as ifile:
         #ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name {}Pt --cminDefaultMinimizerStrategy 0 --robustFit=1 --saveShapes  --rMin 0.5 --rMax 1.5'.format(wpt))
         if freezeL:
             #ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name {}wp{}Pt --cminDefaultMinimizerStrategy 0 --robustFit=1 --saveShapes --redefineSignalPOIs={} --setParameters r=1,l=1 --freezeParameters r,l'.format(wp, wpt, signalName))
-            ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name {}wp{}Pt --cminDefaultMinimizerStrategy 0 --robustFit=1 --saveShapes --saveWithUncertainties --saveOverallShapes --redefineSignalPOIs={} --setParameters r=1,l=1 --freezeParameters r,l'.format(wp, wpt, signalName))        
+            ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name {}wp{}Pt --cminDefaultMinimizerStrategy 2 --robustFit=1 --saveShapes --saveWithUncertainties --saveOverallShapes --redefineSignalPOIs={} --setParameters r=1,l=1 --freezeParameters r,l --rMin 1 --rMax 1'.format(wp, wpt, signalName))
         else:
             #ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name {}wp{}Pt --cminDefaultMinimizerStrategy 0 --robustFit=1 --saveShapes --redefineSignalPOIs={} --setParameters r=1 --freezeParameters r'.format(wp, wpt, signalName))
-            ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name {}wp{}Pt --cminDefaultMinimizerStrategy 0 --robustFit=1 --saveShapes --saveWithUncertainties --saveOverallShapes --redefineSignalPOIs={} --setParameters r=1 --freezeParameters r'.format(wp, wpt, signalName))
+            ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name {}wp{}Pt --cminDefaultMinimizerStrategy 2 --robustFit=1 --saveShapes --saveWithUncertainties --saveOverallShapes --redefineSignalPOIs={} --setParameters r=1 --freezeParameters r --rMin 1 --rMax 1'.format(wp, wpt, signalName))
         #ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name {}Pt --cminDefaultMinimizerStrategy 0 --robustFit=1 --robustHesse 1 --saveShapes --redefineSignalPOIs={} --setParameters r=1 --freezeParameters r'.format(wpt, signalName))
 
     exec_me( 'bash build.sh', folder=tmpdir )
 
-def save_results(output_dir, year, campaign, sel, wp, wpt, pt, pars=None, createcsv=False, createtex=False):
+def save_results(output_dir, year, campaign, sel, wp, wpt, pt, pars_key=None, createcsv=False, createtex=False):
 
     combineFile = uproot.open(output_dir + "higgsCombine{}wp{}Pt.FitDiagnostics.mH120.root".format(wp, wpt))
     combineTree = combineFile['limit']
@@ -197,8 +212,10 @@ def save_results(output_dir, year, campaign, sel, wp, wpt, pt, pars=None, create
         POI : [combineCont], '{}ErrUp'.format(POI) : [combineErrUp], '{}ErrDown'.format(POI) : [combineErrDown],
         'SF({})'.format(POI) : ['{}$^{{+{}}}_{{-{}}}$'.format(combineCont, combineErrUp, combineErrDown)]}
 
-    if not pars:
+    if not pars_key:
         pars = fit_parameters['{}pt{}'.format(campaign, pt)]
+    else:
+        pars = fit_parameters[pars_key]
     value, lo, hi = (pars[year][sel[-3:]][POI]['value'], pars[year][sel[-3:]][POI]['lo'], pars[year][sel[-3:]][POI]['hi'])
     f = open(output_dir + "fitResults{}wp{}Pt.txt".format(wp, wpt), 'w')
     lineIntro = 'Best fit '
@@ -268,6 +285,8 @@ if __name__ == '__main__':
     parser.add_argument('--createcsv', action='store_true', default=False, help='Create new csv file')
     parser.add_argument('--createtex', action='store_true', default=False, help='Create tex file with table')
     parser.add_argument("--parameters", type=str, default=None, help='Run with custom parameters')
+    parser.add_argument("--epsilon", type=float, default=0.0001, help='Epsilon parameter for MC shape uncertainties')
+    parser.add_argument('--passonly', action='store_true', default=False, help='Fit pass region only')
 
     #parser.add_argument("--tf", "--template-fail", dest='tf', type=str,
     #                    default='histograms/hists_fattag_pileupJEC_2017_WPcuts_v01.pkl',
@@ -289,5 +308,5 @@ if __name__ == '__main__':
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    test_sfmodel(output_dir, args.var, args.tpf, args.year, args.campaign, args.selection, args.wp, args.wpt, args.pt, args.parameters)
+    test_sfmodel(output_dir, args.var, args.tpf, args.year, args.campaign, args.selection, args.wp, args.wpt, args.pt, args.parameters, args.epsilon, args.passonly)
     save_results(output_dir, args.year, args.campaign, args.selection, args.wp, args.wpt, args.pt, args.parameters, args.createcsv, args.createtex)
