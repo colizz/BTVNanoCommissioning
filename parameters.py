@@ -181,16 +181,16 @@ fit_parameters = {
     },
     'EOYpt450shapeunc': {
         '2016': {
-            'DDB': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 10}, 'b_bb': {'value' : 1, 'lo' : -20, 'hi' : 20}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}},
-            'DDC': {'c_cc': {'value' : 1, 'lo' : -20, 'hi' : 20}, 'b_bb': {'value' : 1, 'lo' : -20, 'hi' : 20}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}}
+            'DDB': {'c_cc': {'value' : 1, 'lo' : -20, 'hi' : 20}, 'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 20}, 'l': {'value' : 1, 'lo' : -2, 'hi' : 2}},
+            'DDC': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 20}, 'b_bb': {'value' : 1, 'lo' : -10, 'hi' : 10}, 'l': {'value' : 1, 'lo' : -10, 'hi' : 10}}
         },
         '2017': {
-            'DDB': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 10}, 'b_bb': {'value' : 1, 'lo' : -20, 'hi' : 20}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}},
-            'DDC': {'c_cc': {'value' : 1, 'lo' : -28, 'hi' : 50}, 'b_bb': {'value' : 1, 'lo' : -20, 'hi' : 20}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}}
+            'DDB': {'c_cc': {'value' : 1, 'lo' : -20, 'hi' : 20}, 'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 20}, 'l': {'value' : 1, 'lo' : -2, 'hi' : 2}},
+            'DDC': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 20}, 'b_bb': {'value' : 1, 'lo' : -10, 'hi' : 10}, 'l': {'value' : 1, 'lo' : -10, 'hi' : 10}}
         },
         '2018': {
-            'DDB': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 10}, 'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 20}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}},
-            'DDC': {'c_cc': {'value' : 1, 'lo' : -20, 'hi' : 20}, 'b_bb': {'value' : 1, 'lo' : -20, 'hi' : 20}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}}
+            'DDB': {'c_cc': {'value' : 1, 'lo' : -20, 'hi' : 20}, 'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 20}, 'l': {'value' : 1, 'lo' : -2, 'hi' : 2}},
+            'DDC': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'b_bb': {'value' : 1, 'lo' : -10, 'hi' : 10}, 'l': {'value' : 1, 'lo' : -10, 'hi' : 10}}
         }
     },
     'UL': {
