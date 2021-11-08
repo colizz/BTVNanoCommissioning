@@ -51,6 +51,7 @@ if __name__ == '__main__':
     parser.add_argument('--ul', default=False, action='store_true', help='Process UL samples.')
     parser.add_argument('--pt', type=int, default=500, help='Pt cut.')
     parser.add_argument('--MwpDDB', type=float, default=0.7, help='Medium working point for DDB.', required=True)
+    parser.add_argument('--checkOverlap', default=False, action='store_true', help='Create run:lumi:event txt file for data.')
 
     # Scale out
     parser.add_argument('--executor', choices=['iterative', 'futures', 'parsl/condor', 'parsl/slurm', 'dask/condor', 'dask/slurm'], default='futures', help='The type of executor to use (default: %(default)s)')
@@ -107,6 +108,7 @@ if __name__ == '__main__':
     hist_dir = os.getcwd() + "/histograms/" if args.outputDir is None else args.outputDir
     if not os.path.exists(hist_dir):
         os.makedirs(hist_dir)
+    args.checkOverlap = hist_dir + args.output.split('.')[0] + '.txt'
 
     # Scan if files can be opened
     if args.validate:
@@ -189,7 +191,7 @@ if __name__ == '__main__':
         processor_instance = NanoProcessor()
     elif args.workflow == "fattag":
         from workflows.fatjet_tagger import NanoProcessor
-        processor_instance = NanoProcessor(year=args.year, UL=args.ul, pt=args.pt, MwpDDB=args.MwpDDB, JECfolder=jesInputFilePath, nTrueFile=args.nTrueFile)
+        processor_instance = NanoProcessor(year=args.year, UL=args.ul, pt=args.pt, MwpDDB=args.MwpDDB, JECfolder=jesInputFilePath, nTrueFile=args.nTrueFile, hist_dir=hist_dir, checkOverlap=args.checkOverlap)
     else:
         raise NotImplemented
 
