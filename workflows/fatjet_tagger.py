@@ -13,7 +13,7 @@ from parameters import lumi, xsecs, JECversions
 
 class NanoProcessor(processor.ProcessorABC):
     # Define histograms
-    def __init__(self, year=2017, UL=False, pt=500, MwpDDB=0.7, JECfolder='correction_files', nTrueFile=''):
+    def __init__(self, year=2017, UL=False, pt=500, MwpDDB=0.7, JECfolder='correction_files', nTrueFile='', hist_dir='histograms/', checkOverlap=None):
         self.year = year
         self.sample = 'EOY'
         if UL:
@@ -72,6 +72,8 @@ class NanoProcessor(processor.ProcessorABC):
         }
         self.year = year
         self.corrJECfolder = JECfolder
+        self.checkOverlap = checkOverlap
+        self.eventTags = {'run' : None, 'lumi' : None, 'event' : None}
 
         ############
         # PU files
@@ -371,7 +373,15 @@ class NanoProcessor(processor.ProcessorABC):
             JECversion = JECversions[self.sample][str(self.year)]['MC']
         else:
             output['nbtagmu'][dataset] += ak.count(events.event)
-            JECversion = JECversions[self.sample][str(self.year)]['Data'][dataset.split('BTagMu')[1]]
+            JECversion = JECversions[self.sample][str(self.year)]['Data'][dataset.split('BTagMu')[1]]            
+
+        ############
+        # Basic Cleaning
+        events = events[ events.PV.npvsGood>0 ]
+        METFilters = [ 'goodVertices','globalSuperTightHalo2016Filter', 'HBHENoiseFilter', 'HBHENoiseIsoFilter', 'EcalDeadCellTriggerPrimitiveFilter', 'BadPFMuonFilter' ]
+        if self.sample.startswith('UL'): METFilters = METFilters + [ 'BadPFMuonDzFilter', 'eeBadScFilter', 'ecalBadCalibFilter']
+        if self.sample.startswith('EOY') and isRealData: METFilters.append('eeBadScFilter')
+        for imet in METFilters: events = events[ getattr( events.Flag, imet )==1 ]
 
         ############
         # Some corrections
@@ -523,7 +533,27 @@ class NanoProcessor(processor.ProcessorABC):
                     fields = {k: ak.fill_none(leadsv[k], -9999) for k in h.fields if k in dir(leadsv) }
                     h.fill(dataset=dataset, flavor=flav, **fields, weight=weight)
 
+        #if isRealData & (self.checkOverlap is not None):
+        if self.checkOverlap is not None:
+            self.eventTags['run'] = events.run[cuts.all(*selection[self._final_mask[0]])]
+            self.eventTags['lumi'] = events.luminosityBlock[cuts.all(*selection[self._final_mask[0]])]
+            self.eventTags['event'] = events.event[cuts.all(*selection[self._final_mask[0]])]
+
         return output
 
     def postprocess(self, accumulator):
+
+        if self.checkOverlap:
+            run = self.eventTags['run']
+            lumi = self.eventTags['lumi']
+            event = self.eventTags['event']
+            print(run)
+            with open(self.checkOverlap, 'w') as file:
+                for (iev,r) in enumerate(run):
+                    if r==1:
+                        continue
+                    else:
+                        file.write(f'{run[iev]}:{lumi[iev]}:{event[iev]}')
+            file.close()
+
         return accumulator
