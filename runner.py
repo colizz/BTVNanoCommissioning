@@ -15,7 +15,7 @@ from coffea.nanoevents import NanoEventsFactory
 from coffea.util import load, save
 from coffea import processor
 from utils import rescale
-from parameters import lumi, xsecs
+from parameters import lumi, xsecs, jecTarFiles
 
 
 wrk_init = '''
@@ -45,10 +45,10 @@ if __name__ == '__main__':
     parser.add_argument( '--wf', '--workflow', dest='workflow', choices=['ttcom', 'fattag'], help='Which processor to run', required=True)
     parser.add_argument('-o', '--output', default=r'hists.coffea', help='Output histogram filename (default: %(default)s)')
     parser.add_argument('--samples', '--json', dest='samplejson', default='dummy_samples.json', help='JSON file containing dataset and file locations (default: %(default)s)')
-    parser.add_argument('--year', type=int, choices=[2016, 2017, 2018], help='Year of data/MC samples', required=True)
+    parser.add_argument('--campaign', type=str, choices={'EOY', 'UL'}, help='Dataset campaign.', required=True)
+    parser.add_argument('--year', type=str, choices=['2016', '2017', '2018'], help='Year of data/MC samples', required=True)
     parser.add_argument('--outputDir', type=str, default=None, help='Output directory')
     parser.add_argument('--nTrueFile', type=str, default='', help='To specify nTrue file. To use the default leave it empty')
-    parser.add_argument('--ul', default=False, action='store_true', help='Process UL samples.')
     parser.add_argument('--pt', type=int, default=500, help='Pt cut.')
     parser.add_argument('--MwpDDB', type=float, default=0.7, help='Medium working point for DDB.', required=True)
     parser.add_argument('--checkOverlap', default=False, action='store_true', help='Create run:lumi:event txt file for data.')
@@ -79,12 +79,8 @@ if __name__ == '__main__':
     if args.dataset != parser.get_default('dataset'):
         sample_dict = {args.dataset : sample_dict[args.dataset]}
 
-    if args.offset != parser.get_default('offset'):
-        for key in sample_dict.keys():
-            sample_dict[key] = sample_dict[key][args.offset:args.offset+args.limit]
-    else:
-        for key in sample_dict.keys():
-            sample_dict[key] = sample_dict[key][:args.limit]
+    for key in sample_dict.keys():
+        sample_dict[key] = sample_dict[key][:args.limit]
 
     # For debugging
     if args.only is not None:
@@ -106,6 +102,7 @@ if __name__ == '__main__':
     hist_dir = os.getcwd() + "/histograms/" if args.outputDir is None else args.outputDir
     if not os.path.exists(hist_dir):
         os.makedirs(hist_dir)
+    # Output file with run:lumi:event list
     args.checkOverlap = hist_dir + args.output.split('.')[0] + '.txt'
 
     # Scan if files can be opened
@@ -132,56 +129,15 @@ if __name__ == '__main__':
                 os.system(f'rm {fi}')
         sys.exit(0)
 
-        ##### Untar JECs
-        ##### Correction files in https://twiki.cern.ch/twiki/bin/viewauth/CMS/JECDataMC
+    ##### Untar JECs
+    ##### Correction files in https://twiki.cern.ch/twiki/bin/viewauth/CMS/JECDataMC
     jesInputFilePath = os.getcwd()+"/correction_files/tmp"
     if not os.path.exists(jesInputFilePath):
         os.makedirs(jesInputFilePath)
-    if args.year==2016:
-        jecTarFiles = [
-                    '/correction_files/JEC/Summer16_07Aug2017BCD_V11_DATA.tar.gz',
-                    '/correction_files/JEC/Summer16_07Aug2017EF_V11_DATA.tar.gz',
-                    '/correction_files/JEC/Summer16_07Aug2017GH_V11_DATA.tar.gz',
-                    '/correction_files/JEC/Summer16_07Aug2017_V11_MC.tar.gz',
-                    ]
-    if args.year==2017:
-        if args.ul:
-            jecTarFiles = [
-                        '/correction_files/JEC/Summer19UL17_RunB_V5_DATA.tar.gz',
-                        '/correction_files/JEC/Summer19UL17_RunC_V5_DATA.tar.gz',
-                        '/correction_files/JEC/Summer19UL17_RunD_V5_DATA.tar.gz',
-                        '/correction_files/JEC/Summer19UL17_RunE_V5_DATA.tar.gz',
-                        '/correction_files/JEC/Summer19UL17_RunF_V5_DATA.tar.gz',
-                        ]
-        else:
-            jecTarFiles = [
-                        '/correction_files/JEC/Fall17_17Nov2017B_V32_DATA.tar.gz',
-                        '/correction_files/JEC/Fall17_17Nov2017C_V32_DATA.tar.gz',
-                        '/correction_files/JEC/Fall17_17Nov2017DE_V32_DATA.tar.gz',
-                        '/correction_files/JEC/Fall17_17Nov2017F_V32_DATA.tar.gz',
-                        '/correction_files/JEC/Fall17_17Nov2017_V32_MC.tar.gz',
-                        ]
-    if args.year==2018:
-        if args.ul:
-            jecTarFiles = [
-                        '/correction_files/JEC/Summer19UL18_RunA_V5_DATA.tar.gz',
-                        '/correction_files/JEC/Summer19UL18_RunB_V5_DATA.tar.gz',
-                        '/correction_files/JEC/Summer19UL18_RunC_V5_DATA.tar.gz',
-                        '/correction_files/JEC/Summer19UL18_RunD_V5_DATA.tar.gz',
-                        '/correction_files/JEC/Summer19UL18_V5_MC.tar.gz',
-                        ]
-        else:
-            jecTarFiles = [
-                        '/correction_files/JEC/Autumn18_RunA_V19_DATA.tar.gz',
-                        '/correction_files/JEC/Autumn18_RunB_V19_DATA.tar.gz',
-                        '/correction_files/JEC/Autumn18_RunC_V19_DATA.tar.gz',
-                        '/correction_files/JEC/Autumn18_RunD_V19_DATA.tar.gz',
-                        '/correction_files/JEC/Autumn18_V19_MC.tar.gz',
-                        ]
-    for itar in jecTarFiles:
-                jecFile = os.getcwd()+itar
-                jesArchive = tarfile.open( jecFile, "r:gz")
-                jesArchive.extractall(jesInputFilePath)
+    for itar in jecTarFiles[args.campaign][args.year]:
+        jecFile = os.getcwd()+itar
+        jesArchive = tarfile.open( jecFile, "r:gz")
+        jesArchive.extractall(jesInputFilePath)
 
     # load workflow
     if args.workflow == "ttcom":
@@ -189,7 +145,7 @@ if __name__ == '__main__':
         processor_instance = NanoProcessor()
     elif args.workflow == "fattag":
         from workflows.fatjet_tagger import NanoProcessor
-        processor_instance = NanoProcessor(year=args.year, UL=args.ul, pt=args.pt, MwpDDB=args.MwpDDB, JECfolder=jesInputFilePath, nTrueFile=args.nTrueFile, hist_dir=hist_dir, checkOverlap=args.checkOverlap)
+        processor_instance = NanoProcessor(year=args.year, campaign=args.campaign, pt=args.pt, MwpDDB=args.MwpDDB, JECfolder=jesInputFilePath, nTrueFile=args.nTrueFile, hist_dir=hist_dir, checkOverlap=args.checkOverlap)
     else:
         raise NotImplemented
 

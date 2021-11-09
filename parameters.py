@@ -101,6 +101,52 @@ JECversions = {
 
         }
 
+jecTarFiles = {
+    'EOY' : {
+        '2016' :
+            [
+            '/correction_files/JEC/Summer16_07Aug2017BCD_V11_DATA.tar.gz',
+            '/correction_files/JEC/Summer16_07Aug2017EF_V11_DATA.tar.gz',
+            '/correction_files/JEC/Summer16_07Aug2017GH_V11_DATA.tar.gz',
+            '/correction_files/JEC/Summer16_07Aug2017_V11_MC.tar.gz',
+            ],
+        '2017' :
+            [
+            '/correction_files/JEC/Fall17_17Nov2017B_V32_DATA.tar.gz',
+            '/correction_files/JEC/Fall17_17Nov2017C_V32_DATA.tar.gz',
+            '/correction_files/JEC/Fall17_17Nov2017DE_V32_DATA.tar.gz',
+            '/correction_files/JEC/Fall17_17Nov2017F_V32_DATA.tar.gz',
+            '/correction_files/JEC/Fall17_17Nov2017_V32_MC.tar.gz',
+            ],
+        '2018' :
+            [
+            '/correction_files/JEC/Autumn18_RunA_V19_DATA.tar.gz',
+            '/correction_files/JEC/Autumn18_RunB_V19_DATA.tar.gz',
+            '/correction_files/JEC/Autumn18_RunC_V19_DATA.tar.gz',
+            '/correction_files/JEC/Autumn18_RunD_V19_DATA.tar.gz',
+            '/correction_files/JEC/Autumn18_V19_MC.tar.gz',
+            ]
+    },
+    'UL' : {
+        '2017' :
+            [
+            '/correction_files/JEC/Summer19UL17_RunB_V5_DATA.tar.gz',
+            '/correction_files/JEC/Summer19UL17_RunC_V5_DATA.tar.gz',
+            '/correction_files/JEC/Summer19UL17_RunD_V5_DATA.tar.gz',
+            '/correction_files/JEC/Summer19UL17_RunE_V5_DATA.tar.gz',
+            '/correction_files/JEC/Summer19UL17_RunF_V5_DATA.tar.gz',
+            ],
+        '2018' :
+            [
+            '/correction_files/JEC/Summer19UL18_RunA_V5_DATA.tar.gz',
+            '/correction_files/JEC/Summer19UL18_RunB_V5_DATA.tar.gz',
+            '/correction_files/JEC/Summer19UL18_RunC_V5_DATA.tar.gz',
+            '/correction_files/JEC/Summer19UL18_RunD_V5_DATA.tar.gz',
+            '/correction_files/JEC/Summer19UL18_V5_MC.tar.gz',
+            ]
+    }
+}
+
 #logsv1mass_bins = np.concatenate( ( (-4, -3.6, -3.2, -2.8, -2.4, -2, -1.59, -1.2, -0.8, -0.4), np.arange(0., 1.8, 0.1), (1.8, 2.5, 3.2) ) )
 
 histogram_settings = {
