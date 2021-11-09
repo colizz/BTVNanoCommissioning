@@ -13,13 +13,9 @@ from parameters import lumi, xsecs, JECversions
 
 class NanoProcessor(processor.ProcessorABC):
     # Define histograms
-    def __init__(self, year=2017, UL=False, pt=500, MwpDDB=0.7, JECfolder='correction_files', nTrueFile='', hist_dir='histograms/', checkOverlap=None):
+    def __init__(self, year='2017', campaign='UL', pt=500, MwpDDB=0.7, JECfolder='correction_files', nTrueFile='', hist_dir='histograms/', checkOverlap=None):
         self.year = year
-        self.sample = 'EOY'
-        if UL:
-            self.sample = 'UL'
-        else:
-            self.sample = 'EOY'
+        self.campaign = campaign
         self._mask_fatjets = {
             'basic'       : {
                 'pt_cut' : 250.,
@@ -73,29 +69,30 @@ class NanoProcessor(processor.ProcessorABC):
         self.year = year
         self.corrJECfolder = JECfolder
         self.checkOverlap = checkOverlap
-        self.eventTags = {'run' : None, 'lumi' : None, 'event' : None}
+        if self.checkOverlap:
+            self.eventTags = {'run' : None, 'lumi' : None, 'event' : None}
 
         ############
         # PU files
-        if UL:
-            #if self.year == 2016:
-            if self.year == 2017:
+        if self.campaign == 'UL':
+            #if self.year == '2016':
+            if self.year == '2017':
                 self.puFile = os.getcwd()+'/correction_files/UltraLegacy/PileupHistogram-goldenJSON-13tev-2017-69200ub-99bins.root'
                 #self.nTrueFile = os.getcwd()+'/correction_files/nTrueInt_datasets_local_btag2017UL_2017.coffea'
-            if self.year == 2018:
+            if self.year == '2018':
                 self.puFile = os.getcwd()+'/correction_files/UltraLegacy/PileupHistogram-goldenJSON-13tev-2018-69200ub-99bins.root'
                 self.nTrueFile = os.getcwd()+'/correction_files/nTrueInt_datasets_local_fixed_btag2018UL_2018.coffea'
             if nTrueFile: self.nTrueFile = nTrueFile
-        else:
-            if self.year == 2016:
+        elif self.campaign == 'EOY':
+            if self.year == '2016':
                 self.puFile = os.getcwd()+'/correction_files/PileupHistogram-goldenJSON-13tev-2016-69200ub-99bins.root'
                 #self.puFile = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions16/13TeV/PileUp/PrelLum15And1613TeV/PileupHistogram-goldenJSON-13tev-2016-69200ub-99bins.root'
                 self.nTrueFile = os.getcwd()+'/correction_files/nTrueInt_datasets_local_fixed_btag2016_2016.coffea'
-            if self.year == 2017:
+            if self.year == '2017':
                 self.puFile = os.getcwd()+'/correction_files/PileupHistogram-goldenJSON-13tev-2017-69200ub-99bins.root'
                 #self.puFile = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions17/13TeV/PileUp/PileupHistogram-goldenJSON-13tev-2017-69200ub-99bins.root'
                 self.nTrueFile = os.getcwd()+'/correction_files/nTrueInt_datasets_local_fixed_btag2017_2017.coffea'
-            if self.year == 2018:
+            if self.year == '2018':
                 #self.puFile = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions18/13TeV/PileUp/PileupHistogram-goldenJSON-13tev-2018-69200ub-99bins.root'
                 self.puFile = os.getcwd()+'/correction_files/PileupHistogram-goldenJSON-13tev-2018-69200ub-99bins.root'
                 self.nTrueFile = os.getcwd()+'/correction_files/nTrueInt_datasets_local_fixed_btag2018_2018.coffea'
@@ -218,6 +215,9 @@ class NanoProcessor(processor.ProcessorABC):
         self.append_mask()
         self._hist_dict.update({**_sumw_dict})
         self._accumulator = processor.dict_accumulator(self._hist_dict)
+        if self.checkOverlap:
+            for var in self.eventTags.keys():
+                self._accumulator.add(processor.dict_accumulator({var : processor.column_accumulator(np.array([]))}))
 
     def append_mask(self):
         masks = list(self._mask_fatjets.keys())
@@ -370,17 +370,17 @@ class NanoProcessor(processor.ProcessorABC):
         isRealData = 'genWeight' not in events.fields
         if not isRealData:
             output['sumw'][dataset] += sum(events.genWeight)
-            JECversion = JECversions[self.sample][str(self.year)]['MC']
+            JECversion = JECversions[self.campaign][self.year]['MC']
         else:
             output['nbtagmu'][dataset] += ak.count(events.event)
-            JECversion = JECversions[self.sample][str(self.year)]['Data'][dataset.split('BTagMu')[1]]            
+            JECversion = JECversions[self.campaign][self.year]['Data'][dataset.split('BTagMu')[1]]            
 
         ############
         # Basic Cleaning
         events = events[ events.PV.npvsGood>0 ]
         METFilters = [ 'goodVertices','globalSuperTightHalo2016Filter', 'HBHENoiseFilter', 'HBHENoiseIsoFilter', 'EcalDeadCellTriggerPrimitiveFilter', 'BadPFMuonFilter' ]
-        if self.sample.startswith('UL'): METFilters = METFilters + [ 'BadPFMuonDzFilter', 'eeBadScFilter', 'ecalBadCalibFilter']
-        if self.sample.startswith('EOY') and isRealData: METFilters.append('eeBadScFilter')
+        if self.campaign.startswith('UL'): METFilters = METFilters + [ 'BadPFMuonDzFilter', 'eeBadScFilter', 'ecalBadCalibFilter']
+        if self.campaign.startswith('EOY') and isRealData: METFilters.append('eeBadScFilter')
         for imet in METFilters: events = events[ getattr( events.Flag, imet )==1 ]
 
         ############
@@ -397,14 +397,14 @@ class NanoProcessor(processor.ProcessorABC):
 
         ############
         # Trigger selection
-        if self.year == 2016:
+        if self.year == '2016':
             if 'BTagMu_AK4Jet300_Mu5' not in events.HLT.fields:
                 self.triggers = [trigger.replace('AK4', '') for trigger in self.triggers]
             if 'BTagMu_AK8Jet300_Mu5' not in events.HLT.fields:
                 self.triggers = [trigger.replace('AK8', '') for trigger in self.triggers]
             #print("self.triggers", self.triggers)
             #print("events.HLT.fields", [item for item in events.HLT.fields if 'BTagMu' in item])
-        elif self.year == 2018:
+        elif self.year == '2018':
             for (i, trigger) in enumerate(self.triggers):
                 if trigger.strip("HLT_") not in events.HLT.fields:
                     self.triggers[i] = trigger + "_noalgo"
@@ -535,25 +535,31 @@ class NanoProcessor(processor.ProcessorABC):
 
         #if isRealData & (self.checkOverlap is not None):
         if self.checkOverlap is not None:
-            self.eventTags['run'] = events.run[cuts.all(*selection[self._final_mask[0]])]
-            self.eventTags['lumi'] = events.luminosityBlock[cuts.all(*selection[self._final_mask[0]])]
-            self.eventTags['event'] = events.event[cuts.all(*selection[self._final_mask[0]])]
+            mask = self._final_mask[0]
+            self.eventTags['run'] = events.run[cuts.all(*selection[mask])]
+            self.eventTags['lumi'] = events.luminosityBlock[cuts.all(*selection[mask])]
+            self.eventTags['event'] = events.event[cuts.all(*selection[mask])]
+            for var in self.eventTags.keys():
+                output[var] = output[var] + processor.column_accumulator(ak.to_numpy(self.eventTags[var]))
 
         return output
 
     def postprocess(self, accumulator):
 
         if self.checkOverlap:
-            run = self.eventTags['run']
-            lumi = self.eventTags['lumi']
-            event = self.eventTags['event']
-            print(run)
+            mask = self._final_mask[0]
+            self.checkOverlap = self.checkOverlap.replace('.txt', f'_{mask}.txt')            
+            run = accumulator['run'].value
+            lumi = accumulator['lumi'].value
+            event = accumulator['event'].value
+            #print(run)
             with open(self.checkOverlap, 'w') as file:
                 for (iev,r) in enumerate(run):
                     if r==1:
                         continue
                     else:
-                        file.write(f'{run[iev]}:{lumi[iev]}:{event[iev]}')
+                        file.write(f'{int(run[iev])}:{int(lumi[iev])}:{int(event[iev])}\n')
             file.close()
+            print(f"Saving run:lumi:event to {self.checkOverlap}")
 
         return accumulator
