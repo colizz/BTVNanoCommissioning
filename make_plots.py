@@ -237,7 +237,7 @@ for histname in accumulator:
         print("Saving", filepath)
         plt.savefig(filepath, dpi=300, format="png")
         plt.close(fig)
-    else:
+    elif args.hist2d:
         for dataset in datasets:
             if 'QCD' in dataset:
                 #histo_QCD = h[dataset].sum('dataset')
