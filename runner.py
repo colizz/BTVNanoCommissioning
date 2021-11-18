@@ -49,9 +49,10 @@ if __name__ == '__main__':
     parser.add_argument('--year', type=str, choices=['2016', '2017', '2018'], help='Year of data/MC samples', required=True)
     parser.add_argument('--outputDir', type=str, default=None, help='Output directory')
     parser.add_argument('--nTrueFile', type=str, default='', help='To specify nTrue file. To use the default leave it empty')
-    parser.add_argument('--pt', type=int, default=500, help='Pt cut.')
-    parser.add_argument('--MwpDDB', type=float, default=0.7, help='Medium working point for DDB.', required=True)
-    parser.add_argument('--checkOverlap', default=False, action='store_true', help='Create run:lumi:event txt file for data.')
+    #parser.add_argument('--pt', type=int, default=500, help='Pt cut.')
+    #parser.add_argument('--MwpDDB', type=float, default=0.7, help='Medium working point for DDB.', required=True)
+    parser.add_argument('--hist2d', default=False, action='store_true', help='Save 2D histograms.', required=False)
+    parser.add_argument('--checkOverlap', default=False, action='store_true', help='Create run:lumi:event txt file for data.', required=False)
 
     # Scale out
     parser.add_argument('--executor', choices=['iterative', 'futures', 'parsl/condor', 'parsl/slurm', 'dask/condor', 'dask/slurm'], default='futures', help='The type of executor to use (default: %(default)s)')
@@ -103,7 +104,8 @@ if __name__ == '__main__':
     if not os.path.exists(hist_dir):
         os.makedirs(hist_dir)
     # Output file with run:lumi:event list
-    args.checkOverlap = hist_dir + args.output.split('.')[0] + '.txt'
+    if args.checkOverlap:
+        args.checkOverlap = hist_dir + args.output.split('.')[0] + '.txt'
 
     # Scan if files can be opened
     if args.validate:
@@ -145,7 +147,7 @@ if __name__ == '__main__':
         processor_instance = NanoProcessor()
     elif args.workflow == "fattag":
         from workflows.fatjet_tagger import NanoProcessor
-        processor_instance = NanoProcessor(year=args.year, campaign=args.campaign, pt=args.pt, MwpDDB=args.MwpDDB, JECfolder=jesInputFilePath, nTrueFile=args.nTrueFile, hist_dir=hist_dir, checkOverlap=args.checkOverlap)
+        processor_instance = NanoProcessor(year=args.year, campaign=args.campaign, JECfolder=jesInputFilePath, nTrueFile=args.nTrueFile, hist_dir=hist_dir, hist2d=args.hist2d, checkOverlap=args.checkOverlap)
     else:
         raise NotImplemented
 

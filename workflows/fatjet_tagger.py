@@ -8,17 +8,17 @@ import numpy as np
 import awkward as ak
 import uproot
 from utils import rescale, get_nsv, get_sv_in_jet
-from parameters import lumi, xsecs, JECversions
+from parameters import lumi, xsecs, JECversions, AK8Taggers
 
 
 class NanoProcessor(processor.ProcessorABC):
     # Define histograms
-    def __init__(self, year='2017', campaign='UL', pt=500, MwpDDB=0.7, JECfolder='correction_files', nTrueFile='', hist_dir='histograms/', checkOverlap=None):
+    def __init__(self, year='2017', campaign='UL', JECfolder='correction_files', nTrueFile='', hist_dir='histograms/', hist2d =False, checkOverlap=False):
         self.year = year
         self.campaign = campaign
         self._mask_fatjets = {
             'basic'       : {
-                'pt_cut' : 250.,
+                'pt_cut' : 350.,
                 'eta_cut': 2.4,
                 'jetId_cut': 2,
                 'mass_cut' : 20.,
@@ -38,21 +38,14 @@ class NanoProcessor(processor.ProcessorABC):
                 'mass_cut' : 100.,
                 'tau21_cut' : 0.3
                     },
-            'pt400msd100tau06'       : {
-                'pt_cut' : 400.,
-                'eta_cut': 2.4,
-                'jetId_cut': 2,
-                'mass_cut' : 100.,
-                'tau21_cut' : 0.6
-                    },
         }
         self._final_mask = ['msd100tau06', 'msd100tau03']
         #self._final_mask = ['msd100tau06', 'pt400msd100tau06']
         self._mask_DDX = {
             'DDB' : {
                 #'L' : XX,
-                #'M' : 0.7
-                'M' : MwpDDB
+                'M' : 0.7
+                #'M' : MwpDDB
             },
             'DDC' : {
                 #'L' : XX,
@@ -61,13 +54,14 @@ class NanoProcessor(processor.ProcessorABC):
         }
         self._pt_bins = {
             #'L' : [0, 350],
-            'M' : (350, pt),
+            'M' : (350, 500),
             #'M' : (350, 450),
-            'H' : (pt, 'Inf'),
+            'H' : (500, 'Inf'),
             #'H' : (450, 'Inf'),
         }
         self.year = year
         self.corrJECfolder = JECfolder
+        self.hist2d = hist2d
         self.checkOverlap = checkOverlap
         if self.checkOverlap:
             self.eventTags = {'run' : None, 'lumi' : None, 'event' : None}
@@ -78,10 +72,10 @@ class NanoProcessor(processor.ProcessorABC):
             #if self.year == '2016':
             if self.year == '2017':
                 self.puFile = os.getcwd()+'/correction_files/UltraLegacy/PileupHistogram-goldenJSON-13tev-2017-69200ub-99bins.root'
-                #self.nTrueFile = os.getcwd()+'/correction_files/nTrueInt_datasets_local_btag2017UL_2017.coffea'
+                self.nTrueFile = os.getcwd()+'/correction_files/nTrueInt_RunIISummer20UL17_local_2017.coffea'
             if self.year == '2018':
                 self.puFile = os.getcwd()+'/correction_files/UltraLegacy/PileupHistogram-goldenJSON-13tev-2018-69200ub-99bins.root'
-                self.nTrueFile = os.getcwd()+'/correction_files/nTrueInt_datasets_local_fixed_btag2018UL_2018.coffea'
+                #self.nTrueFile = os.getcwd()+'/correction_files/nTrueInt_datasets_local_fixed_btag2018UL_2018.coffea'
             if nTrueFile: self.nTrueFile = nTrueFile
         elif self.campaign == 'EOY':
             if self.year == '2016':
@@ -121,6 +115,14 @@ class NanoProcessor(processor.ProcessorABC):
         nsv1_axis    = hist.Bin("nsv1",  r"$N_{SV}$(sj1)",   30, 0, 30)
         nsv2_axis    = hist.Bin("nsv2",  r"$N_{SV}$(sj2)",   30, 0, 30)
 
+        # Muon
+        leadmuon_pt_axis   = hist.Bin("pt",   r"lead. Muon $p_{T}$ [GeV]", 200, 0, 200)
+        leadmuon_eta_axis  = hist.Bin("eta",  r"lead. Muon $\eta$", 60, -3, 3)
+        leadmuon_phi_axis  = hist.Bin("phi",  r"lead. Muon $\phi$", 60, -np.pi, np.pi)
+        subleadmuon_pt_axis   = hist.Bin("pt",   r"sublead. Muon $p_{T}$ [GeV]", 200, 0, 200)
+        subleadmuon_eta_axis  = hist.Bin("eta",  r"sublead. Muon $\eta$", 60, -3, 3)
+        subleadmuon_phi_axis  = hist.Bin("phi",  r"sublead. Muon $\phi$", 60, -np.pi, np.pi)
+
         # Jet
         #jet_pt_axis   = hist.Bin("pt",   r"Jet $p_{T}$ [GeV]", 100, 20, 400)
         #jet_eta_axis  = hist.Bin("eta",  r"Jet $\eta$", 60, -3, 3)
@@ -144,7 +146,7 @@ class NanoProcessor(processor.ProcessorABC):
 
         # Define similar axes dynamically
         disc_list = ["btagCMVA", "btagCSVV2", 'btagDeepB', 'btagDeepC', 'btagDeepFlavB', 'btagDeepFlavC',]
-        disc_list_fj = ['btagDDBvLV2', 'btagDDCvLV2', 'btagDDCvBV2', 'btagHbb', 'particleNet_HbbvsQCD', 'particleNet_HccvsQCD', 'deepTag_H', 'deepTagMD_ccvsLight']
+        disc_list_fj = AK8Taggers
         btag_axes = []
         btag_axes_fj = []
         for d in disc_list:
@@ -153,6 +155,15 @@ class NanoProcessor(processor.ProcessorABC):
             btag_axes_fj.append(hist.Bin(d, d, 40, 0, 1))
 
         # Define histograms from axes
+        _hist_muon_dict = {
+                'leadmuon_pt'  : hist.Hist("Events", dataset_axis, flavor_axis, leadmuon_pt_axis),
+                'leadmuon_eta' : hist.Hist("Events", dataset_axis, flavor_axis, leadmuon_eta_axis),
+                'leadmuon_phi' : hist.Hist("Events", dataset_axis, flavor_axis, leadmuon_phi_axis),
+                'subleadmuon_pt'  : hist.Hist("Events", dataset_axis, flavor_axis, subleadmuon_pt_axis),
+                'subleadmuon_eta' : hist.Hist("Events", dataset_axis, flavor_axis, subleadmuon_eta_axis),
+                'subleadmuon_phi' : hist.Hist("Events", dataset_axis, flavor_axis, subleadmuon_phi_axis),
+            }
+
         #_hist_jet_dict = {
         #        'jet_pt'  : hist.Hist("Events", dataset_axis, jet_pt_axis),
         #        'jet_eta' : hist.Hist("Events", dataset_axis, jet_eta_axis),
@@ -183,16 +194,17 @@ class NanoProcessor(processor.ProcessorABC):
             _hist_fatjet_dict['fatjet_' + disc] = hist.Hist("Events", dataset_axis, flavor_axis, btag_axes_fj[i])
 
         # Define 2D histograms
-        _hist2d_dict = {}
-        for (i, disc) in enumerate(disc_list_fj):
-            _hist2d_dict['hist2d_fatjet_pt_vs_' + disc]    = hist.Hist("Events", dataset_axis, flavor_axis, btag_axes_fj[i], fatjet_pt_axis)
-            _hist2d_dict['hist2d_fatjet_mass_vs_' + disc]  = hist.Hist("Events", dataset_axis, flavor_axis, btag_axes_fj[i], fatjet_mass_axis)
-            _hist2d_dict['hist2d_fatjet_tau21_vs_' + disc] = hist.Hist("Events", dataset_axis, flavor_axis, btag_axes_fj[i], fatjet_tau21_axis)
-            _hist2d_dict['hist2d_fatjet_n2b1_vs_' + disc]  = hist.Hist("Events", dataset_axis, flavor_axis, btag_axes_fj[i], fatjet_n2b1_axis)
-            _hist2d_dict['hist2d_fatjet_nsv1_vs_' + disc]         = hist.Hist("Events", dataset_axis, flavor_axis, btag_axes_fj[i], nsv1_axis)
-            _hist2d_dict['hist2d_fatjet_nsv2_vs_' + disc]         = hist.Hist("Events", dataset_axis, flavor_axis, btag_axes_fj[i], nsv2_axis)
-            _hist2d_dict['hist2d_fatjet_nmusj1_vs_' + disc]       = hist.Hist("Events", dataset_axis, flavor_axis, btag_axes_fj[i], nmusj1_axis)
-            _hist2d_dict['hist2d_fatjet_nmusj2_vs_' + disc]       = hist.Hist("Events", dataset_axis, flavor_axis, btag_axes_fj[i], nmusj2_axis)
+        if self.hist2d:
+            _hist2d_dict = {}
+            for (i, disc) in enumerate(disc_list_fj):
+                _hist2d_dict['hist2d_fatjet_pt_vs_' + disc]    = hist.Hist("Events", dataset_axis, flavor_axis, btag_axes_fj[i], fatjet_pt_axis)
+                _hist2d_dict['hist2d_fatjet_mass_vs_' + disc]  = hist.Hist("Events", dataset_axis, flavor_axis, btag_axes_fj[i], fatjet_mass_axis)
+                _hist2d_dict['hist2d_fatjet_tau21_vs_' + disc] = hist.Hist("Events", dataset_axis, flavor_axis, btag_axes_fj[i], fatjet_tau21_axis)
+                _hist2d_dict['hist2d_fatjet_n2b1_vs_' + disc]  = hist.Hist("Events", dataset_axis, flavor_axis, btag_axes_fj[i], fatjet_n2b1_axis)
+                _hist2d_dict['hist2d_fatjet_nsv1_vs_' + disc]         = hist.Hist("Events", dataset_axis, flavor_axis, btag_axes_fj[i], nsv1_axis)
+                _hist2d_dict['hist2d_fatjet_nsv2_vs_' + disc]         = hist.Hist("Events", dataset_axis, flavor_axis, btag_axes_fj[i], nsv2_axis)
+                _hist2d_dict['hist2d_fatjet_nmusj1_vs_' + disc]       = hist.Hist("Events", dataset_axis, flavor_axis, btag_axes_fj[i], nmusj1_axis)
+                _hist2d_dict['hist2d_fatjet_nmusj2_vs_' + disc]       = hist.Hist("Events", dataset_axis, flavor_axis, btag_axes_fj[i], nmusj2_axis)
 
         _hist_event_dict = {
                 #'njet'   : hist.Hist("Events", dataset_axis, njet_axis),
@@ -205,13 +217,17 @@ class NanoProcessor(processor.ProcessorABC):
                       'nbtagmu': processor.defaultdict_accumulator(float),
             }
 
+        self.muon_hists = list(_hist_muon_dict.keys())
         #self.jet_hists = list(_hist_jet_dict.keys())
         self.fatjet_hists = list(_hist_fatjet_dict.keys())
         self.sv_hists = list(_hist_sv_dict.keys())
         self.event_hists = list(_hist_event_dict.keys())
 
         #_hist_dict = {**_hist_jet_dict, **_hist_fatjet_dict, **_hist2d_dict, **_hist_event_dict, **_sumw_dict}
-        self._hist_dict = {**_hist_fatjet_dict, **_hist_sv_dict, **_hist2d_dict, **_hist_event_dict}
+        if self.hist2d:
+            self._hist_dict = {**_hist_muon_dict, **_hist_fatjet_dict, **_hist_sv_dict, **_hist2d_dict, **_hist_event_dict}
+        else:
+            self._hist_dict = {**_hist_muon_dict, **_hist_fatjet_dict, **_hist_sv_dict, **_hist_event_dict}
         self.append_mask()
         self._hist_dict.update({**_sumw_dict})
         self._accumulator = processor.dict_accumulator(self._hist_dict)
@@ -239,50 +255,23 @@ class NanoProcessor(processor.ProcessorABC):
                                 d[f'{histname}_{maskname}{DDX}fail{wp}wpPt-{pt_low}to{pt_high}'] = h.copy()
         self._hist_dict = d.copy()
 
-        l = []
-        for histname in self.fatjet_hists:
-            for maskname in masks:
-                l.append(f'{histname}_{maskname}')
-                if maskname in self._final_mask:
-                    for DDX in self._mask_DDX.keys():
-                        for wp in self._mask_DDX[DDX].keys():
-                            l.append(f'{histname}_{maskname}{DDX}pass{wp}wp')
-                            l.append(f'{histname}_{maskname}{DDX}fail{wp}wp')
-                            for wpt in self._pt_bins.keys():
-                                pt_low, pt_high = self._pt_bins[wpt]
-                                pt_low, pt_high = (str(pt_low), str(pt_high))
-                                l.append(f'{histname}_{maskname}{DDX}pass{wp}wpPt-{pt_low}to{pt_high}')
-                                l.append(f'{histname}_{maskname}{DDX}fail{wp}wpPt-{pt_low}to{pt_high}')
-        self.fatjet_hists = l
-        l = []
-        for histname in self.sv_hists:
-            for maskname in masks:
-                l.append(f'{histname}_{maskname}')
-                if maskname in self._final_mask:
-                    for DDX in self._mask_DDX.keys():
-                        for wp in self._mask_DDX[DDX].keys():
-                            l.append(f'{histname}_{maskname}{DDX}pass{wp}wp')
-                            l.append(f'{histname}_{maskname}{DDX}fail{wp}wp')
-                            for wpt in self._pt_bins.keys():
-                                pt_low, pt_high = self._pt_bins[wpt]
-                                pt_low, pt_high = (str(pt_low), str(pt_high))
-                                l.append(f'{histname}_{maskname}{DDX}pass{wp}wpPt-{pt_low}to{pt_high}')
-                                l.append(f'{histname}_{maskname}{DDX}fail{wp}wpPt-{pt_low}to{pt_high}')
-        self.sv_hists = l
-        l = []
-        for histname in self.event_hists:
-            for maskname in masks:
-                l.append(f'{histname}_{maskname}')
-                if maskname in self._final_mask:
-                    for DDX in self._mask_DDX.keys():
-                        for wp in self._mask_DDX[DDX].keys():
-                            l.append(f'{histname}_{maskname}{DDX}pass{wp}wp')
-                            l.append(f'{histname}_{maskname}{DDX}fail{wp}wp')
-                            for wpt in self._pt_bins.keys():
-                                pt_low, pt_high = self._pt_bins[wpt]
-                                l.append(f'{histname}_{maskname}{DDX}pass{wp}wpPt-{pt_low}to{pt_high}')
-                                l.append(f'{histname}_{maskname}{DDX}fail{wp}wpPt-{pt_low}to{pt_high}')
-        self.event_hists = l
+        #for attr, hists in zip(["fatjet_hists", "sv_hists", "event_hists"], [self.fatjet_hists, self.sv_hists, self.event_hists]):
+        for attr in ["muon_hists", "fatjet_hists", "sv_hists", "event_hists"]:
+            attr_updated = []
+            for histname in getattr(self, attr):
+                for maskname in masks:
+                    attr_updated.append(f'{histname}_{maskname}')
+                    if maskname in self._final_mask:
+                        for DDX in self._mask_DDX.keys():
+                            for wp in self._mask_DDX[DDX].keys():
+                                attr_updated.append(f'{histname}_{maskname}{DDX}pass{wp}wp')
+                                attr_updated.append(f'{histname}_{maskname}{DDX}fail{wp}wp')
+                                for wpt in self._pt_bins.keys():
+                                    pt_low, pt_high = self._pt_bins[wpt]
+                                    pt_low, pt_high = (str(pt_low), str(pt_high))
+                                    attr_updated.append(f'{histname}_{maskname}{DDX}pass{wp}wpPt-{pt_low}to{pt_high}')
+                                    attr_updated.append(f'{histname}_{maskname}{DDX}fail{wp}wpPt-{pt_low}to{pt_high}')
+            setattr(self, attr, attr_updated)
 
         return self._hist_dict
 
@@ -313,16 +302,16 @@ class NanoProcessor(processor.ProcessorABC):
         ext.finalize()
         evaluator = ext.make_evaluator()
 
-        print("available evaluator keys:")
-        for key in evaluator.keys():
-            print("\t", key)
+        #print("available evaluator keys:")
+        #for key in evaluator.keys():
+        #    print("\t", key)
 
         jec_inputs = {name: evaluator[name] for name in jec_stack_names}
         corrector = FactorizedJetCorrector( **jec_inputs )
         for i in jec_inputs: print(i,'\n',evaluator[i])
 
-        print(dir(evaluator))
-        print()
+        #print(dir(evaluator))
+        #print()
         jec_stack = JECStack(jec_inputs)
         name_map = jec_stack.blank_name_map
         name_map['JetPt'] = 'pt'
@@ -343,18 +332,18 @@ class NanoProcessor(processor.ProcessorABC):
 
         jet_factory = CorrectedJetsFactory(name_map, jec_stack)
         corrected_jets = jet_factory.build(jets, lazy_cache=events_cache)
-        print()
-        print('starting columns:',ak.fields(jets))
-        print()
+        #print()
+        #print('starting columns:',ak.fields(jets))
+        #print()
 
-        print('untransformed pt ratios',jets.pt/jets.pt_raw)
-        print('untransformed mass ratios',jets.mass/jets.mass_raw)
+        #print('untransformed pt ratios',jets.pt/jets.pt_raw)
+        #print('untransformed mass ratios',jets.mass/jets.mass_raw)
 
-        print('transformed pt ratios',corrected_jets.pt/corrected_jets.pt_raw)
-        print('transformed mass ratios',corrected_jets.mass/corrected_jets.mass_raw)
+        #print('transformed pt ratios',corrected_jets.pt/corrected_jets.pt_raw)
+        #print('transformed mass ratios',corrected_jets.mass/corrected_jets.mass_raw)
 
-        print()
-        print('transformed columns:', ak.fields(corrected_jets))
+        #print()
+        #print('transformed columns:', ak.fields(corrected_jets))
         return corrected_jets
 
 
@@ -364,6 +353,7 @@ class NanoProcessor(processor.ProcessorABC):
 
     def process(self, events):
         output = self.accumulator.identity()
+        if len(events)==0: return output
 
         dataset = events.metadata['dataset']
 
@@ -379,7 +369,11 @@ class NanoProcessor(processor.ProcessorABC):
         # Basic Cleaning
         events = events[ events.PV.npvsGood>0 ]
         METFilters = [ 'goodVertices','globalSuperTightHalo2016Filter', 'HBHENoiseFilter', 'HBHENoiseIsoFilter', 'EcalDeadCellTriggerPrimitiveFilter', 'BadPFMuonFilter' ]
-        if self.campaign.startswith('UL'): METFilters = METFilters + [ 'BadPFMuonDzFilter', 'eeBadScFilter', 'ecalBadCalibFilter']
+        if self.campaign.startswith('UL'):
+            if self.year in ['2016']:
+                METFilters = METFilters + [ 'BadPFMuonDzFilter', 'eeBadScFilter', 'ecalBadCalibFilter']
+            elif self.year in ['2017', '2018']:
+                METFilters = METFilters + [ 'eeBadScFilter', 'ecalBadCalibFilter']
         if self.campaign.startswith('EOY') and isRealData: METFilters.append('eeBadScFilter')
         for imet in METFilters: events = events[ getattr( events.Flag, imet )==1 ]
 
@@ -434,6 +428,10 @@ class NanoProcessor(processor.ProcessorABC):
         ## Event level variables
         eventVariables = {}
         eventVariables['nfatjet'] = ak.num(events.FatJet)
+
+        ## Leading/subleading muon variables
+        leadmuon = events.Muon[:, 0]
+        subleadmuon = events.Muon[:, 1]
 
         ## Leading jet variables
         leadfatjet = ak.firsts(events.FatJet)
@@ -517,6 +515,16 @@ class NanoProcessor(processor.ProcessorABC):
 
         for histname, h in output.items():
             sel = [ r for r in selection.keys() if r in histname.split('_') ]
+            if ((histname in self.muon_hists) & ('leadmuon' in histname)):
+                for flav, mask in flavors.items():
+                    weight = weights.weight() * cuts.all(*selection[sel[0]]) * ak.to_numpy(mask)
+                    fields = {k: ak.fill_none(leadmuon[k], -9999) for k in h.fields if k in dir(leadmuon)}
+                    h.fill(dataset=dataset, flavor=flav, **fields, weight=weight)
+            if ((histname in self.muon_hists) & ('subleadmuon' in histname)):
+                for flav, mask in flavors.items():
+                    weight = weights.weight() * cuts.all(*selection[sel[0]]) * ak.to_numpy(mask)
+                    fields = {k: ak.fill_none(subleadmuon[k], -9999) for k in h.fields if k in dir(subleadmuon)}
+                    h.fill(dataset=dataset, flavor=flav, **fields, weight=weight)
             if ((histname in self.fatjet_hists) | ('hist2d_fatjet' in histname)):
                 for flav, mask in flavors.items():
                     weight = weights.weight() * cuts.all(*selection[sel[0]]) * ak.to_numpy(mask)
@@ -534,7 +542,7 @@ class NanoProcessor(processor.ProcessorABC):
                     h.fill(dataset=dataset, flavor=flav, **fields, weight=weight)
 
         #if isRealData & (self.checkOverlap is not None):
-        if self.checkOverlap is not None:
+        if self.checkOverlap:
             mask = self._final_mask[0]
             self.eventTags['run'] = events.run[cuts.all(*selection[mask])]
             self.eventTags['lumi'] = events.luminosityBlock[cuts.all(*selection[mask])]

@@ -20,6 +20,7 @@ xsecs = {
     "QCD_Pt-600to800_MuEnrichedPt5"  : 18.21,
     "QCD_Pt-800to1000_MuEnrichedPt5" : 3.275,
     "QCD_Pt-1000toInf_MuEnrichedPt5" : 1.078,
+
     "QCD_Pt-120to170_MuEnrichedPt5_TuneCP5_13TeV_pythia8"  : 21230.0,
     "QCD_Pt-170to300_MuEnrichedPt5_TuneCP5_13TeV_pythia8"  : 7055.0,
     "QCD_Pt-300to470_MuEnrichedPt5_TuneCP5_13TeV_pythia8"  : 619.3,
@@ -27,6 +28,14 @@ xsecs = {
     "QCD_Pt-600to800_MuEnrichedPt5_TuneCP5_13TeV_pythia8"  : 18.21,
     "QCD_Pt-800to1000_MuEnrichedPt5_TuneCP5_13TeV_pythia8" : 3.275,
     "QCD_Pt-1000toInf_MuEnrichedPt5_TuneCP5_13TeV_pythia8" : 1.078,
+
+    "QCD_Pt-120To170_MuEnrichedPt5_TuneCP5_13TeV-pythia8"  : 21230.0,
+    "QCD_Pt-170To300_MuEnrichedPt5_TuneCP5_13TeV-pythia8"  : 7055.0,
+    "QCD_Pt-300To470_MuEnrichedPt5_TuneCP5_13TeV-pythia8"  : 619.3,
+    "QCD_Pt-470To600_MuEnrichedPt5_TuneCP5_13TeV-pythia8"  : 59.24,
+    "QCD_Pt-600To800_MuEnrichedPt5_TuneCP5_13TeV-pythia8"  : 18.21,
+    "QCD_Pt-800To1000_MuEnrichedPt5_TuneCP5_13TeV-pythia8" : 3.275,
+    "QCD_Pt-1000_MuEnrichedPt5_TuneCP5_13TeV-pythia8" : 1.078,
 
     "QCD_Pt-120to170_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8" : 25700.0,
     "QCD_Pt-170to300_MuEnrichedPt5_TuneCUETP8M1_13TeV_pythia8" : 8683.0,
@@ -146,6 +155,8 @@ jecTarFiles = {
             ]
     }
 }
+
+AK8Taggers = ['btagDDBvLV2', 'btagDDCvLV2', 'btagDDCvBV2', 'btagHbb', 'particleNet_HbbvsQCD', 'particleNet_HccvsQCD', 'deepTag_H', 'deepTagMD_ccvsLight']
 
 #logsv1mass_bins = np.concatenate( ( (-4, -3.6, -3.2, -2.8, -2.4, -2, -1.59, -1.2, -0.8, -0.4), np.arange(0., 1.8, 0.1), (1.8, 2.5, 3.2) ) )
 
