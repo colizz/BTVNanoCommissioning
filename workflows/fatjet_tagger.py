@@ -13,7 +13,7 @@ from parameters import lumi, xsecs, JECversions, AK8Taggers
 
 class NanoProcessor(processor.ProcessorABC):
     # Define histograms
-    def __init__(self, year='2017', campaign='UL', JECfolder='correction_files', nTrueFile='', hist_dir='histograms/', hist2d =False, checkOverlap=False):
+    def __init__(self, year='2017', campaign='UL', mupt=5 , JECfolder='correction_files', nTrueFile='', hist_dir='histograms/', hist2d =False, checkOverlap=False):
         self.year = year
         self.campaign = campaign
         self._mask_fatjets = {
@@ -59,7 +59,7 @@ class NanoProcessor(processor.ProcessorABC):
             'H' : (500, 'Inf'),
             #'H' : (450, 'Inf'),
         }
-        self.year = year
+        self.mupt = mupt
         self.corrJECfolder = JECfolder
         self.hist2d = hist2d
         self.checkOverlap = checkOverlap
@@ -117,11 +117,13 @@ class NanoProcessor(processor.ProcessorABC):
 
         # Muon
         leadmuon_pt_axis   = hist.Bin("pt",   r"lead. Muon $p_{T}$ [GeV]", 200, 0, 200)
-        leadmuon_eta_axis  = hist.Bin("eta",  r"lead. Muon $\eta$", 60, -3, 3)
-        leadmuon_phi_axis  = hist.Bin("phi",  r"lead. Muon $\phi$", 60, -np.pi, np.pi)
+        #leadmuon_eta_axis  = hist.Bin("eta",  r"lead. Muon $\eta$", 60, -3, 3)
+        #leadmuon_phi_axis  = hist.Bin("phi",  r"lead. Muon $\phi$", 60, -np.pi, np.pi)
         subleadmuon_pt_axis   = hist.Bin("pt",   r"sublead. Muon $p_{T}$ [GeV]", 200, 0, 200)
-        subleadmuon_eta_axis  = hist.Bin("eta",  r"sublead. Muon $\eta$", 60, -3, 3)
-        subleadmuon_phi_axis  = hist.Bin("phi",  r"sublead. Muon $\phi$", 60, -np.pi, np.pi)
+        #subleadmuon_eta_axis  = hist.Bin("eta",  r"sublead. Muon $\eta$", 60, -3, 3)
+        #subleadmuon_phi_axis  = hist.Bin("phi",  r"sublead. Muon $\phi$", 60, -np.pi, np.pi)
+        leadmuonsj1_pt_axis   = hist.Bin("pt",   r"lead. Muon (sj1) $p_{T}$ [GeV]", 200, 0, 200)
+        leadmuonsj2_pt_axis   = hist.Bin("pt",   r"lead. Muon (sj2) $p_{T}$ [GeV]", 200, 0, 200)
 
         # Jet
         #jet_pt_axis   = hist.Bin("pt",   r"Jet $p_{T}$ [GeV]", 100, 20, 400)
@@ -157,11 +159,13 @@ class NanoProcessor(processor.ProcessorABC):
         # Define histograms from axes
         _hist_muon_dict = {
                 'leadmuon_pt'  : hist.Hist("Events", dataset_axis, flavor_axis, leadmuon_pt_axis),
-                'leadmuon_eta' : hist.Hist("Events", dataset_axis, flavor_axis, leadmuon_eta_axis),
-                'leadmuon_phi' : hist.Hist("Events", dataset_axis, flavor_axis, leadmuon_phi_axis),
+                #'leadmuon_eta' : hist.Hist("Events", dataset_axis, flavor_axis, leadmuon_eta_axis),
+                #'leadmuon_phi' : hist.Hist("Events", dataset_axis, flavor_axis, leadmuon_phi_axis),
                 'subleadmuon_pt'  : hist.Hist("Events", dataset_axis, flavor_axis, subleadmuon_pt_axis),
-                'subleadmuon_eta' : hist.Hist("Events", dataset_axis, flavor_axis, subleadmuon_eta_axis),
-                'subleadmuon_phi' : hist.Hist("Events", dataset_axis, flavor_axis, subleadmuon_phi_axis),
+                #'subleadmuon_eta' : hist.Hist("Events", dataset_axis, flavor_axis, subleadmuon_eta_axis),
+                #'subleadmuon_phi' : hist.Hist("Events", dataset_axis, flavor_axis, subleadmuon_phi_axis),
+                'leadmuonsj1_pt'  : hist.Hist("Events", dataset_axis, flavor_axis, leadmuonsj1_pt_axis),
+                'leadmuonsj2_pt'  : hist.Hist("Events", dataset_axis, flavor_axis, leadmuonsj2_pt_axis),
             }
 
         #_hist_jet_dict = {
@@ -414,7 +418,7 @@ class NanoProcessor(processor.ProcessorABC):
         # Basic cuts
         ## Muon cuts
         # muon twiki: https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideMuonIdRun2
-        events.Muon = events.Muon[(events.Muon.pt > 5) & (abs(events.Muon.eta < 2.4)) & (events.Muon.tightId != 1) & (events.Muon.pfRelIso04_all > 0.15)]
+        events.Muon = events.Muon[(events.Muon.pt > self.mupt) & (abs(events.Muon.eta < 2.4)) & (events.Muon.tightId != 1) & (events.Muon.pfRelIso04_all > 0.15)]
         events.Muon = ak.pad_none(events.Muon, 2, axis=1)
 
         ## Jet cuts  (not used)
@@ -442,6 +446,10 @@ class NanoProcessor(processor.ProcessorABC):
         leadfatjet['nsv2'] = get_nsv( subjet2, events.SV )
         leadfatjet['nmusj1'] = ak.num(subjet1.delta_r(events.Muon) < 0.4)
         leadfatjet['nmusj2'] = ak.num(subjet2.delta_r(events.Muon) < 0.4)
+        leadmuonsj1 = ak.pad_none(events.Muon[subjet1.delta_r(events.Muon) < 0.4], 1)[:,0]
+        leadmuonsj2 = ak.pad_none(events.Muon[subjet2.delta_r(events.Muon) < 0.4], 1)[:,0]
+        muonCollection = {'leadmuon' : leadmuon, 'subleadmuon' : subleadmuon,
+                          'leadmuonsj1' : leadmuonsj1, 'leadmuonsj2' : leadmuonsj2,}
 
         events.SV = events.SV[get_sv_in_jet(leadfatjet, events.SV)]
         leadsv = ak.firsts(events.SV)
@@ -515,15 +523,14 @@ class NanoProcessor(processor.ProcessorABC):
 
         for histname, h in output.items():
             sel = [ r for r in selection.keys() if r in histname.split('_') ]
-            if ((histname in self.muon_hists) & ('leadmuon' in histname)):
+            if histname in self.muon_hists:
+                #print('array printout:', np.array(list(muonCollection.keys())))
+                #print('list printout:', np.array(list(muonCollection.keys()))[[k in histname for k in muonCollection.keys()]])
+                muonKey = np.array(list(muonCollection.keys()))[[k in histname for k in muonCollection.keys()]][0]
+                muon = muonCollection[muonKey]
                 for flav, mask in flavors.items():
                     weight = weights.weight() * cuts.all(*selection[sel[0]]) * ak.to_numpy(mask)
-                    fields = {k: ak.fill_none(leadmuon[k], -9999) for k in h.fields if k in dir(leadmuon)}
-                    h.fill(dataset=dataset, flavor=flav, **fields, weight=weight)
-            if ((histname in self.muon_hists) & ('subleadmuon' in histname)):
-                for flav, mask in flavors.items():
-                    weight = weights.weight() * cuts.all(*selection[sel[0]]) * ak.to_numpy(mask)
-                    fields = {k: ak.fill_none(subleadmuon[k], -9999) for k in h.fields if k in dir(subleadmuon)}
+                    fields = {k: ak.fill_none(muon[k], -9999) for k in h.fields if k in dir(muon)}
                     h.fill(dataset=dataset, flavor=flav, **fields, weight=weight)
             if ((histname in self.fatjet_hists) | ('hist2d_fatjet' in histname)):
                 for flav, mask in flavors.items():
