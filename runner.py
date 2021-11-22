@@ -49,6 +49,7 @@ if __name__ == '__main__':
     parser.add_argument('--year', type=str, choices=['2016', '2017', '2018'], help='Year of data/MC samples', required=True)
     parser.add_argument('--outputDir', type=str, default=None, help='Output directory')
     parser.add_argument('--nTrueFile', type=str, default='', help='To specify nTrue file. To use the default leave it empty')
+    parser.add_argument('--mupt', type=int, default=5, help='Muon Pt cut.')
     #parser.add_argument('--pt', type=int, default=500, help='Pt cut.')
     #parser.add_argument('--MwpDDB', type=float, default=0.7, help='Medium working point for DDB.', required=True)
     parser.add_argument('--hist2d', default=False, action='store_true', help='Save 2D histograms.', required=False)
@@ -147,7 +148,7 @@ if __name__ == '__main__':
         processor_instance = NanoProcessor()
     elif args.workflow == "fattag":
         from workflows.fatjet_tagger import NanoProcessor
-        processor_instance = NanoProcessor(year=args.year, campaign=args.campaign, JECfolder=jesInputFilePath, nTrueFile=args.nTrueFile, hist_dir=hist_dir, hist2d=args.hist2d, checkOverlap=args.checkOverlap)
+        processor_instance = NanoProcessor(year=args.year, campaign=args.campaign, mupt=args.mupt, JECfolder=jesInputFilePath, nTrueFile=args.nTrueFile, hist_dir=hist_dir, hist2d=args.hist2d, checkOverlap=args.checkOverlap)
     else:
         raise NotImplemented
 
