@@ -13,7 +13,7 @@ from parameters import lumi, xsecs, JECversions, AK8Taggers
 
 class NanoProcessor(processor.ProcessorABC):
     # Define histograms
-    def __init__(self, year='2017', campaign='UL', mupt=5 , JECfolder='correction_files', nTrueFile='', hist_dir='histograms/', hist2d =False, checkOverlap=False):
+    def __init__(self, year='2017', campaign='UL', mupt=5, JECfolder='correction_files', nTrueFile='', hist_dir='histograms/', hist2d =False, checkOverlap=False):
         self.year = year
         self.campaign = campaign
         self._mask_fatjets = {
@@ -75,7 +75,7 @@ class NanoProcessor(processor.ProcessorABC):
                 self.nTrueFile = os.getcwd()+'/correction_files/nTrueInt_RunIISummer20UL17_local_2017.coffea'
             if self.year == '2018':
                 self.puFile = os.getcwd()+'/correction_files/UltraLegacy/PileupHistogram-goldenJSON-13tev-2018-69200ub-99bins.root'
-                #self.nTrueFile = os.getcwd()+'/correction_files/nTrueInt_datasets_local_fixed_btag2018UL_2018.coffea'
+                self.nTrueFile = os.getcwd()+'/correction_files/nTrueInt_RunIISummer20UL18_local_2018.coffea'
             if nTrueFile: self.nTrueFile = nTrueFile
         elif self.campaign == 'EOY':
             if self.year == '2016':
@@ -143,8 +143,12 @@ class NanoProcessor(processor.ProcessorABC):
         #fatjet_vertexmass_axis  = hist.Bin("vertexmass", r"lead. FatJet tau1 vertex $m_{SD}$ [GeV]", 1000, 0, 1000)
 
         # SV
-        fatjet_sv1mass_axis  = hist.Bin("sv1mass", r"lead. FatJet $m_{SV,1}$ [GeV]", 1000, 0, 1000)
-        fatjet_logsv1mass_axis  = hist.Bin("logsv1mass", r"lead. FatJet log($m_{SV,1}$/GeV)", 80, -4, 4)
+        sv_sv1mass_axis             = hist.Bin("sv1mass", r"lead. FatJet $m_{SV,1}$ [GeV]", 1000, 0, 1000)
+        sv_logsv1mass_axis          = hist.Bin("logsv1mass", r"lead. FatJet log($m_{SV,1}$/GeV)", 80, -4, 4)
+        sv_sv1mass_maxdxySig_axis    = hist.Bin("sv1mass_maxdxySig", r"lead. FatJet $m_{SV,1~for~max(\sigma_{d_{xy}})}$ [GeV]", 1000, 0, 1000)
+        sv_logsv1mass_maxdxySig_axis = hist.Bin("logsv1mass_maxdxySig", r"lead. FatJet log($m_{SV,1~for~max(\sigma_{d_{xy}})}$/GeV)", 80, -4, 4)
+        sv_logsv1massratio_axis     = hist.Bin("logsv1massratio", r"log($m_{SV_1~for~max(\sigma_{d_{xy}})}$/GeV) / log($m_{SV,1~for~max(p_T)}$/GeV)", 200, -100, 100)
+        sv_logsv1massres_axis     = hist.Bin("logsv1massres", r"(log($m_{SV_1~for~max(\sigma_{d_{xy}})}$/GeV) - log($m_{SV,1~for~max(p_T)}$/GeV)) / log($m_{SV,1~for~max(p_T)}$/GeV))", 100, -1, 1)
 
         # Define similar axes dynamically
         disc_list = ["btagCMVA", "btagCSVV2", 'btagDeepB', 'btagDeepC', 'btagDeepFlavB', 'btagDeepFlavC',]
@@ -190,8 +194,12 @@ class NanoProcessor(processor.ProcessorABC):
                 #'fatjet_DDX_tau1_vertexMass' : hist.Hist("Events", dataset_axis, flavor_axis, fatjet_vertexmass_axis),
             }
         _hist_sv_dict = {
-                'sv_sv1mass' : hist.Hist("Events", dataset_axis, flavor_axis, fatjet_sv1mass_axis),
-                'sv_logsv1mass' : hist.Hist("Events", dataset_axis, flavor_axis, fatjet_logsv1mass_axis),
+                'sv_sv1mass'              : hist.Hist("Events", dataset_axis, flavor_axis, sv_sv1mass_axis),
+                'sv_logsv1mass'           : hist.Hist("Events", dataset_axis, flavor_axis, sv_logsv1mass_axis),
+                'sv_sv1mass_maxdxySig'    : hist.Hist("Events", dataset_axis, flavor_axis, sv_sv1mass_maxdxySig_axis),
+                'sv_logsv1mass_maxdxySig' : hist.Hist("Events", dataset_axis, flavor_axis, sv_logsv1mass_maxdxySig_axis),
+                'sv_logsv1massratio'      : hist.Hist("Events", dataset_axis, flavor_axis, sv_logsv1massratio_axis),
+                'sv_logsv1massres'        : hist.Hist("Events", dataset_axis, flavor_axis, sv_logsv1massres_axis),
             }
 
         for (i, disc) in enumerate(disc_list_fj):
@@ -199,7 +207,11 @@ class NanoProcessor(processor.ProcessorABC):
 
         # Define 2D histograms
         if self.hist2d:
-            _hist2d_dict = {}
+            _hist2d_dict = {
+                'hist2d_sv_logsv1mass_maxdxySig_vs_maxPt' : hist.Hist("Events", dataset_axis, flavor_axis, sv_logsv1mass_maxdxySig_axis, sv_logsv1mass_axis),
+                'hist2d_sv_logsv1massratio_vs_maxPt'      : hist.Hist("Events", dataset_axis, flavor_axis, sv_logsv1massratio_axis, sv_logsv1mass_axis),
+                'hist2d_sv_logsv1massres_vs_maxPt'        : hist.Hist("Events", dataset_axis, flavor_axis, sv_logsv1massres_axis, sv_logsv1mass_axis),
+            }
             for (i, disc) in enumerate(disc_list_fj):
                 _hist2d_dict['hist2d_fatjet_pt_vs_' + disc]    = hist.Hist("Events", dataset_axis, flavor_axis, btag_axes_fj[i], fatjet_pt_axis)
                 _hist2d_dict['hist2d_fatjet_mass_vs_' + disc]  = hist.Hist("Events", dataset_axis, flavor_axis, btag_axes_fj[i], fatjet_mass_axis)
@@ -439,7 +451,7 @@ class NanoProcessor(processor.ProcessorABC):
 
         ## Leading jet variables
         leadfatjet = ak.firsts(events.FatJet)
-        leadfatjet['tau21'] = leadfatjet.tau2/leadfatjet.tau1
+        leadfatjet['tau21'] = leadfatjet.tau2 / leadfatjet.tau1
         subjet1 = ak.pad_none(leadfatjet.subjets, 2)[:, 0]
         subjet2 = ak.pad_none(leadfatjet.subjets, 2)[:, 1]
         leadfatjet['nsv1'] = get_nsv( subjet1, events.SV )
@@ -452,9 +464,15 @@ class NanoProcessor(processor.ProcessorABC):
                           'leadmuonsj1' : leadmuonsj1, 'leadmuonsj2' : leadmuonsj2,}
 
         events.SV = events.SV[get_sv_in_jet(leadfatjet, events.SV)]
+        i_maxdxySig = ak.argsort(events.SV.dxySig, ascending=False)
         leadsv = ak.firsts(events.SV)
+        leadsv_dxySig = ak.firsts(events.SV[i_maxdxySig])
         leadsv['sv1mass'] = leadsv.mass
         leadsv['logsv1mass'] = np.log(leadsv.mass)
+        leadsv['sv1mass_maxdxySig'] = leadsv_dxySig.mass
+        leadsv['logsv1mass_maxdxySig'] = np.log(leadsv_dxySig.mass)
+        leadsv['logsv1massratio'] = leadsv['logsv1mass_maxdxySig'] / leadsv['logsv1mass']
+        leadsv['logsv1massres'] = (leadsv['logsv1mass_maxdxySig'] - leadsv['logsv1mass']) / leadsv['logsv1mass']
 
         fatjet_mutag = (leadfatjet.nmusj1 >= 1) & (leadfatjet.nmusj2 >= 1)
         cuts.add( 'fatjet_mutag', ak.to_numpy(fatjet_mutag) )
@@ -542,7 +560,7 @@ class NanoProcessor(processor.ProcessorABC):
                     weight = weights.weight() * cuts.all(*selection[sel[0]]) * ak.to_numpy(mask)
                     fields = {k: ak.fill_none(eventVariables[k], -9999) for k in h.fields if k in eventVariables.keys() }
                     h.fill(dataset=dataset, flavor=flav, **fields, weight=weight)
-            if histname in self.sv_hists:
+            if ((histname in self.sv_hists) | ('hist2d_sv' in histname)):
                 for flav, mask in flavors.items():
                     weight = weights.weight() * cuts.all(*selection[sel[0]]) * ak.to_numpy(mask)
                     fields = {k: ak.fill_none(leadsv[k], -9999) for k in h.fields if k in dir(leadsv) }

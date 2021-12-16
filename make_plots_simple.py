@@ -11,7 +11,7 @@ import os
 import time
 from multiprocessing import Pool
 from utils import rescale
-from parameters import histogram_settings, lumi, xsecs, AK8Taggers
+from parameters import histogram_settings, flavors_color, flavor_opts, flavors_order, lumi, xsecs, AK8Taggers
 
 parser = argparse.ArgumentParser(description='Plot histograms from coffea file')
 parser.add_argument('-i', '--input', type=str, help='Input histogram filename', required=True)
@@ -94,13 +94,6 @@ ggH_opts = {
     }
 }
 
-
-flavor_opts = {
-    'facecolor': ['cyan', 'magenta', 'red', 'green', 'blue'],
-    'edgecolor': 'black',
-    'alpha': 1.0
-}
-
 selection = {
     'basic' : (r"$\geq$1 AK8 jets"+"\n"+
                   r"$p_T > 250 GeV$"+"\n"+
@@ -176,14 +169,31 @@ def make_plots(entrystart, entrystop):
         if any([histname.startswith('cutflow')]): break
         sel = histname.split('_')[-1]
         h = _accumulator[histname]
+        varname = h.fields[-1]
+        varlabel = h.axis(varname).label
         if histname.startswith( tuple(histogram_settings['variables'].keys()) ):
-            varname = h.fields[-1]
-            varlabel = h.axis(varname).label
-            #print(h.identifiers(axis=varname))
-            #print(hist.Bin(varname, varlabel, **histogram_settings['variables']['_'.join(histname.split('_')[:-1])]['binning']))
-            #print(hist.Bin(varname, varlabel, **histogram_settings['variables']['_'.join(histname.split('_')[:-1])]['binning']).identifiers())
             h = h.rebin(varname, hist.Bin(varname, varlabel, **histogram_settings['variables']['_'.join(histname.split('_')[:-1])]['binning']))
-            h.scale( scaleXS, axis='dataset' )
+        h.scale( scaleXS, axis='dataset' )
+        
+        ##### grouping flavor
+        flavors = [str(s) for s in h.axis('flavor').identifiers() if str(s) != 'flavor']
+        mapping_flavor = {f : [f] for f in flavors}
+        flavors_to_merge = ['bb', 'b', 'cc', 'c']
+        for flav in flavors_to_merge:
+            mapping_flavor.pop(flav)
+        mapping_flavor['b_bb'] = ['b', 'bb']
+        mapping_flavor['c_cc'] = ['c', 'cc']
+        
+        h = h.group("flavor", hist.Cat("flavor", "Flavor"), mapping_flavor)        
+        flavors = [item for item in list(mapping_flavor.keys()) if 'Data' not in item]
+        #flavors = ['b_bb', 'c_cc', 'l']
+        order = flavors_order['DDB']
+        if 'DDC' in histname:
+            order = flavors_order['DDC']
+
+        flavor_opts['facecolor'] = [flavors_color[f.split('_')[-1]] for f in order if 'Data' not in f]
+
+        ##### grouping data and QCD datasets
         datasets = [str(s) for s in h.axis('dataset').identifiers() if str(s) != 'dataset']
         mapping = {
             r'QCD ($\mu$ enriched)' : [dataset for dataset in datasets if 'QCD_Pt' in dataset],
@@ -197,9 +207,7 @@ def make_plots(entrystart, entrystop):
         datasets_data  = [dataset for dataset in datasets if args.data in dataset]
         datasets_QCD = [dataset for dataset in datasets if ((args.data not in dataset) & ('GluGlu' not in dataset))]
         datasets_ggH = [dataset for dataset in datasets if 'GluGlu' in dataset]
-
         h = h.group("dataset", hist.Cat("dataset", "Dataset"), mapping)
-        flavors = ['bb', 'cc', 'b', 'c', 'l']
 
         if (not 'hist2d' in histname) & (not args.hist2d):
 
@@ -219,7 +227,7 @@ def make_plots(entrystart, entrystop):
             fig, (ax, rax) = plt.subplots(2, 1, figsize=(12,12), gridspec_kw={"height_ratios": (3, 1)}, sharex=True)
             #fig_normed, (ax_normed, rax_normed) = plt.subplots(2, 1, figsize=(12,12), gridspec_kw={"height_ratios": (3, 1)}, sharex=True)
             fig.subplots_adjust(hspace=.07)
-            plot.plot1d(QCD_rescaled, ax=ax, legend_opts={'loc':1}, fill_opts=flavor_opts, order=flavors, stack=True)
+            plot.plot1d(QCD_rescaled, ax=ax, legend_opts={'loc':1}, fill_opts=flavor_opts, order=order, stack=True)
             plot.plot1d(h[args.data].sum('flavor'), ax=ax, legend_opts={'loc':1}, error_opts=data_err_opts, clear=False)
             #plot.plot1d(ggH_rescaled, ax=ax, legend_opts={'loc':1}, fill_opts=signal_opts, stack=False, clear=False)
             plot.plotratio(num=h[datasets_data].sum('dataset', 'flavor'), denom=QCDALL_rescaled, ax=rax,
@@ -235,10 +243,13 @@ def make_plots(entrystart, entrystop):
             hep.cms.lumitext(text=f'{totalLumi}' + r' fb$^{-1}$, 13 TeV,' + f' {args.year}', fontsize=18, ax=ax)
             ax.legend(handles, labels)
             rax.set_ylabel('Data/MC')
-            rax.set_ylim(0.5,1.5)
+            rax.set_ylim(0.0,2.0)
+            rax.set_yticks([0.5, 1.0, 1.5])
             if histname.startswith( tuple(histogram_settings['variables'].keys()) ):
                 ax.set_xlim(**histogram_settings['variables']['_'.join(histname.split('_')[:-1])]['xlim'])
                 rax.set_xlim(**histogram_settings['variables']['_'.join(histname.split('_')[:-1])]['xlim'])
+            x_low, x_high = rax.get_xlim()
+            rax.hlines([0.5, 1.5], x_low, x_high, colors='grey', linestyles='dashed', linewidth=1)
             if (not histname.split('_')[-1] in selection.keys()) & ('Pt-' in histname.split('_')[-1]):
                 pt_low, pt_high = [pt for pt in histname.split('_')[-1].split('Pt-')[-1].split('to')]
                 if pt_high == 'Inf':
@@ -249,6 +260,7 @@ def make_plots(entrystart, entrystop):
             if histname.startswith("btag"):
                 ax.semilogy()
             if (not args.dense) & (args.scale == "log"):
+                ax.semilogy()                
                 ax.set_ylim(0.1, 10**7)
             else: ax.set_ylim(0,maxY)
             #hep.mpl_magic(ax)
@@ -305,92 +317,108 @@ def make_plots(entrystart, entrystop):
                         plt.close(fig)
 
         if args.hist2d:
-            if not 'btag' in histname:
+            if (not 'btag' in histname) & (not 'sv' in histname):
                 continue
             if not 'hist2d' in histname:
                 continue
             print("Plotting", histname)
-            for dataset in datasets:
-                if 'QCD' in dataset:
-                    #histo_QCD = h[dataset].sum('dataset')
-                    #histo_QCD_bb = h[dataset].sum('dataset')['bb']
-                    #histo_QCD_cc = h[dataset].sum('dataset')['cc']
-                    histo_QCD = h[dataset]
-                    histo_QCD_bb = h[(dataset, '_bb')]
-                    histo_QCD_cc = h[(dataset, '_cc')]
-                if 'GluGluHToBB' in dataset:
-                    #histo_BB    = h[dataset].sum('dataset')
-                    #histo_BB_bb = h[dataset].sum('dataset')['bb']
-                    histo_BB    = h[dataset]
-                    histo_BB_bb = h[(dataset, '_bb')]
-                if 'GluGluHToCC' in dataset:
-                    #histo_CC    = h[dataset].sum('dataset')
-                    #histo_CC_cc = h[dataset].sum('dataset')['cc']
-                    histo_CC    = h[dataset]
-                    histo_CC_cc = h[(dataset, '_cc')]
-            xaxis = [axis.name for axis in histo_QCD.axes() if 'btag' in axis.name][0]
 
-            for histo_GluGlu, dataset_GluGlu in zip([histo_BB, histo_CC], ['GluGluHToBB', 'GluGluHToCC']):
-                fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(24,9))
-                plot.plot2d(histo_QCD.sum('dataset', 'flavor'), xaxis=xaxis, ax=ax1)
-                plot.plot2d(histo_GluGlu.sum('dataset', 'flavor'), xaxis=xaxis, ax=ax2)
-                hep.cms.text("Preliminary", ax=ax1)
-                hep.cms.lumitext(text=f'{totalLumi}' + r' fb$^{-1}$, 13 TeV,' + f' {args.year}', fontsize=18, ax=ax1)
-                hep.cms.text("Preliminary", ax=ax2)
-                hep.cms.lumitext(text=f'{totalLumi}' + r' fb$^{-1}$, 13 TeV,' + f' {args.year}', fontsize=18, ax=ax2)
-                ax1.set_title('QCD')
-                ax2.set_title(dataset_GluGlu)
-                filepath = plot_dir + histname + "_" + dataset_GluGlu + ".png"
+            if 'sv' in histname:
+                fig, ax = plt.subplots(1, 1, figsize=(9,9))
+                plot.plot2d(h.sum('dataset', 'flavor'), xaxis='logsv1mass', ax=ax)
+                hep.cms.text("Preliminary", ax=ax)
+                hep.cms.lumitext(text=f'{totalLumi}' + r' fb$^{-1}$, 13 TeV,' + f' {args.year}', fontsize=18, ax=ax)
+                hep.cms.text("Preliminary", ax=ax)
+                hep.cms.lumitext(text=f'{totalLumi}' + r' fb$^{-1}$, 13 TeV,' + f' {args.year}', fontsize=18, ax=ax)
+                filepath = plot_dir + histname + ".png"
                 print("Saving", filepath)
                 plt.savefig(filepath, dpi=300, format="png")
                 plt.close(fig)
+            elif 'btag' in histname:
+                for dataset in datasets:
+                    if 'QCD' in dataset:
+                        #histo_QCD = h[dataset].sum('dataset')
+                        #histo_QCD_bb = h[dataset].sum('dataset')['bb']
+                        #histo_QCD_cc = h[dataset].sum('dataset')['cc']
+                        histo_QCD = h[dataset]
+                        histo_QCD_bb = h[(dataset, '_bb')]
+                        histo_QCD_cc = h[(dataset, '_cc')]
+                    if 'GluGluHToBB' in dataset:
+                        #histo_BB    = h[dataset].sum('dataset')
+                        #histo_BB_bb = h[dataset].sum('dataset')['bb']
+                        histo_BB    = h[dataset]
+                        histo_BB_bb = h[(dataset, '_bb')]
+                    if 'GluGluHToCC' in dataset:
+                        #histo_CC    = h[dataset].sum('dataset')
+                        #histo_CC_cc = h[dataset].sum('dataset')['cc']
+                        histo_CC    = h[dataset]
+                        histo_CC_cc = h[(dataset, '_cc')]
+                xaxis = [axis.name for axis in histo_QCD.axes() if 'btag' in axis.name][0]
 
-            for histo_GluGlu_xx, dataset_GluGlu_xx in zip([histo_BB_bb, histo_CC_cc], ['GluGluHToBB (bb)', 'GluGluHToCC (cc)']):
-                if dataset_GluGlu_xx == 'GluGluHToBB (bb)':
-                    histo_QCD_xx = histo_QCD_bb
-                    qcd_label = 'QCD (bb)'
-                elif dataset_GluGlu_xx == 'GluGluHToCC (cc)':
-                    histo_QCD_xx = histo_QCD_cc
-                    qcd_label = 'QCD (cc)'
-                fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(24,9))
-                plot.plot2d(histo_QCD_xx.sum('dataset', 'flavor'), xaxis=xaxis, ax=ax1)
-                plot.plot2d(histo_GluGlu_xx.sum('dataset', 'flavor'), xaxis=xaxis, ax=ax2)
-                hep.cms.text("Preliminary", ax=ax1)
-                hep.cms.lumitext(text=f'{totalLumi}' + r' fb$^{-1}$, 13 TeV,' + f' {args.year}', fontsize=18, ax=ax1)
-                hep.cms.text("Preliminary", ax=ax2)
-                hep.cms.lumitext(text=f'{totalLumi}' + r' fb$^{-1}$, 13 TeV,' + f' {args.year}', fontsize=18, ax=ax2)
-                ax1.set_title(qcd_label)
-                ax2.set_title(dataset_GluGlu_xx)
-                filepath = plot_dir + histname + "_" + '_'.join(dataset_GluGlu_xx.strip(')').split(' (')) + ".png"
-                print("Saving", filepath)
-                plt.savefig(filepath, dpi=300, format="png")
-                plt.close(fig)
+                for histo_GluGlu, dataset_GluGlu in zip([histo_BB, histo_CC], ['GluGluHToBB', 'GluGluHToCC']):
+                    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(24,9))
+                    plot.plot2d(histo_QCD.sum('dataset', 'flavor'), xaxis=xaxis, ax=ax1)
+                    plot.plot2d(histo_GluGlu.sum('dataset', 'flavor'), xaxis=xaxis, ax=ax2)
+                    hep.cms.text("Preliminary", ax=ax1)
+                    hep.cms.lumitext(text=f'{totalLumi}' + r' fb$^{-1}$, 13 TeV,' + f' {args.year}', fontsize=18, ax=ax1)
+                    hep.cms.text("Preliminary", ax=ax2)
+                    hep.cms.lumitext(text=f'{totalLumi}' + r' fb$^{-1}$, 13 TeV,' + f' {args.year}', fontsize=18, ax=ax2)
+                    ax1.set_title('QCD')
+                    ax2.set_title(dataset_GluGlu)
+                    filepath = plot_dir + histname + "_" + dataset_GluGlu + ".png"
+                    print("Saving", filepath)
+                    plt.savefig(filepath, dpi=300, format="png")
+                    plt.close(fig)
 
-            for flavor in flavors:
-                fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(24,9))
-                plot.plot2d(h.sum('dataset')['_l'].sum('flavor'), xaxis=xaxis, ax=ax1)
-                plot.plot2d(h.sum('dataset')[flavor].sum('flavor'), xaxis=xaxis, ax=ax2)
-                hep.cms.text("Preliminary", ax=ax1)
-                hep.cms.lumitext(text=f'{totalLumi}' + r' fb$^{-1}$, 13 TeV,' + f' {args.year}', fontsize=18, ax=ax1)
-                hep.cms.text("Preliminary", ax=ax2)
-                hep.cms.lumitext(text=f'{totalLumi}' + r' fb$^{-1}$, 13 TeV,' + f' {args.year}', fontsize=18, ax=ax2)
-                ax1.set_title('light')
-                ax2.set_title(flavor)
-                filepath = plot_dir + histname + "_" + flavor + ".png"
-                print("Saving", filepath)
-                plt.savefig(filepath, dpi=300, format="png")
-                plt.close(fig)
+                for histo_GluGlu_xx, dataset_GluGlu_xx in zip([histo_BB_bb, histo_CC_cc], ['GluGluHToBB (bb)', 'GluGluHToCC (cc)']):
+                    if dataset_GluGlu_xx == 'GluGluHToBB (bb)':
+                        histo_QCD_xx = histo_QCD_bb
+                        qcd_label = 'QCD (bb)'
+                    elif dataset_GluGlu_xx == 'GluGluHToCC (cc)':
+                        histo_QCD_xx = histo_QCD_cc
+                        qcd_label = 'QCD (cc)'
+                    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(24,9))
+                    plot.plot2d(histo_QCD_xx.sum('dataset', 'flavor'), xaxis=xaxis, ax=ax1)
+                    plot.plot2d(histo_GluGlu_xx.sum('dataset', 'flavor'), xaxis=xaxis, ax=ax2)
+                    hep.cms.text("Preliminary", ax=ax1)
+                    hep.cms.lumitext(text=f'{totalLumi}' + r' fb$^{-1}$, 13 TeV,' + f' {args.year}', fontsize=18, ax=ax1)
+                    hep.cms.text("Preliminary", ax=ax2)
+                    hep.cms.lumitext(text=f'{totalLumi}' + r' fb$^{-1}$, 13 TeV,' + f' {args.year}', fontsize=18, ax=ax2)
+                    ax1.set_title(qcd_label)
+                    ax2.set_title(dataset_GluGlu_xx)
+                    filepath = plot_dir + histname + "_" + '_'.join(dataset_GluGlu_xx.strip(')').split(' (')) + ".png"
+                    print("Saving", filepath)
+                    plt.savefig(filepath, dpi=300, format="png")
+                    plt.close(fig)
+
+                for flavor in flavors:
+                    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(24,9))
+                    plot.plot2d(h.sum('dataset')['_l'].sum('flavor'), xaxis=xaxis, ax=ax1)
+                    plot.plot2d(h.sum('dataset')[flavor].sum('flavor'), xaxis=xaxis, ax=ax2)
+                    hep.cms.text("Preliminary", ax=ax1)
+                    hep.cms.lumitext(text=f'{totalLumi}' + r' fb$^{-1}$, 13 TeV,' + f' {args.year}', fontsize=18, ax=ax1)
+                    hep.cms.text("Preliminary", ax=ax2)
+                    hep.cms.lumitext(text=f'{totalLumi}' + r' fb$^{-1}$, 13 TeV,' + f' {args.year}', fontsize=18, ax=ax2)
+                    ax1.set_title('light')
+                    ax2.set_title(flavor)
+                    filepath = plot_dir + histname + "_" + flavor + ".png"
+                    print("Saving", filepath)
+                    plt.savefig(filepath, dpi=300, format="png")
+                    plt.close(fig)
     return
 
-Nhists = len(accumulator.keys())
-print("# histograms = ", Nhists)
-delimiters = np.linspace(0, Nhists, args.workers + 1).astype(int)
+NtotHists = len(accumulator.keys())
+NHistsToPlot = len([key for key in accumulator.keys() if args.only in key])
+print("# tot histograms = ", NtotHists)
+print("# histograms to plot = ", NHistsToPlot)
+delimiters = np.linspace(0, NtotHists, args.workers + 1).astype(int)
 chunks = [(delimiters[i], delimiters[i+1]) for i in range(len(delimiters[:-1]))]
 pool = Pool()
 pool.starmap(make_plots, chunks)
 pool.close()
 
 end = time.time()
+runTime = round(end-start)
 print("Finishing ", end='')
 print(time.ctime())
-print("Drawn plots in %d s" % (end-start))
+print(f"Drawn {NHistsToPlot} plots in {runTime} s")

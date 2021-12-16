@@ -43,7 +43,7 @@ def get_nsv(sj, sv, R=0.4):
 def get_sv_in_jet(jet, sv, R=0.8):
 
     sv_dr = jet.delta_r(sv)
-    sv_in_jet = sv_dr < R
+    sv_in_jet = ak.fill_none(sv_dr < R, [])
 
     return sv_in_jet
 
