@@ -13,7 +13,7 @@ import coffea.hist as hist
 import os
 import sys
 from utils import rescale
-from parameters import histogram_settings, lumi, xsecs
+from parameters import histogram_settings, flavors_color, flavor_opts, lumi, xsecs
 
 fontsize = 12
 
@@ -56,7 +56,7 @@ if os.path.isdir(args.input):
             taggers = [tagger for tagger in taggers if tagger in inputDir]
 
 elif os.path.isfile(args.input):
-    inputDir = '/'.join(args.input.split('/')[:-1]) + '/'
+    inputDir = '/'.join(args.input.split('/')[:-2]) + '/'
     if not args.input.endswith('.root'):
         sys.exit("Only ROOT files are accepted as an input")
     else:
@@ -80,14 +80,6 @@ data_err_opts = {
 
 qcd_opts = {
     'facecolor': 'yellow',
-    'edgecolor': 'black',
-    'alpha': 1.0
-}
-
-flavors_color = {'l' : 'blue', 'b' : 'red', 'c' : 'green', 'bb' : 'cyan', 'cc' : 'magenta'}
-
-flavor_opts = {
-    'facecolor': [flavors_color[f] for f in flavors_color.keys()],
     'edgecolor': 'black',
     'alpha': 1.0
 }
@@ -264,6 +256,7 @@ for tagger in taggers:
                     MC_sum = output['shape_{}_{}{}{}'.format(fit, region, tagger, args.year)][flavors_to_plot].sum('flavor')
                     MC_var = np.diag(covar)
                     MC_values = MC_sum.values()[()]
+                    print(MC_values)
                     edges = MC_sum.axis(varname).edges(overflow='none')
                     MC_unc = np.diff(edges) * np.concatenate( (np.zeros(len(MC_values) - len(MC_var)), np.sqrt(MC_var)) )
                     lo = MC_values - MC_unc

@@ -6,10 +6,12 @@ if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--outputDir', type=str, default=None, help='Output directory')
+    parser.add_argument('--outputDir', type=str, default=None, help='Output directory', required=True)
     parser.add_argument('--campaign', type=str, choices={'EOY', 'UL'}, help='Dataset campaign.', required=True)
     parser.add_argument('--year', type=str, choices=['2016', '2017', '2018'], help='Year of data/MC samples', required=True)
     parser.add_argument('--pt', type=int, default=500, help='Pt cut.', required=True)
+    parser.add_argument("--freezeL", action='store_true', default=False, help="Freeze the light component in all fits")
+    parser.add_argument('--var', type=str, choices=['sv_logsv1mass', 'sv_logsv1mass_maxdxySig'], default='sv_logsv1mass', help='Variable used in the template fit.')
     parser.add_argument("--tpf", "--template-passfail", dest='tpf', type=str,
                         default='histograms/hists_fattag_pileupJEC_2017_WPcuts_v01.pkl',
                         help="Pass/Fail templates, only for `fit=double`", required=True)
@@ -33,12 +35,14 @@ if __name__ == '__main__':
                 logFile = "{}/sf{}{}{}wp{}Pt.log".format(subDir, args.year, tagger, wp, wpt)
                 
                 submissionCommand = ( "python scaleFactorComputation.py --campaign {} --year {} --tpf {} --outputDir {}".format(args.campaign, args.year, args.tpf, subDir) +
-                                      " --selection msd100tau06{} --wp {} --wpt {} --pt {}".format(tagger, wp, wpt, args.pt) +
+                                      " --selection msd100tau06{} --wp {} --wpt {} --pt {} --var {}".format(tagger, wp, wpt, args.pt, args.var) +
                                       " | tee {}".format(logFile) )
                 if args.parameters:
                     submissionCommand = submissionCommand.replace(' | tee', ' --parameters {} | tee'.format(args.parameters))
                 if args.epsilon:
                     submissionCommand = submissionCommand.replace(' | tee', ' --epsilon {} | tee'.format(args.epsilon))
+                if args.freezeL:
+                    submissionCommand = submissionCommand.replace(' | tee', ' --freezeL | tee')
                 if args.passonly:
                     submissionCommand = submissionCommand.replace(' | tee', ' --passonly | tee')
                 if wpt == 'Inclusive':

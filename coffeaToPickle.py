@@ -14,10 +14,7 @@ parser.add_argument('-i', '--input', type=str, help='Input histogram filename', 
 parser.add_argument('-o', '--output', type=str, default='', help='Output file')
 parser.add_argument('--outputDir', type=str, default=None, help='Output directory')
 parser.add_argument('--year', type=int, choices=[2016, 2017, 2018], help='Year of data/MC samples', required=True)
-parser.add_argument('--only', action='store', default='', help='Plot only one histogram')
-parser.add_argument('--test', action='store_true', default=False, help='Test with lower stats.')
 parser.add_argument('--data', type=str, default='BTagMu', help='Data sample name')
-parser.add_argument('--selection', type=str, default='all', help='Plot only plots with this selection. ("all" to plot all the selections in file)')
 parser.add_argument('--pt', type=int, default=500, help='Pt cut.')
 parser.add_argument('--scaleFail', type=float, default=None, help='Artificial scaling factor for distributions in the fail region.', required=False)
 
@@ -41,7 +38,7 @@ for isam in accumulator[next(iter(accumulator))].identifiers('dataset'):
     scaleXS[isam] = 1 if isam.startswith('BTag') else xsecs[isam]/accumulator['sumw'][isam]
 
 outputDict = {}
-for ivar in [ 'fatjet_jetproba', 'sv_logsv1mass' ]:
+for ivar in [ 'fatjet_jetproba', 'sv_logsv1mass', 'sv_logsv1mass_maxdxySig' ]:
     for isel in [ 'msd100tau06' ]:
         for DDX in [ 'DDB', 'DDC' ]:
             for wp in [ 'M' ]:
@@ -103,7 +100,8 @@ for ivar in [ 'fatjet_jetproba', 'sv_logsv1mass' ]:
 output_dir = args.outputDir if args.outputDir else os.getcwd()+"/histograms/"
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
-outputFileName = output_dir + ( args.output if args.output else args.input.split('/')[-1].replace('coffea7', 'pkl')  )
+#outputFileName = output_dir + ( args.output if args.output else args.input.split('/')[-1].replace('coffea7', 'pkl')  )
+outputFileName = output_dir + ( args.output if args.output else args.input.split('/')[-1].replace(args.input.split('.')[-1], 'pkl')  )
 outputFile = open( outputFileName, 'wb'  )
 pickle.dump( outputDict, outputFile, protocol=2 )
 outputFile.close()

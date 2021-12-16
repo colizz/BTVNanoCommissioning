@@ -8,29 +8,41 @@ import scipy.stats
 import pickle
 import uproot
 import ROOT
-from parameters import fit_parameters, sample_names
+from parameters import histogram_settings, fit_parameters, sample_names
 
 nPtBins = 3
 
 def exec_me(command, dryRun=False, folder=False):
+    
     print(command)
     if not dryRun:
         if folder: os.chdir(folder)
         os.system(command)
 
+def rebin(h_vals, h_sumw2, bins, lo, hi):
 
-def get_templ(f, sample, obs, syst=None, sumw2=True):
+    mask = (bins >= lo) & (bins <= hi)
+    h_vals = h_vals[mask[:-1]]
+    h_sumw2 = h_sumw2[mask[:-1]]
+    bins = bins[mask]
+
+    return h_vals, h_sumw2, bins
+
+def get_templ(f, sample, obs, lo, hi, syst=None, sumw2=True):
+    
     hist_name = sample
     if syst is not None:
         hist_name += "_" + syst
     h_vals = f[hist_name][0]
     h_sumw2 = f[hist_name][1]
-    binning = obs.binning
+    bins = obs.binning
+    mergeTail = False
+    print("before:", bins)
     # HARDCODED
-    if (obs.name == 'logsv1mass') & (len(h_vals) == 80):
+    if ('logsv1mass' in obs.name) & (len(h_vals) == 80) & (mergeTail == True):
         h_vals  = h_vals[32:-8]
         h_sumw2 = h_sumw2[32:-8]
-        binning = binning[32:-8]
+        bins = bins[32:-8]
         # rebinning
         val_N     = np.sum(h_vals[-7:])
         val_N_1   = np.sum(h_vals[-14:-7])
@@ -40,31 +52,36 @@ def get_templ(f, sample, obs, syst=None, sumw2=True):
         bin_N_1 = 2.5
         h_vals  = h_vals[:-14]
         h_sumw2 = h_sumw2[:-14]
-        binning = binning[:-14]
+        bins = bins[:-14]
         h_vals  = np.concatenate((h_vals, [val_N_1, val_N]))
         h_sumw2 = np.concatenate((h_sumw2, [sumw2_N_1, sumw2_N]))
-        binning = np.concatenate((binning, [2.5, 3.2]))
-    elif (obs.name == 'logsv1mass') & (len(h_vals) == 40):
+        bins = np.concatenate((bins, [2.5, 3.2]))
+    #elif ('logsv1mass' in obs.name) & (len(h_vals) == 40):
+    elif ('logsv1mass' in obs.name):
         """
         h_vals  = h_vals[16:-4]
         h_sumw2 = h_sumw2[16:-4]
-        binning = binning[16:-4]
+        bins = bins[16:-4]
         """
-        h_vals  = h_vals[16:-10]
-        h_sumw2 = h_sumw2[16:-10]
-        binning = binning[16:-10]
-    elif (obs.name == 'logsv1mass') & (len(h_vals) == 20):
-        h_vals  = h_vals[8:-2]
-        h_sumw2 = h_sumw2[8:-2]
-        binning = binning[8:-2]
+        #h_vals  = h_vals[16:-10]
+        #h_sumw2 = h_sumw2[16:-10]
+        #bins = bins[16:-10]
+
+        h_vals, h_sumw2, bins = rebin(h_vals, h_sumw2, bins, lo, hi)
+    #elif ('logsv1mass' in obs.name) & (len(h_vals) == 20):
+    #    h_vals  = h_vals[8:-2]
+    #    h_sumw2 = h_sumw2[8:-2]
+    #    bins = bins[8:-2]
+
+    print("after:", bins)
 
     if not sumw2:
-        return (h_vals, binning, obs.name)
+        return (h_vals, bins, obs.name)
     else:
-        return (h_vals, binning, obs.name, h_sumw2)
+        return (h_vals, bins, obs.name, h_sumw2)
 
 
-def test_sfmodel(tmpdir, var, inputFile, year, campaign, sel, wp, wpt='', pt=500, pars_key=None, epsilon=0.0001, passonly=False, fittype='single', scale=1, smear=0.1):
+def test_sfmodel(tmpdir, var, lo, hi, inputFile, year, campaign, sel, wp, wpt='', pt=500, pars_key=None, epsilon=0.0001, passonly=False, fittype='single', scale=1, smear=0.1):
     lumi = rl.NuisanceParameter('CMS_lumi', 'lnN')
     jecs = rl.NuisanceParameter('CMS_jecs', 'lnN')
     pu = rl.NuisanceParameter('CMS_pu', 'lnN')
@@ -74,24 +91,31 @@ def test_sfmodel(tmpdir, var, inputFile, year, campaign, sel, wp, wpt='', pt=500
         'M' : (350, pt),
         'H' : (pt, 'Inf'),
     }
-
-    if var == 'fatjet_jetproba':
-        bins = np.linspace(0, 2.5, 26)
+    name_map = {'n_or_arr' : 'num', 'lo' : 'start', 'hi' : 'stop'}
+    arguments = dict((name_map[name], val) for name, val in histogram_settings['variables'][var]['binning'].iteritems())
+    arguments['num'] += 1
+    bins = np.linspace(**arguments)
+    #if var == 'fatjet_jetproba':
+    #    bins = np.linspace(0, 2.5, 26)
         #jetproba = rl.Observable('jetproba', jetprobabins)
-    if var == 'sv_logsv1mass':
-        bins = np.linspace(-4, 4, 81)
-        #bins = np.linspace(-4, 4, 41)
+    #if 'sv_logsv1mass' in var:
+        #bins = np.linspace(-4, 4, 81)
+    #    bins = np.linspace(-4, 4, 41)
         #bins = np.linspace(-4, 4, 21)
         #binwidth = 0.1
         #logsv1massbins = np.arange(-0.8, 3.2 + binwidth, binwidth)
-        binwidth = float(bins[1] - bins[0])
+    #    binwidth = float(bins[1] - bins[0])
 
     # Indeps
     if not pars_key:
         pars = fit_parameters['{}pt{}'.format(campaign, pt)]
     else:
         pars = fit_parameters[pars_key]
-    (indep_c_cc, indep_b_bb, indep_l) = (rl.IndependentParameter(sName, **pars[year][sel[-3:]][sName]) for sName in sample_names)
+    if wpt in pars[year][sel[-3:]].keys():
+        pars = pars[year][sel[-3:]][wpt]
+    else:
+        pars = pars[year][sel[-3:]]
+    (indep_c_cc, indep_b_bb, indep_l) = (rl.IndependentParameter(sName, **pars[sName]) for sName in sample_names)
     print('cc', indep_c_cc.name)
     print('bb', indep_b_bb.name)
     print('l', indep_l.name)
@@ -114,10 +138,10 @@ def test_sfmodel(tmpdir, var, inputFile, year, campaign, sel, wp, wpt='', pt=500
         ch = rl.Channel("sf{}".format(region))
         for sName in sample_names:
             if wpt == 'Inclusive':
-                template = get_templ(fout, '{}_{}{}{}wp_QCD_{}'.format(var, sel, region, wp, sName), observable)
+                template = get_templ(fout, '{}_{}{}{}wp_QCD_{}'.format(var, sel, region, wp, sName), observable, lo, hi)
             else:
                 (pt_low, pt_high) = pt_bins[wpt]
-                template = get_templ(fout, '{}_{}{}{}wpPt-{}to{}_QCD_{}'.format(var, sel, region, wp, pt_low, pt_high, sName), observable)
+                template = get_templ(fout, '{}_{}{}{}wpPt-{}to{}_QCD_{}'.format(var, sel, region, wp, pt_low, pt_high, sName), observable, lo, hi)
             #print('template', template)
             if region == 'pass':
                 Nevts += np.sum(template[0])
@@ -144,19 +168,18 @@ def test_sfmodel(tmpdir, var, inputFile, year, campaign, sel, wp, wpt='', pt=500
             ch.addSample(sample)
 
         if wpt == 'Inclusive':
-            #data_obs = get_templ(fout, 'fatjet_jetproba_{}{}{}wp_BtagMu'.format(sel, region, wp), jetproba)[:-1]
-            data_obs = get_templ(fout, '{}_{}{}{}wp_BtagMu'.format(var, sel, region, wp), observable)[:-1]
+            #data_obs = get_templ(fout, 'fatjet_jetproba_{}{}{}wp_BtagMu'.format(sel, region, wp), jetproba, lo, hi)[:-1]
+            data_obs = get_templ(fout, '{}_{}{}{}wp_BtagMu'.format(var, sel, region, wp), observable, lo, hi)[:-1]
         else:
-            data_obs = get_templ(fout, '{}_{}{}{}wpPt-{}to{}_BtagMu'.format(var, sel, region, wp, pt_low, pt_high), observable)[:-1]
+            data_obs = get_templ(fout, '{}_{}{}{}wpPt-{}to{}_BtagMu'.format(var, sel, region, wp, pt_low, pt_high), observable, lo, hi)[:-1]
         ch.setObservation(data_obs)
 
         model.addChannel(ch)
 
     fractionL = float(Nl)/float(Nevts)
-    freezeL = False
     print("fractionL = ", fractionL)
-    if fractionL < 3e-3:
-        freezeL = True
+    if fractionL < 4e-3:
+        args.freezeL = True
         print("The parameter 'l' will be frozen.")
 
     if not passonly:
@@ -178,7 +201,7 @@ def test_sfmodel(tmpdir, var, inputFile, year, campaign, sel, wp, wpt='', pt=500
     model.renderCombine(tmpdir)
     with open(tmpdir+'/build.sh', 'a') as ifile:
         #ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name {}Pt --cminDefaultMinimizerStrategy 0 --robustFit=1 --saveShapes  --rMin 0.5 --rMax 1.5'.format(wpt))
-        if freezeL:
+        if args.freezeL:
             #ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name {}wp{}Pt --cminDefaultMinimizerStrategy 0 --robustFit=1 --saveShapes --redefineSignalPOIs={} --setParameters r=1,l=1 --freezeParameters r,l'.format(wp, wpt, signalName))
             ifile.write('\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name {}wp{}Pt --cminDefaultMinimizerStrategy 2 --robustFit=1 --saveShapes --saveWithUncertainties --saveOverallShapes --redefineSignalPOIs={} --setParameters r=1,l=1 --freezeParameters r,l --rMin 1 --rMax 1'.format(wp, wpt, signalName))
         else:
@@ -216,7 +239,11 @@ def save_results(output_dir, year, campaign, sel, wp, wpt, pt, pars_key=None, cr
         pars = fit_parameters['{}pt{}'.format(campaign, pt)]
     else:
         pars = fit_parameters[pars_key]
-    value, lo, hi = (pars[year][sel[-3:]][POI]['value'], pars[year][sel[-3:]][POI]['lo'], pars[year][sel[-3:]][POI]['hi'])
+    if wpt in pars[year][sel[-3:]].keys():
+        pars = pars[year][sel[-3:]][wpt]
+    else:
+        pars = pars[year][sel[-3:]]
+    value, lo, hi = (pars[POI]['value'], pars[POI]['lo'], pars[POI]['hi'])
     f = open(output_dir + "fitResults{}wp{}Pt.txt".format(wp, wpt), 'w')
     lineIntro = 'Best fit '
     firstline = '{}{}: {}  -{}/+{}  (68%  CL)  range = [{}, {}]\n'.format(lineIntro, POI, combineCont, combineErrDown, combineErrUp, lo, hi)
@@ -229,7 +256,7 @@ def save_results(output_dir, year, campaign, sel, wp, wpt, pt, pars_key=None, cr
         if par_result == None: continue
         parVal = par_result.getVal()
         parErr = par_result.getAsymErrorHi()
-        value, lo, hi = (pars[year][sel[-3:]][sName]['value'], pars[year][sel[-3:]][sName]['lo'], pars[year][sel[-3:]][sName]['hi'])
+        value, lo, hi = (pars[sName]['value'], pars[sName]['lo'], pars[sName]['hi'])
         gapSpace = ''.join( (len(lineIntro) + len(POI) - len(sName) )*[' '])
         lineResult = '{}{}: {}  -+{}'.format(gapSpace, sName, parVal, parErr)
         gapSpace2 = ''.join( (firstline.find('(') - len(lineResult) )*[' '])
@@ -265,9 +292,12 @@ if __name__ == '__main__':
     parser.add_argument('--year', type=str, choices=['2016', '2017', '2018'], help='Year of data/MC samples', required=True)
     parser.add_argument('--pt', type=int, default=500, help='Pt cut.', required=True)
     parser.add_argument('--var', type=str, default='sv_logsv1mass', help='Variable used in the template fit.')
+    parser.add_argument('--lo', type=float, default=-1.2, help='Variable used in the template fit.')
+    parser.add_argument('--hi', type=float, default=2.0, help='Variable used in the template fit.')
     parser.add_argument('--selection', type=str, default='msd100tau06DDB', help='Selection to compute SF.', required=True)
     parser.add_argument('--wp', type=str, default='M', help='Working point', required=True)
     parser.add_argument('--wpt', type=str, choices={'Inclusive', 'M', 'H'}, default='', help='Pt bin', required=True)
+    parser.add_argument("--freezeL", action='store_true', default=False, help="Freeze the light component in all fits")
     parser.add_argument("--fit", type=str, choices={'single', 'double'}, default='double',
                         help="Fit type")  ##not used
     parser.add_argument("--scale", type=float, default='1',
@@ -308,5 +338,5 @@ if __name__ == '__main__':
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    test_sfmodel(output_dir, args.var, args.tpf, args.year, args.campaign, args.selection, args.wp, args.wpt, args.pt, args.parameters, args.epsilon, args.passonly)
+    test_sfmodel(output_dir, args.var, args.lo, args.hi, args.tpf, args.year, args.campaign, args.selection, args.wp, args.wpt, args.pt, args.parameters, args.epsilon, args.passonly, args.freezeL)
     save_results(output_dir, args.year, args.campaign, args.selection, args.wp, args.wpt, args.pt, args.parameters, args.createcsv, args.createtex)

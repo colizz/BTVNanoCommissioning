@@ -159,6 +159,7 @@ jecTarFiles = {
 AK8Taggers = ['btagDDBvLV2', 'btagDDCvLV2', 'btagDDCvBV2', 'btagHbb', 'particleNet_HbbvsQCD', 'particleNet_HccvsQCD', 'deepTag_H', 'deepTagMD_ccvsLight']
 
 #logsv1mass_bins = np.concatenate( ( (-4, -3.6, -3.2, -2.8, -2.4, -2, -1.59, -1.2, -0.8, -0.4), np.arange(0., 1.8, 0.1), (1.8, 2.5, 3.2) ) )
+AK8tagger_parameters = {'binning' : {'n_or_arr' : 20,  'lo' : 0,      'hi' : 1},     'xlim' : {'xmin' : 0, 'xmax' : 1}}
 
 histogram_settings = {
     'variables' : {
@@ -175,14 +176,22 @@ histogram_settings = {
         'fatjet_nmusj1'       : {'binning' : {'n_or_arr' : 30,  'lo' : 0,      'hi' : 30},    'xlim' : {'xmin' : 0, 'xmax' : 10}},
         'fatjet_nmusj2'       : {'binning' : {'n_or_arr' : 30,  'lo' : 0,      'hi' : 30},    'xlim' : {'xmin' : 0, 'xmax' : 10}},
         'fatjet_jetproba'     : {'binning' : {'n_or_arr' : 25,  'lo' : 0,      'hi' : 2.5},   'xlim' : {'xmin' : 0, 'xmax' : 2.5}},
-        'sv_sv1mass'          : {'binning' : {'n_or_arr' : 50,  'lo' : 0,      'hi' : 50},    'xlim' : {'xmin' : 0, 'xmax' : 50}},
-        'sv_logsv1mass'       : {'binning' : {'n_or_arr' : 80,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -4, 'xmax' : 4}},
-        #'sv_logsv1mass'       : {'binning' : {'n_or_arr' : 40,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -0.8, 'xmax' : 3.2}},
+        'sv_sv1mass'              : {'binning' : {'n_or_arr' : 50,  'lo' : 0,      'hi' : 50},    'xlim' : {'xmin' : 0, 'xmax' : 50}},
+        'sv_sv1mass_maxdxySig'    : {'binning' : {'n_or_arr' : 50,  'lo' : 0,      'hi' : 50},    'xlim' : {'xmin' : 0, 'xmax' : 50}},
+        #'sv_logsv1mass'           : {'binning' : {'n_or_arr' : 80,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -4, 'xmax' : 4}},
+        'sv_logsv1mass'           : {'binning' : {'n_or_arr' : 40,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -1.2, 'xmax' : 3.2}},
+        #'sv_logsv1mass'           : {'binning' : {'n_or_arr' : 40,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -0.8, 'xmax' : 3.2}},
+        #'sv_logsv1mass_maxdxySig' : {'binning' : {'n_or_arr' : 80,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -4, 'xmax' : 4}},
+        'sv_logsv1mass_maxdxySig' : {'binning' : {'n_or_arr' : 40,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -1.2, 'xmax' : 3.2}},
+        #'sv_logsv1mass_maxdxySig' : {'binning' : {'n_or_arr' : 40,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -0.8, 'xmax' : 3.2}},
+        'sv_logsv1massratio'      : {'binning' : {'n_or_arr' : 200,  'lo' : -100,     'hi' : 100},     'xlim' : {'xmin' : -100, 'xmax' : 100}},
+        'sv_logsv1massres'        : {'binning' : {'n_or_arr' : 100,  'lo' : -1,     'hi' : 1},     'xlim' : {'xmin' : -1, 'xmax' : 1}},
         #'sv_logsv1mass'       : {'binning' : {'n_or_arr' : 20,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -0.8, 'xmax' : 3.2}},
         #'sv_logsv1mass'       : {'binning' : {'n_or_arr' : np.concatenate((np.arange(-4,1.9,0.1), [2.5,3.2]))},     'xlim' : {'xmin' : -0.8, 'xmax' : 3.2}},
     },
     'postfit' : {
-        'sv_logsv1mass'       : {'binning' : {'n_or_arr' : np.concatenate((np.arange(-4,1.9,0.1), [2.5,3.2]))},     'xlim' : {'xmin' : -0.8, 'xmax' : 3.2}},
+        #'sv_logsv1mass'       : {'binning' : {'n_or_arr' : np.concatenate((np.arange(-4,1.9,0.1), [2.5,3.2]))},     'xlim' : {'xmin' : -0.8, 'xmax' : 3.2}},
+        'sv_logsv1mass'       : {'binning' : {'n_or_arr' : np.arange(-4,2.2,0.2)},     'xlim' : {'xmin' : -0.8, 'xmax' : 2.0}},
     },
     'crop' : {
         'sfpass' : {'length' : 1780, 'height' : 2100},
@@ -190,8 +199,21 @@ histogram_settings = {
     }
 }
 
+for tagger in AK8Taggers:
+    histogram_settings['variables']['fatjet_{}'.format(tagger)] = AK8tagger_parameters
+
 #sample_names = ['bb', 'cc', 'b', 'c', 'l']
 sample_names = ['c_cc', 'b_bb', 'l']
+flavors_order = {
+    'DDB' : ['l', 'c_cc', 'b_bb'],
+    'DDC' : ['l', 'b_bb', 'c_cc'],
+    }
+flavors_color = {'l' : 'blue', 'b' : 'red', 'c' : 'green', 'bb' : 'cyan', 'cc' : 'magenta'}
+flavor_opts = {
+    'facecolor': [flavors_color[f] for f in flavors_color.keys()],
+    'edgecolor': 'black',
+    'alpha': 1.0
+}
 
 fit_parameters = {
     'EOYpt500': {
@@ -255,13 +277,17 @@ fit_parameters = {
         #    'DDB': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'b_bb': {'value' : 1, 'lo' : -20, 'hi' : 20}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}},
         #    'DDC': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 20}, 'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}}
         #},
-        #'2017': {
-        #    'DDB': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'b_bb': {'value' : 1, 'lo' : -20, 'hi' : 20}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}},
-        #    'DDC': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 20}, 'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}}
-        #},
+        '2017': {
+            'DDB': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+            'DDC': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}}
+        },
         '2018': {
-            'DDB': {'c_cc': {'value' : 1, 'lo' : -20, 'hi' : 20}, 'b_bb': {'value' : 1, 'lo' : -20, 'hi' : 20}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}},
-            'DDC': {'c_cc': {'value' : 1, 'lo' : -20, 'hi' : 20}, 'b_bb': {'value' : 1, 'lo' : -20, 'hi' : 20}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}}
+            'DDB': {
+                'Inclusive': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                'M':         {'c_cc': {'value' : 1, 'lo' : -10, 'hi' : 10}, 'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                'H':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+            },
+            'DDC': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}}
         }
     }
 }
