@@ -7,19 +7,17 @@ import itertools
 import os
 import pickle
 from utils import rescale
-from parameters import histogram_settings, lumi, xsecs
+from parameters import histogram_settings, lumi, xsecs, FinalMask, PtBinning, AK8TaggerWP
 
 parser = argparse.ArgumentParser(description='Plot histograms from coffea file')
 parser.add_argument('-i', '--input', type=str, help='Input histogram filename', required=True)
 parser.add_argument('-o', '--output', type=str, default='', help='Output file')
 parser.add_argument('--outputDir', type=str, default=None, help='Output directory')
-parser.add_argument('--year', type=int, choices=[2016, 2017, 2018], help='Year of data/MC samples', required=True)
-parser.add_argument('--only', action='store', default='', help='Plot only one histogram')
-parser.add_argument('--test', action='store_true', default=False, help='Test with lower stats.')
+parser.add_argument('--year', type=str, choices=['2016', '2017', '2018'], help='Year of data/MC samples', required=True)
 parser.add_argument('--data', type=str, default='BTagMu', help='Data sample name')
-parser.add_argument('--selection', type=str, default='all', help='Plot only plots with this selection. ("all" to plot all the selections in file)')
-parser.add_argument('--pt', type=int, default=500, help='Pt cut.')
+#parser.add_argument('--pt', type=int, default=500, help='Pt cut.')
 parser.add_argument('--scaleFail', type=float, default=None, help='Artificial scaling factor for distributions in the fail region.', required=False)
+parser.add_argument('--mergebbcc', action='store_true', default=False, help='Merge bb+cc')
 
 args = parser.parse_args()
 print("Running with options:")
@@ -41,19 +39,26 @@ for isam in accumulator[next(iter(accumulator))].identifiers('dataset'):
     scaleXS[isam] = 1 if isam.startswith('BTag') else xsecs[isam]/accumulator['sumw'][isam]
 
 outputDict = {}
-for ivar in [ 'fatjet_jetproba', 'sv_logsv1mass' ]:
-    for isel in [ 'msd100tau06' ]:
-        for DDX in [ 'DDB', 'DDC' ]:
-            for wp in [ 'M' ]:
-                for (pt_low, pt_high) in [('', ''), (350, args.pt), (args.pt, 'Inf')]:
+for ivar in [ 'fatjet_jetproba', 'sv_logsv1mass', 'sv_logsv1mass_maxdxySig' ]:
+    for isel in FinalMask:
+        for tagger in AK8TaggerWP[args.year].keys():
+            for wp in [ 'L', 'M', 'H' ]:
+                for wpt in ['Inclusive'] + list(PtBinning[args.year].keys()):
+                #for (pt_low, pt_high) in [('', ''), (350, args.pt), (args.pt, 'Inf')]:
+                    if wpt == 'Inclusive':
+                        pt_low, pt_high = ('', '')
+                    else:
+                        pt_low, pt_high = PtBinning[args.year][wpt]
                     for passfail in ['pass', 'fail']:
 
                         if pt_low == '':
-                            histname=f'{ivar}_{isel}{DDX}{passfail}{wp}wp'
+                            histname=f'{ivar}_{isel}{tagger}{passfail}{wp}wp'
                         else:
-                            histname=f'{ivar}_{isel}{DDX}{passfail}{wp}wpPt-{pt_low}to{pt_high}'
+                            histname=f'{ivar}_{isel}{tagger}{passfail}{wp}wpPt-{pt_low}to{pt_high}'
                         if histname not in accumulator.keys():
-                            h = accumulator[histname.replace(f'{args.pt}', f'{args.pt}.0')]
+                            #h = accumulator[histname.replace(f'{args.pt}', f'{args.pt}.0')]
+                            print(histname)
+                            raise NotImplementedError
                         else:
                             h = accumulator[histname]                            
                         h.scale( scaleXS, axis='dataset' )
@@ -61,7 +66,7 @@ for ivar in [ 'fatjet_jetproba', 'sv_logsv1mass' ]:
                             print(f"Scaling fail distributions by a factor {args.scaleFail}")
                             #h.scale( args.scaleFail, axis='dataset' )
                             h.scale( args.scaleFail )
-                        h = h.rebin(h.fields[-1], hist.Bin(h.fields[-1], h.axis(h.fields[-1]).label, **histogram_settings['variables']['_'.join(histname.split('_')[:-1])]['binning']))
+                        h = h.rebin(h.fields[-1], hist.Bin(h.fields[-1], h.axis(h.fields[-1]).label, **histogram_settings['variables'][ivar]['binning']))
 
                         ##### grouping flavor
                         flavors = [str(s) for s in h.axis('flavor').identifiers() if str(s) != 'flavor']
@@ -69,8 +74,11 @@ for ivar in [ 'fatjet_jetproba', 'sv_logsv1mass' ]:
                         flavors_to_merge = ['bb', 'b', 'cc', 'c']
                         for flav in flavors_to_merge:
                             mapping_flavor.pop(flav)
-                        mapping_flavor['b_bb'] = ['b', 'bb']
-                        mapping_flavor['c_cc'] = ['c', 'cc']
+                        if args.mergebbcc:
+                            mapping_flavor['bb_cc'] = ['b', 'bb', 'c', 'cc']
+                        else:
+                            mapping_flavor['b_bb'] = ['b', 'bb']
+                            mapping_flavor['c_cc'] = ['c', 'cc']
                         h = h.group("flavor", hist.Cat("flavor", "Flavor"), mapping_flavor)
 
                         ##### grouping data and QCD histos
@@ -103,7 +111,8 @@ for ivar in [ 'fatjet_jetproba', 'sv_logsv1mass' ]:
 output_dir = args.outputDir if args.outputDir else os.getcwd()+"/histograms/"
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
-outputFileName = output_dir + ( args.output if args.output else args.input.split('/')[-1].replace('coffea7', 'pkl')  )
+#outputFileName = output_dir + ( args.output if args.output else args.input.split('/')[-1].replace('coffea7', 'pkl')  )
+outputFileName = output_dir + ( args.output if args.output else args.input.split('/')[-1].replace(args.input.split('.')[-1], 'pkl')  )
 outputFile = open( outputFileName, 'wb'  )
 pickle.dump( outputDict, outputFile, protocol=2 )
 outputFile.close()

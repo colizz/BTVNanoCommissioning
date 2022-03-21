@@ -15,7 +15,7 @@ from coffea.nanoevents import NanoEventsFactory
 from coffea.util import load, save
 from coffea import processor
 from utils import rescale
-from parameters import lumi, xsecs
+from parameters import lumi, xsecs, jecTarFiles
 
 
 wrk_init = '''
@@ -45,20 +45,21 @@ if __name__ == '__main__':
     parser.add_argument( '--wf', '--workflow', dest='workflow', choices=['ttcom', 'fattag'], help='Which processor to run', required=True)
     parser.add_argument('-o', '--output', default=r'hists.coffea', help='Output histogram filename (default: %(default)s)')
     parser.add_argument('--samples', '--json', dest='samplejson', default='dummy_samples.json', help='JSON file containing dataset and file locations (default: %(default)s)')
-    parser.add_argument('--year', type=int, choices=[2016, 2017, 2018], help='Year of data/MC samples', required=True)
+    parser.add_argument('--campaign', type=str, choices={'EOY', 'UL'}, help='Dataset campaign.', required=True)
+    parser.add_argument('--year', type=str, choices=['2016', '2017', '2018'], help='Year of data/MC samples', required=True)
     parser.add_argument('--outputDir', type=str, default=None, help='Output directory')
     parser.add_argument('--nTrueFile', type=str, default='', help='To specify nTrue file. To use the default leave it empty')
-    parser.add_argument('--ul', default=False, action='store_true', help='Process UL samples.')
-    parser.add_argument('--pt', type=int, default=500, help='Pt cut.')
-    parser.add_argument('--MwpDDB', type=float, default=0.7, help='Medium working point for DDB.', required=True)
-    parser.add_argument('--checkOverlap', default=False, action='store_true', help='Create run:lumi:event txt file for data.')
+    parser.add_argument('--mupt', type=int, default=5, help='Muon Pt cut.')
+    #parser.add_argument('--pt', type=int, default=500, help='Pt cut.')
+    #parser.add_argument('--MwpDDB', type=float, default=0.7, help='Medium working point for DDB.', required=True)
+    parser.add_argument('--hist2d', default=False, action='store_true', help='Save 2D histograms.', required=False)
+    parser.add_argument('--checkOverlap', default=False, action='store_true', help='Create run:lumi:event txt file for data.', required=False)
 
     # Scale out
     parser.add_argument('--executor', choices=['iterative', 'futures', 'parsl/condor', 'parsl/slurm', 'dask/condor', 'dask/slurm'], default='futures', help='The type of executor to use (default: %(default)s)')
     parser.add_argument('-j', '--workers', type=int, default=12, help='Number of workers (cores/threads) to use for multi-worker executors (e.g. futures or condor) (default: %(default)s)')
     parser.add_argument('-s', '--scaleout', type=int, default=6, help='Number of nodes to scale out to if using slurm/condor. Total number of concurrent threads is ``workers x scaleout`` (default: %(default)s)')
     parser.add_argument('--voms', default=None, type=str, help='Path to voms proxy, accsessible to worker nodes. By default a copy will be made to $HOME.')
-    parser.add_argument('--splitdataset', action='store_true', help='Process each dataset separately.')
 
     # Debugging
     parser.add_argument('--validate', action='store_true', help='Do not process, just check all files are accessible')
@@ -67,7 +68,6 @@ if __name__ == '__main__':
     parser.add_argument('--limit', type=int, default=None, metavar='N', help='Limit to the first N files of each dataset in sample JSON')
     parser.add_argument('--chunk', type=int, default=500000, metavar='N', help='Number of events per process chunk')
     parser.add_argument('--max', type=int, default=None, metavar='N', help='Max number of chunks to run in total')
-    parser.add_argument('--offset', type=int, default=None, metavar='N', help='Offset in JSON reading')
     parser.add_argument('--dataset', type=str, default=None, help='Dataset in the JSON file to process')
 
     args = parser.parse_args()
@@ -81,12 +81,8 @@ if __name__ == '__main__':
     if args.dataset != parser.get_default('dataset'):
         sample_dict = {args.dataset : sample_dict[args.dataset]}
 
-    if args.offset != parser.get_default('offset'):
-        for key in sample_dict.keys():
-            sample_dict[key] = sample_dict[key][args.offset:args.offset+args.limit]
-    else:
-        for key in sample_dict.keys():
-            sample_dict[key] = sample_dict[key][:args.limit]
+    for key in sample_dict.keys():
+        sample_dict[key] = sample_dict[key][:args.limit]
 
     # For debugging
     if args.only is not None:
@@ -108,7 +104,9 @@ if __name__ == '__main__':
     hist_dir = os.getcwd() + "/histograms/" if args.outputDir is None else args.outputDir
     if not os.path.exists(hist_dir):
         os.makedirs(hist_dir)
-    args.checkOverlap = hist_dir + args.output.split('.')[0] + '.txt'
+    # Output file with run:lumi:event list
+    if args.checkOverlap:
+        args.checkOverlap = hist_dir + args.output.split('.')[0] + '.txt'
 
     # Scan if files can be opened
     if args.validate:
@@ -134,56 +132,15 @@ if __name__ == '__main__':
                 os.system(f'rm {fi}')
         sys.exit(0)
 
-        ##### Untar JECs
-        ##### Correction files in https://twiki.cern.ch/twiki/bin/viewauth/CMS/JECDataMC
+    ##### Untar JECs
+    ##### Correction files in https://twiki.cern.ch/twiki/bin/viewauth/CMS/JECDataMC
     jesInputFilePath = os.getcwd()+"/correction_files/tmp"
     if not os.path.exists(jesInputFilePath):
         os.makedirs(jesInputFilePath)
-    if args.year==2016:
-        jecTarFiles = [
-                    '/correction_files/JEC/Summer16_07Aug2017BCD_V11_DATA.tar.gz',
-                    '/correction_files/JEC/Summer16_07Aug2017EF_V11_DATA.tar.gz',
-                    '/correction_files/JEC/Summer16_07Aug2017GH_V11_DATA.tar.gz',
-                    '/correction_files/JEC/Summer16_07Aug2017_V11_MC.tar.gz',
-                    ]
-    if args.year==2017:
-        if args.ul:
-            jecTarFiles = [
-                        '/correction_files/JEC/Summer19UL17_RunB_V5_DATA.tar.gz',
-                        '/correction_files/JEC/Summer19UL17_RunC_V5_DATA.tar.gz',
-                        '/correction_files/JEC/Summer19UL17_RunD_V5_DATA.tar.gz',
-                        '/correction_files/JEC/Summer19UL17_RunE_V5_DATA.tar.gz',
-                        '/correction_files/JEC/Summer19UL17_RunF_V5_DATA.tar.gz',
-                        ]
-        else:
-            jecTarFiles = [
-                        '/correction_files/JEC/Fall17_17Nov2017B_V32_DATA.tar.gz',
-                        '/correction_files/JEC/Fall17_17Nov2017C_V32_DATA.tar.gz',
-                        '/correction_files/JEC/Fall17_17Nov2017DE_V32_DATA.tar.gz',
-                        '/correction_files/JEC/Fall17_17Nov2017F_V32_DATA.tar.gz',
-                        '/correction_files/JEC/Fall17_17Nov2017_V32_MC.tar.gz',
-                        ]
-    if args.year==2018:
-        if args.ul:
-            jecTarFiles = [
-                        '/correction_files/JEC/Summer19UL18_RunA_V5_DATA.tar.gz',
-                        '/correction_files/JEC/Summer19UL18_RunB_V5_DATA.tar.gz',
-                        '/correction_files/JEC/Summer19UL18_RunC_V5_DATA.tar.gz',
-                        '/correction_files/JEC/Summer19UL18_RunD_V5_DATA.tar.gz',
-                        '/correction_files/JEC/Summer19UL18_V5_MC.tar.gz',
-                        ]
-        else:
-            jecTarFiles = [
-                        '/correction_files/JEC/Autumn18_RunA_V19_DATA.tar.gz',
-                        '/correction_files/JEC/Autumn18_RunB_V19_DATA.tar.gz',
-                        '/correction_files/JEC/Autumn18_RunC_V19_DATA.tar.gz',
-                        '/correction_files/JEC/Autumn18_RunD_V19_DATA.tar.gz',
-                        '/correction_files/JEC/Autumn18_V19_MC.tar.gz',
-                        ]
-    for itar in jecTarFiles:
-                jecFile = os.getcwd()+itar
-                jesArchive = tarfile.open( jecFile, "r:gz")
-                jesArchive.extractall(jesInputFilePath)
+    for itar in jecTarFiles[args.campaign][args.year]:
+        jecFile = os.getcwd()+itar
+        jesArchive = tarfile.open( jecFile, "r:gz")
+        jesArchive.extractall(jesInputFilePath)
 
     # load workflow
     if args.workflow == "ttcom":
@@ -191,7 +148,7 @@ if __name__ == '__main__':
         processor_instance = NanoProcessor()
     elif args.workflow == "fattag":
         from workflows.fatjet_tagger import NanoProcessor
-        processor_instance = NanoProcessor(year=args.year, UL=args.ul, pt=args.pt, MwpDDB=args.MwpDDB, JECfolder=jesInputFilePath, nTrueFile=args.nTrueFile, hist_dir=hist_dir, checkOverlap=args.checkOverlap)
+        processor_instance = NanoProcessor(year=args.year, campaign=args.campaign, mupt=args.mupt, JECfolder=jesInputFilePath, nTrueFile=args.nTrueFile, hist_dir=hist_dir, hist2d=args.hist2d, checkOverlap=args.checkOverlap)
     else:
         raise NotImplemented
 
@@ -234,37 +191,16 @@ if __name__ == '__main__':
             _exec = processor.iterative_executor
         else:
             _exec = processor.futures_executor
-        if not args.splitdataset:
-            output = processor.run_uproot_job(sample_dict,
-                                        treename='Events',
-                                        processor_instance=processor_instance,
-                                        executor=_exec,
-                                        executor_args={
-                                            'skipbadfiles':args.skipbadfiles,
-                                            'schema': processor.NanoAODSchema,
-                                            'workers': args.workers},
-                                        chunksize=args.chunk, maxchunks=args.max
-                                        )
-        else:
-            hist_dir = hist_dir + args.output.split(".coffea")[0] + "/"
-            if not os.path.exists(hist_dir):
-                os.makedirs(hist_dir)
-            for dataset in sample_dict.keys():
-                output = processor.run_uproot_job({dataset : sample_dict[dataset]},
-                                            treename='Events',
-                                            processor_instance=processor_instance,
-                                            executor=_exec,
-                                            executor_args={
-                                                'skipbadfiles':args.skipbadfiles,
-                                                'schema': processor.NanoAODSchema,
-                                                'workers': args.workers},
-                                            chunksize=args.chunk, maxchunks=args.max
-                                            )
-                filepath = hist_dir + args.output.replace(".coffea", "_" + dataset + ".coffea")
-                save(output, filepath)
-                print(f"Saving output to {filepath}")
-                del output
-                #output_split.append(output)
+        output = processor.run_uproot_job(sample_dict,
+                                    treename='Events',
+                                    processor_instance=processor_instance,
+                                    executor=_exec,
+                                    executor_args={
+                                        'skipbadfiles':args.skipbadfiles,
+                                        'schema': processor.NanoAODSchema,
+                                        'workers': args.workers},
+                                    chunksize=args.chunk, maxchunks=args.max
+                                    )
     #elif args.executor == 'parsl/slurm':
     elif 'parsl' in args.executor:
         import parsl
@@ -299,40 +235,17 @@ if __name__ == '__main__':
             )
             dfk = parsl.load(slurm_htex)
 
-            if not args.splitdataset:
-                output = processor.run_uproot_job(sample_dict,
-                                            treename='Events',
-                                            processor_instance=processor_instance,
-                                            executor=processor.parsl_executor,
-                                            executor_args={
-                                                'skipbadfiles':True,
-                                                'schema': processor.NanoAODSchema,
-                                                'config': None,
-                                            },
-                                            chunksize=args.chunk, maxchunks=args.max
-                                            )
-            else:
-                hist_dir = hist_dir + args.output.split(".coffea")[0] + "/"
-                if not os.path.exists(hist_dir):
-                    os.makedirs(hist_dir)
-                for dataset in sample_dict.keys():
-                    print("Processing " + dataset)
-                    output = processor.run_uproot_job({dataset : sample_dict[dataset]},
-                                                treename='Events',
-                                                processor_instance=processor_instance,
-                                                executor=processor.parsl_executor,
-                                                executor_args={
-                                                    'skipbadfiles':True,
-                                                    'schema': processor.NanoAODSchema,
-                                                    'config': None,
-                                                },
-                                                chunksize=args.chunk, maxchunks=args.max
-                                                )
-                    filepath = hist_dir + args.output.replace(".coffea", "_" + dataset + ".coffea")
-                    save(output, filepath)
-                    print(f"Saving output to {filepath}")
-                    del output
-                    #output_split.append(output)
+            output = processor.run_uproot_job(sample_dict,
+                                        treename='Events',
+                                        processor_instance=processor_instance,
+                                        executor=processor.parsl_executor,
+                                        executor_args={
+                                            'skipbadfiles':True,
+                                            'schema': processor.NanoAODSchema,
+                                            'config': None,
+                                        },
+                                        chunksize=args.chunk, maxchunks=args.max
+                                        )
         elif 'condor' in args.executor:
             #xfer_files = [process_worker_pool, _x509_path]
             #print(xfer_files)
@@ -360,21 +273,17 @@ if __name__ == '__main__':
             )
             dfk = parsl.load(condor_htex)
 
-            if not args.splitdataset:
-                output = processor.run_uproot_job(sample_dict,
-                                            treename='Events',
-                                            processor_instance=processor_instance,
-                                            executor=processor.parsl_executor,
-                                            executor_args={
-                                                'skipbadfiles':True,
-                                                'schema': processor.NanoAODSchema,
-                                                'config': None,
-                                            },
-                                            chunksize=args.chunk, maxchunks=args.max
-                                            )
-            else:
-                raise NotImplementedError
-
+            output = processor.run_uproot_job(sample_dict,
+                                        treename='Events',
+                                        processor_instance=processor_instance,
+                                        executor=processor.parsl_executor,
+                                        executor_args={
+                                            'skipbadfiles':True,
+                                            'schema': processor.NanoAODSchema,
+                                            'config': None,
+                                        },
+                                        chunksize=args.chunk, maxchunks=args.max
+                                        )
     elif 'dask' in args.executor:
         from dask_jobqueue import SLURMCluster, HTCondorCluster
         from distributed import Client
@@ -413,41 +322,9 @@ if __name__ == '__main__':
                                         chunksize=args.chunk, maxchunks=args.max
                             )
 
-    if not args.splitdataset:
-        if args.offset == parser.get_default("offset"):
-            #if len(sample_dict.keys()) > 1:     ##################### needs fix.
-            #   output = rescale(output, xsecs, lumi[args.year])
-            #   #output = rescale(output, xsecs, lumi[args.year], "JetHT")
-            save(output, hist_dir + args.output)
-            print(output)
-            print(f"Saving output to {hist_dir + args.output}")
-        else:
-            # In this case the MC is not rescaled yet
-            print("No MC rescaling applied")
-            hist_dir = hist_dir + args.output.split(".coffea")[0] + "/"
-            if not os.path.exists(hist_dir):
-                os.makedirs(hist_dir)
-            args.output = args.output.replace(".coffea", "_0" + str(args.offset) + ".coffea")
-            save(output, hist_dir + args.output)
-            print(output)
-            print(f"Saving output to {hist_dir + args.output}")
-
-    else:
-        files_list = [file for file in os.listdir(hist_dir) if file != args.output]
-        #accumulator = output_split[0]
-        accumulator = load(hist_dir + files_list[0])
-        histograms = accumulator.keys()
-        for histname in histograms:
-            for file in files_list[1:]:
-                output = load(hist_dir + file)
-                accumulator[histname].add(output[histname])
-                del output
-
-        if not os.path.exists(hist_dir):
-            os.makedirs(hist_dir)
-        if len(sample_dict.keys()) > 1:
-            accumulator = rescale(accumulator, xsecs, lumi[args.year])
-        save(accumulator, hist_dir + args.output)
-        print(accumulator)
-        print(f"Saving output to {hist_dir + args.output}")
-
+    #if len(sample_dict.keys()) > 1:     ##################### needs fix.
+    #   output = rescale(output, xsecs, lumi[args.year])
+    #   #output = rescale(output, xsecs, lumi[args.year], "JetHT")
+    save(output, hist_dir + args.output)
+    print(output)
+    print(f"Saving output to {hist_dir + args.output}")
