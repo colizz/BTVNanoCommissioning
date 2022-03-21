@@ -19,7 +19,7 @@ parser.add_argument('-o', '--output', type=str, default='', help='Output directo
 parser.add_argument('--outputDir', type=str, default=None, help='Output directory')
 parser.add_argument('-s', '--scale', type=str, default='linear', help='Plot y-axis scale', required=False)
 parser.add_argument('-d', '--dense', action='store_true', default=False, help='Normalized plots')
-parser.add_argument('--year', type=int, choices=[2016, 2017, 2018], help='Year of data/MC samples', required=True)
+parser.add_argument('--year', type=str, choices=['2016', '2017', '2018'], help='Year of data/MC samples', required=True)
 parser.add_argument('--hist2d', action='store_true', default=False, help='Plot only 2D histograms')
 parser.add_argument('--proxy', action='store_true', help='Plot proxy and signal comparison')
 parser.add_argument('--only', action='store', default='', help='Plot only one histogram')
@@ -167,12 +167,13 @@ def make_plots(entrystart, entrystop):
         if histname in ["sumw", "nbtagmu", "nbtagmu_event_level", "nfatjet"]: continue
 
         if any([histname.startswith('cutflow')]): break
-        sel = histname.split('_')[-1]
+        sel = [s for s in selection.keys() if s in histname][0]
+        selection_text = selection[sel]
         h = _accumulator[histname]
         varname = h.fields[-1]
         varlabel = h.axis(varname).label
         if histname.startswith( tuple(histogram_settings['variables'].keys()) ):
-            h = h.rebin(varname, hist.Bin(varname, varlabel, **histogram_settings['variables']['_'.join(histname.split('_')[:-1])]['binning']))
+            h = h.rebin(varname, hist.Bin(varname, varlabel, **histogram_settings['variables']['_'.join(histname.split('_')[:2])]['binning']))
         h.scale( scaleXS, axis='dataset' )
         
         ##### grouping flavor
@@ -187,9 +188,9 @@ def make_plots(entrystart, entrystop):
         h = h.group("flavor", hist.Cat("flavor", "Flavor"), mapping_flavor)        
         flavors = [item for item in list(mapping_flavor.keys()) if 'Data' not in item]
         #flavors = ['b_bb', 'c_cc', 'l']
-        order = flavors_order['DDB']
-        if 'DDC' in histname:
-            order = flavors_order['DDC']
+        order = flavors_order['btagDDBvLV2']
+        if ('btagDDCvLV2' in histname) | ('particleNetMD_Xcc' in histname):
+            order = flavors_order['btagDDCvLV2']
 
         flavor_opts['facecolor'] = [flavors_color[f.split('_')[-1]] for f in order if 'Data' not in f]
 
@@ -246,16 +247,16 @@ def make_plots(entrystart, entrystop):
             rax.set_ylim(0.0,2.0)
             rax.set_yticks([0.5, 1.0, 1.5])
             if histname.startswith( tuple(histogram_settings['variables'].keys()) ):
-                ax.set_xlim(**histogram_settings['variables']['_'.join(histname.split('_')[:-1])]['xlim'])
-                rax.set_xlim(**histogram_settings['variables']['_'.join(histname.split('_')[:-1])]['xlim'])
+                ax.set_xlim(**histogram_settings['variables']['_'.join(histname.split('_')[:2])]['xlim'])
+                rax.set_xlim(**histogram_settings['variables']['_'.join(histname.split('_')[:2])]['xlim'])
             x_low, x_high = rax.get_xlim()
             rax.hlines([0.5, 1.5], x_low, x_high, colors='grey', linestyles='dashed', linewidth=1)
-            if (not histname.split('_')[-1] in selection.keys()) & ('Pt-' in histname.split('_')[-1]):
+            if ('Pt-' in histname.split('_')[-1]):
                 pt_low, pt_high = [pt for pt in histname.split('_')[-1].split('Pt-')[-1].split('to')]
                 if pt_high == 'Inf':
                     pt_high = r'$\infty$'
-                selection[histname.split('_')[-1]] = selection[histname.split('_')[-1].split('Pt-')[0]] + r"$p_T$ bin:" + f" ({pt_low}, {pt_high}) [GeV]"+"\n"
-            at = AnchoredText(selection[histname.split('_')[-1]], loc=2, frameon=False)
+                selection_text = selection[sel] + r"$p_T$ bin:" + f" ({pt_low}, {pt_high}) [GeV]"+"\n"
+            at = AnchoredText(selection_text, loc=2, frameon=False)
             ax.add_artist(at)
             if histname.startswith("btag"):
                 ax.semilogy()
@@ -308,8 +309,7 @@ def make_plots(entrystart, entrystop):
                                 labels[i] = rf"ggH$\rightarrow${xx}"
                         ax.legend(handles, labels)
 
-                        sel = [s for s in selection.keys() if s in histname][0]
-                        at = AnchoredText(selection[sel], loc=2, frameon=False)
+                        at = AnchoredText(selection_text, loc=2, frameon=False)
                         ax.add_artist(at)
                         filepath = f"{plot_dir}{histname}_ggH{xx}_{scale}.png"
                         print("Saving", filepath)

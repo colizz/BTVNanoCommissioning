@@ -1,6 +1,6 @@
 import os
 import sys
-from parameters import fit_parameters
+from parameters import AK8TaggerWP, FinalMask, fit_parameters
 
 if __name__ == '__main__':
     import argparse
@@ -9,9 +9,13 @@ if __name__ == '__main__':
     parser.add_argument('--outputDir', type=str, default=None, help='Output directory', required=True)
     parser.add_argument('--campaign', type=str, choices={'EOY', 'UL'}, help='Dataset campaign.', required=True)
     parser.add_argument('--year', type=str, choices=['2016', '2017', '2018'], help='Year of data/MC samples', required=True)
-    parser.add_argument('--pt', type=int, default=500, help='Pt cut.', required=True)
-    parser.add_argument("--freezeL", action='store_true', default=False, help="Freeze the light component in all fits")
+    #parser.add_argument("--freezeL", action='store_true', default=False, help="Freeze the light component in all fits")
+    #parser.add_argument("--freezeB", action='store_true', default=False, help="Freeze the b+bb component in all fits")
+    #parser.add_argument("--freezeC", action='store_true', default=False, help="Freeze the c+cc component in all fits")
+    parser.add_argument('--tagger', type=str, default=None, help='A particular tagger can be specified as parameter.')
     parser.add_argument('--var', type=str, choices=['sv_logsv1mass', 'sv_logsv1mass_maxdxySig'], default='sv_logsv1mass', help='Variable used in the template fit.')
+    parser.add_argument('--lo', type=float, default=-1.2, help='Variable used in the template fit.')
+    parser.add_argument('--hi', type=float, default=2.0, help='Variable used in the template fit.')
     parser.add_argument("--tpf", "--template-passfail", dest='tpf', type=str,
                         default='histograms/hists_fattag_pileupJEC_2017_WPcuts_v01.pkl',
                         help="Pass/Fail templates, only for `fit=double`", required=True)
@@ -19,32 +23,57 @@ if __name__ == '__main__':
     parser.add_argument("--epsilon", type=float, default=0.0001, help='Epsilon parameter for MC shape uncertainties')
     parser.add_argument('--impacts', action='store_true', default=False, help='Compute parameters impact')
     parser.add_argument('--passonly', action='store_true', default=False, help='Fit pass region only')
+    parser.add_argument('--mergebbcc', action='store_true', default=False, help='Merge bb+cc')
+    parser.add_argument('--mergeMH', action='store_true', default=False, help='Merge M+H pT bins')
+    parser.add_argument('--fixbkg', action='store_true', default=False, help='Fix all the background templates in the fit')
     parser.add_argument('-v', '--verbose', action='store_true', default=False, help='Show combine log to stdout')
     args = parser.parse_args()
 
-    if args.parameters:
-        print("{} : {}".format(args.parameters, fit_parameters[args.parameters]))
+    #if args.parameters:
+    #    print("{} : {}".format(args.parameters, fit_parameters[args.parameters]))
+    
+    taggers = AK8TaggerWP[args.year].keys()
+    if args.tagger in taggers:
+        taggers = [args.tagger]
+    elif args.tagger != None:
+        sys.exit("Tagger {} does not exist.".format(args.tagger))
+
+    final_mask = FinalMask[0]
+
+    if args.mergeMH:
+        wpts = ['Inclusive', 'L', 'M+H']
+    else:
+        wpts = ['Inclusive', 'L', 'M', 'H']
 
     #for year in ['2016', '2017', '2018']:
-    for tagger in ['DDC', 'DDB']:
-        for wp in [ 'M' ]:
-            for wpt in ['Inclusive', 'M', 'H']:
-                subDir = "{}/msd100tau06{}{}wp".format(args.outputDir, tagger, wp)
+    #for tagger in ['DDC', 'DDB']:
+    for tagger in taggers:
+        for wp in [ 'L', 'M', 'H' ]:
+            for wpt in wpts:
+                subDir = "{}/{}{}{}wp".format(args.outputDir, final_mask, tagger, wp)
                 if not os.path.exists(subDir):
                     os.makedirs(subDir)
                 logFile = "{}/sf{}{}{}wp{}Pt.log".format(subDir, args.year, tagger, wp, wpt)
                 
-                submissionCommand = ( "python scaleFactorComputation.py --campaign {} --year {} --tpf {} --outputDir {}".format(args.campaign, args.year, args.tpf, subDir) +
-                                      " --selection msd100tau06{} --wp {} --wpt {} --pt {} --var {}".format(tagger, wp, wpt, args.pt, args.var) +
+                submissionCommand = ( "python scaleFactorComputation.py --campaign {} --year {} --tagger {} --tpf {} --outputDir {}".format(args.campaign, args.year, tagger, args.tpf, subDir) +
+                                      " --selection msd100tau06 --wp {} --wpt {} --var {} --lo {} --hi {}".format(wp, wpt, args.var, args.lo, args.hi) +
                                       " | tee {}".format(logFile) )
                 if args.parameters:
                     submissionCommand = submissionCommand.replace(' | tee', ' --parameters {} | tee'.format(args.parameters))
                 if args.epsilon:
                     submissionCommand = submissionCommand.replace(' | tee', ' --epsilon {} | tee'.format(args.epsilon))
-                if args.freezeL:
-                    submissionCommand = submissionCommand.replace(' | tee', ' --freezeL | tee')
+                #if args.freezeL:
+                #    submissionCommand = submissionCommand.replace(' | tee', ' --freezeL | tee')
+                #if args.freezeB:
+                #    submissionCommand = submissionCommand.replace(' | tee', ' --freezeB | tee')
+                #if args.freezeC:
+                #    submissionCommand = submissionCommand.replace(' | tee', ' --freezeC | tee')
                 if args.passonly:
                     submissionCommand = submissionCommand.replace(' | tee', ' --passonly | tee')
+                if args.mergebbcc:
+                    submissionCommand = submissionCommand.replace(' | tee', ' --mergebbcc | tee')
+                if args.fixbkg:
+                    submissionCommand = submissionCommand.replace(' | tee', ' --fixbkg | tee')
                 if wpt == 'Inclusive':
                     submissionCommand = submissionCommand.replace(' | tee', ' --createcsv | tee')
                 if wpt == 'H':
@@ -60,7 +89,7 @@ if __name__ == '__main__':
                     print("Fit failed.")
                     continue
                 print("{} {} {} wp {} Pt".format(args.year, tagger, wp, wpt))
-                os.system('cat {}/msd100tau06{}{}wp/fitResults{}wp{}Pt.txt'.format(args.outputDir, tagger, wp, wp, wpt))
+                os.system('cat {}/{}{}{}wp/fitResults{}wp{}Pt.txt'.format(args.outputDir, final_mask, tagger, wp, wp, wpt))
                 print("")
 
                 if args.impacts:
