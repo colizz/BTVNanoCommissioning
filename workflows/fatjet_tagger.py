@@ -8,7 +8,7 @@ import numpy as np
 import awkward as ak
 import uproot
 from utils import rescale, get_nsv, get_sv_in_jet
-from parameters import lumi, xsecs, JECversions, AK8Taggers
+from parameters import JECversions, FinalMask, PtBinning, AK8Taggers, AK8TaggerWP
 
 
 class NanoProcessor(processor.ProcessorABC):
@@ -31,34 +31,18 @@ class NanoProcessor(processor.ProcessorABC):
                 'mass_cut' : 100.,
                 'tau21_cut' : 0.6
                     },
-            'msd100tau03'       : {
-                'pt_cut' : 350.,
-                'eta_cut': 2.4,
-                'jetId_cut': 2,
-                'mass_cut' : 100.,
-                'tau21_cut' : 0.3
-                    },
+            #'msd100tau03'       : {
+            #    'pt_cut' : 350.,
+            #    'eta_cut': 2.4,
+            #    'jetId_cut': 2,
+            #    'mass_cut' : 100.,
+            #    'tau21_cut' : 0.3
+            #        },
         }
-        self._final_mask = ['msd100tau06', 'msd100tau03']
-        #self._final_mask = ['msd100tau06', 'pt400msd100tau06']
-        self._mask_DDX = {
-            'DDB' : {
-                #'L' : XX,
-                'M' : 0.7
-                #'M' : MwpDDB
-            },
-            'DDC' : {
-                #'L' : XX,
-                'M' : 0.45
-            }, 
-        }
-        self._pt_bins = {
-            #'L' : [0, 350],
-            'M' : (350, 500),
-            #'M' : (350, 450),
-            'H' : (500, 'Inf'),
-            #'H' : (450, 'Inf'),
-        }
+        self._final_mask = FinalMask
+        #self._final_mask = ['msd100tau06', 'msd100tau03']
+        self._AK8TaggerWP = AK8TaggerWP[self.year]
+        self._PtBinning = PtBinning[self.year]
         self.mupt = mupt
         self.corrJECfolder = JECfolder
         self.hist2d = hist2d
@@ -260,15 +244,15 @@ class NanoProcessor(processor.ProcessorABC):
             for maskname in masks[1:]:
                 d[f'{histname}_{maskname}'] = h.copy()
                 if maskname in self._final_mask:
-                    for DDX in self._mask_DDX.keys():
-                        for wp in self._mask_DDX[DDX].keys():
-                            d[f'{histname}_{maskname}{DDX}pass{wp}wp'] = h.copy()
-                            d[f'{histname}_{maskname}{DDX}fail{wp}wp'] = h.copy()
-                            for wpt in self._pt_bins.keys():
-                                pt_low, pt_high = self._pt_bins[wpt]
+                    for tagger in self._AK8TaggerWP.keys():
+                        for wp in self._AK8TaggerWP[tagger].keys():
+                            d[f'{histname}_{maskname}{tagger}pass{wp}wp'] = h.copy()
+                            d[f'{histname}_{maskname}{tagger}fail{wp}wp'] = h.copy()
+                            for wpt in self._PtBinning.keys():
+                                pt_low, pt_high = self._PtBinning[wpt]
                                 pt_low, pt_high = (str(pt_low), str(pt_high))
-                                d[f'{histname}_{maskname}{DDX}pass{wp}wpPt-{pt_low}to{pt_high}'] = h.copy()
-                                d[f'{histname}_{maskname}{DDX}fail{wp}wpPt-{pt_low}to{pt_high}'] = h.copy()
+                                d[f'{histname}_{maskname}{tagger}pass{wp}wpPt-{pt_low}to{pt_high}'] = h.copy()
+                                d[f'{histname}_{maskname}{tagger}fail{wp}wpPt-{pt_low}to{pt_high}'] = h.copy()
         self._hist_dict = d.copy()
 
         #for attr, hists in zip(["fatjet_hists", "sv_hists", "event_hists"], [self.fatjet_hists, self.sv_hists, self.event_hists]):
@@ -278,15 +262,15 @@ class NanoProcessor(processor.ProcessorABC):
                 for maskname in masks:
                     attr_updated.append(f'{histname}_{maskname}')
                     if maskname in self._final_mask:
-                        for DDX in self._mask_DDX.keys():
-                            for wp in self._mask_DDX[DDX].keys():
-                                attr_updated.append(f'{histname}_{maskname}{DDX}pass{wp}wp')
-                                attr_updated.append(f'{histname}_{maskname}{DDX}fail{wp}wp')
-                                for wpt in self._pt_bins.keys():
-                                    pt_low, pt_high = self._pt_bins[wpt]
+                        for tagger in self._AK8TaggerWP.keys():
+                            for wp in self._AK8TaggerWP[tagger].keys():
+                                attr_updated.append(f'{histname}_{maskname}{tagger}pass{wp}wp')
+                                attr_updated.append(f'{histname}_{maskname}{tagger}fail{wp}wp')
+                                for wpt in self._PtBinning.keys():
+                                    pt_low, pt_high = self._PtBinning[wpt]
                                     pt_low, pt_high = (str(pt_low), str(pt_high))
-                                    attr_updated.append(f'{histname}_{maskname}{DDX}pass{wp}wpPt-{pt_low}to{pt_high}')
-                                    attr_updated.append(f'{histname}_{maskname}{DDX}fail{wp}wpPt-{pt_low}to{pt_high}')
+                                    attr_updated.append(f'{histname}_{maskname}{tagger}pass{wp}wpPt-{pt_low}to{pt_high}')
+                                    attr_updated.append(f'{histname}_{maskname}{tagger}fail{wp}wpPt-{pt_low}to{pt_high}')
             setattr(self, attr, attr_updated)
 
         return self._hist_dict
@@ -403,6 +387,9 @@ class NanoProcessor(processor.ProcessorABC):
 
         events.FatJet = self.applyJEC( events.FatJet, events.fixedGridRhoFastjetAll, events.caches[0], 'AK8PFPuppi', isRealData, JECversion )
 
+        #cuts = {}
+        #for tagger in self._AK8TaggerWP.keys():
+        #    cuts[tagger] = processor.PackedSelection()
         cuts = processor.PackedSelection()
 
         ############
@@ -423,7 +410,6 @@ class NanoProcessor(processor.ProcessorABC):
         req_trig = np.zeros(len(events), dtype='bool')
         for t in trig_arrs:
             req_trig = req_trig | t
-        #print("any(req_trig)", any(req_trig))
         cuts.add('trigger', ak.to_numpy(req_trig))
 
         ############
@@ -477,21 +463,18 @@ class NanoProcessor(processor.ProcessorABC):
         fatjet_mutag = (leadfatjet.nmusj1 >= 1) & (leadfatjet.nmusj2 >= 1)
         cuts.add( 'fatjet_mutag', ak.to_numpy(fatjet_mutag) )
 
-        for DDX in self._mask_DDX.keys():
-            for wp, cut in self._mask_DDX[DDX].items():
-                DDX_pass = (leadfatjet[f'btag{DDX}vLV2'] > cut)
-                DDX_fail = (leadfatjet[f'btag{DDX}vLV2'] < cut)
-                cuts.add( f'{DDX}_pass{wp}wp', ak.to_numpy(DDX_pass) )
-                cuts.add( f'{DDX}_fail{wp}wp', ak.to_numpy(DDX_fail) )
-                for wpt, (pt_low, pt_high) in self._pt_bins.items():
-                    if pt_high == 'Inf':
-                        DDX_pass_pt = ((leadfatjet[f'btag{DDX}vLV2'] > cut) & (leadfatjet.pt >= pt_low))
-                        DDX_fail_pt = ((leadfatjet[f'btag{DDX}vLV2'] < cut) & (leadfatjet.pt >= pt_low))
-                    else:
-                        DDX_pass_pt = ((leadfatjet[f'btag{DDX}vLV2'] > cut) & (leadfatjet.pt >= pt_low) & (leadfatjet.pt < pt_high))
-                        DDX_fail_pt = ((leadfatjet[f'btag{DDX}vLV2'] < cut) & (leadfatjet.pt >= pt_low) & (leadfatjet.pt < pt_high))
-                    cuts.add( f'{DDX}_pass{wp}wpPt-{pt_low}to{pt_high}', ak.to_numpy(DDX_pass_pt) )
-                    cuts.add( f'{DDX}_fail{wp}wpPt-{pt_low}to{pt_high}', ak.to_numpy(DDX_fail_pt) )
+        for tagger in self._AK8TaggerWP.keys():
+            for wp, (cut_low, cut_high) in self._AK8TaggerWP[tagger].items():
+                tag_pass = (leadfatjet[tagger] > cut_low) & (leadfatjet[tagger] <= cut_high)
+                tag_fail = ~tag_pass & (leadfatjet[tagger] >= 0) & (leadfatjet[tagger] <= 1)
+                cuts.add( f'{tagger}pass{wp}wp', ak.to_numpy(tag_pass) )
+                cuts.add( f'{tagger}fail{wp}wp', ak.to_numpy(tag_fail) )
+        for wpt, (pt_low, pt_high) in self._PtBinning.items():
+            if pt_high == 'Inf':
+                tag_pt = (leadfatjet.pt >= pt_low)
+            else:
+                tag_pt = (leadfatjet.pt >= pt_low) & (leadfatjet.pt < pt_high)
+            cuts.add( f'Pt-{pt_low}to{pt_high}', ak.to_numpy(tag_pt) )
 
         flavors = {}
         if not isRealData:
@@ -521,26 +504,27 @@ class NanoProcessor(processor.ProcessorABC):
 
         selection = {}
         selection['basic'] = { 'trigger', 'basic' }
-        selection['pt350msd50'] = { 'trigger', 'fatjet_mutag', 'pt350msd50' }
         selection['msd100tau06'] = { 'trigger', 'fatjet_mutag', 'msd100tau06' }
-        selection['msd100tau03'] = { 'trigger', 'fatjet_mutag', 'msd100tau03' }
-        selection['pt400msd100tau06'] = { 'trigger', 'fatjet_mutag', 'pt400msd100tau06' }
+        #selection['pt350msd50'] = { 'trigger', 'fatjet_mutag', 'pt350msd50' }
+        #selection['msd100tau03'] = { 'trigger', 'fatjet_mutag', 'msd100tau03' }
+        #selection['pt400msd100tau06'] = { 'trigger', 'fatjet_mutag', 'pt400msd100tau06' }
         for mask_f in self._final_mask:
-            for DDX in self._mask_DDX.keys():
-                for wp, cut in self._mask_DDX[DDX].items():
-                    selection[f'{mask_f}{DDX}pass{wp}wp'] = selection[mask_f].copy()
-                    selection[f'{mask_f}{DDX}pass{wp}wp'].add(f'{DDX}_pass{wp}wp')
-                    selection[f'{mask_f}{DDX}fail{wp}wp'] = selection[mask_f].copy()
-                    selection[f'{mask_f}{DDX}fail{wp}wp'].add(f'{DDX}_fail{wp}wp')
-                    for wpt, (pt_low, pt_high) in self._pt_bins.items():
-                        selection[f'{mask_f}{DDX}pass{wp}wpPt-{pt_low}to{pt_high}'] = selection[mask_f].copy()
-                        selection[f'{mask_f}{DDX}pass{wp}wpPt-{pt_low}to{pt_high}'].add(f'{DDX}_pass{wp}wpPt-{pt_low}to{pt_high}')
-                        selection[f'{mask_f}{DDX}fail{wp}wpPt-{pt_low}to{pt_high}'] = selection[mask_f].copy()
-                        selection[f'{mask_f}{DDX}fail{wp}wpPt-{pt_low}to{pt_high}'].add(f'{DDX}_fail{wp}wpPt-{pt_low}to{pt_high}')
-                        
+            for tagger in self._AK8TaggerWP.keys():
+                for wp, cut in self._AK8TaggerWP[tagger].items():
+                    selection[f'{mask_f}{tagger}pass{wp}wp'] = selection[mask_f].copy()
+                    selection[f'{mask_f}{tagger}pass{wp}wp'].add(f'{tagger}pass{wp}wp')
+                    selection[f'{mask_f}{tagger}fail{wp}wp'] = selection[mask_f].copy()
+                    selection[f'{mask_f}{tagger}fail{wp}wp'].add(f'{tagger}fail{wp}wp')
+                    for wpt, (pt_low, pt_high) in self._PtBinning.items():
+                        #selection[f'{mask_f}{tagger}pass{wp}wpPt-{pt_low}to{pt_high}'] = selection[mask_f].copy()
+                        selection[f'{mask_f}{tagger}pass{wp}wpPt-{pt_low}to{pt_high}'] = selection[f'{mask_f}{tagger}pass{wp}wp'].copy()
+                        selection[f'{mask_f}{tagger}pass{wp}wpPt-{pt_low}to{pt_high}'].add(f'Pt-{pt_low}to{pt_high}')
+                        selection[f'{mask_f}{tagger}fail{wp}wpPt-{pt_low}to{pt_high}'] = selection[f'{mask_f}{tagger}fail{wp}wp'].copy()
+                        selection[f'{mask_f}{tagger}fail{wp}wpPt-{pt_low}to{pt_high}'].add(f'Pt-{pt_low}to{pt_high}')
+
 
         for histname, h in output.items():
-            sel = [ r for r in selection.keys() if r in histname.split('_') ]
+            sel = [mask + histname.split(mask)[-1] for mask in self._mask_fatjets.keys() if mask in histname]
             if histname in self.muon_hists:
                 #print('array printout:', np.array(list(muonCollection.keys())))
                 #print('list printout:', np.array(list(muonCollection.keys()))[[k in histname for k in muonCollection.keys()]])
