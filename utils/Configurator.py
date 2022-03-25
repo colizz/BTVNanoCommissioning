@@ -3,7 +3,7 @@ import sys
 import json
 import importlib.util
 
-from parameters.allhistograms import histogram_settings
+#from parameters.allhistograms import histogram_settings
 
 class Configurator():
     def __init__(self, cfg, plot=False, create_dataset=False):
