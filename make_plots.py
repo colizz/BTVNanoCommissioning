@@ -19,7 +19,7 @@ parser.add_argument('-o', '--output', type=str, help='Output directory', require
 parser.add_argument('--outputDir', type=str, default=None, help='Output directory')
 parser.add_argument('-s', '--scale', type=str, default='linear', help='Plot y-axis scale', required=False)
 parser.add_argument('-d', '--dense', action='store_true', help='Normalized plots')
-parser.add_argument('--year', type=int, choices=[2016, 2017, 2018], help='Year of data/MC samples', required=True)
+parser.add_argument('--year', type=str, choices=['2016', '2017', '2018'], help='Year of data/MC samples', required=True)
 parser.add_argument('--hist2d', action='store_true', help='Plot only 2D histograms')
 parser.add_argument('--test', action='store_true', default=False, help='Test with lower stats.')
 parser.add_argument('--data', type=str, default='BTagMu', help='Data sample name')
@@ -237,7 +237,7 @@ for histname in accumulator:
         print("Saving", filepath)
         plt.savefig(filepath, dpi=300, format="png")
         plt.close(fig)
-    else:
+    elif args.hist2d:
         for dataset in datasets:
             if 'QCD' in dataset:
                 #histo_QCD = h[dataset].sum('dataset')
