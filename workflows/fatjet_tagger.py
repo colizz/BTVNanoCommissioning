@@ -10,13 +10,14 @@ import uproot
 
 from lib.luminosity import rescale
 from lib.sv import get_nsv, get_sv_in_jet
-from parameters import JECversions, FinalMask, PtBinning, AK8Taggers, AK8TaggerWP
+from parameters import JECversions, jecTarFiles, FinalMask, PtBinning, AK8Taggers, AK8TaggerWP
 
 class NanoProcessor(processor.ProcessorABC):
     # Define histograms
-    def __init__(self, year='2017', campaign='UL', mupt=5, JECfolder='correction_files', nTrueFile='', hist_dir='histograms/', hist2d =False, checkOverlap=False):
-        self.year = year
-        self.campaign = campaign
+    def __init__(self, cfg, mupt=5, JECfolder='correction_files', nTrueFile=''):
+        print(cfg)
+        self._year = cfg['year']
+        self._campaign = cfg['campaign']
         self._mask_fatjets = {
             'basic'       : {
                 'pt_cut' : 350.,
@@ -42,40 +43,17 @@ class NanoProcessor(processor.ProcessorABC):
         }
         self._final_mask = FinalMask
         #self._final_mask = ['msd100tau06', 'msd100tau03']
-        self._AK8TaggerWP = AK8TaggerWP[self.year]
-        self._PtBinning = PtBinning[self.year]
+        self._AK8TaggerWP = AK8TaggerWP[self._year]
+        self._PtBinning = PtBinning[self._year]
         self.mupt = mupt
         self.corrJECfolder = JECfolder
-        self.hist2d = hist2d
-        self.checkOverlap = checkOverlap
+        self.hist2d = cfg['hist2d']
+        self.checkOverlap = cfg['checkOverlap']
         if self.checkOverlap:
             self.eventTags = {'run' : None, 'lumi' : None, 'event' : None}
 
         ############
-        # PU files
-        if self.campaign == 'UL':
-            #if self.year == '2016':
-            if self.year == '2017':
-                self.puFile = os.getcwd()+'/correction_files/UltraLegacy/PileupHistogram-goldenJSON-13tev-2017-69200ub-99bins.root'
-                self.nTrueFile = os.getcwd()+'/correction_files/nTrueInt_RunIISummer20UL17_local_2017.coffea'
-            if self.year == '2018':
-                self.puFile = os.getcwd()+'/correction_files/UltraLegacy/PileupHistogram-goldenJSON-13tev-2018-69200ub-99bins.root'
-                self.nTrueFile = os.getcwd()+'/correction_files/nTrueInt_RunIISummer20UL18_local_2018.coffea'
-            if nTrueFile: self.nTrueFile = nTrueFile
-        elif self.campaign == 'EOY':
-            if self.year == '2016':
-                self.puFile = os.getcwd()+'/correction_files/PileupHistogram-goldenJSON-13tev-2016-69200ub-99bins.root'
-                #self.puFile = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions16/13TeV/PileUp/PrelLum15And1613TeV/PileupHistogram-goldenJSON-13tev-2016-69200ub-99bins.root'
-                self.nTrueFile = os.getcwd()+'/correction_files/nTrueInt_datasets_local_fixed_btag2016_2016.coffea'
-            if self.year == '2017':
-                self.puFile = os.getcwd()+'/correction_files/PileupHistogram-goldenJSON-13tev-2017-69200ub-99bins.root'
-                #self.puFile = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions17/13TeV/PileUp/PileupHistogram-goldenJSON-13tev-2017-69200ub-99bins.root'
-                self.nTrueFile = os.getcwd()+'/correction_files/nTrueInt_datasets_local_fixed_btag2017_2017.coffea'
-            if self.year == '2018':
-                #self.puFile = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions18/13TeV/PileUp/PileupHistogram-goldenJSON-13tev-2018-69200ub-99bins.root'
-                self.puFile = os.getcwd()+'/correction_files/PileupHistogram-goldenJSON-13tev-2018-69200ub-99bins.root'
-                self.nTrueFile = os.getcwd()+'/correction_files/nTrueInt_datasets_local_fixed_btag2018_2018.coffea'
-            if nTrueFile: self.nTrueFile = nTrueFile
+
 
         ##############
         # Trigger level
@@ -236,6 +214,32 @@ class NanoProcessor(processor.ProcessorABC):
             for var in self.eventTags.keys():
                 self._accumulator.add(processor.dict_accumulator({var : processor.column_accumulator(np.array([]))}))
 
+    @property
+    def accumulator(self):
+        return self._accumulator
+
+    # Function to load year-dependent parameters
+    def load_metadata(self):
+        self._dataset = self.events.metadata["dataset"]
+        self._sample = self.events.metadata["sample"]
+        self._year = self.events.metadata["year"]
+        self._campaign = self.events.metadata["campaign"]
+
+    def load_era_specific_parameters(self):
+        # JEC files
+        # Correction files in https://twiki.cern.ch/twiki/bin/viewauth/CMS/JECDataMC
+        jesInputFilePath = os.getcwd()+"/correction_files/tmp"
+        if not os.path.exists(jesInputFilePath):
+            os.makedirs(jesInputFilePath)
+        for itar in jecTarFiles[self._campaign][self._year]:
+            jecFile = os.getcwd()+itar
+            jesArchive = tarfile.open( jecFile, "r:gz")
+            jesArchive.extractall(jesInputFilePath)
+
+        # PU files
+        self.puFile    = config.puFile
+        self.nTrueFile = config.nTrueFile
+
     def append_mask(self):
         masks = list(self._mask_fatjets.keys())
         d = {}
@@ -347,35 +351,31 @@ class NanoProcessor(processor.ProcessorABC):
         #print('transformed columns:', ak.fields(corrected_jets))
         return corrected_jets
 
-
-    @property
-    def accumulator(self):
-        return self._accumulator
-
     def process(self, events):
         output = self.accumulator.identity()
         if len(events)==0: return output
 
-        dataset = events.metadata['dataset']
+        self.events = events
+        self.load_metadata()
 
         isRealData = 'genWeight' not in events.fields
         if not isRealData:
-            output['sumw'][dataset] += sum(events.genWeight)
-            JECversion = JECversions[self.campaign][self.year]['MC']
+            output['sumw'][self._dataset] += sum(events.genWeight)
+            JECversion = JECversions[self._campaign][self._year]['MC']
         else:
-            output['nbtagmu'][dataset] += ak.count(events.event)
-            JECversion = JECversions[self.campaign][self.year]['Data'][dataset.split('BTagMu')[1]]            
+            output['nbtagmu'][self._dataset] += ak.count(events.event)
+            JECversion = JECversions[self._campaign][self._year]['Data'][self._dataset.split('BTagMu')[1]]            
 
         ############
         # Basic Cleaning
         events = events[ events.PV.npvsGood>0 ]
         METFilters = [ 'goodVertices','globalSuperTightHalo2016Filter', 'HBHENoiseFilter', 'HBHENoiseIsoFilter', 'EcalDeadCellTriggerPrimitiveFilter', 'BadPFMuonFilter' ]
-        if self.campaign.startswith('UL'):
-            if self.year in ['2016']:
+        if self._campaign.startswith('UL'):
+            if self._year in ['2016']:
                 METFilters = METFilters + [ 'BadPFMuonDzFilter', 'eeBadScFilter', 'ecalBadCalibFilter']
-            elif self.year in ['2017', '2018']:
+            elif self._year in ['2017', '2018']:
                 METFilters = METFilters + [ 'eeBadScFilter', 'ecalBadCalibFilter']
-        if self.campaign.startswith('EOY') and isRealData: METFilters.append('eeBadScFilter')
+        if self._campaign.startswith('EOY') and isRealData: METFilters.append('eeBadScFilter')
         for imet in METFilters: events = events[ getattr( events.Flag, imet )==1 ]
 
         ############
@@ -384,7 +384,7 @@ class NanoProcessor(processor.ProcessorABC):
         corrections = {}
         if not isRealData:
             weights.add( 'genWeight', events.genWeight)
-            weights.add( 'pileup_weight', self.puReweight( self.puFile, self.nTrueFile, dataset )( events.Pileup.nPU )  )
+            weights.add( 'pileup_weight', self.puReweight( self.puFile, self.nTrueFile, self._dataset )( events.Pileup.nPU )  )
 
         events.FatJet = self.applyJEC( events.FatJet, events.fixedGridRhoFastjetAll, events.caches[0], 'AK8PFPuppi', isRealData, JECversion )
 
@@ -395,14 +395,14 @@ class NanoProcessor(processor.ProcessorABC):
 
         ############
         # Trigger selection
-        if self.year == '2016':
+        if self._year == '2016':
             if 'BTagMu_AK4Jet300_Mu5' not in events.HLT.fields:
                 self.triggers = [trigger.replace('AK4', '') for trigger in self.triggers]
             if 'BTagMu_AK8Jet300_Mu5' not in events.HLT.fields:
                 self.triggers = [trigger.replace('AK8', '') for trigger in self.triggers]
             #print("self.triggers", self.triggers)
             #print("events.HLT.fields", [item for item in events.HLT.fields if 'BTagMu' in item])
-        elif self.year == '2018':
+        elif self._year == '2018':
             for (i, trigger) in enumerate(self.triggers):
                 if trigger.strip("HLT_") not in events.HLT.fields:
                     self.triggers[i] = trigger + "_noalgo"
@@ -534,22 +534,22 @@ class NanoProcessor(processor.ProcessorABC):
                 for flav, mask in flavors.items():
                     weight = weights.weight() * cuts.all(*selection[sel[0]]) * ak.to_numpy(mask)
                     fields = {k: ak.fill_none(muon[k], -9999) for k in h.fields if k in dir(muon)}
-                    h.fill(dataset=dataset, flavor=flav, **fields, weight=weight)
+                    h.fill(dataset=self._dataset, flavor=flav, **fields, weight=weight)
             if ((histname in self.fatjet_hists) | ('hist2d_fatjet' in histname)):
                 for flav, mask in flavors.items():
                     weight = weights.weight() * cuts.all(*selection[sel[0]]) * ak.to_numpy(mask)
                     fields = {k: ak.fill_none(leadfatjet[k], -9999) for k in h.fields if k in dir(leadfatjet)}
-                    h.fill(dataset=dataset, flavor=flav, **fields, weight=weight)
+                    h.fill(dataset=self._dataset, flavor=flav, **fields, weight=weight)
             if histname in self.event_hists:
                 for flav, mask in flavors.items():
                     weight = weights.weight() * cuts.all(*selection[sel[0]]) * ak.to_numpy(mask)
                     fields = {k: ak.fill_none(eventVariables[k], -9999) for k in h.fields if k in eventVariables.keys() }
-                    h.fill(dataset=dataset, flavor=flav, **fields, weight=weight)
+                    h.fill(dataset=self._dataset, flavor=flav, **fields, weight=weight)
             if ((histname in self.sv_hists) | ('hist2d_sv' in histname)):
                 for flav, mask in flavors.items():
                     weight = weights.weight() * cuts.all(*selection[sel[0]]) * ak.to_numpy(mask)
                     fields = {k: ak.fill_none(leadsv[k], -9999) for k in h.fields if k in dir(leadsv) }
-                    h.fill(dataset=dataset, flavor=flav, **fields, weight=weight)
+                    h.fill(dataset=self._dataset, flavor=flav, **fields, weight=weight)
 
         #if isRealData & (self.checkOverlap is not None):
         if self.checkOverlap:

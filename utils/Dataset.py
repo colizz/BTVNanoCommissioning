@@ -19,7 +19,9 @@ class Sample():
 
     # Function to get sample name and year from dataset name on DAS
     def load_attributes(self):
-        self.sample = self.path.split('/')[1].split('_')[0]
+        if 'UL' in self.path.split('/')[2]:
+            self.campaign = 'UL'
+        self.sample = self.path.split('/')[1]
         self.year = '20' + self.path.split('/')[2].split('UL')[1][:2]
         if self.year not in ['2016', '2017', '2018']:
             self.year = self.path.split('/')[2].split('UL')[1][:4]
@@ -36,7 +38,7 @@ class Sample():
     # Function to build the sample dictionary
     def build_sample_dict(self):
         self.sample_dict[self.name] = {}
-        self.sample_dict[self.name]['metadata'] = {'sample' : self.sample, 'year' : self.year, 'path' : self.path}
+        self.sample_dict[self.name]['metadata'] = {'sample' : self.sample, 'campaign' : self.campaign, 'year' : self.year, 'path' : self.path}
         self.sample_dict[self.name]['files']    = self.filelist
 
     def Print(self):

@@ -27,7 +27,7 @@ class Configurator():
             self.define_output()
 
             # Load histogram settings
-            self.load_histogram_settings()
+            #self.load_histogram_settings()
 
             # Load workflow
             self.load_workflow()
@@ -98,11 +98,8 @@ class Configurator():
                 sys.exit("Missing keys in histogram binning. Required keys: {'n_or_arr', 'lo', 'hi'}")
 
     def load_workflow(self):
-        if self.workflow == "base":
-            from workflows.base import ttHbbBaseProcessor
-            self.processor_instance = ttHbbBaseProcessor(cfg=self.cfg)
-        elif self.workflow == "mem":
-            from workflows.mem import MEMStudiesProcessor
-            self.processor_instance = MEMStudiesProcessor(cfg=self.cfg)
+        if self.workflow == "fatjet_tagger":
+            from workflows.fatjet_tagger import NanoProcessor
+            self.processor_instance = NanoProcessor(cfg=self.cfg)
         else:
             raise NotImplemented
