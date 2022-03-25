@@ -22,6 +22,8 @@ class Sample():
         self.sample = self.path.split('/')[1].split('_')[0]
         self.year = '20' + self.path.split('/')[2].split('UL')[1][:2]
         if self.year not in ['2016', '2017', '2018']:
+            self.year = self.path.split('/')[2].split('UL')[1][:4]
+        if self.year not in ['2016', '2017', '2018']:
             sys.exit(f"No dataset available for year '{self.year}'")
         self.name = self.sample + '_' + self.year
 

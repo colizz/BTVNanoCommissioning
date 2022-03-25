@@ -7,14 +7,10 @@ import os
 import numpy as np
 import awkward as ak
 import uproot
-<<<<<<< HEAD
+
 from lib.luminosity import rescale
 from lib.sv import get_nsv, get_sv_in_jet
-from parameters import lumi, xsecs, JECversions
-=======
-from utils import rescale, get_nsv, get_sv_in_jet
 from parameters import JECversions, FinalMask, PtBinning, AK8Taggers, AK8TaggerWP
->>>>>>> c55f6eeb1e10fe24d28aee5db91dff0c5299ab64
 
 class NanoProcessor(processor.ProcessorABC):
     # Define histograms
