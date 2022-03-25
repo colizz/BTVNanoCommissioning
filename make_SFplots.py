@@ -13,7 +13,7 @@ import coffea.hist as hist
 import os
 import sys
 from utils import rescale
-from parameters import histogram_settings, lumi, xsecs
+from parameters import histogram_settings, flavors_color, flavor_opts, lumi, xsecs, PtBinning, AK8TaggerWP
 
 fontsize = 12
 
@@ -22,41 +22,41 @@ parser.add_argument('-i', '--input', type=str, help='Input histogram filename', 
 parser.add_argument('-o', '--outputDir', type=str, default='', help='Output directory', required=False)
 #parser.add_argument('-s', '--scale', type=str, default='linear', help='Plot y-axis scale', required=False)
 #parser.add_argument('-d', '--dense', action='store_true', default=False, help='Normalized plots')
-parser.add_argument('--year', type=int, choices=[2016, 2017, 2018], help='Year of data/MC samples', required=True)
+parser.add_argument('--year', type=str, choices=['2016', '2017', '2018'], help='Year of data/MC samples', required=True)
 parser.add_argument('--var', type=str, default='sv_logsv1mass', help='Variable used in the template fit.', required=False)
 #parser.add_argument('--wpt', type=str, choices={'', 'M', 'H'}, default='', help='Pt bin')
 parser.add_argument('--data', type=str, default='BTagMu', help='Data sample name')
 #parser.add_argument('--selection', type=str, default='all', help='Plot only plots with this selection. ("all" to plot all the selections in file)', required=True)
-parser.add_argument('--selection', type=str, help='Plot only plots with this selection.', required=False)
-parser.add_argument('--pt', type=int, default=500, help='Pt cut.', required=True)
-parser.add_argument('--MwpDDB', type=float, default=0.7, help='Medium working point for DDB.', required=True)
+parser.add_argument('--selection', type=str, default='msd100tau06', help='Selection to compute SF.', required=False)
+parser.add_argument('--tagger', type=str, help='Tagger to calibrate.', required=False)
+#parser.add_argument('--pt', type=int, default=500, help='Pt cut.', required=True)
+#parser.add_argument('--MwpDDB', type=float, default=0.7, help='Medium working point for DDB.', required=True)
 parser.add_argument('--passonly', action='store_true', default=False, help='Fit pass region only')
 parser.add_argument('--debug', action='store_true', default=False, help='Activate debug printout', required=False)
 parser.add_argument('--crop', action='store_true', default=False, help='Produce cropped plots in dedicated sub-directories', required=False)
-
+parser.add_argument('--mergebbcc', action='store_true', default=False, help='Merge bb+cc')
 
 args = parser.parse_args()
-pt_interval = {
-        #'L' : [0, 350],
-        'M' : (350, args.pt),
-        'H' : (args.pt, 'Inf'),
-        'Inclusive' : (350, 'Inf'),
-    }
+pt_interval = PtBinning[args.year]
+pt_interval['Inclusive'] = (pt_interval['L'][0], 'Inf')
 totalLumi = lumi[args.year]
-taggers = ['DDC', 'DDB']
-ptbins = ['Inclusive', 'M', 'H']
+if args.tagger in AK8TaggerWP[args.year].keys():
+    taggers = [args.tagger]
+else:
+    taggers = AK8TaggerWP[args.year].keys()
+ptbins = ['Inclusive', 'L', 'M', 'H', 'M+H']
 
 inputDir = None
 if os.path.isdir(args.input):
     inputDir = args.input
     if not inputDir.endswith('/'):
         inputDir = inputDir + '/'
-    if args.selection:
-        if any([tagger in args.selection for tagger in taggers]):
-            taggers = [tagger for tagger in taggers if tagger in inputDir]
+    #if args.selection:
+    #    if any([tagger in args.selection for tagger in taggers]):
+    #        taggers = [tagger for tagger in taggers if tagger in inputDir]
 
 elif os.path.isfile(args.input):
-    inputDir = '/'.join(args.input.split('/')[:-1]) + '/'
+    inputDir = '/'.join(args.input.split('/')[:-2]) + '/'
     if not args.input.endswith('.root'):
         sys.exit("Only ROOT files are accepted as an input")
     else:
@@ -80,14 +80,6 @@ data_err_opts = {
 
 qcd_opts = {
     'facecolor': 'yellow',
-    'edgecolor': 'black',
-    'alpha': 1.0
-}
-
-flavors_color = {'l' : 'blue', 'b' : 'red', 'c' : 'green', 'bb' : 'cyan', 'cc' : 'magenta'}
-
-flavor_opts = {
-    'facecolor': [flavors_color[f] for f in flavors_color.keys()],
     'edgecolor': 'black',
     'alpha': 1.0
 }
@@ -139,16 +131,7 @@ selection = {
 #_final_mask = ['msd100tau06', 'pt400msd100tau06']
 _final_mask = ['msd100tau06']
 
-_mask_DDX = {
-            'DDB' : {
-                #'L' : XX,
-                'M' : args.MwpDDB
-            },
-            'DDC' : {
-                #'L' : XX,
-                'M' : 0.45
-            }, 
-}
+_mask_DDX = AK8TaggerWP[args.year]
 
 xlabel = {
     'fatjet_jetproba' : r"jet Probability",
@@ -158,8 +141,8 @@ xlabel = {
 for mask_f in _final_mask:
     for DDX in _mask_DDX.keys():
         for wp, cut in _mask_DDX[DDX].items():
-            selection['{}{}pass{}wp'.format(mask_f, DDX, wp)] = "{}vLV2 > {}".format(DDX, cut)+"\n"
-            selection['{}{}fail{}wp'.format(mask_f, DDX, wp)] = "{}vLV2 < {}".format(DDX, cut)+"\n"
+            selection['{}{}pass{}wp'.format(mask_f, DDX, wp)] = r"{} $\in$ {}".format(DDX, cut)+"\n"
+            selection['{}{}fail{}wp'.format(mask_f, DDX, wp)] = r"{} $\notin$ {}".format(DDX, cut)+"\n"
 
 """
 selection_basic = (r"$\geq$1 AK8 jets"+"\n"+
@@ -177,21 +160,28 @@ selection_msd100tau06 = (r"$\geq$1 AK8 jets"+"\n"+
 plt.style.use([hep.style.ROOT, {'font.size': 16}])
 
 for tagger in taggers:
-    for wp in [ 'M' ]:
+    for wp in [ 'L', 'M', 'H' ]:
+        selDir = 'msd100tau06{}{}wp/'.format(tagger, wp)
+        plot_dir = args.outputDir if args.outputDir else inputDir + selDir
+        if not os.path.exists(plot_dir):
+            print("Directory {} does not exist".format(plot_dir))
+            continue
+        if not plot_dir.endswith('/'):
+            plot_dir = plot_dir + '/'
         for wpt in ptbins:
-            selDir = 'msd100tau06{}{}wp/'.format(tagger, wp)
-            plot_dir = args.outputDir if args.outputDir else inputDir + selDir
-            if not os.path.exists(plot_dir):
-                sys.exit("Plot directory does not exist")
-            if not plot_dir.endswith('/'):
-                plot_dir = plot_dir + '/'
-
             filename = 'fitDiagnostics{}wp{}Pt.root'.format(wp, wpt)
+            filepath = inputDir + selDir + filename
+            if not os.path.exists(filepath): continue
 
-            if tagger == 'DDB':
-                flavors = ['l', 'c_cc', 'b_bb']
-            elif tagger == 'DDC':
-                flavors = ['l', 'b_bb', 'c_cc']
+            if args.mergebbcc:
+                flavors = ['l', 'bb_cc']
+            else:
+                if (('DDB' in tagger) | ('Xbb' in tagger)):
+                    flavors = ['l', 'c_cc', 'b_bb']
+                elif (('DDC' in tagger) | ('Xcc' in tagger)):
+                    flavors = ['l', 'b_bb', 'c_cc']
+                else:
+                    raise NotImplementedError
             flavor_opts['facecolor'] = [flavors_color[f.split('_')[-1]] for f in flavors]
             flavor_axis  = hist.Cat("flavor",   "Flavor")
             varname = args.var.split('_')[1]
@@ -202,7 +192,6 @@ for tagger in taggers:
                 for fit in ['prefit', 'fit_s']:
                     output['shape_{}_{}{}{}'.format(fit, region, tagger, args.year)] = hist.Hist("entries", flavor_axis, observable_axis)
 
-            filepath = inputDir + selDir + filename
             line = ''.join((8 + len(filepath))*['-'])
             print(line)
             print(f"Opening {filepath}")
@@ -264,6 +253,7 @@ for tagger in taggers:
                     MC_sum = output['shape_{}_{}{}{}'.format(fit, region, tagger, args.year)][flavors_to_plot].sum('flavor')
                     MC_var = np.diag(covar)
                     MC_values = MC_sum.values()[()]
+                    print(MC_values)
                     edges = MC_sum.axis(varname).edges(overflow='none')
                     MC_unc = np.diff(edges) * np.concatenate( (np.zeros(len(MC_values) - len(MC_var)), np.sqrt(MC_var)) )
                     lo = MC_values - MC_unc
