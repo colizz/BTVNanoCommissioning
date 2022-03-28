@@ -6,8 +6,8 @@ import coffea.hist as hist
 import itertools
 import os
 import pickle
-from utils import rescale
-from parameters import histogram_settings, lumi, xsecs, FinalMask, PtBinning, AK8TaggerWP
+#from lib.luminosity import rescale
+from parameters import histogram_settings, xsecs, FinalMask, PtBinning, AK8TaggerWP
 
 parser = argparse.ArgumentParser(description='Plot histograms from coffea file')
 parser.add_argument('-i', '--input', type=str, help='Input histogram filename', required=True)

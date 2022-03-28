@@ -55,9 +55,16 @@ if __name__ == '__main__':
     puHisto = hist.Hist( 'nTrueInt', hist.Cat('dataset', 'dataset name'), hist.Bin('x', 'nTrueInt', 99, 0, 99) )
 
     #executor = concurrent.futures.ThreadPoolExecutor()   #### this is needed for REANA
-    for isample, ifiles in sample_dict.items():
+    #for isample, ifiles in sample_dict.items():
+    for isample in sample_dict:
         print(f'processing {isample}')
         if isample.startswith('BTag'): continue
+        if isinstance(sample_dict[isample], dict):
+            ifiles = sample_dict[isample]['files']
+        elif isinstance(sample_dict[isample], list):
+            ifiles = sample_dict[isample]
+        else:
+            raise NotImplemented
         if not ifiles:
             print('|--------> Sample '+isample+' does not have files to process')
             continue

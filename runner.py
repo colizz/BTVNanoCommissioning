@@ -4,7 +4,6 @@ import json
 import argparse
 import time
 import gc
-import tarfile
 import tempfile
 
 import numpy as np
@@ -58,8 +57,8 @@ if __name__ == '__main__':
 
     if config.run_options['executor'] not in ['futures', 'iterative']:
         # dask/parsl needs to export x509 to read over xrootd
-        if config.voms is not None:
-            _x509_path = args.voms
+        if config.run_options['voms'] is not None:
+            _x509_path = config.run_options['voms']
         else:
             _x509_localpath = [l for l in os.popen('voms-proxy-info').read().split("\n") if l.startswith('path')][0].split(":")[-1].strip()
             _x509_path = os.environ['HOME'] + f'/.{_x509_localpath.split("/")[-1]}'
@@ -105,8 +104,8 @@ if __name__ == '__main__':
                                         'workers': config.run_options['workers']},
                                     chunksize=config.run_options['chunk'], maxchunks=config.run_options['max']
                                     )
-    #elif args.executor == 'parsl/slurm':
-    elif 'parsl' in args.executor:
+    #elif config.run_options['executor'] == 'parsl/slurm':
+    elif 'parsl' in config.run_options['executor']:
         import parsl
         from parsl.providers import LocalProvider, CondorProvider, SlurmProvider
         from parsl.channels import LocalChannel
@@ -115,7 +114,7 @@ if __name__ == '__main__':
         from parsl.launchers import SrunLauncher, SingleNodeLauncher
         from parsl.addresses import address_by_hostname
 
-        if 'slurm' in args.executor:
+        if 'slurm' in config.run_options['executor']:
             slurm_htex = Config(
                 executors=[
                     HighThroughputExecutor(
@@ -164,8 +163,8 @@ if __name__ == '__main__':
                         provider=CondorProvider(
                             channel=LocalChannel(script_dir='logs_parsl'),
                             launcher=SingleNodeLauncher(),
-                            max_blocks=(args.scaleout)+10,
-                            init_blocks=args.scaleout,
+                            max_blocks=(config.run_options['scaleout'])+10,
+                            init_blocks=config.run_options['scaleout'],
                             worker_init="\n".join(wrk_init),
                             #transfer_input_files=xfer_files,
                             scheduler_options=condor_cfg,
@@ -205,7 +204,7 @@ if __name__ == '__main__':
             )
         elif 'condor' in config.run_options['executor']:
             cluster = HTCondorCluster(
-                 cores=args.workers,
+                 cores=config.run_options['workers'],
                  memory='2GB',
                  disk='2GB',
                  env_extra=env_extra,
