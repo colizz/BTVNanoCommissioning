@@ -128,9 +128,9 @@ if __name__ == '__main__':
                             max_blocks=(config.run_options['scaleout'])+10,
                             init_blocks=config.run_options['scaleout'],
                             #partition='long',
-                            partition='standard',
+                            partition=config.run_options['partition'],
                             worker_init="\n".join(env_extra) + "\nexport PYTHONPATH=$PYTHONPATH:$PWD",
-                            walltime='12:00:00'
+                            walltime=config.run_options['walltime']
                         ),
                     )
                 ],
@@ -168,7 +168,7 @@ if __name__ == '__main__':
                             worker_init="\n".join(wrk_init),
                             #transfer_input_files=xfer_files,
                             scheduler_options=condor_cfg,
-                            walltime='00:30:00'
+                            walltime=config.run_options['walltime']
                         ),
                     )
                 ],
@@ -199,7 +199,7 @@ if __name__ == '__main__':
                 processes=config.run_options['workers'],
                 memory="200 GB",
                 retries=10,
-                walltime='00:30:00',
+                walltime=config.run_options['walltime'],
                 env_extra=env_extra,
             )
         elif 'condor' in config.run_options['executor']:
