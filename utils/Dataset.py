@@ -27,6 +27,20 @@ class Sample():
             self.year = self.path.split('/')[2].split('UL')[1][:4]
         if self.year not in ['2016', '2017', '2018']:
             sys.exit(f"No dataset available for year '{self.year}'")
+        if (self.campaign == 'UL') & (self.year == '2016'):
+            if self.sample == 'BTagMu':
+                if 'HIPM' in self.path:
+                    self.VFP = "PreVFP"
+                else:
+                    self.VFP = "PostVFP"
+            else:
+                if 'PreVFP' in self.path:
+                    self.VFP = "PreVFP"
+                elif 'PostVFP' in self.path:
+                    self.VFP = "PostVFP"
+        if self.sample == 'BTagMu':
+            era = self.path.split(f'Run{self.year}')[1][0]
+            self.sample = self.sample + era
         self.name = self.sample + '_' + self.year
 
     # Function to get the dataset filelist from DAS
@@ -38,7 +52,10 @@ class Sample():
     # Function to build the sample dictionary
     def build_sample_dict(self):
         self.sample_dict[self.name] = {}
-        self.sample_dict[self.name]['metadata'] = {'sample' : self.sample, 'campaign' : self.campaign, 'year' : self.year, 'path' : self.path}
+        if (self.campaign == 'UL') & (self.year == '2016'):
+            self.sample_dict[self.name]['metadata'] = {'sample' : self.sample, 'campaign' : self.campaign, 'year' : self.year, 'VFP' : self.VFP, 'path' : self.path}
+        else:
+            self.sample_dict[self.name]['metadata'] = {'sample' : self.sample, 'campaign' : self.campaign, 'year' : self.year, 'path' : self.path}
         self.sample_dict[self.name]['files']    = self.filelist
 
     def Print(self):
