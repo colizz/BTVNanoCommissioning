@@ -5,8 +5,8 @@ runinfo/*
 histograms/*
 correction_files/tmp/
 fitdir/*
-__pycache/*
-config/__pycache/*
-lib/__pycache/*
-utils/__pycache/*
-workflows/__pycache/*
+__pycache__/*
+config/__pycache__/*
+lib/__pycache__/*
+utils/__pycache__/*
+workflows/__pycache__/*
