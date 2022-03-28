@@ -16,19 +16,19 @@ cfg =  {
     # Input and output files
     "workflow" : "fatjet_tagger",
     "input"    : "datasets/RunIISummer20UL16-PreVFP_local.json",
-    "output"   : "histograms/RunIISummer20UL16-PreVFP_limit2.coffea",
+    "output"   : "histograms/RunIISummer20UL16-PreVFP.coffea",
     "plots"    : "plots/test",
 
     # Executor parameters
     "run_options" : {
-        "executor"     : "futures",
+        "executor"     : "parsl/slurm",
         "workers"      : 12,
-        "scaleout"     : 10,
+        "scaleout"     : 50,
         "chunk"        : 50000,
         "max"          : None,
         "skipbadfiles" : None,
         "voms"         : None,
-        "limit"        : 2,        
+        "limit"        : None,
     },
 
     # Processor parameters
