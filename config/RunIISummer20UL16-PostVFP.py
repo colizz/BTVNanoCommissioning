@@ -23,9 +23,11 @@ cfg =  {
     "run_options" : {
         "executor"     : "parsl/slurm",
         "workers"      : 12,
-        "scaleout"     : 64,
+        "scaleout"     : 100,
         "partition"    : "short",
-        "walltime"     : "45:00",
+        "walltime"     : "00:45:00",
+        "mem_per_worker" : None, # GB
+        "exclusive"      : False,
         "chunk"        : 50000,
         "max"          : None,
         "skipbadfiles" : None,

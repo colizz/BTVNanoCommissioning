@@ -16,18 +16,18 @@ cfg =  {
     # Input and output files
     "workflow" : "fatjet_tagger",
     "input"    : "datasets/RunIISummer20UL16-PreVFP_local.json",
-    "output"   : "histograms/RunIISummer20UL16-PreVFP.coffea",
+    "output"   : "histograms/RunIISummer20UL16-PreVFP_v02.coffea",
     "plots"    : "plots/test",
 
     # Executor parameters
     "run_options" : {
         "executor"       : "parsl/slurm",
         "workers"        : 12,
-        "scaleout"       : 50,
+        "scaleout"       : 5,
         "partition"      : "standard",
-        "walltime"       : "6:00:00",
-        "mem_per_worker" : 2, # GB
-        "exclusive"      : False,
+        "walltime"       : "12:00:00",
+        "mem_per_worker" : None, # GB
+        "exclusive"      : True,
         "chunk"          : 50000,
         "max"            : None,
         "skipbadfiles"   : None,
