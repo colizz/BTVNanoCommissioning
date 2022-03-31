@@ -10,3 +10,4 @@ config/__pycache__/*
 lib/__pycache__/*
 utils/__pycache__/*
 workflows/__pycache__/*
+notebooks/.ipynb_checkpoints/*
