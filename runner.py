@@ -121,6 +121,7 @@ if __name__ == '__main__':
                         label="coffea_parsl_slurm",
                         address=address_by_hostname(),
                         prefetch_capacity=0,
+                        mem_per_worker=config.run_options['mem_per_worker'],
                         provider=SlurmProvider(
                             channel=LocalChannel(script_dir='logs_parsl'),
                             launcher=SrunLauncher(),
@@ -130,7 +131,8 @@ if __name__ == '__main__':
                             #partition='long',
                             partition=config.run_options['partition'],
                             worker_init="\n".join(env_extra) + "\nexport PYTHONPATH=$PYTHONPATH:$PWD",
-                            walltime=config.run_options['walltime']
+                            walltime=config.run_options['walltime'],
+                            exclusive=config.run_options['exclusive'],
                         ),
                     )
                 ],
