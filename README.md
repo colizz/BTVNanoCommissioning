@@ -5,15 +5,18 @@ Repository for Commissioning studies in the BTV POG based on (custom) nanoAOD sa
 ## Structure
 Example worfkflow for ttbar is included. 
 
-Each workflow can be a separete "processor" file, creating the mapping from NanoAOD to
+Each workflow can be a separate "processor" file, creating the mapping from NanoAOD to
 the histograms we need. Workflow processors can be passed to the `runner.py` script 
 along with the fileset these should run over. Multiple executors can be chosen 
 (for now iterative - one by one, uproot/futures - multiprocessing and dask-slurm). 
 
+## How to run
 To run the example, run:
 ```
-python runner.py --workflow BTVNanoCommissioning
+python runner.py --cfg config/test.py
 ```
+
+All the parameters relevant to the input and output files are saved in a config file as a Python dictionary and passed as an argument to `runner.py`.
 
 Example plots can be found in ` make_some_plots.ipynb` though we might want to make
 that more automatic in the end.
@@ -30,46 +33,26 @@ NOTE: always make sure that conda, python, and pip point to local Miniconda inst
 
 You can either use the default environment`base` or create a new one:
 ```
-# create new environment from `conda_env.yml` file:
-conda env create -f conda_env.yml
+# create new environment from `envs/coffea.yml` file:
+conda env create -f coffea.yml
 # activate environment `btv`:
-conda activate btv
+conda activate coffea
 # install additional modules required on T3:
 pip install bokeh
 conda install dask
 ```
-## How to run
-### Execution on local machine with Futures Executor
-Run the example locally:
-```
-python runner.py --workflow fattag --executor futures --samples datasets_local_fixed.json --output hists_fattag.coffea --workers 16
-```
-An alternative method is implemented, submitting dedicated jobs for each dataset, with the option `--splitdataset`:
-```
-python runner.py --workflow fattag --executor futures --samples datasets_local_fixed.json --output hists_fattag.coffea --workers 16
-```
-### Execution on Slurm provider with Parsl
-Run the example on a Slurm cluster:
-```
-python runner.py --workflow fattag --executor parsl/slurm --samples datasets_local_fixed.json --output hists_fattag.coffea -s 10
-```
-### Execution on Condor provider with Parsl
-Run the example on a Condor cluster:
-```
-python runner.py --workflow fattag --executor parsl/condor --samples datasets_local_fixed.json --output hists_fattag.coffea -s 10
-```
+
 ## Apply corrections 
 
 ### Pileup reweighting
-To apply pileup reweighting in your MC samples, one need to create first the pileup profile of the MC sample. This can be done with the script `createNTrueForPU.py`. This will take some of the files from your dataset and create a coffea file with that profile. To run it:
+To apply pileup reweighting in your MC samples, one needs to create first the pileup profile of the MC sample. This can be done with the script `createNTrueForPU.py`. This will take some of the files from your dataset and create a coffea file with that profile. To run it:
 ```
 python createNTrueForPU.py --samples datasets/datasets_btag2017.json --year 2017 
 ```
 The output will be stored in the `correction_files` folder with the name like: `nTrueInt_datasets_btag2017_2017.coffea`. In addition, you need to properly set the `self.puFile` and `self.nTrueFile` in your workflow file.
 
 ### Jet energy corrections
-You need to download the tar files needed for the JECs from [this twiki](https://twiki.cern.ch/twiki/bin/viewauth/CMS/JECdataMC), in the `correction_files/JEC` folder and properly set these names in the `jecTarFiles` of `runner.py` and in `JECversions` of the `utils.py` script.
-
+You need to download the tar files needed for the JECs from [this twiki](https://twiki.cern.ch/twiki/bin/viewauth/CMS/JECdataMC), in the `correction_files/JEC` folder and properly set these names in the dictionaries `parameters.jecTarFiles` and in `parameters.JECversions`.
 
 ## Scale Factors
 
