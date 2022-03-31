@@ -361,7 +361,7 @@ class NanoProcessor(processor.ProcessorABC):
 
     def process(self, events):
         output = self.accumulator.identity()
-        if len(events)==0: return output
+        if len(events) == 0: return output
 
         self.events = events
         self.load_metadata()
@@ -466,8 +466,13 @@ class NanoProcessor(processor.ProcessorABC):
                           'leadmuonsj1' : leadmuonsj1, 'leadmuonsj2' : leadmuonsj2,}
 
         events.SV = events.SV[get_sv_in_jet(leadfatjet, events.SV)]
+        i_maxPt     = ak.argsort(events.SV.pt, ascending=False)
         i_maxdxySig = ak.argsort(events.SV.dxySig, ascending=False)
-        leadsv = ak.firsts(events.SV)
+
+        try: events.SV[i_maxPt]
+        except: return output
+
+        leadsv = ak.firsts(events.SV[i_maxPt])
         leadsv_dxySig = ak.firsts(events.SV[i_maxdxySig])
         leadsv['sv1mass'] = leadsv.mass
         leadsv['logsv1mass'] = np.log(leadsv.mass)
