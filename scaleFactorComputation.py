@@ -188,7 +188,9 @@ def test_sfmodel(tmpdir, var, lo, hi, inputFile, year, campaign, sel, tagger, wp
             sample.setParamEffect(lumi, 1.023)
             sample.setParamEffect(jecs, 1.02)
             sample.setParamEffect(pu, 1.05)
-            sample.setParamEffect(signalNorm, effect_up=1.2, effect_down=0.8)
+
+            if fixbkg:
+                sample.setParamEffect(signalNorm, effect_up=1.2, effect_down=0.8)
             
             if isSignal:
                 sample.autoMCStats(epsilon=args.epsilon)
