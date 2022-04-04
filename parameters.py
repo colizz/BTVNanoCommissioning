@@ -481,6 +481,18 @@ fit_parameters = {
                 'L':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}},
                 'M':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'l': {'value' : 1, 'lo' : 1, 'hi' : 1}},
                 'H':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'l': {'value' : 1, 'lo' : 1, 'hi' : 1}},
+            },
+            'particleNetMD_Xbb': {
+                'Inclusive': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                'L':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                'M':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                'H':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+            },
+            'particleNetMD_Xcc': {
+                'Inclusive': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                'L':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                'M':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                'H':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'l': {'value' : 1, 'lo' : 0, 'hi' : 2}},
             }
         },
         '2017': {
@@ -663,6 +675,100 @@ fit_parameters = {
     },
 
     'fixbkg_mergeMH': {
+        '2016': {
+            'btagDDBvLV2': {
+                'L' : {
+                    'Inclusive': {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'L':         {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'M':         {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'H':         {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'M+H':       {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                },
+                'M' : {
+                    'Inclusive': {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'L':         {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'M':         {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'H':         {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'M+H':       {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                },
+                'H' : {
+                    'Inclusive': {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'L':         {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'M':         {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'H':         {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'M+H':       {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                },
+            },
+            'btagDDCvLV2': {
+                'L' : {
+                    'Inclusive': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'L':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'M':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'H':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'M+H':       {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                },
+                'M' : {
+                    'Inclusive': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'L':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'M':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'H':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'M+H':       {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                },
+                'H' : {
+                    'Inclusive': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'L':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'M':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'H':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'M+H':       {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                },
+            },
+            'particleNetMD_Xbb': {
+                'L' : {
+                    'Inclusive': {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'L':         {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'M':         {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'H':         {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'M+H':       {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                },
+                'M' : {
+                    'Inclusive': {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'L':         {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'M':         {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'H':         {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'M+H':       {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                },
+                'H' : {
+                    'Inclusive': {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'L':         {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'M':         {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'H':         {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'M+H':       {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                },
+            },
+            'particleNetMD_Xcc': {
+                'L' : {
+                    'Inclusive': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'L':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'M':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'H':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'M+H':       {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                },
+                'M' : {
+                    'Inclusive': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'L':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'M':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'H':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'M+H':       {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                },
+                'H' : {
+                    'Inclusive': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'L':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'M':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'H':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'M+H':       {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                },
+            },
+        },
         '2017': {
             'btagDDBvLV2': {
                 'L' : {
