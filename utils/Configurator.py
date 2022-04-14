@@ -101,5 +101,8 @@ class Configurator():
         if self.workflow == "fatjet_tagger":
             from workflows.fatjet_tagger import NanoProcessor
             self.processor_instance = NanoProcessor(cfg=self.cfg)
+        elif self.workflow == "fatjet_tagger_ggHcc":
+            from workflows.fatjet_tagger_ggHcc import NanoProcessor
+            self.processor_instance = NanoProcessor(cfg=self.cfg)
         else:
             raise NotImplemented
