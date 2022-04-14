@@ -45,13 +45,6 @@ if __name__ == '__main__':
     # Inputs
     parser.add_argument('--cfg', default=os.getcwd() + "/config/test.py", help='Config file with parameters specific to the current run', required=True)
 
-    parser.add_argument('--nTrueFile', type=str, default='', help='To specify nTrue file. To use the default leave it empty')
-    parser.add_argument('--mupt', type=int, default=5, help='Muon Pt cut.')
-    #parser.add_argument('--pt', type=int, default=500, help='Pt cut.')
-    #parser.add_argument('--MwpDDB', type=float, default=0.7, help='Medium working point for DDB.', required=True)
-    parser.add_argument('--hist2d', default=False, action='store_true', help='Save 2D histograms.', required=False)
-    parser.add_argument('--checkOverlap', default=False, action='store_true', help='Create run:lumi:event txt file for data.', required=False)
-
     args = parser.parse_args()
     config = Configurator(args.cfg)
 
