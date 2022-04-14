@@ -181,7 +181,8 @@ jecTarFiles = {
     }
 }
 
-FinalMask = ['msd100tau06']
+#FinalMask = ['msd100tau06']
+FinalMask = ['msd100tau06ggHcc']
 
 AK8Taggers = ['btagDDBvLV2', 'btagDDCvLV2', 'btagDDCvBV2', 'btagHbb', 'particleNetMD_Xbb', 'particleNetMD_Xcc', 'deepTag_H', 'deepTagMD_ccvsLight']
 
@@ -189,162 +190,196 @@ AK8Taggers = ['btagDDBvLV2', 'btagDDCvLV2', 'btagDDCvBV2', 'btagHbb', 'particleN
 AK8Tagger_parameters = {'binning' : {'n_or_arr' : 20,  'lo' : 0,      'hi' : 1},     'xlim' : {'xmin' : 0, 'xmax' : 1}}
 
 PtBinning = {
-    '2016' : {
-        'L' : (400, 600),
-        'M' : (600, 800),
-        'H' : (800, 'Inf'),
-        'M+H' : (600, 'Inf'),
+    'UL': {
+        '2016' : {
+            'L' : (400, 600),
+            'M' : (600, 800),
+            'H' : (800, 'Inf'),
+            'M+H' : (600, 'Inf'),
+        },
+        '2017' : {
+            'L' : (400, 600),
+            'M' : (600, 800),
+            'H' : (800, 'Inf'),
+            'M+H' : (600, 'Inf'),
+        },
+        '2018' : {
+            'L' : (400, 600),
+            'M' : (600, 800),
+            'H' : (800, 'Inf'),
+            'M+H' : (600, 'Inf'),
+        }
     },
-    '2017' : {
-        'L' : (400, 600),
-        'M' : (600, 800),
-        'H' : (800, 'Inf'),
-        'M+H' : (600, 'Inf'),
+    'EOY': {
+        '2016' : {
+            'M' : (350, 450),
+            'H' : (450, 'Inf'),
+        },
+        '2017' : {
+            'M' : (350, 450),
+            'H' : (450, 'Inf'),
+        },
+        '2018' : {
+            'M' : (350, 450),
+            'H' : (450, 'Inf'),
+        }
     },
-    '2018' : {
-        'L' : (400, 600),
-        'M' : (600, 800),
-        'H' : (800, 'Inf'),
-        'M+H' : (600, 'Inf'),
-    }
+
 }
 
 AK8TaggerWP = {
-    # 2016 WPs are copied from 2017 since they have not been computed yet
-    '2016' : {
-        'btagDDBvLV2' : {
-            'L' : (0.2310, 0.4111),
-            'M' : (0.4111, 0.6479),
-            'H' : (0.6479, 1),
-        },
-        'btagDDCvLV2' : {
-            'L' : (0.0435, 0.1287),
-            'M' : (0.1287, 0.3276),
-            'H' : (0.3276, 1),
-        },
-        'particleNetMD_Xbb' : {
-            'L' : (0.9789, 0.9904),
-            'M' : (0.9904, 0.9964),
-            'H' : (0.9964, 1),
-        },
-        'particleNetMD_Xcc' : {
-            'L' : (0.9282, 0.9737),
-            'M' : (0.9737, 0.9916),
-            'H' : (0.9916, 1),
-        },
+    'EOY' : {
+        '2016' : {
+            'btagDDBvLV2' : {
+                'H' : (0.64, 1)
+            },
+            'btagDDCvLV2' : {
+                'H' : (0.45, 1)
+            },
+        }
     },
-    '2017' : {
-        'btagDDBvLV2' : {
-            'L' : (0.2310, 0.4111),
-            'M' : (0.4111, 0.6479),
-            'H' : (0.6479, 1),
+    # 2016 UL WPs are copied from 2017 since they have not been computed yet
+    'UL' : {
+        '2016' : {
+            'btagDDBvLV2' : {
+                'L' : (0.2310, 0.4111),
+                'M' : (0.4111, 0.6479),
+                'H' : (0.6479, 1),
+            },
+            'btagDDCvLV2' : {
+                'L' : (0.0435, 0.1287),
+                'M' : (0.1287, 0.3276),
+                'H' : (0.3276, 1),
+            },
+            'particleNetMD_Xbb' : {
+                'L' : (0.9789, 0.9904),
+                'M' : (0.9904, 0.9964),
+                'H' : (0.9964, 1),
+            },
+            'particleNetMD_Xcc' : {
+                'L' : (0.9282, 0.9737),
+                'M' : (0.9737, 0.9916),
+                'H' : (0.9916, 1),
+            },
         },
-        'btagDDCvLV2' : {
-            'L' : (0.0435, 0.1287),
-            'M' : (0.1287, 0.3276),
-            'H' : (0.3276, 1),
+        '2017' : {
+            'btagDDBvLV2' : {
+                'L' : (0.2310, 0.4111),
+                'M' : (0.4111, 0.6479),
+                'H' : (0.6479, 1),
+            },
+            'btagDDCvLV2' : {
+                'L' : (0.0435, 0.1287),
+                'M' : (0.1287, 0.3276),
+                'H' : (0.3276, 1),
+            },
+            'particleNetMD_Xbb' : {
+                'L' : (0.9789, 0.9904),
+                'M' : (0.9904, 0.9964),
+                'H' : (0.9964, 1),
+            },
+            'particleNetMD_Xcc' : {
+                'L' : (0.9282, 0.9737),
+                'M' : (0.9737, 0.9916),
+                'H' : (0.9916, 1),
+            },
         },
-        'particleNetMD_Xbb' : {
-            'L' : (0.9789, 0.9904),
-            'M' : (0.9904, 0.9964),
-            'H' : (0.9964, 1),
+        '2018' : {
+            'btagDDBvLV2' : {
+                'L' : (0.2301, 0.4139),
+                'M' : (0.4139, 0.6509),
+                'H' : (0.6509, 1),
+            },
+            'btagDDCvLV2' : {
+                'L' : (0.0433, 0.1309),
+                'M' : (0.1309, 0.3323),
+                'H' : (0.3323, 1),
+            },
+            'particleNetMD_Xbb' : {
+                'L' : (0.9806, 0.9913),
+                'M' : (0.9913, 0.9967),
+                'H' : (0.9967, 1),
+            },
+            'particleNetMD_Xcc' : {
+                'L' : (0.9333, 0.9757),
+                'M' : (0.9757, 0.9925),
+                'H' : (0.9925, 1),
+            },
         },
-        'particleNetMD_Xcc' : {
-            'L' : (0.9282, 0.9737),
-            'M' : (0.9737, 0.9916),
-            'H' : (0.9916, 1),
-        },
-    },
-    '2018' : {
-        'btagDDBvLV2' : {
-            'L' : (0.2301, 0.4139),
-            'M' : (0.4139, 0.6509),
-            'H' : (0.6509, 1),
-        },
-        'btagDDCvLV2' : {
-            'L' : (0.0433, 0.1309),
-            'M' : (0.1309, 0.3323),
-            'H' : (0.3323, 1),
-        },
-        'particleNetMD_Xbb' : {
-            'L' : (0.9806, 0.9913),
-            'M' : (0.9913, 0.9967),
-            'H' : (0.9967, 1),
-        },
-        'particleNetMD_Xcc' : {
-            'L' : (0.9333, 0.9757),
-            'M' : (0.9757, 0.9925),
-            'H' : (0.9925, 1),
-        },
-    },
-    #'2018v1' : {
-    #    'btagDDBvLV2' : {
-    #        'L' : (0.228, 0.412),
-    #        'M' : (0.412, 0.649),
-    #        'H' : (0.649, 1),
-    #    },
-    #    'btagDDCvLV2' : {
-    #        'L' : (0.043, 0.129),
-    #        'M' : (0.129, 0.328),
-    #        'H' : (0.328, 1),
-    #    },
-    #    'particleNetMD_Xbb' : {
-    #        'L' : (0.9804, 0.9912),
-    #        'M' : (0.9912, 0.9967),
-    #        'H' : (0.9967, 1),
-    #    },
-        #'particleNetMD_Xcc' : {
-        #    'L' : (np.nan, np.nan),
-        #    'M' : (np.nan, np.nan),
-        #    'H' : (np.nan, np.nan),
-        #},
-    #},
-}
-
-AK8TaggerWP['2017'] = AK8TaggerWP['2018']
-
-histogram_settings = {
-    'variables' : {
-        'fatjet_pt'    : {'binning' : {'n_or_arr' : 40,  'lo' : 0,      'hi' : 2000},  'xlim' : {'xmin' : 0,      'xmax' : 2000}},
-        'fatjet_eta'   : {'binning' : {'n_or_arr' : 30,  'lo' : -3,     'hi' : 3},     'xlim' : {'xmin' : -2.4,   'xmax' : 2.4}},
-        'fatjet_phi'   : {'binning' : {'n_or_arr' : 30,  'lo' : -np.pi, 'hi' : np.pi}, 'xlim' : {'xmin' : -np.pi, 'xmax' : np.pi}},
-        #'fatjet_phi'   : {'binning' : {'n_or_arr' : 30,  'lo' : -3,     'hi' : 3},     'xlim' : {'xmin' : -3, 'xmax' : 3}},
-        'fatjet_mass'  : {'binning' : {'n_or_arr' : 20,  'lo' : 0,      'hi' : 400},   'xlim' : {'xmin' : 0, 'xmax' : 400}},
-        'fatjet_btagDDBvLV2'  : {'binning' : {'n_or_arr' : 20,  'lo' : 0,      'hi' : 1},     'xlim' : {'xmin' : 0, 'xmax' : 1}},
-        'fatjet_btagDDCvLV2'  : {'binning' : {'n_or_arr' : 20,  'lo' : 0,      'hi' : 1},     'xlim' : {'xmin' : 0, 'xmax' : 1}},
-        'fatjet_btagDDCvBV2'  : {'binning' : {'n_or_arr' : 20,  'lo' : 0,      'hi' : 1},     'xlim' : {'xmin' : 0, 'xmax' : 1}},
-        'fatjet_particleNetMD': {'binning' : {'n_or_arr' : 20,  'lo' : 0,      'hi' : 1},     'xlim' : {'xmin' : 0, 'xmax' : 1}},
-        'fatjet_deepTagMD'    : {'binning' : {'n_or_arr' : 20,  'lo' : 0,      'hi' : 1},     'xlim' : {'xmin' : 0, 'xmax' : 1}},
-        'fatjet_nsv1'         : {'binning' : {'n_or_arr' : 30,  'lo' : 0,      'hi' : 30},    'xlim' : {'xmin' : 0, 'xmax' : 10}},
-        'fatjet_nsv2'         : {'binning' : {'n_or_arr' : 30,  'lo' : 0,      'hi' : 30},    'xlim' : {'xmin' : 0, 'xmax' : 10}},
-        'fatjet_nmusj1'       : {'binning' : {'n_or_arr' : 30,  'lo' : 0,      'hi' : 30},    'xlim' : {'xmin' : 0, 'xmax' : 10}},
-        'fatjet_nmusj2'       : {'binning' : {'n_or_arr' : 30,  'lo' : 0,      'hi' : 30},    'xlim' : {'xmin' : 0, 'xmax' : 10}},
-        'fatjet_jetproba'     : {'binning' : {'n_or_arr' : 25,  'lo' : 0,      'hi' : 2.5},   'xlim' : {'xmin' : 0, 'xmax' : 2.5}},
-        'sv_sv1mass'              : {'binning' : {'n_or_arr' : 50,  'lo' : 0,      'hi' : 50},    'xlim' : {'xmin' : 0, 'xmax' : 50}},
-        'sv_sv1mass_maxdxySig'    : {'binning' : {'n_or_arr' : 50,  'lo' : 0,      'hi' : 50},    'xlim' : {'xmin' : 0, 'xmax' : 50}},
-        #'sv_logsv1mass'           : {'binning' : {'n_or_arr' : 80,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -4, 'xmax' : 4}},
-        'sv_logsv1mass'           : {'binning' : {'n_or_arr' : 40,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -1.2, 'xmax' : 3.2}},
-        #'sv_logsv1mass'           : {'binning' : {'n_or_arr' : 40,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -0.8, 'xmax' : 3.2}},
-        #'sv_logsv1mass_maxdxySig' : {'binning' : {'n_or_arr' : 80,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -4, 'xmax' : 4}},
-        'sv_logsv1mass_maxdxySig' : {'binning' : {'n_or_arr' : 40,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -1.2, 'xmax' : 3.2}},
-        #'sv_logsv1mass_maxdxySig' : {'binning' : {'n_or_arr' : 40,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -0.8, 'xmax' : 3.2}},
-        'sv_logsv1massratio'      : {'binning' : {'n_or_arr' : 200,  'lo' : -100,     'hi' : 100},     'xlim' : {'xmin' : -100, 'xmax' : 100}},
-        'sv_logsv1massres'        : {'binning' : {'n_or_arr' : 100,  'lo' : -1,     'hi' : 1},     'xlim' : {'xmin' : -1, 'xmax' : 1}},
-        #'sv_logsv1mass'       : {'binning' : {'n_or_arr' : 20,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -0.8, 'xmax' : 3.2}},
-        #'sv_logsv1mass'       : {'binning' : {'n_or_arr' : np.concatenate((np.arange(-4,1.9,0.1), [2.5,3.2]))},     'xlim' : {'xmin' : -0.8, 'xmax' : 3.2}},
-    },
-    'postfit' : {
-        #'sv_logsv1mass'       : {'binning' : {'n_or_arr' : np.concatenate((np.arange(-4,1.9,0.1), [2.5,3.2]))},     'xlim' : {'xmin' : -0.8, 'xmax' : 3.2}},
-        'sv_logsv1mass'       : {'binning' : {'n_or_arr' : np.arange(-4,2.2,0.2)},     'xlim' : {'xmin' : -1.2, 'xmax' : 2.0}},
-    },
-    'crop' : {
-        'sfpass' : {'length' : 1780, 'height' : 2100},
-        'sffail' : {'length' : 1725, 'height' : 2100},
     }
 }
 
-for tagger in AK8Taggers:
-    histogram_settings['variables']['fatjet_{}'.format(tagger)] = AK8Tagger_parameters
+histogram_settings = {
+    'EOY' : {
+        'variables' : {
+            'fatjet_pt'    : {'binning' : {'n_or_arr' : 40,  'lo' : 0,      'hi' : 2000},  'xlim' : {'xmin' : 0,      'xmax' : 2000}},
+            'fatjet_eta'   : {'binning' : {'n_or_arr' : 30,  'lo' : -3,     'hi' : 3},     'xlim' : {'xmin' : -2.4,   'xmax' : 2.4}},
+            'fatjet_phi'   : {'binning' : {'n_or_arr' : 30,  'lo' : -np.pi, 'hi' : np.pi}, 'xlim' : {'xmin' : -np.pi, 'xmax' : np.pi}},
+            #'fatjet_phi'   : {'binning' : {'n_or_arr' : 30,  'lo' : -3,     'hi' : 3},     'xlim' : {'xmin' : -3, 'xmax' : 3}},
+            'fatjet_mass'  : {'binning' : {'n_or_arr' : 20,  'lo' : 0,      'hi' : 400},   'xlim' : {'xmin' : 0, 'xmax' : 400}},
+            'fatjet_btagDDBvLV2'  : {'binning' : {'n_or_arr' : 20,  'lo' : 0,      'hi' : 1},     'xlim' : {'xmin' : 0, 'xmax' : 1}},
+            'fatjet_btagDDCvLV2'  : {'binning' : {'n_or_arr' : 20,  'lo' : 0,      'hi' : 1},     'xlim' : {'xmin' : 0, 'xmax' : 1}},
+            'fatjet_btagDDCvBV2'  : {'binning' : {'n_or_arr' : 20,  'lo' : 0,      'hi' : 1},     'xlim' : {'xmin' : 0, 'xmax' : 1}},
+            'fatjet_particleNetMD': {'binning' : {'n_or_arr' : 20,  'lo' : 0,      'hi' : 1},     'xlim' : {'xmin' : 0, 'xmax' : 1}},
+            'fatjet_deepTagMD'    : {'binning' : {'n_or_arr' : 20,  'lo' : 0,      'hi' : 1},     'xlim' : {'xmin' : 0, 'xmax' : 1}},
+            'fatjet_nsv1'         : {'binning' : {'n_or_arr' : 30,  'lo' : 0,      'hi' : 30},    'xlim' : {'xmin' : 0, 'xmax' : 10}},
+            'fatjet_nsv2'         : {'binning' : {'n_or_arr' : 30,  'lo' : 0,      'hi' : 30},    'xlim' : {'xmin' : 0, 'xmax' : 10}},
+            'fatjet_nmusj1'       : {'binning' : {'n_or_arr' : 30,  'lo' : 0,      'hi' : 30},    'xlim' : {'xmin' : 0, 'xmax' : 10}},
+            'fatjet_nmusj2'       : {'binning' : {'n_or_arr' : 30,  'lo' : 0,      'hi' : 30},    'xlim' : {'xmin' : 0, 'xmax' : 10}},
+            'fatjet_jetproba'     : {'binning' : {'n_or_arr' : 25,  'lo' : 0,      'hi' : 2.5},   'xlim' : {'xmin' : 0, 'xmax' : 2.5}},
+            'sv_sv1mass'              : {'binning' : {'n_or_arr' : 50,  'lo' : 0,      'hi' : 50},    'xlim' : {'xmin' : 0, 'xmax' : 50}},
+            'sv_sv1mass_maxdxySig'    : {'binning' : {'n_or_arr' : 50,  'lo' : 0,      'hi' : 50},    'xlim' : {'xmin' : 0, 'xmax' : 50}},
+            'sv_logsv1mass'           : {'binning' : {'n_or_arr' : 80,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -1.2, 'xmax' : 3.2}},
+            'sv_logsv1mass_maxdxySig' : {'binning' : {'n_or_arr' : 80,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -4, 'xmax' : 4}},
+            'sv_logsv1massratio'      : {'binning' : {'n_or_arr' : 200,  'lo' : -100,     'hi' : 100},     'xlim' : {'xmin' : -100, 'xmax' : 100}},
+            'sv_logsv1massres'        : {'binning' : {'n_or_arr' : 100,  'lo' : -1,     'hi' : 1},     'xlim' : {'xmin' : -1, 'xmax' : 1}},
+            #'sv_logsv1mass'       : {'binning' : {'n_or_arr' : np.concatenate((np.arange(-4,1.9,0.1), [2.5,3.2]))},     'xlim' : {'xmin' : -0.8, 'xmax' : 3.2}},
+        },
+        'postfit' : {
+            'sv_logsv1mass'       : {'binning' : {'n_or_arr' : np.arange(-4,2.1,0.1)},     'xlim' : {'xmin' : -1.2, 'xmax' : 2.0}},
+        },
+        'crop' : {
+            'sfpass' : {'length' : 1780, 'height' : 2100},
+            'sffail' : {'length' : 1725, 'height' : 2100},
+        }
+    },
+    'UL' : {
+        'variables' : {
+            'fatjet_pt'    : {'binning' : {'n_or_arr' : 40,  'lo' : 0,      'hi' : 2000},  'xlim' : {'xmin' : 0,      'xmax' : 2000}},
+            'fatjet_eta'   : {'binning' : {'n_or_arr' : 30,  'lo' : -3,     'hi' : 3},     'xlim' : {'xmin' : -2.4,   'xmax' : 2.4}},
+            'fatjet_phi'   : {'binning' : {'n_or_arr' : 30,  'lo' : -np.pi, 'hi' : np.pi}, 'xlim' : {'xmin' : -np.pi, 'xmax' : np.pi}},
+            #'fatjet_phi'   : {'binning' : {'n_or_arr' : 30,  'lo' : -3,     'hi' : 3},     'xlim' : {'xmin' : -3, 'xmax' : 3}},
+            'fatjet_mass'  : {'binning' : {'n_or_arr' : 20,  'lo' : 0,      'hi' : 400},   'xlim' : {'xmin' : 0, 'xmax' : 400}},
+            'fatjet_btagDDBvLV2'  : {'binning' : {'n_or_arr' : 20,  'lo' : 0,      'hi' : 1},     'xlim' : {'xmin' : 0, 'xmax' : 1}},
+            'fatjet_btagDDCvLV2'  : {'binning' : {'n_or_arr' : 20,  'lo' : 0,      'hi' : 1},     'xlim' : {'xmin' : 0, 'xmax' : 1}},
+            'fatjet_btagDDCvBV2'  : {'binning' : {'n_or_arr' : 20,  'lo' : 0,      'hi' : 1},     'xlim' : {'xmin' : 0, 'xmax' : 1}},
+            'fatjet_particleNetMD': {'binning' : {'n_or_arr' : 20,  'lo' : 0,      'hi' : 1},     'xlim' : {'xmin' : 0, 'xmax' : 1}},
+            'fatjet_deepTagMD'    : {'binning' : {'n_or_arr' : 20,  'lo' : 0,      'hi' : 1},     'xlim' : {'xmin' : 0, 'xmax' : 1}},
+            'fatjet_nsv1'         : {'binning' : {'n_or_arr' : 30,  'lo' : 0,      'hi' : 30},    'xlim' : {'xmin' : 0, 'xmax' : 10}},
+            'fatjet_nsv2'         : {'binning' : {'n_or_arr' : 30,  'lo' : 0,      'hi' : 30},    'xlim' : {'xmin' : 0, 'xmax' : 10}},
+            'fatjet_nmusj1'       : {'binning' : {'n_or_arr' : 30,  'lo' : 0,      'hi' : 30},    'xlim' : {'xmin' : 0, 'xmax' : 10}},
+            'fatjet_nmusj2'       : {'binning' : {'n_or_arr' : 30,  'lo' : 0,      'hi' : 30},    'xlim' : {'xmin' : 0, 'xmax' : 10}},
+            'fatjet_jetproba'     : {'binning' : {'n_or_arr' : 25,  'lo' : 0,      'hi' : 2.5},   'xlim' : {'xmin' : 0, 'xmax' : 2.5}},
+            'sv_sv1mass'              : {'binning' : {'n_or_arr' : 50,  'lo' : 0,      'hi' : 50},    'xlim' : {'xmin' : 0, 'xmax' : 50}},
+            'sv_sv1mass_maxdxySig'    : {'binning' : {'n_or_arr' : 50,  'lo' : 0,      'hi' : 50},    'xlim' : {'xmin' : 0, 'xmax' : 50}},
+            'sv_logsv1mass'           : {'binning' : {'n_or_arr' : 40,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -1.2, 'xmax' : 3.2}},
+            'sv_logsv1mass_maxdxySig' : {'binning' : {'n_or_arr' : 40,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -1.2, 'xmax' : 3.2}},
+            'sv_logsv1massratio'      : {'binning' : {'n_or_arr' : 200,  'lo' : -100,     'hi' : 100},     'xlim' : {'xmin' : -100, 'xmax' : 100}},
+            'sv_logsv1massres'        : {'binning' : {'n_or_arr' : 100,  'lo' : -1,     'hi' : 1},     'xlim' : {'xmin' : -1, 'xmax' : 1}},
+        },
+        'postfit' : {
+            'sv_logsv1mass'       : {'binning' : {'n_or_arr' : np.arange(-4,2.2,0.2)},     'xlim' : {'xmin' : -1.2, 'xmax' : 2.0}},
+        },
+        'crop' : {
+            'sfpass' : {'length' : 1780, 'height' : 2100},
+            'sffail' : {'length' : 1725, 'height' : 2100},
+        }
+    }
+}
+
+for campaign in ['EOY', 'UL']:
+    for tagger in AK8Taggers:
+        histogram_settings[campaign]['variables']['fatjet_{}'.format(tagger)] = AK8Tagger_parameters
 
 #sample_names = ['bb', 'cc', 'b', 'c', 'l']
 sample_baseline_names = ['c_cc', 'b_bb', 'l']
@@ -960,6 +995,14 @@ fit_parameters = {
     },
 
     'mergebbcc': {
+        '2016': {
+            'btagDDCvLV2': {
+                'Inclusive': {'bb_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'l': {'value' : 1, 'lo' : -2, 'hi' : 2}},
+                'L':         {'bb_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'l': {'value' : 1, 'lo' : -2, 'hi' : 2}},
+                'M':         {'bb_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'l': {'value' : 1, 'lo' : -2, 'hi' : 2}},
+                'H':         {'bb_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'l': {'value' : 1, 'lo' : -2, 'hi' : 2}},
+            },
+        },
         '2018': {
             'btagDDCvLV2': {
                 'Inclusive': {'bb_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}, 'l': {'value' : 1, 'lo' : -2, 'hi' : 2}},

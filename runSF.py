@@ -16,6 +16,7 @@ if __name__ == '__main__':
     parser.add_argument('--var', type=str, choices=['sv_logsv1mass', 'sv_logsv1mass_maxdxySig'], default='sv_logsv1mass', help='Variable used in the template fit.')
     parser.add_argument('--lo', type=float, default=-1.2, help='Variable used in the template fit.')
     parser.add_argument('--hi', type=float, default=2.0, help='Variable used in the template fit.')
+    parser.add_argument('--selection', type=str, default='msd100tau06', help='Selection to compute SF.', required=False)    
     parser.add_argument("--tpf", "--template-passfail", dest='tpf', type=str,
                         default='histograms/hists_fattag_pileupJEC_2017_WPcuts_v01.pkl',
                         help="Pass/Fail templates, only for `fit=double`", required=True)
@@ -32,7 +33,7 @@ if __name__ == '__main__':
     #if args.parameters:
     #    print("{} : {}".format(args.parameters, fit_parameters[args.parameters]))
     
-    taggers = AK8TaggerWP[args.year].keys()
+    taggers = AK8TaggerWP[args.campaign][args.year].keys()
     if args.tagger in taggers:
         taggers = [args.tagger]
     elif args.tagger != None:
@@ -56,7 +57,7 @@ if __name__ == '__main__':
                 logFile = "{}/sf{}{}{}wp{}Pt.log".format(subDir, args.year, tagger, wp, wpt)
                 
                 submissionCommand = ( "python scaleFactorComputation.py --campaign {} --year {} --tagger {} --tpf {} --outputDir {}".format(args.campaign, args.year, tagger, args.tpf, subDir) +
-                                      " --selection msd100tau06 --wp {} --wpt {} --var {} --lo {} --hi {}".format(wp, wpt, args.var, args.lo, args.hi) +
+                                      " --selection {} --wp {} --wpt {} --var {} --lo {} --hi {}".format(args.selection, wp, wpt, args.var, args.lo, args.hi) +
                                       " | tee {}".format(logFile) )
                 if args.parameters:
                     submissionCommand = submissionCommand.replace(' | tee', ' --parameters {} | tee'.format(args.parameters))

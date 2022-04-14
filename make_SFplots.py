@@ -1,18 +1,22 @@
+import os
+import sys
 import argparse
+from copy import deepcopy
+
 import numpy as np
 import math
-import uproot
 import matplotlib.pyplot as plt
 from matplotlib.offsetbox import AnchoredText
+
+import uproot
 import mplhep as hep
-from copy import deepcopy
+
 from coffea.util import load
 from coffea.hist import plot
 from coffea.hist.plot import poisson_interval
 import coffea.hist as hist
-import os
-import sys
-from utils import rescale
+
+from lib.luminosity import rescale
 from parameters import histogram_settings, flavors_color, flavor_opts, lumi, xsecs, PtBinning, AK8TaggerWP
 
 fontsize = 12
@@ -22,12 +26,13 @@ parser.add_argument('-i', '--input', type=str, help='Input histogram filename', 
 parser.add_argument('-o', '--outputDir', type=str, default='', help='Output directory', required=False)
 #parser.add_argument('-s', '--scale', type=str, default='linear', help='Plot y-axis scale', required=False)
 #parser.add_argument('-d', '--dense', action='store_true', default=False, help='Normalized plots')
+parser.add_argument('--campaign', type=str, choices={'EOY', 'UL'}, help='Dataset campaign.', required=True)
 parser.add_argument('--year', type=str, choices=['2016', '2017', '2018'], help='Year of data/MC samples', required=True)
 parser.add_argument('--var', type=str, default='sv_logsv1mass', help='Variable used in the template fit.', required=False)
 #parser.add_argument('--wpt', type=str, choices={'', 'M', 'H'}, default='', help='Pt bin')
 parser.add_argument('--data', type=str, default='BTagMu', help='Data sample name')
 #parser.add_argument('--selection', type=str, default='all', help='Plot only plots with this selection. ("all" to plot all the selections in file)', required=True)
-parser.add_argument('--selection', type=str, default='msd100tau06', help='Selection to compute SF.', required=False)
+parser.add_argument('--selection', type=str, default='msd100tau06', help='Selection to compute SF.', required=True)
 parser.add_argument('--tagger', type=str, help='Tagger to calibrate.', required=False)
 #parser.add_argument('--pt', type=int, default=500, help='Pt cut.', required=True)
 #parser.add_argument('--MwpDDB', type=float, default=0.7, help='Medium working point for DDB.', required=True)
@@ -37,13 +42,16 @@ parser.add_argument('--crop', action='store_true', default=False, help='Produce 
 parser.add_argument('--mergebbcc', action='store_true', default=False, help='Merge bb+cc')
 
 args = parser.parse_args()
-pt_interval = PtBinning[args.year]
-pt_interval['Inclusive'] = (pt_interval['L'][0], 'Inf')
+pt_interval = PtBinning[args.campaign][args.year]
+if args.campaign == 'EOY':
+    pt_interval['Inclusive'] = (pt_interval['M'][0], 'Inf')
+else:
+    pt_interval['Inclusive'] = (pt_interval['L'][0], 'Inf')
 totalLumi = lumi[args.year]
-if args.tagger in AK8TaggerWP[args.year].keys():
+if args.tagger in AK8TaggerWP[args.campaign][args.year].keys():
     taggers = [args.tagger]
 else:
-    taggers = AK8TaggerWP[args.year].keys()
+    taggers = AK8TaggerWP[args.campaign][args.year].keys()
 ptbins = ['Inclusive', 'L', 'M', 'H', 'M+H']
 
 inputDir = None
@@ -63,8 +71,13 @@ elif os.path.isfile(args.input):
         if not args.selection:
             sys.exit("Specify the selection")
         else:
-            taggers = [tagger for tagger in taggers if tagger in args.selection]
+            if not args.tagger:
+                sys.exit("Specify the tagger")
+            taggers = [tagger for tagger in taggers if tagger == args.tagger]
             ptbins = [ptbin for ptbin in ptbins if ptbin in args.input.split('/')[-1]]
+else:
+    print(args.input)
+    raise NotImplementedError
 
 regions = ['sfpass', 'sffail']
 if args.passonly:
@@ -129,9 +142,9 @@ selection = {
 """
 
 #_final_mask = ['msd100tau06', 'pt400msd100tau06']
-_final_mask = ['msd100tau06']
+_final_mask = ['msd100tau06', 'msd100tau06ggHcc']
 
-_mask_DDX = AK8TaggerWP[args.year]
+_mask_DDX = AK8TaggerWP[args.campaign][args.year]
 
 xlabel = {
     'fatjet_jetproba' : r"jet Probability",
@@ -159,9 +172,10 @@ selection_msd100tau06 = (r"$\geq$1 AK8 jets"+"\n"+
 
 plt.style.use([hep.style.ROOT, {'font.size': 16}])
 
+print("taggers:", taggers)
 for tagger in taggers:
     for wp in [ 'L', 'M', 'H' ]:
-        selDir = 'msd100tau06{}{}wp/'.format(tagger, wp)
+        selDir = '{}{}{}wp/'.format(args.selection, tagger, wp)
         plot_dir = args.outputDir if args.outputDir else inputDir + selDir
         if not os.path.exists(plot_dir):
             print("Directory {} does not exist".format(plot_dir))
@@ -171,7 +185,9 @@ for tagger in taggers:
         for wpt in ptbins:
             filename = 'fitDiagnostics{}wp{}Pt.root'.format(wp, wpt)
             filepath = inputDir + selDir + filename
-            if not os.path.exists(filepath): continue
+            if not os.path.exists(filepath):
+                print(f"File {filepath} does not exist.")
+                continue
 
             if args.mergebbcc:
                 flavors = ['l', 'bb_cc']
@@ -185,7 +201,7 @@ for tagger in taggers:
             flavor_opts['facecolor'] = [flavors_color[f.split('_')[-1]] for f in flavors]
             flavor_axis  = hist.Cat("flavor",   "Flavor")
             varname = args.var.split('_')[1]
-            observable_axis  = hist.Bin(varname,  xlabel[args.var], **histogram_settings['postfit'][args.var]['binning'])
+            observable_axis  = hist.Bin(varname,  xlabel[args.var], **histogram_settings[args.campaign]['postfit'][args.var]['binning'])
             output = {}
 
             for region in ['sfpass', 'sffail']:
@@ -255,6 +271,8 @@ for tagger in taggers:
                     MC_values = MC_sum.values()[()]
                     print(MC_values)
                     edges = MC_sum.axis(varname).edges(overflow='none')
+                    print(edges)
+                    print(len(MC_var))
                     MC_unc = np.diff(edges) * np.concatenate( (np.zeros(len(MC_values) - len(MC_var)), np.sqrt(MC_var)) )
                     lo = MC_values - MC_unc
                     hi = MC_values + MC_unc
@@ -311,7 +329,7 @@ for tagger in taggers:
                     pt_low, pt_high = pt_interval[wpt]
                     if pt_high == 'Inf':
                         pt_high = r'$\infty$'
-                    text = selection[f'msd100tau06{tagger}{region[2:]}{wp}wp'] + r"$p_T$:" + f" ({pt_low}, {pt_high}) [GeV]"+"\n"
+                    text = selection[f'{args.selection}{tagger}{region[2:]}{wp}wp'] + r"$p_T$:" + f" ({pt_low}, {pt_high}) [GeV]"+"\n"
                     at = AnchoredText(text, loc='upper left', prop={'fontsize' : fontsize}, frameon=False)
                     at_normed = AnchoredText(text, loc='upper left', prop={'fontsize' : fontsize}, frameon=False)
                     axes[0][i].add_artist(at)
@@ -344,14 +362,14 @@ for tagger in taggers:
                     unity = np.ones_like(MC_values)
                     denom_unc = poisson_interval(unity, MC_unc**2 / MC_values ** 2)
                     axes[1][i].fill_between(edges, np.r_[denom_unc[0], denom_unc[0, -1]], np.r_[denom_unc[1], denom_unc[1, -1]], **MC_unc_opts, label='MC unc.')
-                    axes[1][i].set_xlim(**histogram_settings['postfit']['sv_logsv1mass']['xlim'])
-                    axes_normed[1][i].set_xlim(**histogram_settings['postfit']['sv_logsv1mass']['xlim'])
+                    axes[1][i].set_xlim(**histogram_settings[args.campaign]['postfit']['sv_logsv1mass']['xlim'])
+                    axes_normed[1][i].set_xlim(**histogram_settings[args.campaign]['postfit']['sv_logsv1mass']['xlim'])
                     axes[1][i].set_ylim(0.0, 2.0)
                     axes_normed[1][i].set_ylim(0.0, 2.0)
                     axes[1][i].set_yticks([0.5, 1.0, 1.5])
                     axes_normed[1][i].set_yticks([0.5, 1.0, 1.5])
-                    axes[1][i].hlines([0.5, 1.5], **histogram_settings['postfit']['sv_logsv1mass']['xlim'], colors='grey', linestyles='dashed', linewidth=1)
-                    axes_normed[1][i].hlines([0.5, 1.5], **histogram_settings['postfit']['sv_logsv1mass']['xlim'], colors='grey', linestyles='dashed', linewidth=1)
+                    axes[1][i].hlines([0.5, 1.5], **histogram_settings[args.campaign]['postfit']['sv_logsv1mass']['xlim'], colors='grey', linestyles='dashed', linewidth=1)
+                    axes_normed[1][i].hlines([0.5, 1.5], **histogram_settings[args.campaign]['postfit']['sv_logsv1mass']['xlim'], colors='grey', linestyles='dashed', linewidth=1)
                 histname = 'shapes_{}{}{}Pt_{}.png'.format(region, tagger, wpt, args.year)
                 fig.savefig(plot_dir + histname, dpi=300, format="png")
                 fig_normed.savefig(plot_dir + histname.replace('.png', '_normed.png'), dpi=300, format="png")
@@ -359,8 +377,8 @@ for tagger in taggers:
 
             if args.crop:
                 for region in regions:
-                    length = histogram_settings['crop'][region]['length']
-                    height = histogram_settings['crop'][region]['height']
+                    length = histogram_settings[args.campaign]['crop'][region]['length']
+                    height = histogram_settings[args.campaign]['crop'][region]['height']
                     cropCommand = f"convert -crop {length}x{height} {plot_dir}shapes_{region}{tagger}{wpt}Pt_{args.year}.png {plot_dir}shapes_{region}{tagger}{wpt}Pt_{args.year}_%d.png"
                     rmCommand = f"rm {plot_dir}*_2.png"
                     for command in [cropCommand, rmCommand]:

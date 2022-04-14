@@ -94,9 +94,9 @@ def test_sfmodel(tmpdir, var, lo, hi, inputFile, year, campaign, sel, tagger, wp
     jecs = rl.NuisanceParameter('CMS_jecs', 'lnN')
     pu = rl.NuisanceParameter('CMS_pu', 'lnN')
 
-    pt_bins = PtBinning[year]
+    pt_bins = PtBinning[campaign][year]
     name_map = {'n_or_arr' : 'num', 'lo' : 'start', 'hi' : 'stop'}
-    arguments = dict((name_map[name], val) for name, val in histogram_settings['variables'][var]['binning'].iteritems())
+    arguments = dict((name_map[name], val) for name, val in histogram_settings[campaign]['variables'][var]['binning'].iteritems())
     arguments['num'] += 1
     bins = np.linspace(**arguments)
     #if var == 'fatjet_jetproba':
@@ -120,6 +120,8 @@ def test_sfmodel(tmpdir, var, lo, hi, inputFile, year, campaign, sel, tagger, wp
             pars = pars[tagger][wp][wpt]
         elif wpt in pars[tagger].keys():
             pars = pars[tagger][wpt]
+    elif set(pars[tagger].keys()) == {'c_cc', 'b_bb', 'l'}:
+        pars = pars[tagger]
     print(pars.keys())
     if not mergebbcc:
         sample_names = sample_baseline_names
@@ -281,7 +283,10 @@ def test_sfmodel(tmpdir, var, lo, hi, inputFile, year, campaign, sel, tagger, wp
 
 def save_results(output_dir, year, campaign, sel, tagger, wp, wpt, pars_key=None, mergebbcc=False, createcsv=False, createtex=False):
 
+    if output_dir.rstrip("/") in os.getcwd():
+        output_dir = ''
     combineFile = uproot.open(output_dir + "higgsCombine{}wp{}Pt.FitDiagnostics.mH120.root".format(wp, wpt))
+        
     combineTree = combineFile['limit']
     combineBranches = combineTree.arrays()
     results = combineBranches['limit']
@@ -319,6 +324,8 @@ def save_results(output_dir, year, campaign, sel, tagger, wp, wpt, pars_key=None
             pars = pars[tagger][wp][wpt]
         elif wpt in pars[tagger].keys():
             pars = pars[tagger][wpt]
+    elif set(pars[tagger].keys()) == {'c_cc', 'b_bb', 'l'}:
+        pars = pars[tagger]
     value, lo, hi = (pars[POI]['value'], pars[POI]['lo'], pars[POI]['hi'])
     f = open(output_dir + "fitResults{}wp{}Pt.txt".format(wp, wpt), 'w')
     lineIntro = 'Best fit '
@@ -381,7 +388,7 @@ if __name__ == '__main__':
     #parser.add_argument('--lo', type=float, default=-1.2, help='Variable used in the template fit.')
     parser.add_argument('--lo', type=float, default=-1.2, help='Variable used in the template fit.')
     parser.add_argument('--hi', type=float, default=2.0, help='Variable used in the template fit.')
-    parser.add_argument('--selection', type=str, default='msd100tau06', help='Selection to compute SF.', required=False)
+    parser.add_argument('--selection', type=str, default='msd100tau06', help='Selection to compute SF.', required=True)
     parser.add_argument('--tagger', type=str, default='btagDDBvLV2', help='Tagger to calibrate.', required=True)
     parser.add_argument('--wp', type=str, default='M', help='Working point', required=True)
     parser.add_argument('--wpt', type=str, choices={'Inclusive', 'L', 'M', 'H', 'M+H'}, default='', help='Pt bin', required=True)

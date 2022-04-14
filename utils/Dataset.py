@@ -9,7 +9,9 @@ from parsl.config import Config
 from parsl.executors.threads import ThreadPoolExecutor
 
 class Sample():
-    def __init__(self, path, prefix):
+    def __init__(self, campaign, year, path, prefix):
+        self.campaign = campaign
+        self.year = year
         self.prefix = prefix
         self.path = path
         self.sample_dict = {}
@@ -19,10 +21,14 @@ class Sample():
 
     # Function to get sample name and year from dataset name on DAS
     def load_attributes(self):
-        if 'UL' in self.path.split('/')[2]:
-            self.campaign = 'UL'
+        #if 'UL' in self.path.split('/')[2]:
+        #    self.campaign = 'UL'
+        #    self.year = '20' + self.path.split('/')[2].split('UL')[1][:2]
+        #else
+        #    self.campaign = 'EOY'
+        #    self.year = '20' + self.path.split('/')[2].split('UL')[1][:2]
+
         self.sample = self.path.split('/')[1]
-        self.year = '20' + self.path.split('/')[2].split('UL')[1][:2]
         if self.year not in ['2016', '2017', '2018']:
             self.year = self.path.split('/')[2].split('UL')[1][:4]
         if self.year not in ['2016', '2017', '2018']:
@@ -62,7 +68,9 @@ class Sample():
         print(f"path: {self.path}, sample: {self.sample}, year: {self.year}")
 
 class Dataset():
-    def __init__(self, file, prefix, outfile):
+    def __init__(self, campaign, year, file, prefix, outfile):
+        self.campaign = campaign
+        self.year = year
         self.prefix = prefix
         self.outfile = outfile
         self.sample_dict = {}
@@ -74,8 +82,8 @@ class Dataset():
     # Function to build the dataset dictionary
     def get_samples(self):
         for name in self.samples:
-            sample = Sample(name, "root://xrootd-cms.infn.it//")
-            sample_local = Sample(name, self.prefix)
+            sample = Sample(self.campaign, self.year, name, "root://xrootd-cms.infn.it//")
+            sample_local = Sample(self.campaign, self.year, name, self.prefix)
             self.sample_dict.update(sample.sample_dict)
             self.sample_dict_local.update(sample_local.sample_dict)
 

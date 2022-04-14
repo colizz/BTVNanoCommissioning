@@ -45,8 +45,8 @@ class NanoProcessor(processor.ProcessorABC):
         }
         self._final_mask = FinalMask
         #self._final_mask = ['msd100tau06', 'msd100tau03']
-        self._AK8TaggerWP = AK8TaggerWP[self._year]
-        self._PtBinning = PtBinning[self._year]
+        self._AK8TaggerWP = AK8TaggerWP[self._campaign][self._year]
+        self._PtBinning = PtBinning[self._campaign][self._year]
         self.mupt = cfg['mupt']
         self.corrJECfolder = cfg['JECfolder']
         self.hist2d = self.cfg['hist2d']
@@ -292,6 +292,7 @@ class NanoProcessor(processor.ProcessorABC):
         '''Based on https://github.com/andrzejnovak/coffeandbacon/blob/master/analysis/compile_corrections.py#L166-L192'''
 
         nTrueIntLoad = load(nTrueFile)
+        print([y for x,y in nTrueIntLoad[dataset].sum('dataset').values().items()])
         nTrueInt = [y for x,y in nTrueIntLoad[dataset].sum('dataset').values().items()][0]  ## not sure is the best way
 
         with uproot.open(puFile) as file_pu:

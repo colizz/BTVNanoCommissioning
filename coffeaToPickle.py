@@ -13,6 +13,7 @@ parser = argparse.ArgumentParser(description='Plot histograms from coffea file')
 parser.add_argument('-i', '--input', type=str, help='Input histogram filename', required=True)
 parser.add_argument('-o', '--output', type=str, default='', help='Output file')
 parser.add_argument('--outputDir', type=str, default=None, help='Output directory')
+parser.add_argument('--campaign', type=str, choices={'EOY', 'UL'}, help='Dataset campaign.', required=True)
 parser.add_argument('--year', type=str, choices=['2016', '2017', '2018'], help='Year of data/MC samples', required=True)
 parser.add_argument('--data', type=str, default='BTagMu', help='Data sample name')
 #parser.add_argument('--pt', type=int, default=500, help='Pt cut.')
@@ -38,35 +39,45 @@ for isam in accumulator[next(iter(accumulator))].identifiers('dataset'):
     isam = str(isam)
     scaleXS[isam] = 1 if isam.startswith('BTag') else xsecs[isam]/accumulator['sumw'][isam]
 
+#print(accumulator.keys())
+
 outputDict = {}
 for ivar in [ 'fatjet_jetproba', 'sv_logsv1mass', 'sv_logsv1mass_maxdxySig' ]:
     for isel in FinalMask:
-        for tagger in AK8TaggerWP[args.year].keys():
+        for tagger in AK8TaggerWP[args.campaign][args.year].keys():
             for wp in [ 'L', 'M', 'H' ]:
-                for wpt in ['Inclusive'] + list(PtBinning[args.year].keys()):
+                for wpt in ['Inclusive'] + list(PtBinning[args.campaign][args.year].keys()):
                 #for (pt_low, pt_high) in [('', ''), (350, args.pt), (args.pt, 'Inf')]:
                     if wpt == 'Inclusive':
                         pt_low, pt_high = ('', '')
                     else:
-                        pt_low, pt_high = PtBinning[args.year][wpt]
+                        pt_low, pt_high = PtBinning[args.campaign][args.year][wpt]
                     for passfail in ['pass', 'fail']:
 
                         if pt_low == '':
                             histname=f'{ivar}_{isel}{tagger}{passfail}{wp}wp'
                         else:
                             histname=f'{ivar}_{isel}{tagger}{passfail}{wp}wpPt-{pt_low}to{pt_high}'
-                        if histname not in accumulator.keys():
+                        histname_coffea = histname
+                        if histname_coffea not in accumulator.keys():
                             #h = accumulator[histname.replace(f'{args.pt}', f'{args.pt}.0')]
-                            print(histname)
+                            if args.campaign == 'EOY':
+                                if 'DDB' in histname_coffea:
+                                    histname_coffea = histname_coffea.replace('msd100tau06btagDDBvLV2', 'msd100tau06DDB')
+                                elif 'DDC' in histname_coffea:
+                                    histname_coffea = histname_coffea.replace('msd100tau06btagDDCvLV2', 'msd100tau06DDC')
+                        if histname_coffea not in accumulator.keys():
+                            print(histname_coffea)
+                            continue
                             raise NotImplementedError
                         else:
-                            h = accumulator[histname]                            
+                            h = accumulator[histname_coffea]                            
                         h.scale( scaleXS, axis='dataset' )
                         if (args.scaleFail != None) & (passfail == 'fail'):
                             print(f"Scaling fail distributions by a factor {args.scaleFail}")
                             #h.scale( args.scaleFail, axis='dataset' )
                             h.scale( args.scaleFail )
-                        h = h.rebin(h.fields[-1], hist.Bin(h.fields[-1], h.axis(h.fields[-1]).label, **histogram_settings['variables'][ivar]['binning']))
+                        h = h.rebin(h.fields[-1], hist.Bin(h.fields[-1], h.axis(h.fields[-1]).label, **histogram_settings[args.campaign]['variables'][ivar]['binning']))
 
                         ##### grouping flavor
                         flavors = [str(s) for s in h.axis('flavor').identifiers() if str(s) != 'flavor']
