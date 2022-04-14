@@ -1,0 +1,20 @@
+{
+    "BTagMuD": [        
+        "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/user/anovak/PFNano/106X_v2_16rsb2/BTagMu/Run2016D-17Jul2018-v1_PFNanoAOD/210210_192440/0000/nano_data2016_5.root"
+    ],
+    "BTagMuH": [        
+        "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/user/anovak/PFNano/106X_v2_16rsb2/BTagMu/Run2016H-17Jul2018-v1_PFNanoAOD/210210_192549/0001/nano_data2016_1027.root"
+    ],
+    "BTagMuG": [
+        "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/user/anovak/PFNano/106X_v2_16rsb2/BTagMu/Run2016G-17Jul2018-v1_PFNanoAOD/210210_192534/0000/nano_data2016_879.root"
+    ],
+    "BTagMuB": [
+        "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/user/anovak/PFNano/106X_v2_16rsb2/BTagMu/Run2016B-17Jul2018_ver2-v1_PFNanoAOD/210210_192407/0001/nano_data2016_1026.root"
+    ],
+    "BTagMuF": [
+        "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/user/anovak/PFNano/106X_v2_16rsb2/BTagMu/Run2016F-17Jul2018-v1_PFNanoAOD/210210_192517/0000/nano_data2016_236.root"
+    ],
+    "BTagMuC": [
+        "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/user/anovak/PFNano/106X_v2_16rsb2/BTagMu/Run2016C-17Jul2018-v1_PFNanoAOD/210210_192425/0000/nano_data2016_375.root"
+    ]
+}
