@@ -8,7 +8,7 @@ import scipy.stats
 import pickle
 import uproot
 import ROOT
-from parameters import histogram_settings, sample_baseline_names, sample_merged_names, fit_parameters, PtBinning
+from parameters import histogram_settings, sample_baseline_names, sample_merged_names, fit_parameters, fit_extra_args, PtBinning
 
 nPtBins = 3
 
@@ -198,8 +198,8 @@ def test_sfmodel(tmpdir, var, lo, hi, inputFile, year, campaign, sel, tagger, wp
                 sample.autoMCStats(epsilon=args.epsilon)
             #    fracX = rl.NuisanceParameter('frac_'+sName, 'shape')
             #    sample.setParamEffect(fracX, 1.2*template[0])
-            else:
-                sample.autoMCStats(lnN=True)
+            #else:
+            #    sample.autoMCStats(lnN=True)
             ch.addSample(sample)
 
         if wpt == 'Inclusive':
@@ -277,6 +277,10 @@ def test_sfmodel(tmpdir, var, lo, hi, inputFile, year, campaign, sel, tagger, wp
             freezeParameters += ',{}'.format(par)
         combineCommand = combineCommand.replace('--setParameters r=1', '--setParameters {}'.format(setParameters))
         combineCommand = combineCommand.replace('--freezeParameters r', '--freezeParameters {}'.format(freezeParameters))
+        try: extra_args = ' ' + fit_extra_args[pars_key][year][tagger][wp][wpt]
+        except:
+            extra_args = ''
+        combineCommand = combineCommand + ' ' + extra_args
         ifile.write(combineCommand)
 
     exec_me( 'bash build.sh', folder=tmpdir )
