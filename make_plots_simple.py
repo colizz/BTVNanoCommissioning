@@ -20,6 +20,7 @@ parser.add_argument('--outputDir', type=str, default=None, help='Output director
 parser.add_argument('-s', '--scale', type=str, default='linear', help='Plot y-axis scale', required=False)
 parser.add_argument('-d', '--dense', action='store_true', default=False, help='Normalized plots')
 parser.add_argument('--year', type=str, choices=['2016', '2017', '2018'], help='Year of data/MC samples', required=True)
+parser.add_argument('--campaign', type=str, choices={'EOY', 'UL'}, help='Dataset campaign.', required=True)
 parser.add_argument('--hist2d', action='store_true', default=False, help='Plot only 2D histograms')
 parser.add_argument('--proxy', action='store_true', help='Plot proxy and signal comparison')
 parser.add_argument('--only', action='store', default='', help='Plot only one histogram')
