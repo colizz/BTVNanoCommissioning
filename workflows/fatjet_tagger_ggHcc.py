@@ -462,10 +462,10 @@ class NanoProcessor(processor.ProcessorABC):
         subjet2 = ak.pad_none(leadfatjet.subjets, 2)[:, 1]
         leadfatjet['nsv1'] = get_nsv( subjet1, events.SV )
         leadfatjet['nsv2'] = get_nsv( subjet2, events.SV )
-        leadfatjet['nmusj1'] = ak.num(subjet1.delta_r(events.Muon) < 0.4)
-        leadfatjet['nmusj2'] = ak.num(subjet2.delta_r(events.Muon) < 0.4)
-        leadmuonsj1 = ak.pad_none(events.Muon[subjet1.delta_r(events.Muon) < 0.4], 1)[:,0]
-        leadmuonsj2 = ak.pad_none(events.Muon[subjet2.delta_r(events.Muon) < 0.4], 1)[:,0]
+        leadfatjet['nmusj1'] = ak.sum(subjet1.delta_r(events.Muon) < 0.4, axis=1)
+        leadfatjet['nmusj2'] = ak.sum(subjet2.delta_r(events.Muon) < 0.4, axis=1)
+        leadmuonsj1 = subjet1.nearest(events.Muon, threshold=0.4)[:,0]
+        leadmuonsj2 = subjet2.nearest(events.Muon, threshold=0.4)[:,0]
         muonCollection = {'leadmuon' : leadmuon, 'subleadmuon' : subleadmuon,
                           'leadmuonsj1' : leadmuonsj1, 'leadmuonsj2' : leadmuonsj2,}
 
@@ -552,6 +552,7 @@ class NanoProcessor(processor.ProcessorABC):
                 #print('array printout:', np.array(list(muonCollection.keys())))
                 #print('list printout:', np.array(list(muonCollection.keys()))[[k in histname for k in muonCollection.keys()]])
                 muonKey = np.array(list(muonCollection.keys()))[[k in histname for k in muonCollection.keys()]][0]
+                print(f"histname: {histname}, muonKey: {muonKey}")
                 muon = muonCollection[muonKey]
                 for flav, mask in flavors.items():
                     weight = weights.weight() * cuts.all(*selection[sel[0]]) * ak.to_numpy(mask)
