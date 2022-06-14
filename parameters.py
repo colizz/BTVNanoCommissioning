@@ -181,8 +181,7 @@ jecTarFiles = {
     }
 }
 
-#FinalMask = ['msd100tau06']
-FinalMask = ['msd100tau06ggHcc']
+FinalMask = ['msd100tau06']
 
 AK8Taggers = ['btagDDBvLV2', 'btagDDCvLV2', 'btagDDCvBV2', 'btagHbb', 'particleNetMD_Xbb', 'particleNetMD_Xcc', 'deepTag_H', 'deepTagMD_ccvsLight']
 
@@ -411,6 +410,35 @@ flavor_opts = {
     'facecolor': [flavors_color[f] for f in flavors_color.keys()],
     'edgecolor': 'black',
     'alpha': 1.0
+}
+
+fit_extra_args = {
+    'fixbkg_mergeMH' : {
+        '2017': {
+            'btagDDBvLV2': {
+                'L' : {},
+                'M' : {},
+                'H' : {},
+            },
+            'btagDDCvLV2': {
+                'L' : {
+                    'M': '--X-rtd FITTER_NEW_CROSSING_ALGO --X-rtd FITTER_NEVER_GIVE_UP --X-rtd FITTER_BOUND --cminDefaultMinimizerAlgo Simplex',
+                },
+                'M' : {},
+                'H' : {},
+            },
+            'particleNetMD_Xbb': {
+                'L' : {},
+                'M' : {},
+                'H' : {},
+            },
+            'particleNetMD_Xcc': {
+                'L' : {},
+                'M' : {},
+                'H' : {},
+            },
+        },
+    }
 }
 
 fit_parameters = {
@@ -744,8 +772,8 @@ fit_parameters = {
                 },
                 'H' : {
                     'Inclusive': {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
-                    'L':         {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
-                    'M':         {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'L':         {'b_bb': {'value' : 1, 'lo' : -20, 'hi' : 20}},
+                    'M':         {'b_bb': {'value' : 1, 'lo' : -20, 'hi' : 20}},
                     'H':         {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
                     'M+H':       {'b_bb': {'value' : 1, 'lo' : 0, 'hi' : 2}},
                 },
@@ -754,7 +782,7 @@ fit_parameters = {
                 'L' : {
                     'Inclusive': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
                     'L':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
-                    'M':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'M':         {'c_cc': {'value' : 1, 'lo' : -20, 'hi' : 20}},
                     'H':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
                     'M+H':       {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
                 },
@@ -848,7 +876,7 @@ fit_parameters = {
                 'L' : {
                     'Inclusive': {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}}, # No post-fit uncertainties
                     'L':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
-                    'M':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
+                    'M':         {'c_cc': {'value' : 1, 'lo' : -20, 'hi' : 20}},
                     'H':         {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}}, # No post-fit uncertainties
                     'M+H':       {'c_cc': {'value' : 1, 'lo' : 0, 'hi' : 2}},
                 },
