@@ -1,9 +1,20 @@
 import numpy as np
 
+# Luminosity in fb^-1
 lumi = {
-    '2016' : 35.5,
-    '2017' : 41.5,
-    '2018' : 59.2,
+    # https://twiki.cern.ch/twiki/bin/viewauth/CMS/PdmVAnalysisSummaryTable
+    'EOY': {
+        '2016' : 36.33,
+        '2017' : 41.53,
+        '2018' : 59.74,
+    },
+    # https://twiki.cern.ch/twiki/bin/viewauth/CMS/PdmVRun2LegacyAnalysis
+    'UL': {
+        '2016-PreVFP' : 19.52,
+        '2016-PostVFP' : 16.81,
+        '2017' : 41.48,
+        '2018' : 59.83,
+    }
 }
 
 # Cross-sections in pb
@@ -49,6 +60,14 @@ xsecs = {
     "GluGluHToCC_M-125_13TeV"  : 27.8,
     "GluGluHToBB_M-125_13TeV_powheg_MINLO_NNLOPS_pythia8"  : 27.8,
     "GluGluHToCC_M-125_13TeV_powheg_MINLO_NNLOPS_pythia8"  : 27.8,
+}
+
+triggers = {
+    'EOY': {
+        '2016' : ['HLT_BTagMu_AK4Jet300_Mu5', 'HLT_BTagMu_AK8Jet300_Mu5'],
+        '2017' : ['HLT_BTagMu_AK4Jet300_Mu5', 'HLT_BTagMu_AK8Jet300_Mu5'],
+        '2018' : ['HLT_BTagMu_AK4Jet300_Mu5', 'HLT_BTagMu_AK8Jet300_Mu5'],
+    }
 }
 
 JECversions = {
@@ -348,7 +367,13 @@ histogram_settings = {
             'sv_logsv1mass_maxdxySig' : {'binning' : {'n_or_arr' : 80,  'lo' : -4,     'hi' : 4},     'xlim' : {'xmin' : -4, 'xmax' : 4}},
             'sv_logsv1massratio'      : {'binning' : {'n_or_arr' : 200,  'lo' : -100,     'hi' : 100},     'xlim' : {'xmin' : -100, 'xmax' : 100}},
             'sv_logsv1massres'        : {'binning' : {'n_or_arr' : 100,  'lo' : -1,     'hi' : 1},     'xlim' : {'xmin' : -1, 'xmax' : 1}},
+            'sv_pt'                   : {'binning' : {'n_or_arr' : 200,  'lo' : 0,      'hi' : 1000},    'xlim' : {'xmin' : 0, 'xmax' : 300}},
+            'sv_eta'                  : {'binning' : {'n_or_arr' : 30,  'lo' : -3,      'hi' : 3},    'xlim' : {'xmin' : -3, 'xmax' : 3}},
+            'sv_mass'                 : {'binning' : {'n_or_arr' : 50,  'lo' : 0,      'hi' : 50},    'xlim' : {'xmin' : 0, 'xmax' : 50}},
+            
             #'sv_logsv1mass'       : {'binning' : {'n_or_arr' : np.concatenate((np.arange(-4,1.9,0.1), [2.5,3.2]))},     'xlim' : {'xmin' : -0.8, 'xmax' : 3.2}},
+            'nd_projmass'           : {'binning' : {'n_or_arr' :100,  'lo' : 0,     'hi' : 1000},     'xlim' : {'xmin' : 0, 'xmax' : 1000}},
+            'nd_logprojmass'        : {'binning' : {'n_or_arr' :100,  'lo' : -2.5,     'hi' : 6},     'xlim' : {'xmin' : -2.5, 'xmax' : 6}},
         },
         'postfit' : {
             'sv_logsv1mass'       : {'binning' : {'n_or_arr' : np.arange(-4,2.1,0.1)},     'xlim' : {'xmin' : -1.2, 'xmax' : 2.0}},
@@ -400,8 +425,8 @@ for campaign in ['EOY', 'UL']:
 sample_baseline_names = ['c_cc', 'b_bb', 'l']
 sample_merged_names = ['bb_cc', 'l']
 flavors_order = {
-    'btagDDBvLV2' : ['l', 'c_cc', 'b_bb'],
-    'btagDDCvLV2' : ['l', 'b_bb', 'c_cc'],
+    'btagDDBvLV2' : ['l', 'c', 'cc', 'b', 'bb'],
+    'btagDDCvLV2' : ['l', 'b', 'bb', 'c', 'cc'],
     #'particleNetMD_Xbb' : ['l', 'c_cc', 'b_bb'],
     #'particleNetMD_Xcc' : ['l', 'b_bb', 'c_cc'],
     }
