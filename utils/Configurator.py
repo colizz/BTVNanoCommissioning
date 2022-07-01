@@ -104,5 +104,11 @@ class Configurator():
         elif self.workflow == "fatjet_tagger_ggHcc":
             from workflows.fatjet_tagger_ggHcc import NanoProcessor
             self.processor_instance = NanoProcessor(cfg=self.cfg)
+        elif self.workflow == "fatjet_tagger_projmass":
+            from workflows.fatjet_tagger_projmass import ggHccProcessor
+            self.processor_instance = ggHccProcessor(cfg=self.cfg)
+        elif self.workflow == "pt_reweighting":
+            from workflows.pt_reweighting import ptReweightProcessor
+            self.processor_instance = ptReweightProcessor(cfg=self.cfg)
         else:
             raise NotImplemented
