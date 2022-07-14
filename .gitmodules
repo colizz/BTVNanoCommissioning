@@ -1,0 +1,4 @@
+[submodule "PocketCoffea"]
+	path = PocketCoffea
+	url = https://github.com/PocketCoffea/PocketCoffea.git
+	branch = main
