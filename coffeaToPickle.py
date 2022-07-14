@@ -1,13 +1,16 @@
 import argparse
 import numpy as np
 from coffea.util import load
+import argparse
+import numpy as np
+from coffea.util import load
 from coffea.hist import plot
 import coffea.hist as hist
 import itertools
 import os
 import pickle
 #from lib.luminosity import rescale
-from parameters import histogram_settings, xsecs, FinalMask, PtBinning, AK8TaggerWP
+from parameters import histogram_settings, xsecs, FinalMask, PtBinning, AK8TaggerWP, lumi
 
 parser = argparse.ArgumentParser(description='Plot histograms from coffea file')
 parser.add_argument('-i', '--input', type=str, help='Input histogram filename', required=True)
@@ -15,14 +18,24 @@ parser.add_argument('-o', '--output', type=str, default='', help='Output file')
 parser.add_argument('--outputDir', type=str, default=None, help='Output directory')
 parser.add_argument('--campaign', type=str, choices={'EOY', 'UL'}, help='Dataset campaign.', required=True)
 parser.add_argument('--year', type=str, choices=['2016', '2017', '2018'], help='Year of data/MC samples', required=True)
+parser.add_argument('--vfp', type=str, default=None, choices=['pre', 'post'], help='Year of data/MC samples', required=False)
 parser.add_argument('--data', type=str, default='BTagMu', help='Data sample name')
 #parser.add_argument('--pt', type=int, default=500, help='Pt cut.')
-parser.add_argument('--scaleFail', type=float, default=None, help='Artificial scaling factor for distributions in the fail region.', required=False)
+parser.add_argument('--lumiscale', action='store_true', default=False, help='Scale MC by x-section times luminoisity.', required=False)
 parser.add_argument('--mergebbcc', action='store_true', default=False, help='Merge bb+cc')
 
 args = parser.parse_args()
 print("Running with options:")
 print("    ", args)
+
+if (args.campaign == 'UL') & (args.year == '2016'):
+    if args.vfp == parser.get_default('vfp'):
+        sys.exit("For 2016UL, specify if 'pre' or 'post' VFP.")
+    else:
+        vfp_label = {'pre' : '-PreVFP', 'post' : '-PostVFP'}[args.vfp]
+        totalLumi = lumi[args.campaign][f"{args.year}{vfp_label}"]
+else:
+    totalLumi = lumi[args.campaign][args.year]
 
 if os.path.isfile( args.input ): accumulator = load(args.input)
 else:
@@ -37,94 +50,76 @@ else:
 scaleXS = {}
 for isam in accumulator[next(iter(accumulator))].identifiers('dataset'):
     isam = str(isam)
-    scaleXS[isam] = 1 if isam.startswith('BTag') else xsecs[isam]/accumulator['sumw'][isam]
+    if args.lumiscale:
+        scaleXS[isam] = 1 if isam.startswith('BTag') else xsecs[isam]/accumulator['sumw'][isam] * 1000 * totalLumi
+    else:
+        scaleXS[isam] = 1 if isam.startswith('BTag') else xsecs[isam]/accumulator['sumw'][isam]
 
-#print(accumulator.keys())
+print(accumulator.keys())
 
 outputDict = {}
-for ivar in [ 'fatjet_jetproba', 'sv_logsv1mass', 'sv_logsv1mass_maxdxySig' ]:
-    for isel in FinalMask:
-        for tagger in AK8TaggerWP[args.campaign][args.year].keys():
-            for wp in [ 'L', 'M', 'H' ]:
-                for wpt in ['Inclusive'] + list(PtBinning[args.campaign][args.year].keys()):
-                #for (pt_low, pt_high) in [('', ''), (350, args.pt), (args.pt, 'Inf')]:
-                    if wpt == 'Inclusive':
-                        pt_low, pt_high = ('', '')
-                    else:
-                        pt_low, pt_high = PtBinning[args.campaign][args.year][wpt]
-                    for passfail in ['pass', 'fail']:
+fit_variables = [ 'sv_logsv1mass', 'sv_logsv1mass_maxdxySig', 'nd_projmass', 'nd_logprojmass' ]
+fit_variables_veto = [ 'sv_logsv1massratio', 'sv_logsv1massres' ]
+for histname, h in accumulator.items():
+    if histname.startswith(tuple(fit_variables)) & (not histname.startswith(tuple(fit_variables_veto))):
+        print(sorted([varname for varname in fit_variables if varname in histname]))
+        ivar = sorted([varname for varname in fit_variables if varname in histname])[-1]
+        print(histname, ivar)
+    else:
+        continue
+    h.scale( scaleXS, axis='dataset' )
+    h = h.rebin(h.fields[-1], hist.Bin(h.fields[-1], h.axis(h.fields[-1]).label, **histogram_settings[args.campaign]['variables'][ivar]['binning']))
 
-                        if pt_low == '':
-                            histname=f'{ivar}_{isel}{tagger}{passfail}{wp}wp'
-                        else:
-                            histname=f'{ivar}_{isel}{tagger}{passfail}{wp}wpPt-{pt_low}to{pt_high}'
-                        histname_coffea = histname
-                        if histname_coffea not in accumulator.keys():
-                            #h = accumulator[histname.replace(f'{args.pt}', f'{args.pt}.0')]
-                            if args.campaign == 'EOY':
-                                if 'DDB' in histname_coffea:
-                                    histname_coffea = histname_coffea.replace('msd100tau06btagDDBvLV2', 'msd100tau06DDB')
-                                elif 'DDC' in histname_coffea:
-                                    histname_coffea = histname_coffea.replace('msd100tau06btagDDCvLV2', 'msd100tau06DDC')
-                        if histname_coffea not in accumulator.keys():
-                            print(histname_coffea)
-                            continue
-                            raise NotImplementedError
-                        else:
-                            h = accumulator[histname_coffea]                            
-                        h.scale( scaleXS, axis='dataset' )
-                        if (args.scaleFail != None) & (passfail == 'fail'):
-                            print(f"Scaling fail distributions by a factor {args.scaleFail}")
-                            #h.scale( args.scaleFail, axis='dataset' )
-                            h.scale( args.scaleFail )
-                        h = h.rebin(h.fields[-1], hist.Bin(h.fields[-1], h.axis(h.fields[-1]).label, **histogram_settings[args.campaign]['variables'][ivar]['binning']))
+    ##### grouping flavor
+    flavors = [str(s) for s in h.axis('flavor').identifiers() if str(s) != 'flavor']
+    mapping_flavor = {f : [f] for f in flavors}
+    flavors_to_merge = ['bb', 'b', 'cc', 'c']
+    for flav in flavors_to_merge:
+        mapping_flavor.pop(flav)
+    if args.mergebbcc:
+        mapping_flavor['bb_cc'] = ['b', 'bb', 'c', 'cc']
+    else:
+        mapping_flavor['b_bb'] = ['b', 'bb']
+        mapping_flavor['c_cc'] = ['c', 'cc']
+    h = h.group("flavor", hist.Cat("flavor", "Flavor"), mapping_flavor)
 
-                        ##### grouping flavor
-                        flavors = [str(s) for s in h.axis('flavor').identifiers() if str(s) != 'flavor']
-                        mapping_flavor = {f : [f] for f in flavors}
-                        flavors_to_merge = ['bb', 'b', 'cc', 'c']
-                        for flav in flavors_to_merge:
-                            mapping_flavor.pop(flav)
-                        if args.mergebbcc:
-                            mapping_flavor['bb_cc'] = ['b', 'bb', 'c', 'cc']
-                        else:
-                            mapping_flavor['b_bb'] = ['b', 'bb']
-                            mapping_flavor['c_cc'] = ['c', 'cc']
-                        h = h.group("flavor", hist.Cat("flavor", "Flavor"), mapping_flavor)
+    ##### grouping data and QCD histos
+    datasets = [str(s) for s in h.axis('dataset').identifiers() if str(s) != 'dataset']
+    mapping = {
+        r'QCD ($\mu$ enriched)' : [dataset for dataset in datasets if 'QCD_Pt' in dataset],
+        r'BTagMu': [ idata for idata in datasets if args.data in idata ],
+    }
+    datasets = mapping.keys()
+    datasets_data = [dataset for dataset in datasets if args.data in dataset]
+    datasets_QCD  = [dataset for dataset in datasets if ((args.data not in dataset) & ('GluGlu' not in dataset))]
+    
+    h = h.group("dataset", hist.Cat("dataset", "Dataset"), mapping)
+    #### rescaling QCD to data
+    if not args.lumiscale:
+        dataSum = np.sum( h_fail[args.data].sum('flavor').values()[('BTagMu',)] )
+        QCDSum = np.sum( h_fail[datasets_QCD].sum('dataset', 'flavor').values()[()] )
+        QCD = h[datasets_QCD].sum('dataset')
+        QCD.scale( dataSum/QCDSum )
+    else:
+        QCD = h[datasets_QCD].sum('dataset')
 
-                        ##### grouping data and QCD histos
-                        datasets = [str(s) for s in h.axis('dataset').identifiers() if str(s) != 'dataset']
-                        mapping = {
-                            r'QCD ($\mu$ enriched)' : [dataset for dataset in datasets if 'QCD_Pt' in dataset],
-                            r'BTagMu': [ idata for idata in datasets if args.data in idata ],
-                        }
-                        datasets = mapping.keys()
-                        datasets_data  = [dataset for dataset in datasets if args.data in dataset]
-                        datasets_QCD = [dataset for dataset in datasets if ((args.data not in dataset) & ('GluGlu' not in dataset))]
-                        
-                        h = h.group("dataset", hist.Cat("dataset", "Dataset"), mapping)
-
-                        #### rescaling QCD to data
-                        dataSum = np.sum( h[args.data].sum('flavor').values()[('BTagMu',)] )
-                        QCDSum = np.sum( h[datasets_QCD].sum('dataset', 'flavor').values()[()] )
-                        QCD_rescaled = h[datasets_QCD].sum('dataset')
-                        QCD_rescaled.scale( dataSum/QCDSum )
-
-                        #### storing into dict
-                        for iflav in QCD_rescaled.values():
-                            tmpValue, sumw2 = QCD_rescaled[iflav].sum('flavor').values(sumw2=True)[()]
-                            #outputDict[ histname+'_QCD_'+iflav[0] ] = np.array( value )
-                            outputDict[ histname+'_QCD_'+iflav[0] ] = [ tmpValue, sumw2  ]
-                        tmpValue, sumw2 = h[args.data].sum('flavor').values(sumw2=True)[('BTagMu',)]
-                        outputDict[ histname+'_BtagMu' ] = [ tmpValue, sumw2 ]
+    #### storing into dict for each region
+    regions = [str(s) for s in h.axis('region').identifiers() if str(s) != 'region']
+    for region in regions:
+        for iflav in QCD.sum('region').values():
+            #print(region, iflav[0])
+            #print(QCD.values())
+            tmpValue, sumw2 = QCD[(iflav[0], region)].sum('region', 'flavor').values(sumw2=True)[()]
+            outputDict[ histname+'_'+region+'_QCD_'+iflav[0] ] = [ tmpValue, sumw2 ]
+        #print(h.values(sumw2=True))
+        tmpValue, sumw2 = h[(args.data, 'Data', region, )].sum('region', 'flavor').values(sumw2=True)[('BTagMu', )]
+        outputDict[ histname+'_'+region+'_BtagMu' ] = [ tmpValue, sumw2 ]
 
 #### Saving into pickle
 output_dir = args.outputDir if args.outputDir else os.getcwd()+"/histograms/"
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
-#outputFileName = output_dir + ( args.output if args.output else args.input.split('/')[-1].replace('coffea7', 'pkl')  )
 outputFileName = output_dir + ( args.output if args.output else args.input.split('/')[-1].replace(args.input.split('.')[-1], 'pkl')  )
 outputFile = open( outputFileName, 'wb'  )
 pickle.dump( outputDict, outputFile, protocol=2 )
 outputFile.close()
-

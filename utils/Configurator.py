@@ -1,9 +1,11 @@
 import os
 import sys
 import json
+import tarfile
 import importlib.util
 
 #from parameters.allhistograms import histogram_settings
+from parameters import jecTarFiles
 
 class Configurator():
     def __init__(self, cfg, plot=False, create_dataset=False):
@@ -16,6 +18,9 @@ class Configurator():
         if not self.create_dataset:
             # Load dataset
             self.load_dataset()
+
+            # Load JEC corrections
+            self.load_jec()
 
             # Check if output file exists, and in case add a `_v01` label
             self.overwrite_check()
@@ -49,6 +54,19 @@ class Configurator():
     def load_dataset(self):
         with open(self.input) as f:
             self.fileset = json.load(f)
+
+    def load_jec(self):
+        self.jesInputFilePath = os.getcwd()+"/correction_files/tmp"
+        if not os.path.exists(self.jesInputFilePath):
+            os.makedirs(self.jesInputFilePath)
+        if (self.campaign == 'UL') & (self.year == '2016'):
+            files = jecTarFiles[self.campaign][f"{self.year}_{self.VFP}"]
+        else:
+            files = jecTarFiles[self.campaign][self.year]
+        for itar in files:
+            jecFile = os.getcwd()+itar
+            jesArchive = tarfile.open( jecFile, "r:gz")
+            jesArchive.extractall(self.jesInputFilePath)
 
     def overwrite_check(self):
         if self.plot:

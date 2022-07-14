@@ -90,9 +90,6 @@ class ggHccProcessor(processor.ProcessorABC):
         if self.checkOverlap:
             self.eventTags = {'run' : None, 'lumi' : None, 'event' : None}
 
-        ############
-
-
         ##############
         # Trigger level
         self.triggers = triggers[self._campaign][self._year]
@@ -104,36 +101,37 @@ class ggHccProcessor(processor.ProcessorABC):
         flavor_axis  = hist.Cat("flavor", "Flavor")
         region_axis  = hist.Cat("region", "Region")
 
-        # Events
-        #nel_axis     = hist.Bin("nel",   r"N electrons",     [0,1,2,3,4,5,6,7,8,9,10])
-        #nmu_axis     = hist.Bin("nmu",   r"N muons",         [0,1,2,3,4,5,6,7,8,9,10])
-        #njet_axis    = hist.Bin("njet",  r"N jets",          [0,1,2,3,4,5,6,7,8,9,10])
-        #nbjet_axis   = hist.Bin("nbjet", r"N b-jets",        [0,1,2,3,4,5,6,7,8,9,10])
+        if not self.cfg["minimal"]:
+            # Events
+            #nel_axis     = hist.Bin("nel",   r"N electrons",     [0,1,2,3,4,5,6,7,8,9,10])
+            #nmu_axis     = hist.Bin("nmu",   r"N muons",         [0,1,2,3,4,5,6,7,8,9,10])
+            #njet_axis    = hist.Bin("njet",  r"N jets",          [0,1,2,3,4,5,6,7,8,9,10])
+            #nbjet_axis   = hist.Bin("nbjet", r"N b-jets",        [0,1,2,3,4,5,6,7,8,9,10])
+
+            # Muon
+            leadmuon_pt_axis   = hist.Bin("pt",   r"lead. Muon $p_{T}$ [GeV]", 200, 0, 200)
+            dimuon_mass_axis   = hist.Bin("mass",   r"Di-Muon mass [GeV]", 200, 0, 200)
+            #leadmuon_eta_axis  = hist.Bin("eta",  r"lead. Muon $\eta$", 60, -3, 3)
+            #leadmuon_phi_axis  = hist.Bin("phi",  r"lead. Muon $\phi$", 60, -np.pi, np.pi)
+            subleadmuon_pt_axis   = hist.Bin("pt",   r"sublead. Muon $p_{T}$ [GeV]", 200, 0, 200)
+            #subleadmuon_eta_axis  = hist.Bin("eta",  r"sublead. Muon $\eta$", 60, -3, 3)
+            #subleadmuon_phi_axis  = hist.Bin("phi",  r"sublead. Muon $\phi$", 60, -np.pi, np.pi)
+            leadmuonsj1_pt_axis   = hist.Bin("pt",   r"lead. Muon (sj1) $p_{T}$ [GeV]", 200, 0, 200)
+            leadmuonsj2_pt_axis   = hist.Bin("pt",   r"lead. Muon (sj2) $p_{T}$ [GeV]", 200, 0, 200)
+
+            # Jet
+            #jet_pt_axis   = hist.Bin("pt",   r"Jet $p_{T}$ [GeV]", 100, 20, 400)
+            #jet_eta_axis  = hist.Bin("eta",  r"Jet $\eta$", 60, -3, 3)
+            #jet_phi_axis  = hist.Bin("phi",  r"Jet $\phi$", 60, -3, 3)
+            #jet_mass_axis = hist.Bin("mass", r"Jet $m$ [GeV]", 100, 0, 50)
+            #ljpt_axis     = hist.Bin("ljpt", r"Leading jet $p_{T}$ [GeV]", 100, 20, 400)
+
+        # FatJet
         nfatjet_axis = hist.Bin("nfatjet",  r"N fatjets",    [0,1,2,3,4,5,6,7,8,9,10])
         nmusj1_axis  = hist.Bin("nmusj1",  r"$N_{mu}$(sj1)", 30, 0, 30)
         nmusj2_axis  = hist.Bin("nmusj2",  r"$N_{mu}$(sj2)", 30, 0, 30)
         nsv1_axis    = hist.Bin("nsv1",  r"$N_{SV}$(sj1)",   30, 0, 30)
         nsv2_axis    = hist.Bin("nsv2",  r"$N_{SV}$(sj2)",   30, 0, 30)
-
-        # Muon
-        leadmuon_pt_axis   = hist.Bin("pt",   r"lead. Muon $p_{T}$ [GeV]", 200, 0, 200)
-        dimuon_mass_axis   = hist.Bin("mass",   r"Di-Muon mass [GeV]", 200, 0, 200)
-        #leadmuon_eta_axis  = hist.Bin("eta",  r"lead. Muon $\eta$", 60, -3, 3)
-        #leadmuon_phi_axis  = hist.Bin("phi",  r"lead. Muon $\phi$", 60, -np.pi, np.pi)
-        subleadmuon_pt_axis   = hist.Bin("pt",   r"sublead. Muon $p_{T}$ [GeV]", 200, 0, 200)
-        #subleadmuon_eta_axis  = hist.Bin("eta",  r"sublead. Muon $\eta$", 60, -3, 3)
-        #subleadmuon_phi_axis  = hist.Bin("phi",  r"sublead. Muon $\phi$", 60, -np.pi, np.pi)
-        leadmuonsj1_pt_axis   = hist.Bin("pt",   r"lead. Muon (sj1) $p_{T}$ [GeV]", 200, 0, 200)
-        leadmuonsj2_pt_axis   = hist.Bin("pt",   r"lead. Muon (sj2) $p_{T}$ [GeV]", 200, 0, 200)
-
-        # Jet
-        #jet_pt_axis   = hist.Bin("pt",   r"Jet $p_{T}$ [GeV]", 100, 20, 400)
-        #jet_eta_axis  = hist.Bin("eta",  r"Jet $\eta$", 60, -3, 3)
-        #jet_phi_axis  = hist.Bin("phi",  r"Jet $\phi$", 60, -3, 3)
-        #jet_mass_axis = hist.Bin("mass", r"Jet $m$ [GeV]", 100, 0, 50)
-        #ljpt_axis     = hist.Bin("ljpt", r"Leading jet $p_{T}$ [GeV]", 100, 20, 400)
-
-        # FatJet
         fatjet_tau21_axis = hist.Bin("tau21", r"lead. FatJet $\tau_{21}$", 50, 0, 1)
         fatjet_n2b1_axis  = hist.Bin("n2b1", r"lead. FatJet $N_{2}^{(\beta=1)}$", 50, 0, 0.5)
         fatjet_pt_axis    = hist.Bin("pt",   r"lead. FatJet $p_{T}$ [GeV]", 600, 0, 3000)
@@ -141,25 +139,27 @@ class ggHccProcessor(processor.ProcessorABC):
         fatjet_phi_axis   = hist.Bin("phi",  r"lead. FatJet $\phi$", 60, -np.pi, np.pi)
         fatjet_mass_axis  = hist.Bin("mass", r"lead. FatJet $m_{SD}$ [GeV]", 1000, 0, 1000)
         #fatjet_jetproba_axis = hist.Bin("Proba", r"lead. FatJet JP", 50, 0, 2.5)
+        #fatjet_vertexmass_axis  = hist.Bin("vertexmass", r"lead. FatJet tau1 vertex $m_{SD}$ [GeV]", 1000, 0, 1000)
         fatjet_btagDDCvLV2_axis = hist.Bin("btagDDCvLV2", r"lead. FatJet DDCvL v2", 40, 0, 1)
         fatjet_btagDDBvLV2_axis = hist.Bin("btagDDBvLV2", r"lead. FatJet DDBvL v2", 40, 0, 1)
-        #fatjet_vertexmass_axis  = hist.Bin("vertexmass", r"lead. FatJet tau1 vertex $m_{SD}$ [GeV]", 1000, 0, 1000)
 
-        # SV
-        sv_pt_axis                  = hist.Bin("pt", r"lead. FatJet $p_{T}^{SV}$ [GeV]", 1000, 0, 1000)
-        sv_eta_axis                 = hist.Bin("eta", r"lead. FatJet $\eta^{SV}$", 60, -3, 3)
-        sv_mass_axis                = hist.Bin("mass", r"lead. FatJet $m^{SV}$ [GeV]", 1000, 0, 1000)
-        sv_sv1mass_axis             = hist.Bin("sv1mass", r"lead. FatJet $m_{SV,1}$ [GeV]", 1000, 0, 1000)
+        if not self.cfg["minimal"]:
+            # SV
+            sv_pt_axis                  = hist.Bin("pt", r"lead. FatJet $p_{T}^{SV}$ [GeV]", 1000, 0, 1000)
+            sv_eta_axis                 = hist.Bin("eta", r"lead. FatJet $\eta^{SV}$", 60, -3, 3)
+            sv_mass_axis                = hist.Bin("mass", r"lead. FatJet $m^{SV}$ [GeV]", 1000, 0, 1000)
+            sv_sv1mass_axis             = hist.Bin("sv1mass", r"lead. FatJet $m_{SV,1}$ [GeV]", 1000, 0, 1000)        
+            sv_projmass_axis             = hist.Bin("projmass", r"lead. FatJet $m_{SV}^{proj}$ [GeV]", 1000, 0, 1000)
+            sv_sv1mass_maxdxySig_axis    = hist.Bin("sv1mass_maxdxySig", r"lead. FatJet $m_{SV,1~for~max(\sigma_{d_{xy}})}$ [GeV]", 1000, 0, 1000)
+            sv_logsv1mass_maxdxySig_axis = hist.Bin("logsv1mass_maxdxySig", r"lead. FatJet log($m_{SV,1~for~max(\sigma_{d_{xy}})}$/GeV)", 80, -4, 4)
+            sv_logsv1massratio_axis     = hist.Bin("logsv1massratio", r"log($m_{SV_1~for~max(\sigma_{d_{xy}})}$/GeV) / log($m_{SV,1~for~max(p_T)}$/GeV)", 200, -100, 100)
+            sv_logsv1massres_axis     = hist.Bin("logsv1massres", r"(log($m_{SV_1~for~max(\sigma_{d_{xy}})}$/GeV) - log($m_{SV,1~for~max(p_T)}$/GeV)) / log($m_{SV,1~for~max(p_T)}$/GeV))", 100, -1, 1)
+
         sv_logsv1mass_axis          = hist.Bin("logsv1mass", r"lead. FatJet log($m_{SV,1}$/GeV)", 80, -4, 4)
         sv_summass_axis             = hist.Bin("summass", r"lead. FatJet $\sum({m_{SV}})$ [GeV]", 1000, 0, 1000)
         sv_logsummass_axis          = hist.Bin("logsummass", r"lead. FatJet log($\sum({m_{SV}})$) [GeV]", 100, -2.5, 6)
         sv_logsumcorrmass_axis          = hist.Bin("logsumcorrmass", r"lead. FatJet log($\sum({m^{corr}_{SV}})$) [GeV]", 100, -2.5, 6)
-        sv_projmass_axis             = hist.Bin("projmass", r"lead. FatJet $m_{SV}^{proj}$ [GeV]", 1000, 0, 1000)
-        sv_logprojmass_axis          = hist.Bin("logprojmass", r"lead. FatJet log($m_{SV}^{proj}$) [GeV]", 100, -2.5, 6)
-        sv_sv1mass_maxdxySig_axis    = hist.Bin("sv1mass_maxdxySig", r"lead. FatJet $m_{SV,1~for~max(\sigma_{d_{xy}})}$ [GeV]", 1000, 0, 1000)
-        sv_logsv1mass_maxdxySig_axis = hist.Bin("logsv1mass_maxdxySig", r"lead. FatJet log($m_{SV,1~for~max(\sigma_{d_{xy}})}$/GeV)", 80, -4, 4)
-        sv_logsv1massratio_axis     = hist.Bin("logsv1massratio", r"log($m_{SV_1~for~max(\sigma_{d_{xy}})}$/GeV) / log($m_{SV,1~for~max(p_T)}$/GeV)", 200, -100, 100)
-        sv_logsv1massres_axis     = hist.Bin("logsv1massres", r"(log($m_{SV_1~for~max(\sigma_{d_{xy}})}$/GeV) - log($m_{SV,1~for~max(p_T)}$/GeV)) / log($m_{SV,1~for~max(p_T)}$/GeV))", 100, -1, 1)
+        sv_logprojmass_axis          = hist.Bin("logprojmass", r"lead. FatJet log($m_{SV}^{proj}$) [GeV]", 100, -2.5, 6)            
 
         # Define similar axes dynamically
         disc_list = ["btagCMVA", "btagCSVV2", 'btagDeepB', 'btagDeepC', 'btagDeepFlavB', 'btagDeepFlavC',]
@@ -171,68 +171,72 @@ class ggHccProcessor(processor.ProcessorABC):
         for d in disc_list_fj:
             btag_axes_fj.append(hist.Bin(d, d, 40, 0, 1))
 
-        # Define histograms from axes
-        _hist_muon_dict = {
-                'leadmuon_pt'  : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, leadmuon_pt_axis),
-                'dimuon_mass'  : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, dimuon_mass_axis),
-                #'leadmuon_eta' : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, leadmuon_eta_axis),
-                #'leadmuon_phi' : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, leadmuon_phi_axis),
-                'subleadmuon_pt'  : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, subleadmuon_pt_axis),
-                #'subleadmuon_eta' : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, subleadmuon_eta_axis),
-                #'subleadmuon_phi' : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, subleadmuon_phi_axis),
-                'leadmuonsj1_pt'  : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, leadmuonsj1_pt_axis),
-                'leadmuonsj2_pt'  : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, leadmuonsj2_pt_axis),
-            }
+        if not self.cfg["minimal"]:
+            # Define histograms from axes
+            _hist_muon_dict = {
+                    'leadmuon_pt'  : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, leadmuon_pt_axis),
+                    'dimuon_mass'  : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, dimuon_mass_axis),
+                    #'leadmuon_eta' : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, leadmuon_eta_axis),
+                    #'leadmuon_phi' : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, leadmuon_phi_axis),
+                    'subleadmuon_pt'  : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, subleadmuon_pt_axis),
+                    #'subleadmuon_eta' : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, subleadmuon_eta_axis),
+                    #'subleadmuon_phi' : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, subleadmuon_phi_axis),
+                    'leadmuonsj1_pt'  : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, leadmuonsj1_pt_axis),
+                    'leadmuonsj2_pt'  : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, leadmuonsj2_pt_axis),
+                }
 
-        #_hist_jet_dict = {
-        #        'jet_pt'  : hist.Hist("Events", dataset_axis, region_axis, jet_pt_axis),
-        #        'jet_eta' : hist.Hist("Events", dataset_axis, region_axis, jet_eta_axis),
-        #        'jet_phi' : hist.Hist("Events", dataset_axis, region_axis, jet_phi_axis),
-        #        'jet_mass': hist.Hist("Events", dataset_axis, region_axis, jet_mass_axis),
-        #    }
+            #_hist_jet_dict = {
+            #        'jet_pt'  : hist.Hist("Events", dataset_axis, region_axis, jet_pt_axis),
+            #        'jet_eta' : hist.Hist("Events", dataset_axis, region_axis, jet_eta_axis),
+            #        'jet_phi' : hist.Hist("Events", dataset_axis, region_axis, jet_phi_axis),
+            #        'jet_mass': hist.Hist("Events", dataset_axis, region_axis, jet_mass_axis),
+            #    }
+
+            _hist_sv_dict = {
+                    'sv_sv1mass'              : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, sv_sv1mass_axis),
+                    'sv_logsv1mass'           : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, sv_logsv1mass_axis),
+                    'sv_sv1mass_maxdxySig'    : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, sv_sv1mass_maxdxySig_axis),
+                    'sv_logsv1mass_maxdxySig' : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, sv_logsv1mass_maxdxySig_axis),
+                    'sv_logsv1massratio'      : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, sv_logsv1massratio_axis),
+                    'sv_logsv1massres'        : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, sv_logsv1massres_axis),
+                }
+
+            _hist_sv_inclusive_dict = {
+            #        'sv_pt'              : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, sv_pt_axis),
+            #        'sv_eta'             : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, sv_eta_axis),
+            #        'sv_mass'            : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, sv_mass_axis),
+            }
+        else:
+            _hist_fatjet_dict = {}
 
         _hist_fatjet_dict = {
-                'fatjet_tau21' : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_tau21_axis),
-                'fatjet_n2b1'  : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_n2b1_axis),
-                'fatjet_pt'  : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_pt_axis),
-                'fatjet_eta' : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_eta_axis),
-                'fatjet_phi' : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_phi_axis),
-                'fatjet_mass': hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_mass_axis),
-                'fatjet_nmusj1' : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, nmusj1_axis),
-                'fatjet_nmusj2' : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, nmusj2_axis),
-                'fatjet_nsv1'   : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, nsv1_axis),
-                'fatjet_nsv2'   : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, nsv2_axis),
-                #'fatjet_jetproba' : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_jetproba_axis),
-                #'fatjet_DDX_tau1_vertexMass' : hist.Hist("Events", dataset_axis, region_axis, flavor_axis,  ),
-            }
-        _hist_sv_dict = {
-                'sv_sv1mass'              : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, sv_sv1mass_axis),
-                'sv_logsv1mass'           : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, sv_logsv1mass_axis),
-                'sv_sv1mass_maxdxySig'    : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, sv_sv1mass_maxdxySig_axis),
-                'sv_logsv1mass_maxdxySig' : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, sv_logsv1mass_maxdxySig_axis),
-                'sv_logsv1massratio'      : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, sv_logsv1massratio_axis),
-                'sv_logsv1massres'        : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, sv_logsv1massres_axis),
-            }
-
-        _hist_sv_inclusive_dict = {
-        #        'sv_pt'              : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, sv_pt_axis),
-        #        'sv_eta'             : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, sv_eta_axis),
-        #        'sv_mass'            : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, sv_mass_axis),
+            'fatjet_tau21' : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_tau21_axis),
+            'fatjet_n2b1'  : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_n2b1_axis),
+            'fatjet_pt'  : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_pt_axis),
+            'fatjet_eta' : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_eta_axis),
+            'fatjet_phi' : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_phi_axis),
+            'fatjet_mass': hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_mass_axis),
+            'fatjet_nmusj1' : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, nmusj1_axis),
+            'fatjet_nmusj2' : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, nmusj2_axis),
+            'fatjet_nsv1'   : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, nsv1_axis),
+            'fatjet_nsv2'   : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, nsv2_axis),
+            #'fatjet_jetproba' : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_jetproba_axis),
+            #'fatjet_DDX_tau1_vertexMass' : hist.Hist("Events", dataset_axis, region_axis, flavor_axis,  ),
         }
 
         _hist_nd_dict = {
             'nd_sv_logsv1mass': hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_btagDDCvLV2_axis, sv_logsv1mass_axis),
-            'nd_sv_logsv1mass_maxdxySig': hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_btagDDCvLV2_axis, sv_logsv1mass_maxdxySig_axis),
-            'nd_summass': hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_btagDDCvLV2_axis, sv_summass_axis),
+            #'nd_sv_logsv1mass_maxdxySig': hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_btagDDCvLV2_axis, sv_logsv1mass_maxdxySig_axis),
+            #'nd_summass': hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_btagDDCvLV2_axis, sv_summass_axis),
             'nd_logsummass': hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_btagDDCvLV2_axis, sv_logsummass_axis),
             'nd_logsumcorrmass': hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_btagDDCvLV2_axis, sv_logsumcorrmass_axis),
-            'nd_projmass': hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_btagDDCvLV2_axis, sv_projmass_axis),
+            #'nd_projmass': hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_btagDDCvLV2_axis, sv_projmass_axis),
             'nd_logprojmass': hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_btagDDCvLV2_axis, sv_logprojmass_axis),
 
-            'nd_logsv1mass_dbb': hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_btagDDBvLV2_axis, sv_logsv1mass_axis),
-            'nd_logsummass_ddb': hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_btagDDBvLV2_axis, sv_logsummass_axis),
-            'nd_logsumcorrmass_ddb': hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_btagDDBvLV2_axis, sv_logsumcorrmass_axis),
-            'nd_logprojmass_ddb': hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_btagDDBvLV2_axis, sv_logprojmass_axis),
+            #'nd_logsv1mass_dbb': hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_btagDDBvLV2_axis, sv_logsv1mass_axis),
+            #'nd_logsummass_ddb': hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_btagDDBvLV2_axis, sv_logsummass_axis),
+            #'nd_logsumcorrmass_ddb': hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_btagDDBvLV2_axis, sv_logsumcorrmass_axis),
+            #'nd_logprojmass_ddb': hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_btagDDBvLV2_axis, sv_logprojmass_axis),
 
             #'nd_jp': hist.Hist("Events", dataset_axis, region_axis, flavor_axis, fatjet_btagDDCvLV2_axis, fatjet_jetproba_axis),
         }
@@ -240,53 +244,59 @@ class ggHccProcessor(processor.ProcessorABC):
         for (i, disc) in enumerate(disc_list_fj):
             _hist_fatjet_dict['fatjet_' + disc] = hist.Hist("Events", dataset_axis, region_axis, flavor_axis, btag_axes_fj[i])
 
-        # Define 2D histograms
-        if self.hist2d:
-            _hist2d_dict = {
-                'hist2d_sv_logsv1mass_maxdxySig_vs_maxPt' : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, sv_logsv1mass_maxdxySig_axis, sv_logsv1mass_axis),
-                'hist2d_sv_logsv1massratio_vs_maxPt'      : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, sv_logsv1massratio_axis, sv_logsv1mass_axis),
-                'hist2d_sv_logsv1massres_vs_maxPt'        : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, sv_logsv1massres_axis, sv_logsv1mass_axis),
-            }
-            for (i, disc) in enumerate(disc_list_fj):
-                _hist2d_dict['hist2d_fatjet_pt_vs_' + disc]    = hist.Hist("Events", dataset_axis, region_axis, flavor_axis, btag_axes_fj[i], fatjet_pt_axis)
-                _hist2d_dict['hist2d_fatjet_mass_vs_' + disc]  = hist.Hist("Events", dataset_axis, region_axis, flavor_axis, btag_axes_fj[i], fatjet_mass_axis)
-                _hist2d_dict['hist2d_fatjet_tau21_vs_' + disc] = hist.Hist("Events", dataset_axis, region_axis, flavor_axis, btag_axes_fj[i], fatjet_tau21_axis)
-                _hist2d_dict['hist2d_fatjet_n2b1_vs_' + disc]  = hist.Hist("Events", dataset_axis, region_axis, flavor_axis, btag_axes_fj[i], fatjet_n2b1_axis)
-                _hist2d_dict['hist2d_fatjet_nsv1_vs_' + disc]         = hist.Hist("Events", dataset_axis, region_axis, flavor_axis, btag_axes_fj[i], nsv1_axis)
-                _hist2d_dict['hist2d_fatjet_nsv2_vs_' + disc]         = hist.Hist("Events", dataset_axis, region_axis, flavor_axis, btag_axes_fj[i], nsv2_axis)
-                _hist2d_dict['hist2d_fatjet_nmusj1_vs_' + disc]       = hist.Hist("Events", dataset_axis, region_axis, flavor_axis, btag_axes_fj[i], nmusj1_axis)
-                _hist2d_dict['hist2d_fatjet_nmusj2_vs_' + disc]       = hist.Hist("Events", dataset_axis, region_axis, flavor_axis, btag_axes_fj[i], nmusj2_axis)
+        if not self.cfg["minimal"]:
+            # Define 2D histograms
+            if self.hist2d:
+                _hist2d_dict = {
+                    'hist2d_sv_logsv1mass_maxdxySig_vs_maxPt' : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, sv_logsv1mass_maxdxySig_axis, sv_logsv1mass_axis),
+                    'hist2d_sv_logsv1massratio_vs_maxPt'      : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, sv_logsv1massratio_axis, sv_logsv1mass_axis),
+                    'hist2d_sv_logsv1massres_vs_maxPt'        : hist.Hist("Events", dataset_axis, region_axis, flavor_axis, sv_logsv1massres_axis, sv_logsv1mass_axis),
+                }
+                for (i, disc) in enumerate(disc_list_fj):
+                    _hist2d_dict['hist2d_fatjet_pt_vs_' + disc]    = hist.Hist("Events", dataset_axis, region_axis, flavor_axis, btag_axes_fj[i], fatjet_pt_axis)
+                    _hist2d_dict['hist2d_fatjet_mass_vs_' + disc]  = hist.Hist("Events", dataset_axis, region_axis, flavor_axis, btag_axes_fj[i], fatjet_mass_axis)
+                    _hist2d_dict['hist2d_fatjet_tau21_vs_' + disc] = hist.Hist("Events", dataset_axis, region_axis, flavor_axis, btag_axes_fj[i], fatjet_tau21_axis)
+                    _hist2d_dict['hist2d_fatjet_n2b1_vs_' + disc]  = hist.Hist("Events", dataset_axis, region_axis, flavor_axis, btag_axes_fj[i], fatjet_n2b1_axis)
+                    _hist2d_dict['hist2d_fatjet_nsv1_vs_' + disc]         = hist.Hist("Events", dataset_axis, region_axis, flavor_axis, btag_axes_fj[i], nsv1_axis)
+                    _hist2d_dict['hist2d_fatjet_nsv2_vs_' + disc]         = hist.Hist("Events", dataset_axis, region_axis, flavor_axis, btag_axes_fj[i], nsv2_axis)
+                    _hist2d_dict['hist2d_fatjet_nmusj1_vs_' + disc]       = hist.Hist("Events", dataset_axis, region_axis, flavor_axis, btag_axes_fj[i], nmusj1_axis)
+                    _hist2d_dict['hist2d_fatjet_nmusj2_vs_' + disc]       = hist.Hist("Events", dataset_axis, region_axis, flavor_axis, btag_axes_fj[i], nmusj2_axis)
 
-        _hist_event_dict = {
-                #'njet'   : hist.Hist("Events", dataset_axis, region_axis, njet_axis),
-                #'nbjet'  : hist.Hist("Events", dataset_axis, region_axis, nbjet_axis),
-                #'nel'    : hist.Hist("Events", dataset_axis, region_axis, nel_axis),
-                #'nmu'    : hist.Hist("Events", dataset_axis, region_axis, nmu_axis),
-                'nfatjet': hist.Hist("Events", dataset_axis, region_axis, flavor_axis, nfatjet_axis),
-            }
+            _hist_event_dict = {
+                    #'njet'   : hist.Hist("Events", dataset_axis, region_axis, njet_axis),
+                    #'nbjet'  : hist.Hist("Events", dataset_axis, region_axis, nbjet_axis),
+                    #'nel'    : hist.Hist("Events", dataset_axis, region_axis, nel_axis),
+                    #'nmu'    : hist.Hist("Events", dataset_axis, region_axis, nmu_axis),
+                    'nfatjet': hist.Hist("Events", dataset_axis, region_axis, flavor_axis, nfatjet_axis),
+                }
         _sumw_dict = {'sum_genweights': processor.defaultdict_accumulator(float),
                       'nbtagmu': processor.defaultdict_accumulator(float),
             }
 
-        self.muon_hists = list(_hist_muon_dict.keys())
-        #self.jet_hists = list(_hist_jet_dict.keys())
+        if not self.cfg["minimal"]:
+            self.muon_hists = list(_hist_muon_dict.keys())
+            #self.jet_hists = list(_hist_jet_dict.keys())
+            self.sv_hists = list(_hist_sv_dict.keys())
+            self.sv_inclusive_hists = list(_hist_sv_inclusive_dict.keys())
+            self.event_hists = list(_hist_event_dict.keys())
         self.fatjet_hists = list(_hist_fatjet_dict.keys())
-        self.sv_hists = list(_hist_sv_dict.keys())
-        self.sv_inclusive_hists = list(_hist_sv_inclusive_dict.keys())
-        self.event_hists = list(_hist_event_dict.keys())
         self.nd_hists = list(_hist_nd_dict.keys())
 
-        #_hist_dict = {**_hist_jet_dict, **_hist_fatjet_dict, **_hist2d_dict, **_hist_event_dict, **_sumw_dict}
-        if self.hist2d:
-            self._hist_dict = {**_hist_muon_dict, **_hist_fatjet_dict, **_hist_sv_dict, **_hist_sv_inclusive_dict, **_hist2d_dict, **_hist_event_dict}
+        if not self.cfg["minimal"]:
+            #_hist_dict = {**_hist_jet_dict, **_hist_fatjet_dict, **_hist2d_dict, **_hist_event_dict, **_sumw_dict}
+            if self.hist2d:
+                self._hist_dict = {**_hist_muon_dict, **_hist_fatjet_dict, **_hist_sv_dict, **_hist_sv_inclusive_dict, **_hist2d_dict, **_hist_event_dict}
+            else:
+                self._hist_dict = {**_hist_muon_dict, **_hist_fatjet_dict, **_hist_sv_dict, **_hist_sv_inclusive_dict, **_hist_event_dict}
+            #self.append_mask()
+            self._hist_dict.update({**_hist_nd_dict})
         else:
-            self._hist_dict = {**_hist_muon_dict, **_hist_fatjet_dict, **_hist_sv_dict, **_hist_sv_inclusive_dict, **_hist_event_dict}
-        #self.append_mask()
-        self._hist_dict.update({**_hist_nd_dict})
+            self._hist_dict = {**_hist_fatjet_dict, **_hist_nd_dict}
         self._accumulator_dict = {}
         self._accumulator_dict.update(self._hist_dict)
         self._accumulator_dict.update({**_sumw_dict})
         self._accumulator = processor.dict_accumulator(self._accumulator_dict)
+        print("Building accumulator")
         if self.checkOverlap:
             for var in self.eventTags.keys():
                 self._accumulator.add(processor.dict_accumulator({var : processor.column_accumulator(np.array([]))}))
@@ -307,17 +317,17 @@ class ggHccProcessor(processor.ProcessorABC):
     def load_era_specific_parameters(self):
         # JEC files
         # Correction files in https://twiki.cern.ch/twiki/bin/viewauth/CMS/JECDataMC
-        self.jesInputFilePath = os.getcwd()+"/correction_files/tmp"
-        if not os.path.exists(self.jesInputFilePath):
-            os.makedirs(self.jesInputFilePath)
-        if (self._campaign == 'UL') & (self._year == '2016'):
-            files = jecTarFiles[self._campaign][f"{self._year}_{self._VFP}"]
-        else:
-            files = jecTarFiles[self._campaign][self._year]
-        for itar in files:
-            jecFile = os.getcwd()+itar
-            jesArchive = tarfile.open( jecFile, "r:gz")
-            jesArchive.extractall(self.jesInputFilePath)
+        #self.jesInputFilePath = os.getcwd()+"/correction_files/tmp"
+        #if not os.path.exists(self.jesInputFilePath):
+        #    os.makedirs(self.jesInputFilePath)
+        #if (self._campaign == 'UL') & (self._year == '2016'):
+        #    files = jecTarFiles[self._campaign][f"{self._year}_{self._VFP}"]
+        #else:
+        #    files = jecTarFiles[self._campaign][self._year]
+        #for itar in files:
+        #    jecFile = os.getcwd()+itar
+        #    jesArchive = tarfile.open( jecFile, "r:gz")
+        #    jesArchive.extractall(self.jesInputFilePath)
 
         # PU files
         self.puFile    = self.cfg['puFile']
@@ -474,6 +484,7 @@ class ggHccProcessor(processor.ProcessorABC):
                                   (events.Muon.pfRelIso04_all > 0.15)]
         #events.Muon = ak.pad_none(events.Muon, 2, axis=1)
         events = events[ak.num(events.Muon) >= 2]
+        if len(events) == 0: return output
 
         ############
         # Compute weights after selecting events with at least 2 muons
@@ -546,13 +557,14 @@ class ggHccProcessor(processor.ProcessorABC):
                           'leadmuonsj1' : leadmuonsj1, 'leadmuonsj2' : leadmuonsj2,
                           'dimuon': dimuon}
 
-        if not isRealData:
-            corrPt = load(self.ptReweightFile)
-            weights.add( 'pTcorr', corrPt(ak.fill_none(leadfatjet.pt, 0)))
-        else:
-            print(leadfatjet.pt)
-            print(ak.ones_like(ak.fill_none(leadfatjet.pt, 0)))
-            weights.add( 'pTcorr', ak.ones_like(ak.fill_none(leadfatjet.pt, 0)))
+        if self.cfg["pt_reweighting"]:
+            if not isRealData:
+                corrPt = load(self.ptReweightFile)
+                weights.add( 'pTcorr', corrPt(ak.fill_none(leadfatjet.pt, 0)))
+            else:
+                print(leadfatjet.pt)
+                print(ak.ones_like(ak.fill_none(leadfatjet.pt, 0)))
+                weights.add( 'pTcorr', ak.ones_like(ak.fill_none(leadfatjet.pt, 0)))
 
         events.SV   = events.SV[get_sv_in_jet(leadfatjet, events.SV)]
         i_maxPt     = ak.argsort(events.SV.pt, ascending=False)
@@ -649,33 +661,34 @@ class ggHccProcessor(processor.ProcessorABC):
         for histname, h in output.items():
             #for _region in ['basic', 'msd100tau06', 'msd100tau06ggHcc', 'msd60tau06', 'msd60tau06ggHcc', 'msd40tau06', 'msd40tau06ggHcc']:
             for _region in selection.keys():
-                if histname in self.muon_hists:
-                    muonKey = histname.split("_")[0]
-                    muon = muonCollection[muonKey]
-                    for flav, mask in flavors.items():
-                        weight = weights.weight() * cuts.all(*selection[_region]) * ak.to_numpy(mask)
-                        fields = {k: ak.fill_none(muon[k], -9999) for k in h.fields if k in dir(muon)}
-                        h.fill(dataset=self._sample, region=_region, flavor=flav, **fields, weight=weight)
+                if not self.cfg["minimal"]:
+                    if histname in self.muon_hists:
+                        muonKey = histname.split("_")[0]
+                        muon = muonCollection[muonKey]
+                        for flav, mask in flavors.items():
+                            weight = weights.weight() * cuts.all(*selection[_region]) * ak.to_numpy(mask)
+                            fields = {k: ak.fill_none(muon[k], -9999) for k in h.fields if k in dir(muon)}
+                            h.fill(dataset=self._sample, region=_region, flavor=flav, **fields, weight=weight)
+                    if histname in self.event_hists:
+                        for flav, mask in flavors.items():
+                            weight = weights.weight() * cuts.all(*selection[_region]) * ak.to_numpy(mask)
+                            fields = {k: ak.fill_none(eventVariables[k], -9999) for k in h.fields if k in eventVariables.keys() }
+                            h.fill(dataset=self._sample, region=_region, flavor=flav, **fields, weight=weight)
+                    if ((histname in self.sv_hists) | ('hist2d_sv' in histname)):
+                        for flav, mask in flavors.items():
+                            weight = weights.weight() * cuts.all(*selection[_region]) * ak.to_numpy(mask)
+                            fields = {k: ak.fill_none(leadsv[k], -9999) for k in h.fields if k in dir(leadsv) }
+                            h.fill(dataset=self._sample, region=_region, flavor=flav, **fields, weight=weight)
+                    if ((histname in self.sv_inclusive_hists) | ('hist2d_sv' in histname)):
+                        sv = events.SV
+                        for flav, mask in flavors.items():
+                            weight = ak.flatten( weights.weight() * ak.Array( ak.ones_like(sv.pt) * cuts.all(*selection[_region]) ) * ak.to_numpy(mask) )
+                            fields = {k: ak.flatten(ak.fill_none(sv[k], -9999)) for k in h.fields if k in dir(sv) }
+                            h.fill(dataset=self._sample, region=_region, flavor=flav, **fields, weight=weight)
                 if ((histname in self.fatjet_hists) | ('hist2d_fatjet' in histname)):
                     for flav, mask in flavors.items():
                         weight = weights.weight() * cuts.all(*selection[_region]) * ak.to_numpy(mask)
                         fields = {k: ak.fill_none(leadfatjet[k], -9999) for k in h.fields if k in dir(leadfatjet)}
-                        h.fill(dataset=self._sample, region=_region, flavor=flav, **fields, weight=weight)
-                if histname in self.event_hists:
-                    for flav, mask in flavors.items():
-                        weight = weights.weight() * cuts.all(*selection[_region]) * ak.to_numpy(mask)
-                        fields = {k: ak.fill_none(eventVariables[k], -9999) for k in h.fields if k in eventVariables.keys() }
-                        h.fill(dataset=self._sample, region=_region, flavor=flav, **fields, weight=weight)
-                if ((histname in self.sv_hists) | ('hist2d_sv' in histname)):
-                    for flav, mask in flavors.items():
-                        weight = weights.weight() * cuts.all(*selection[_region]) * ak.to_numpy(mask)
-                        fields = {k: ak.fill_none(leadsv[k], -9999) for k in h.fields if k in dir(leadsv) }
-                        h.fill(dataset=self._sample, region=_region, flavor=flav, **fields, weight=weight)
-                if ((histname in self.sv_inclusive_hists) | ('hist2d_sv' in histname)):
-                    sv = events.SV
-                    for flav, mask in flavors.items():
-                        weight = ak.flatten( weights.weight() * ak.Array( ak.ones_like(sv.pt) * cuts.all(*selection[_region]) ) * ak.to_numpy(mask) )
-                        fields = {k: ak.flatten(ak.fill_none(sv[k], -9999)) for k in h.fields if k in dir(sv) }
                         h.fill(dataset=self._sample, region=_region, flavor=flav, **fields, weight=weight)
                 if histname in self.nd_hists:
                     for flav, mask in flavors.items():

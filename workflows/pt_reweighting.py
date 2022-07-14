@@ -137,29 +137,34 @@ class ptReweightProcessor(ggHccProcessor):
         h_pt = accumulator['fatjet_pt']
         datasets_data = [str(s) for s in h_pt.identifiers('dataset') if 'BTagMu' in str(s)]
         datasets_mc   = [str(s) for s in h_pt.identifiers('dataset') if 'QCD' in str(s)]
-        h_data = h_pt[datasets_data].sum('dataset')['basic'].sum('region', 'flavor')
-        h_mc   = h_pt[datasets_mc].sum('dataset')['basic'].sum('region', 'flavor')
-        n_data = h_data.values()[()]
-        n_mc   = h_mc.values()[()]
-        print("n_data", n_data)
-        print("n_mc", n_mc)
-        rat    = n_data/n_mc
-        mod_rat = np.nan_to_num(rat)
-        print("rat", rat)
-        print("mod_rat", mod_rat)
-        bins = h_pt.axes()[-1].edges()
-        mod_rat[bins[:-1] < 350] = 1
-        mod_rat[bins[:-1] > 1500] = 1
-        #hep.histplot(mod_rat, nbins)
+        regions       = [str(s) for s in h_pt.axis('region').identifiers() if str(s) != 'region']
+        corr_dict = processor.defaultdict_accumulator(float)
+        for region in regions:
+            h_data = h_pt[datasets_data].sum('dataset')[region].sum('region', 'flavor')
+            h_mc   = h_pt[datasets_mc].sum('dataset')[region].sum('region', 'flavor')
+            n_data = h_data.values()[()]
+            n_mc   = h_mc.values()[()]
+            print("n_data", n_data)
+            print("n_mc", n_mc)
+            rat    = n_data/n_mc
+            mod_rat = np.nan_to_num(rat)
+            print("rat", rat)
+            print("mod_rat", mod_rat)
+            bins = h_pt.axes()[-1].edges()
+            mod_rat[bins[:-1] < 350] = 1
+            mod_rat[bins[:-1] > 1500] = 1
+            #hep.histplot(mod_rat, nbins)
 
-        efflookup = dense_lookup(mod_rat, [bins])
-        print(efflookup(np.array([50, 100, 400, 500, 2000, 10000])))
+            efflookup = dense_lookup(mod_rat, [bins])
+            print(efflookup(np.array([50, 100, 400, 500, 2000, 10000])))
+            corr_dict.update({ region : efflookup })
 
         if not os.path.exists(self.cfg['output_reweighting']):
             os.makedirs(self.cfg['output_reweighting'])
         outfile_reweighting = os.path.join(self.cfg['output_reweighting'], f'pt_corr_{self._year}.coffea')
-        save(efflookup, outfile_reweighting)
+        save(corr_dict, outfile_reweighting)
         efflookup_check = load(outfile_reweighting)
-        print(efflookup_check(np.array([50, 100, 400, 500, 2000, 10000])))
+        pt_corr = efflookup_check['basic']
+        print(pt_corr(np.array([50, 100, 400, 500, 2000, 10000])))
 
         return accumulator
