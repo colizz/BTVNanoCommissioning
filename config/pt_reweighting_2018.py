@@ -13,22 +13,25 @@ cfg =  {
     # JEC
     "JECfolder": "correction_files/tmp",
 
+    # pT reweighting
+    "pt_reweighting": None,
+
     # Input and output files
     "workflow" : "pt_reweighting",
     "input"    : "datasets/RunIIAutumn18EOY18_local.json",
     "output"   : "histograms/pt_reweighting_2018.coffea",
     "plots"    : "plots/pt_reweighting_2018",
-    "output_reweighting" : "correction_files/pt_reweighting/pt_reweighting_2018",
+    "output_reweighting" : "correction_files/pt_reweighting/pt_reweighting_2018_v03",
 
     # Executor parameters
     "run_options" : {
-        "executor"       : "parsl/slurm",
-        "workers"        : 12,
-        "scaleout"       : 10,
-        "partition"      : "standard",
-        "walltime"       : "12:00:00",
-        "mem_per_worker" : None, # GB
-        "exclusive"      : True,
+        "executor"       : "dask/slurm",
+        "workers"        : 1,
+        "scaleout"       : 100,
+        "partition"      : "short",
+        "walltime"       : "1:00:00",
+        "mem_per_worker" : "4GB", # GB
+        "exclusive"      : False,
         "chunk"          : 50000,
         "max"            : None,
         "skipbadfiles"   : None,
@@ -39,5 +42,6 @@ cfg =  {
     # Processor parameters
     "checkOverlap" : False,
     "hist2d"       : False,
+    "minimal"      : True,
     "mupt"         : 5,
 }
