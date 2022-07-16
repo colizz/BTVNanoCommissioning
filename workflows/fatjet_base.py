@@ -1,4 +1,10 @@
 import os
+import sys
+#print(sys.path)
+PATH_TO_MODULE = "/work/mmarcheg/BTVNanoCommissioning/PocketCoffea"
+if not PATH_TO_MODULE in sys.path:
+    sys.path.append(PATH_TO_MODULE)
+
 import tarfile
 import json
 
@@ -17,7 +23,7 @@ from PocketCoffea.lib.triggers import get_trigger_mask
 from PocketCoffea.lib.objects import jet_correction, lepton_selection, lepton_selection_noniso, jet_selection, btagging, get_dilepton
 from PocketCoffea.lib.pileup import sf_pileup_reweight
 from PocketCoffea.lib.scale_factors import sf_ele_reco, sf_ele_id, sf_mu
-from PocketCoffea.lib.fill import fill_histograms_object
+from PocketCoffea.lib.fill import fill_histograms_object_with_flavor
 from PocketCoffea.parameters.triggers import triggers
 from PocketCoffea.parameters.btag import btag
 from PocketCoffea.parameters.jec import JECversions, JERversions
@@ -26,7 +32,7 @@ from PocketCoffea.parameters.lumi import lumi, goldenJSON
 from PocketCoffea.parameters.samples import samples_info
 from PocketCoffea.parameters.allhistograms import histogram_settings
 
-from lib.sv import get_nsv
+from lib.sv import get_nsv, get_sv_in_jet
 
 class fatjetBaseProcessor(processor.ProcessorABC):
     def __init__(self, cfg) -> None:
@@ -86,6 +92,7 @@ class fatjetBaseProcessor(processor.ProcessorABC):
         self._sample_axis = hist.Cat("sample", "Sample")
         self._cat_axis    = hist.Cat("cat", "Cat")
         self._year_axis   = hist.Cat("year", "Year")
+        self._flavor_axis   = hist.Cat("flavor", "Flavor")
 
         # Create histogram accumulators
         for var_name in self._variables.keys():
@@ -96,7 +103,7 @@ class fatjetBaseProcessor(processor.ProcessorABC):
             variable_axis = hist.Bin( field, self._variables[var_name]['xlabel'],
                                       **self._variables[var_name]['binning'] )
             self._hist_dict[f'hist_{var_name}'] = hist.Hist("$N_{events}$", self._sample_axis,
-                                                            self._cat_axis, self._year_axis, variable_axis)
+                                                            self._cat_axis, self._year_axis, self._flavor_axis, variable_axis)
         for hist2d_name in self._variables2d.keys():
             varname_x = list(self._variables2d[hist2d_name].keys())[0]
             varname_y = list(self._variables2d[hist2d_name].keys())[1]
@@ -105,7 +112,7 @@ class fatjetBaseProcessor(processor.ProcessorABC):
             variable_y_axis = hist.Bin(varname_y, self._variables2d[hist2d_name][varname_y]['ylabel'],
                                        **self._variables2d[hist2d_name][varname_y]['binning'] )
             self._hist2d_dict[f'hist2d_{hist2d_name}'] = hist.Hist("$N_{events}$", self._sample_axis, self._cat_axis,
-                                                                   self._year_axis, variable_x_axis, variable_y_axis)
+                                                                   self._year_axis, self._flavor_axis, variable_x_axis, variable_y_axis)
             
         self._accum_dict.update(self._hist_dict)
         self._accum_dict.update(self._hist2d_dict)
@@ -114,6 +121,8 @@ class fatjetBaseProcessor(processor.ProcessorABC):
         self.muon_hists = [histname for histname in self._hist_dict.keys() if 'muon' in histname and not histname in self.nobj_hists]
         self.electron_hists = [histname for histname in self._hist_dict.keys() if 'electron' in histname and not histname in self.nobj_hists]
         self.jet_hists = [histname for histname in self._hist_dict.keys() if 'jet' in histname and not 'fatjet' in histname and not histname in self.nobj_hists]
+        self.fatjet_hists = [histname for histname in self._hist_dict.keys() if 'fatjet' in histname and not histname in self.nobj_hists]
+        self.sv_hists = [histname for histname in self._hist_dict.keys() if 'sv' in histname and not histname in self.nobj_hists]
         # The final accumulator dictionary is built when the accumulator() property is called for the first time.
         # Doing so, subclasses can add additional context to the self._accum_dict. 
         # self._accumulator = dict_accumulator(self._accum_dict)
@@ -209,7 +218,7 @@ class fatjetBaseProcessor(processor.ProcessorABC):
             self.events.Jet, seed_dict = jet_correction(self.events, "Jet", "AK4PFchs", self._year, self._JECversion, self._JERversion, verbose=verbose)
             self.output['seed_chunk'].update(seed_dict)
         else:
-            selfd.events.Jet = jet_correction(self.events, "Jet", "AK4PFchs", self._year, self._JECversion, verbose=verbose)
+            self.events.Jet = jet_correction(self.events, "Jet", "AK4PFchs", self._year, self._JECversion, verbose=verbose)
 
     def applyJEC( self, typeJet, JECversion ):
         '''Based on https://coffeateam.github.io/coffea/notebooks/applying_corrections.html#Applying-energy-scale-transformations-to-Jets'''
@@ -268,12 +277,21 @@ class fatjetBaseProcessor(processor.ProcessorABC):
         #self.events["BJetGood"] = btagging(self.events["JetGood"], self._btag)
         self.events["FatJetGood"], self.fatjetGoodMask = jet_selection(self.events, "FatJet", self.cfg.finalstate)
 
+        if self.cfg.finalstate == 'dilepton':
+            self.events["ll"] = get_dilepton(self.events.ElectronGood, self.events.MuonGood)
+
+    def build_fatjet_observables(self):
         if self.cfg.finalstate == 'mutag':
             self.events["FatJetLeading"] = ak.firsts(self.events.FatJetGood)
+            Xbb = self.events.FatJetLeading.particleNetMD_Xbb
+            Xcc = self.events.FatJetLeading.particleNetMD_Xcc
+            QCD = self.events.FatJetLeading.particleNetMD_QCD
             fatjet_leading_fields = {
                 "tau21"   : self.events.FatJetLeading.tau2 / self.events.FatJetLeading.tau1,
                 "subjet1" : ak.pad_none(self.events.FatJetLeading.subjets, 2)[:, 0],
                 "subjet2" : ak.pad_none(self.events.FatJetLeading.subjets, 2)[:, 1],
+                "particleNetMD_Xbb_QCD" : Xbb / (Xbb + QCD),
+                "particleNetMD_Xcc_QCD" : Xcc / (Xcc + QCD),
             }
 
             for field, value in fatjet_leading_fields.items():
@@ -293,9 +311,41 @@ class fatjetBaseProcessor(processor.ProcessorABC):
             self.events.FatJetLeading.subjet2 = ak.with_field(self.events.FatJetLeading.subjet2, self.events.FatJetLeading.subjet2.nearest(self.events.MuonGood, threshold=0.4)[:, 0], "MuonLeading")
             self.events = ak.with_field(self.events, ak.pad_none(self.events.MuonGood, 2)[:, 0] + ak.pad_none(self.events.MuonGood, 2)[:, 1], "dimuon")
             self.events.dimuon = ak.with_field(self.events.dimuon, self.events.dimuon.mass, "mass")
+        else:
+            raise NotImplementedError
 
-        if self.cfg.finalstate == 'dilepton':
-            self.events["ll"] = get_dilepton(self.events.ElectronGood, self.events.MuonGood)
+    def build_sv_observables(self):
+        
+        def project(a, b):
+            return a.dot(b)/b.dot(b) * b
+
+        self.events.SV = self.events.SV[get_sv_in_jet(self.events.FatJetLeading, self.events.SV)]
+        i_maxPt     = ak.argsort(self.events.SV.pt, ascending=False)
+        i_maxdxySig = ak.argsort(self.events.SV.dxySig, ascending=False)
+        sv_pt_sorted = self.events.SV[i_maxPt]
+        leadsv = ak.firsts(sv_pt_sorted)
+        self.events["SVLeading"] = leadsv
+        
+        sv_fields = {
+            "summass" : sv_pt_sorted.p4.sum().mass,
+            "logsummass" : np.log(sv_pt_sorted.p4.sum().mass),
+            "projmass" : project(sv_pt_sorted.p4.sum(), self.events.FatJetLeading).mass,
+            "logprojmass" : np.log(project(sv_pt_sorted.p4.sum(), self.events.FatJetLeading).mass),
+            "sv1mass" : leadsv.mass,
+            "logsv1mass" : np.log(leadsv.mass),
+        }
+
+        corrmass = np.sqrt(sv_pt_sorted.p4.mass**2 + sv_pt_sorted.p4.pt**2 * np.sin(sv_pt_sorted.pAngle)**2) + sv_pt_sorted.p4.pt * np.sin(sv_pt_sorted.pAngle)
+        sv_pt_sorted['mass'] = corrmass
+
+        sv_corrmass_fields = {
+            "sumcorrmass" : sv_pt_sorted.p4.sum().mass,
+            "logsumcorrmass" : np.log(sv_pt_sorted.p4.sum().mass),
+        }
+        sv_fields.update(sv_corrmass_fields)
+
+        for field, value in sv_fields.items():
+            self.events["SVLeading"] = ak.with_field(self.events.SVLeading, value, field)
 
     # Function that counts the preselected objects and save the counts as attributes of `events`
     def count_objects(self):
@@ -305,6 +355,7 @@ class fatjetBaseProcessor(processor.ProcessorABC):
         self.events["njet"]      = ak.num(self.events.JetGood)
         #self.events["nbjet"]     = ak.num(self.events.BJetGood)
         self.events["nfatjet"]   = ak.num(self.events.FatJetGood)
+        self.events["nsv"]       = ak.num(self.events.SV)
 
 
     def apply_preselections(self):
@@ -320,6 +371,23 @@ class fatjetBaseProcessor(processor.ProcessorABC):
         self.nEvents_after_presel = self.nevents
         self.output['cutflow']['presel'][self._sample] += self.nEvents_after_presel
         self.has_events = self.nEvents_after_presel > 0
+
+    def assign_flavor(self):
+        #The function assigns a flavor to the fatjets depending on the hadron flavor, and the number of B and C hadrons
+        self._flavors = {}
+        if self._isMC:
+            self._flavors['b'] = (self.events.FatJetLeading.hadronFlavour == 5)
+            self._flavors['c'] = (self.events.FatJetLeading.hadronFlavour == 4)
+            self._flavors['l'] = (self.events.FatJetLeading.hadronFlavour < 4)
+            self._flavors['bb'] = abs(self.events.FatJetLeading.hadronFlavour == 5) & (self.events.FatJetLeading.nBHadrons >= 2) #& (self.events.FatJetLeading.nCHadrons == 0)
+            self._flavors['cc'] = abs(self.events.FatJetLeading.hadronFlavour == 4) & (self.events.FatJetLeading.nBHadrons == 0) & (self.events.FatJetLeading.nCHadrons >= 2)
+            #self._flavors['ll'] = abs(self.events.FatJetLeading.hadronFlavour < 4) & (self.events.FatJetLeading.nBHadrons == 0) & (self.events.FatJetLeading.nCHadrons == 0)
+            self._flavors['b'] = self._flavors['b'] & ~self._flavors['bb']
+            self._flavors['c'] = self._flavors['c'] & ~self._flavors['cc']
+            self._flavors['l'] = self._flavors['l'] & ~self._flavors['bb'] & ~self._flavors['cc'] & ~self._flavors['b'] & ~self._flavors['c']
+            #self._flavors['others'] = ~self._flavors['l'] & ~self._flavors['bb'] & ~self._flavors['cc'] & ~self._flavors['b'] & ~self._flavors['c']
+        else:
+            self._flavors['Data'] = np.ones(self.nEvents_after_presel, dtype='bool')
             
     def define_categories(self):
         for cut in self._cuts:
@@ -343,10 +411,10 @@ class fatjetBaseProcessor(processor.ProcessorABC):
             #self.weights.add('sf_mu_iso', *sf_mu(self.events, self._year, 'iso'))
 
     def fill_histograms(self):
-        for (obj, obj_hists) in zip([None], [self.nobj_hists]):
-            fill_histograms_object(self, obj, obj_hists, event_var=True)
+        for (obj, obj_hists) in zip([self.events, self.events.FatJetLeading, self.events.SVLeading], [self.nobj_hists, self.fatjet_hists, self.sv_hists]):
+            fill_histograms_object_with_flavor(self, obj, obj_hists, event_var=True)
         for (obj, obj_hists) in zip([self.events.MuonGood, self.events.ElectronGood, self.events.JetGood], [self.muon_hists, self.electron_hists, self.jet_hists]):
-            fill_histograms_object(self, obj, obj_hists)
+            fill_histograms_object_with_flavor(self, obj, obj_hists)
 
     def count_events(self):
         # Fill the output with the number of events and the sum of their weights in each category for each sample
@@ -406,11 +474,13 @@ class fatjetBaseProcessor(processor.ProcessorABC):
         # Doing so we avoid to compute them on the full NanoAOD dataset
         #########################
         # Apply JEC + JER
-        self.apply_JERC()
+        self.apply_JERC(JER=False)
         #self.apply_JEC()
 
         # Apply preselections
         self.apply_object_preselection()
+        self.build_fatjet_observables()
+        self.build_sv_observables()
         self.count_objects()
         # Customization point for derived workflows after preselection cuts
         self.process_extra_before_presel()
@@ -419,6 +489,9 @@ class fatjetBaseProcessor(processor.ProcessorABC):
        
         # If not events remains after the preselection we skip the chunk
         if not self.has_events: return self.output
+
+        # A quark flavor is assigned to the leading fatjets
+        self.assign_flavor()
 
         ##########################
         # After the preselection cuts has been applied more processing is performwend 

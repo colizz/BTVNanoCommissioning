@@ -148,7 +148,7 @@ class ggHccProcessor(processor.ProcessorABC):
             sv_pt_axis                  = hist.Bin("pt", r"lead. FatJet $p_{T}^{SV}$ [GeV]", 1000, 0, 1000)
             sv_eta_axis                 = hist.Bin("eta", r"lead. FatJet $\eta^{SV}$", 60, -3, 3)
             sv_mass_axis                = hist.Bin("mass", r"lead. FatJet $m^{SV}$ [GeV]", 1000, 0, 1000)
-            sv_sv1mass_axis             = hist.Bin("sv1mass", r"lead. FatJet $m_{SV,1}$ [GeV]", 1000, 0, 1000)        
+            sv_sv1mass_axis             = hist.Bin("sv1mass", r"lead. FatJet $m_{SV,1}$ [GeV]", 1000, 0, 1000)
             sv_projmass_axis             = hist.Bin("projmass", r"lead. FatJet $m_{SV}^{proj}$ [GeV]", 1000, 0, 1000)
             sv_sv1mass_maxdxySig_axis    = hist.Bin("sv1mass_maxdxySig", r"lead. FatJet $m_{SV,1~for~max(\sigma_{d_{xy}})}$ [GeV]", 1000, 0, 1000)
             sv_logsv1mass_maxdxySig_axis = hist.Bin("logsv1mass_maxdxySig", r"lead. FatJet log($m_{SV,1~for~max(\sigma_{d_{xy}})}$/GeV)", 80, -4, 4)
@@ -158,7 +158,7 @@ class ggHccProcessor(processor.ProcessorABC):
         sv_logsv1mass_axis          = hist.Bin("logsv1mass", r"lead. FatJet log($m_{SV,1}$/GeV)", 80, -4, 4)
         sv_summass_axis             = hist.Bin("summass", r"lead. FatJet $\sum({m_{SV}})$ [GeV]", 1000, 0, 1000)
         sv_logsummass_axis          = hist.Bin("logsummass", r"lead. FatJet log($\sum({m_{SV}})$) [GeV]", 100, -2.5, 6)
-        sv_logsumcorrmass_axis          = hist.Bin("logsumcorrmass", r"lead. FatJet log($\sum({m^{corr}_{SV}})$) [GeV]", 100, -2.5, 6)
+        sv_logsumcorrmass_axis      = hist.Bin("logsumcorrmass", r"lead. FatJet log($\sum({m^{corr}_{SV}})$) [GeV]", 100, -2.5, 6)
         sv_logprojmass_axis          = hist.Bin("logprojmass", r"lead. FatJet log($m_{SV}^{proj}$) [GeV]", 100, -2.5, 6)            
 
         # Define similar axes dynamically
