@@ -1,7 +1,7 @@
 import sys
 #from PocketCoffea.PocketCoffea.parameters.cuts.baseline_cuts import passthrough
 from PocketCoffea.parameters.cuts.baseline_cuts import passthrough
-from config.fatjet_base.custom_cuts import mutag_presel, get_msdtau
+from config.fatjet_base.custom_cuts import mutag_presel, get_ptmsdtau
 #from PocketCoffea.PocketCoffea.lib.cut_functions import get_nObj
 from PocketCoffea.lib.cut_functions import get_nObj
 from config.fatjet_base.functions import get_tagger_passfail
@@ -14,7 +14,7 @@ cfg =  {
     "dataset" : {
         "jsons": ["datasets/MC_QCD_MuEnriched_local.json", "datasets/DATA_BTagMu_local.json", ],
         "filter" : {
-            "samples": ["QCD_Pt-170to300", "QCD_Pt-300to470", "QCD_Pt-470to600", "QCD_Pt-600to800", "QCD_Pt-800to1000", "QCD_Pt-1000toInf"],
+            "samples": ["QCD_Pt-170to300", "QCD_Pt-300to470", "QCD_Pt-470to600", "QCD_Pt-600to800", "QCD_Pt-800to1000", "QCD_Pt-1000toInf", "DATA"],
             "samples_exclude" : [],
             "year": ["2018"]
         }
@@ -26,8 +26,8 @@ cfg =  {
 
     # Executor parameters
     "run_options" : {
-        "executor"       : "futures",
-        "workers"        : 16,
+        "executor"       : "dask/slurm",
+        "workers"        : 1,
         "scaleout"       : 75,
         "partition"      : "standard",
         "walltime"       : "12:00:00",
@@ -39,22 +39,25 @@ cfg =  {
         "max"            : None,
         "skipbadfiles"   : None,
         "voms"           : None,
-        "limit"          : 2,
+        "limit"          : None,
     },
 
     # Cuts and plots settings
     "finalstate" : "mutag",
-    "skim" : [ get_nObj(1, 200., "FatJet"), get_nObj(1, 3., "Muon")],
+    "skim" : [ get_nObj(1, 200., "FatJet"), get_nObj(2, 3., "Muon")],
     "preselections" : [mutag_presel],
     "categories": {
         "btagDDCvLV2_pass" : [get_tagger_passfail(["btagDDCvLV2"], 0.45, "pass")],
         "btagDDCvLV2_fail" : [get_tagger_passfail(["btagDDCvLV2"], 0.45, "fail")],
-        #"msd40tau06_btagDDCvLV2_pass" : [get_msdtau(40., 0.6), get_tagger_passfail(["btagDDCvLV2"], 0.45, "pass")],
-        #"msd40tau06_btagDDCvLV2_fail" : [get_msdtau(40., 0.6), get_tagger_passfail(["btagDDCvLV2"], 0.45, "fail")],
-        #"msd60tau06_btagDDCvLV2_pass" : [get_msdtau(60., 0.6), get_tagger_passfail(["btagDDCvLV2"], 0.45, "pass")],
-        #"msd60tau06_btagDDCvLV2_fail" : [get_msdtau(60., 0.6), get_tagger_passfail(["btagDDCvLV2"], 0.45, "fail")],
-        #"msd100tau06_btagDDCvLV2_pass" : [get_msdtau(100., 0.6), get_tagger_passfail(["btagDDCvLV2"], 0.45, "pass")],
-        #"msd100tau06_btagDDCvLV2_fail" : [get_msdtau(100., 0.6), get_tagger_passfail(["btagDDCvLV2"], 0.45, "fail")],
+        "msd40tau06_btagDDCvLV2_pass" : [get_ptmsdtau(350., 40., 0.6), get_tagger_passfail(["btagDDCvLV2"], 0.45, "pass")],
+        "msd40tau06_btagDDCvLV2_fail" : [get_ptmsdtau(350., 40., 0.6), get_tagger_passfail(["btagDDCvLV2"], 0.45, "fail")],
+        "msd60tau06_btagDDCvLV2_pass" : [get_ptmsdtau(350., 60., 0.6), get_tagger_passfail(["btagDDCvLV2"], 0.45, "pass")],
+        "msd60tau06_btagDDCvLV2_fail" : [get_ptmsdtau(350., 60., 0.6), get_tagger_passfail(["btagDDCvLV2"], 0.45, "fail")],
+        "msd100tau06_btagDDCvLV2_pass" : [get_ptmsdtau(350., 100., 0.6), get_tagger_passfail(["btagDDCvLV2"], 0.45, "pass")],
+        "msd100tau06_btagDDCvLV2_fail" : [get_ptmsdtau(350., 100., 0.6), get_tagger_passfail(["btagDDCvLV2"], 0.45, "fail")],
+        "msd40tau06" : [get_ptmsdtau(350., 40., 0.6)],
+        "msd60tau06" : [get_ptmsdtau(350., 60., 0.6)],
+        "msd100tau06" : [get_ptmsdtau(350., 100., 0.6)],
         "inclusive" : [passthrough],
     },
 
@@ -65,20 +68,36 @@ cfg =  {
         "leadfatjet_pt" : None,
         "leadfatjet_eta" : None,
         "leadfatjet_phi" : None,
-        "leadfatjet_mass" : None,
+        "leadfatjet_msoftdrop" : None,
         "leadfatjet_tau21" : None,
+        "leadfatjet_btagDDBvLV2" : None,
+        "leadfatjet_btagDDCvLV2" : None,
+        "leadfatjet_btagDDCvBV2" : None,
+        "leadfatjet_particleNetMD_Xbb" : None,
+        "leadfatjet_particleNetMD_Xcc" : None,
+        "leadfatjet_particleNetMD_Xbb_QCD" : None,
+        "leadfatjet_particleNetMD_Xcc_QCD" : None,
+        "sv_summass" : None,
+        "sv_logsummass" : None,
+        "sv_projmass" : None,
+        "sv_logprojmass" : None,
+        "sv_sv1mass" : None,
+        "sv_logsv1mass" : None,
+        "sv_sumcorrmass" : None,
+        "sv_logsumcorrmass" : None,
         "nmuon" : None,
         "nelectron" : None,
         "nlep" : None,
         "njet" : None,
         "nfatjet" : None,
+        "nsv" : {'binning' : {'n_or_arr' : 20, 'lo' : 0, 'hi' : 20},    'xlim' : (0,20),   'xlabel' : "$N_{SV}$"},
     },
     "variables2d" : {},
     "plot_options" : {
         #"only" : "hist_electron_",
         "only" : None,
-        "workers" : 16,
-        "scale" : "log",
+        "workers" : 32,
+        "scale" : None,
         "fontsize" : 18,
         "fontsize_map" : 10,
         "dpi" : 150,

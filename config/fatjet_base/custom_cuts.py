@@ -2,7 +2,7 @@
 import awkward as ak
 import PocketCoffea.lib.cut_functions as cuts_f
 from PocketCoffea.lib.cut_definition import Cut
-from config.fatjet_base.functions import mutag, msdtau
+from config.fatjet_base.functions import mutag, ptmsdtau
 
 mutag_presel = Cut(
 	name="mutag",
@@ -14,11 +14,11 @@ mutag_presel = Cut(
 	function=mutag
 )
 
-def get_msdtau(msd, tau21, name=None):
+def get_ptmsdtau(pt, msd, tau21, name=None):
 	if name == None:
 		name = f"msd{msd}tau{tau21}"
 	return Cut(
 		name=name,
-		params= {"msd" : msd, "tau21" : tau21},
-		function=msdtau
+		params= {"pt" : pt, "msd" : msd, "tau21" : tau21},
+		function=ptmsdtau
 	)

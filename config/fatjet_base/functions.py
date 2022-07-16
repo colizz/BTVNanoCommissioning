@@ -24,10 +24,10 @@ def mutag(events, params, **kwargs):
 
     return fatjet_mutag
 
-def msdtau(events, params, **kwargs):
+def ptmsdtau(events, params, **kwargs):
     # Mask to select events with a fatjet with minimum softdrop mass and maximum tau21
-    return (events.FatJetLeading.msoftdrop > params["msd"]) & (events.FatJetLeading.msoftdrop < params["tau21"])
+    return (events.FatJetLeading.pt > params["pt"]) & (events.FatJetLeading.msoftdrop > params["msd"]) & (events.FatJetLeading.tau21 < params["tau21"])
 
-def msdtauDDCvB(events, params, **kwargs):
+def ptmsdtauDDCvB(events, params, **kwargs):
     # Mask to select events with a fatjet with minimum softdrop mass and maximum tau21 and a requirement on the DDCvB score
-    return (events.FatJetLeading.msoftdrop > params["msd"]) & (events.FatJetLeading.msoftdrop < params["tau21"]) & (events.FatJetLeading.msoftdrop > params["DDCvB"])
+    return (events.FatJetLeading.pt > params["pt"]) & (events.FatJetLeading.msoftdrop > params["msd"]) & (events.FatJetLeading.tau21 < params["tau21"]) & (events.FatJetLeading.btagDDCvBV2 > params["DDCvB"])
