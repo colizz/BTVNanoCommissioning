@@ -1,6 +1,6 @@
 {
     "DATA_BTagMu":{
-        "sample": "Data",
+        "sample": "DATA",
         "json_output"     : "datasets/DATA_BTagMu.json",
         "storage_prefix" : "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning",
         "files":[
@@ -27,7 +27,37 @@
               "metadata": {
                   "year":"2018",
                   "isMC": false,
-                  "era": "D" }}
+                  "era": "D" }},
+            { "das_names": ["/BTagMu/mmarcheg-Run2017B-UL2017_MiniAODv2-v1_v01-aeb179a6519d272d4336b9926381baad/USER"],
+              "dbs_instance" : "prod/phys03",
+              "metadata": {
+                  "year":"2017",
+                  "isMC": false,
+                  "era": "B" }},
+            { "das_names": ["/BTagMu/mmarcheg-Run2017C-UL2017_MiniAODv2-v1_PFNanoAOD-aeb179a6519d272d4336b9926381baad/USER"],
+              "dbs_instance" : "prod/phys03",
+              "metadata": {
+                  "year":"2017",
+                  "isMC": false,
+                  "era": "C" }},
+            { "das_names": ["/BTagMu/mmarcheg-Run2017D-UL2017_MiniAODv2-v1_PFNanoAOD-aeb179a6519d272d4336b9926381baad/USER"],
+              "dbs_instance" : "prod/phys03",
+              "metadata": {
+                  "year":"2017",
+                  "isMC": false,
+                  "era": "D" }},
+            { "das_names": ["/BTagMu/mmarcheg-Run2017E-UL2017_MiniAODv2-v1_v01-aeb179a6519d272d4336b9926381baad/USER"],
+              "dbs_instance" : "prod/phys03",
+              "metadata": {
+                  "year":"2017",
+                  "isMC": false,
+                  "era": "E" }},
+            { "das_names": ["/BTagMu/mmarcheg-Run2017F-UL2017_MiniAODv2-v1_v01-aeb179a6519d272d4336b9926381baad/USER"],
+              "dbs_instance" : "prod/phys03",
+              "metadata": {
+                  "year":"2017",
+                  "isMC": false,
+                  "era": "F" }}
         ]
     },
         
@@ -40,9 +70,12 @@
               "dbs_instance" : "prod/phys03",
               "metadata":{
                   "year": "2018",
-                  "isMC": true
-              }
-            }
+                  "isMC": true }},
+            { "das_names": ["/QCD_Pt-170to300_MuEnrichedPt5_TuneCP5_13TeV_pythia8/mmarcheg-RunIISummer19UL17PFNanoAOD-106X_mc2017_realistic_v9-v1-7a1edb72314467730e458def0bc98536/USER"],
+              "dbs_instance" : "prod/phys03",
+              "metadata":{
+                  "year": "2017",
+                  "isMC": true }}
         ]
     },
 
@@ -55,9 +88,12 @@
               "dbs_instance" : "prod/phys03",
               "metadata":{
                   "year": "2018",
-                  "isMC": true
-              }
-            }
+                  "isMC": true }},
+            { "das_names": ["/QCD_Pt-300to470_MuEnrichedPt5_TuneCP5_13TeV_pythia8/mmarcheg-RunIISummer19UL17PFNanoAOD-106X_mc2017_realistic_v9-v1-7a1edb72314467730e458def0bc98536/USER"],
+              "dbs_instance" : "prod/phys03",
+              "metadata":{
+                  "year": "2017",
+                  "isMC": true }}
         ]
     },
 
@@ -70,9 +106,12 @@
               "dbs_instance" : "prod/phys03",
               "metadata":{
                   "year": "2018",
-                  "isMC": true
-              }
-            }
+                  "isMC": true }},
+            { "das_names": ["/QCD_Pt-470to600_MuEnrichedPt5_TuneCP5_13TeV_pythia8/mmarcheg-RunIISummer19UL17PFNanoAOD-106X_mc2017_realistic_v9-v1-7a1edb72314467730e458def0bc98536/USER"],
+              "dbs_instance" : "prod/phys03",
+              "metadata":{
+                  "year": "2017",
+                  "isMC": true }}
         ]
     },
 
@@ -85,9 +124,12 @@
               "dbs_instance" : "prod/phys03",
               "metadata":{
                   "year": "2018",
-                  "isMC": true
-              }
-            }
+                  "isMC": true }},
+            { "das_names": ["/QCD_Pt-600to800_MuEnrichedPt5_TuneCP5_13TeV_pythia8/mmarcheg-RunIISummer19UL17PFNanoAOD-106X_mc2017_realistic_v9-v1-7a1edb72314467730e458def0bc98536/USER"],
+              "dbs_instance" : "prod/phys03",
+              "metadata":{
+                  "year": "2017",
+                  "isMC": true }}
         ]
     },
 
@@ -100,9 +142,12 @@
               "dbs_instance" : "prod/phys03",
               "metadata":{
                   "year": "2018",
-                  "isMC": true
-              }
-            }
+                  "isMC": true }},
+            { "das_names": ["/QCD_Pt-800to1000_MuEnrichedPt5_TuneCP5_13TeV_pythia8/mmarcheg-RunIISummer19UL17PFNanoAOD-106X_mc2017_realistic_v9-v1-7a1edb72314467730e458def0bc98536/USER"],
+              "dbs_instance" : "prod/phys03",
+              "metadata":{
+                  "year": "2017",
+                  "isMC": true }}
         ]
     },
 
@@ -115,9 +160,12 @@
               "dbs_instance" : "prod/phys03",
               "metadata":{
                   "year": "2018",
-                  "isMC": true
-              }
-            }
+                  "isMC": true }},
+            { "das_names": ["/QCD_Pt-1000toInf_MuEnrichedPt5_TuneCP5_13TeV_pythia8/mmarcheg-RunIISummer19UL17PFNanoAOD-106X_mc2017_realistic_v9-v1-7a1edb72314467730e458def0bc98536/USER"],
+              "dbs_instance" : "prod/phys03",
+              "metadata":{
+                  "year": "2017",
+                  "isMC": true }}
         ]
     }
     
