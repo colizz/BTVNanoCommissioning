@@ -13,6 +13,7 @@ import awkward as ak
 
 import coffea
 from coffea import processor, lookup_tools, hist
+from coffea.util import load
 from coffea.processor import dict_accumulator, defaultdict_accumulator
 from coffea.lumi_tools import LumiMask #, LumiData
 from coffea.analysis_tools import PackedSelection, Weights
@@ -99,7 +100,7 @@ class fatjetBaseProcessor(processor.ProcessorABC):
             if var_name.startswith('n'):
                 field = var_name
             else:
-                obj, field = var_name.split('_')
+                obj, field = (var_name.split('_')[0], '_'.join(var_name.split('_')[1:]))
             variable_axis = hist.Bin( field, self._variables[var_name]['xlabel'],
                                       **self._variables[var_name]['binning'] )
             self._hist_dict[f'hist_{var_name}'] = hist.Hist("$N_{events}$", self._sample_axis,
@@ -410,11 +411,23 @@ class fatjetBaseProcessor(processor.ProcessorABC):
             #self.weights.add('sf_mu_id',  *sf_mu(self.events, self._year, 'id'))
             #self.weights.add('sf_mu_iso', *sf_mu(self.events, self._year, 'iso'))
 
+    def apply_pt_reweighting(self):
+        if self.cfg.pt_reweighting != None:
+            dict_corrPt = load(self.cfg.pt_reweighting)
+            self.pt_weights = {cat : Weights(self.nEvents_after_presel) for cat in dict_corrPt.keys()}
+            for cat, corrPt in dict_corrPt.items():
+                if self._isMC:
+                    self.pt_weights[cat].add( 'ptcorr', corrPt(ak.fill_none(self.events.FatJetLeading.pt, 0)) )
+                else:
+                    print(self.events.FatJetLeading.pt)
+                    print(ak.ones_like(ak.fill_none(self.events.FatJetLeading.pt, 0)))
+                    self.pt_weights[cat].add( 'ptcorr', ak.ones_like(ak.fill_none(self.events.FatJetLeading.pt, 0)) )
+
     def fill_histograms(self):
         for (obj, obj_hists) in zip([self.events, self.events.FatJetLeading, self.events.SVLeading], [self.nobj_hists, self.fatjet_hists, self.sv_hists]):
-            fill_histograms_object_with_flavor(self, obj, obj_hists, event_var=True)
+            fill_histograms_object_with_flavor(self, obj, obj_hists, event_var=True, pt_reweighting=True)
         for (obj, obj_hists) in zip([self.events.MuonGood, self.events.ElectronGood, self.events.JetGood], [self.muon_hists, self.electron_hists, self.jet_hists]):
-            fill_histograms_object_with_flavor(self, obj, obj_hists)
+            fill_histograms_object_with_flavor(self, obj, obj_hists, pt_reweighting=True)
 
     def count_events(self):
         # Fill the output with the number of events and the sum of their weights in each category for each sample
@@ -505,6 +518,9 @@ class fatjetBaseProcessor(processor.ProcessorABC):
 
         # Weights
         self.compute_weights()
+
+        # Per-event Pt reweighting
+        self.apply_pt_reweighting()
         
         # Fill histograms
         self.fill_histograms()
