@@ -22,7 +22,9 @@ cfg =  {
 
     # Input and output files
     "workflow" : fatjetBaseProcessor,
-    "output"   : "output/fatjet_base/fatjet_base",
+    "output"   : "output/fatjet_base/fatjet_base_2018UL",
+    # pT reweighting
+    "pt_reweighting": "correction_files/pt_reweighting/pt_reweighting_2018UL/pt_corr.coffea",
 
     # Executor parameters
     "run_options" : {
