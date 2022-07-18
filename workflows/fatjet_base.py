@@ -164,7 +164,7 @@ class fatjetBaseProcessor(processor.ProcessorABC):
         self._sample = self.events.metadata["sample"]
         self._year = self.events.metadata["year"]
         self._triggers = triggers[self.cfg.finalstate][self._year]
-        self._btag = btag[self._year]
+        #self._btag = btag[self._year]
         self._isMC = 'genWeight' in self.events.fields
         # JEC
         self._JECversion = JECversions[self._year]['MC' if self._isMC else 'Data']
