@@ -3,6 +3,7 @@ logs*
 plots/*
 runinfo/*
 histograms/*
+output/*
 correction_files/tmp/
 fitdir/*
 __pycache__/*
