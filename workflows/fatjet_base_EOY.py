@@ -7,7 +7,21 @@ from coffea.lookup_tools.dense_lookup import dense_lookup
 from coffea.util import save, load
 
 from workflows.fatjet_base import fatjetBaseProcessor
-from parameters import triggers_EOY, JECversions_EOY, JERversions_EOY, jecTarFiles, FinalMask, PtBinning, AK8Taggers, AK8TaggerWP
+from parameters import jecTarFiles, FinalMask, PtBinning, AK8Taggers, AK8TaggerWP
+
+#from PocketCoffea.lib.triggers import get_trigger_mask
+#from PocketCoffea.lib.objects import jet_correction, lepton_selection, lepton_selection_noniso, jet_selection, btagging, get_dilepton
+#from PocketCoffea.lib.pileup import sf_pileup_reweight
+#from PocketCoffea.lib.scale_factors import sf_ele_reco, sf_ele_id, sf_mu
+#from PocketCoffea.lib.fill import fill_histograms_object_with_flavor
+from PocketCoffea.parameters.triggers import triggers_EOY
+from PocketCoffea.parameters.btag import btag
+from PocketCoffea.parameters.jec import JECversions_EOY
+#from PocketCoffea.parameters.jec import JECversions_EOY, JERversions_EOY
+#from PocketCoffea.parameters.event_flags import event_flags, event_flags_data
+from PocketCoffea.parameters.lumi import lumi, goldenJSON
+#from PocketCoffea.parameters.samples import samples_info
+#from PocketCoffea.parameters.allhistograms import histogram_settings
 
 class fatjetEOYProcessor(fatjetBaseProcessor):    
     # Function to load year-dependent parameters
@@ -20,14 +34,14 @@ class fatjetEOYProcessor(fatjetBaseProcessor):
         self._isMC = 'genWeight' in self.events.fields
         # JEC
         self._JECversion = JECversions_EOY[self._year]['MC' if self._isMC else 'Data']
-        self._JERversion = JERversions_EOY[self._year]['MC' if self._isMC else 'Data']
+        #self._JERversion = JERversions_EOY[self._year]['MC' if self._isMC else 'Data']
         self._goldenJSON = goldenJSON[self._year]
 
-    def applyJERC( self, typeJet ):
+    def apply_JERC( self, JER=False, typeJet='AK8PFPuppi' ):
         '''Based on https://coffeateam.github.io/coffea/notebooks/applying_corrections.html#Applying-energy-scale-transformations-to-Jets'''
 
         JECversion = self._JECversion
-        jets = self.events[typeJet]
+        jets = self.events[{'AK8PFPuppi' : 'FatJet'}[typeJet]]
         fixedGridRhoFastjetAll = self.events.fixedGridRhoFastjetAll
         events_cache = self.events.caches[0]
         isData = not self._isMC
@@ -66,4 +80,5 @@ class fatjetEOYProcessor(fatjetBaseProcessor):
 
         jet_factory = CorrectedJetsFactory(name_map, jec_stack)
         corrected_jets = jet_factory.build(jets, lazy_cache=events_cache)
-    
+
+        self.events[typeJet] = corrected_jets

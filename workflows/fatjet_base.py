@@ -211,7 +211,7 @@ class fatjetBaseProcessor(processor.ProcessorABC):
         self.output['cutflow']['skim'][self._sample] += self.nEvents_after_skim
         self.has_events = self.nEvents_after_skim > 0
         
-    def apply_JERC(self, JER=True, verbose=False):
+    def apply_JERC(self, JER=True, verbose=False, *args, **kwargs):
         if not self._isMC: return
         if int(self._year) > 2018:
             sys.exit("Warning: Run 3 JEC are not implemented yet.")
@@ -220,49 +220,6 @@ class fatjetBaseProcessor(processor.ProcessorABC):
             self.output['seed_chunk'].update(seed_dict)
         else:
             self.events.Jet = jet_correction(self.events, "Jet", "AK4PFchs", self._year, self._JECversion, verbose=verbose)
-
-    def applyJEC( self, typeJet, JECversion ):
-        '''Based on https://coffeateam.github.io/coffea/notebooks/applying_corrections.html#Applying-energy-scale-transformations-to-Jets'''
-
-        jets = self.events[typeJet]
-        fixedGridRhoFastjetAll = self.events.fixedGridRhoFastjetAll
-        events_cache = self.events.caches[0]
-        isData = not self._isMC
-        JECversion = self._JECversion
-
-        ext = lookup_tools.extractor()
-        JECtypes = [ 'L1FastJet', 'L2Relative', 'L2Residual', 'L3Absolute', 'L2L3Residual' ]
-        jec_stack_names = [ JECversion+'_'+k+'_'+typeJet for k in JECtypes ]
-        JECtypesfiles = [ '* * '+self.corrJECfolder+'/'+k+'.txt' for k in jec_stack_names ]
-        ext.add_weight_sets( JECtypesfiles )
-        ext.finalize()
-        evaluator = ext.make_evaluator()
-
-        jec_inputs = {name: evaluator[name] for name in jec_stack_names}
-        corrector = FactorizedJetCorrector( **jec_inputs )
-        # for i in jec_inputs: print(i,'\n',evaluator[i])
-
-        #print(dir(evaluator))
-        #print()
-        jec_stack = JECStack(jec_inputs)
-        name_map = jec_stack.blank_name_map
-        name_map['JetPt'] = 'pt'
-        name_map['JetMass'] = 'mass'
-        name_map['JetEta'] = 'eta'
-        name_map['JetA'] = 'area'
-
-        jets['pt_raw'] = (1 - jets['rawFactor']) * jets['pt']
-        jets['mass_raw'] = (1 - jets['rawFactor']) * jets['mass']
-        jets['rho'] = ak.broadcast_arrays(fixedGridRhoFastjetAll, jets.pt)[0]
-        name_map['ptRaw'] = 'pt_raw'
-        name_map['massRaw'] = 'mass_raw'
-        name_map['Rho'] = 'rho'
-        if not isData:
-            jets['pt_gen'] = ak.values_astype(ak.fill_none(jets.matched_gen.pt, 0), np.float32)
-            name_map['ptGenJet'] = 'pt_gen'
-
-        jet_factory = CorrectedJetsFactory(name_map, jec_stack)
-        corrected_jets = jet_factory.build(jets, lazy_cache=events_cache)
 
     # Function to compute masks to preselect objects and save them as attributes of `events`
     def apply_object_preselection(self):
@@ -487,7 +444,7 @@ class fatjetBaseProcessor(processor.ProcessorABC):
         # Doing so we avoid to compute them on the full NanoAOD dataset
         #########################
         # Apply JEC + JER
-        self.apply_JERC(JER=False)
+        self.apply_JERC(JER=False, typeJet='AK8PFPuppi')
         #self.apply_JEC()
 
         # Apply preselections
