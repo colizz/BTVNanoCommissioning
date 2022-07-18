@@ -7,6 +7,7 @@ correction_files/tmp/
 fitdir/*
 __pycache__/*
 config/__pycache__/*
+config/fatjet_base/__pycache__/*
 lib/__pycache__/*
 utils/__pycache__/*
 workflows/__pycache__/*
