@@ -1,27 +1,25 @@
 import os
 
 import numpy as np
+import awkward as ak
+
 import coffea
 from coffea import hist, processor, lookup_tools
 from coffea.lookup_tools.dense_lookup import dense_lookup
 from coffea.util import save, load
+from coffea.analysis_tools import Weights
+from coffea.jetmet_tools import FactorizedJetCorrector, JetCorrectionUncertainty
+from coffea.jetmet_tools import JECStack, CorrectedJetsFactory
 
 from workflows.fatjet_base import fatjetBaseProcessor
 from parameters import jecTarFiles, FinalMask, PtBinning, AK8Taggers, AK8TaggerWP
 
-#from PocketCoffea.lib.triggers import get_trigger_mask
-#from PocketCoffea.lib.objects import jet_correction, lepton_selection, lepton_selection_noniso, jet_selection, btagging, get_dilepton
-#from PocketCoffea.lib.pileup import sf_pileup_reweight
-#from PocketCoffea.lib.scale_factors import sf_ele_reco, sf_ele_id, sf_mu
-#from PocketCoffea.lib.fill import fill_histograms_object_with_flavor
+from PocketCoffea.lib.pileup import sf_pileup_reweight_EOY
 from PocketCoffea.parameters.triggers import triggers_EOY
 from PocketCoffea.parameters.btag import btag
 from PocketCoffea.parameters.jec import JECversions_EOY
-#from PocketCoffea.parameters.jec import JECversions_EOY, JERversions_EOY
-#from PocketCoffea.parameters.event_flags import event_flags, event_flags_data
 from PocketCoffea.parameters.lumi import lumi, goldenJSON
-#from PocketCoffea.parameters.samples import samples_info
-#from PocketCoffea.parameters.allhistograms import histogram_settings
+from PocketCoffea.parameters.samples import samples_info
 
 class fatjetEOYProcessor(fatjetBaseProcessor):    
     # Function to load year-dependent parameters
@@ -39,18 +37,19 @@ class fatjetEOYProcessor(fatjetBaseProcessor):
 
     def apply_JERC( self, JER=False, typeJet='AK8PFPuppi' ):
         '''Based on https://coffeateam.github.io/coffea/notebooks/applying_corrections.html#Applying-energy-scale-transformations-to-Jets'''
+        if not self._isMC: return
 
-        JECversion = self._JECversion
         jets = self.events[{'AK8PFPuppi' : 'FatJet'}[typeJet]]
         fixedGridRhoFastjetAll = self.events.fixedGridRhoFastjetAll
         events_cache = self.events.caches[0]
         isData = not self._isMC
         JECversion = self._JECversion
+        JECfolder  = self.cfg.JECfolder
 
         ext = lookup_tools.extractor()
         JECtypes = [ 'L1FastJet', 'L2Relative', 'L2Residual', 'L3Absolute', 'L2L3Residual' ]
         jec_stack_names = [ JECversion+'_'+k+'_'+typeJet for k in JECtypes ]
-        JECtypesfiles = [ '* * '+self.corrJECfolder+'/'+k+'.txt' for k in jec_stack_names ]
+        JECtypesfiles = [ '* * '+JECfolder+'/'+k+'.txt' for k in jec_stack_names ]
         ext.add_weight_sets( JECtypesfiles )
         ext.finalize()
         evaluator = ext.make_evaluator()
@@ -82,3 +81,18 @@ class fatjetEOYProcessor(fatjetBaseProcessor):
         corrected_jets = jet_factory.build(jets, lazy_cache=events_cache)
 
         self.events[typeJet] = corrected_jets
+
+    def compute_weights(self):
+        self.weights = Weights(self.nEvents_after_presel)
+        if self._isMC:
+            self.weights.add('genWeight', self.events.genWeight)
+            self.weights.add('lumi', ak.full_like(self.events.genWeight, lumi[self._year]))
+            self.weights.add('XS', ak.full_like(self.events.genWeight, samples_info[self._sample]["XS"]))
+            # Pileup reweighting with nominal, up and down variations
+            self.weights.add('pileup', sf_pileup_reweight_EOY(self.events, self.cfg.nTrueFile, self._sample, self._year))
+            # Electron reco and id SF with nominal, up and down variations
+            #self.weights.add('sf_ele_reco', *sf_ele_reco(self.events, self._year))
+            #self.weights.add('sf_ele_id',   *sf_ele_id(self.events, self._year))
+            # Muon id and iso SF with nominal, up and down variations
+            #self.weights.add('sf_mu_id',  *sf_mu(self.events, self._year, 'id'))
+            #self.weights.add('sf_mu_iso', *sf_mu(self.events, self._year, 'iso'))

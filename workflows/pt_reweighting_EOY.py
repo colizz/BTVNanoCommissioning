@@ -6,7 +6,7 @@ from coffea import hist, processor, lookup_tools
 from coffea.lookup_tools.dense_lookup import dense_lookup
 from coffea.util import save, load
 
-from workflows.fatjet_base import fatjetBaseProcessor
+from workflows.fatjet_base_EOY import fatjetEOYProcessor
 
 def overwrite_check(outfile):
     path = outfile
@@ -19,7 +19,7 @@ def overwrite_check(outfile):
         print(f"The output will be saved to {path}")
     return path
 
-class ptReweightProcessor(fatjetBaseProcessor):    
+class ptReweightProcessor(fatjetEOYProcessor):
     def __init__(self, cfg) -> None:
         super().__init__(cfg=cfg)
         self._pt_reweighting = False

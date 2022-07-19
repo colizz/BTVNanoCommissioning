@@ -62,6 +62,9 @@ class fatjetBaseProcessor(processor.ProcessorABC):
         # After the preselections more cuts are defined and combined in categories.
         # These cuts are applied only for outputs, so they cohexists in the form of masks
         self._cuts_masks = PackedSelection()
+
+        # Pt reweighting
+        self._pt_reweighting = True
         
         # Accumulators for the output
         self._accum_dict = {}
@@ -382,9 +385,9 @@ class fatjetBaseProcessor(processor.ProcessorABC):
 
     def fill_histograms(self):
         for (obj, obj_hists) in zip([self.events, self.events.FatJetLeading, self.events.SVLeading], [self.nobj_hists, self.fatjet_hists, self.sv_hists]):
-            fill_histograms_object_with_flavor(self, obj, obj_hists, event_var=True, pt_reweighting=True)
+            fill_histograms_object_with_flavor(self, obj, obj_hists, event_var=True, pt_reweighting=self._pt_reweighting)
         for (obj, obj_hists) in zip([self.events.MuonGood, self.events.ElectronGood, self.events.JetGood], [self.muon_hists, self.electron_hists, self.jet_hists]):
-            fill_histograms_object_with_flavor(self, obj, obj_hists, pt_reweighting=True)
+            fill_histograms_object_with_flavor(self, obj, obj_hists, pt_reweighting=self._pt_reweighting)
 
     def count_events(self):
         # Fill the output with the number of events and the sum of their weights in each category for each sample
