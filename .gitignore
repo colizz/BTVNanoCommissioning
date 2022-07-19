@@ -9,6 +9,7 @@ fitdir/*
 __pycache__/*
 config/__pycache__/*
 config/fatjet_base/__pycache__/*
+config/pt_reweighting/__pycache__/*
 lib/__pycache__/*
 utils/__pycache__/*
 workflows/__pycache__/*
