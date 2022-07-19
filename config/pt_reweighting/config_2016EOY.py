@@ -16,25 +16,25 @@ cfg =  {
         "filter" : {
             "samples": ["QCD_Pt-170to300", "QCD_Pt-300to470", "QCD_Pt-470to600", "QCD_Pt-600to800", "QCD_Pt-800to1000", "QCD_Pt-1000toInf", "DATA"],
             "samples_exclude" : [],
-            "year": ["2018"]
+            "year": ["2016"]
         }
     },
 
     # Input and output files
     "workflow" : ptReweightProcessor,
-    "output"   : "output/pt_reweighting/pt_reweighting_2018EOY",
-    "output_reweighting" : "correction_files/pt_reweighting/pt_reweighting_2018EOY",
-    "output_PUreweighting" : "correction_files/pu_reweighting/pu_reweighting_2018EOY",
-    "nTrueFile"            : "correction_files/pu_reweighting/pu_reweighting_2018EOY/nTrueInt_2018.coffea",
+    "output"   : "output/pt_reweighting/pt_reweighting_2016EOY",
+    "output_reweighting" : "correction_files/pt_reweighting/pt_reweighting_2016EOY",
+    "output_PUreweighting" : "correction_files/pu_reweighting/pu_reweighting_2016EOY",
+    "nTrueFile"            : "correction_files/pu_reweighting/pu_reweighting_2016EOY/nTrueInt_2016.coffea",
     "JECfolder": "correction_files/tmp",
 
     # Executor parameters
     "run_options" : {
-        "executor"       : "futures",
+        "executor"       : "dask/slurm",
         "workers"        : 1,
-        "scaleout"       : 100,
-        "partition"      : "standard",
-        "walltime"       : "12:00:00",
+        "scaleout"       : 125,
+        "partition"      : "short",
+        "walltime"       : "1:00:00",
         "mem_per_worker" : "5GB", # GB
         "exclusive"      : False,
         "chunk"          : 50000,
@@ -43,7 +43,7 @@ cfg =  {
         "max"            : None,
         "skipbadfiles"   : None,
         "voms"           : None,
-        "limit"          : 5,
+        "limit"          : None,
     },
 
     # Cuts and plots settings
