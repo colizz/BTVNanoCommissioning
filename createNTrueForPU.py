@@ -15,7 +15,6 @@ if not PATH_TO_MODULE in sys.path:
 
 from PocketCoffea.utils.Configurator import Configurator
 
-#####################################
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
