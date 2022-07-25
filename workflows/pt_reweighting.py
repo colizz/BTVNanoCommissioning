@@ -8,6 +8,14 @@ from coffea.util import save, load
 
 from workflows.fatjet_base import fatjetBaseProcessor
 
+pt_low = {
+    'inclusive' : 250.,
+    'pt350msd40' : 350.,
+    'pt350msd60' : 350.,
+    'pt350msd80' : 350.,
+    'pt350msd100' : 350.,
+}
+
 def overwrite_check(outfile):
     path = outfile
     version = 1
@@ -48,7 +56,9 @@ class ptReweightProcessor(fatjetBaseProcessor):
             print("rat", rat)
             print("mod_rat", mod_rat)
             bins = h_pt.axes()[-1].edges()
-            mod_rat[bins[:-1] < 350] = 1
+            if cat not in pt_low.keys():
+                pt_low[cat] = 350.
+            mod_rat[bins[:-1] < pt_low[cat]] = 1
             mod_rat[bins[:-1] > 1500] = 1
             #hep.histplot(mod_rat, nbins)
 
