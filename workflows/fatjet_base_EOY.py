@@ -18,7 +18,7 @@ from PocketCoffea.lib.pileup import sf_pileup_reweight_EOY
 from PocketCoffea.parameters.triggers import triggers_EOY
 from PocketCoffea.parameters.btag import btag
 from PocketCoffea.parameters.jec import JECversions_EOY
-from PocketCoffea.parameters.lumi import lumi, goldenJSON
+from PocketCoffea.parameters.lumi import lumi_EOY, goldenJSON
 from PocketCoffea.parameters.samples import samples_info
 
 class fatjetEOYProcessor(fatjetBaseProcessor):    
@@ -86,7 +86,7 @@ class fatjetEOYProcessor(fatjetBaseProcessor):
         self.weights = Weights(self.nEvents_after_presel)
         if self._isMC:
             self.weights.add('genWeight', self.events.genWeight)
-            self.weights.add('lumi', ak.full_like(self.events.genWeight, lumi[self._year]))
+            self.weights.add('lumi', ak.full_like(self.events.genWeight, lumi_EOY[self._year]))
             self.weights.add('XS', ak.full_like(self.events.genWeight, samples_info[self._sample]["XS"]))
             # Pileup reweighting with nominal, up and down variations
             self.weights.add('pileup', sf_pileup_reweight_EOY(self.events, self.cfg.nTrueFile, self._sample, self._year))
