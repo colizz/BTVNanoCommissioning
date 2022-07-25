@@ -285,12 +285,12 @@ AK8TaggerWP = {
                 'M' : (0.1287, 0.3276),
                 'H' : (0.3276, 1),
             },
-            'particleNetMD_Xbb' : {
+            'particleNetMD_Xbb_QCD' : {
                 'L' : (0.9789, 0.9904),
                 'M' : (0.9904, 0.9964),
                 'H' : (0.9964, 1),
             },
-            'particleNetMD_Xcc' : {
+            'particleNetMD_Xcc_QCD' : {
                 'L' : (0.9282, 0.9737),
                 'M' : (0.9737, 0.9916),
                 'H' : (0.9916, 1),
@@ -307,12 +307,12 @@ AK8TaggerWP = {
                 'M' : (0.1287, 0.3276),
                 'H' : (0.3276, 1),
             },
-            'particleNetMD_Xbb' : {
+            'particleNetMD_Xbb_QCD' : {
                 'L' : (0.9789, 0.9904),
                 'M' : (0.9904, 0.9964),
                 'H' : (0.9964, 1),
             },
-            'particleNetMD_Xcc' : {
+            'particleNetMD_Xcc_QCD' : {
                 'L' : (0.9282, 0.9737),
                 'M' : (0.9737, 0.9916),
                 'H' : (0.9916, 1),
@@ -329,12 +329,12 @@ AK8TaggerWP = {
                 'M' : (0.1309, 0.3323),
                 'H' : (0.3323, 1),
             },
-            'particleNetMD_Xbb' : {
+            'particleNetMD_Xbb_QCD' : {
                 'L' : (0.9806, 0.9913),
                 'M' : (0.9913, 0.9967),
                 'H' : (0.9967, 1),
             },
-            'particleNetMD_Xcc' : {
+            'particleNetMD_Xcc_QCD' : {
                 'L' : (0.9333, 0.9757),
                 'M' : (0.9757, 0.9925),
                 'H' : (0.9925, 1),
