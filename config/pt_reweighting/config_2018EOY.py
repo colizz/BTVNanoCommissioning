@@ -1,10 +1,9 @@
 import sys
 #from PocketCoffea.PocketCoffea.parameters.cuts.baseline_cuts import passthrough
 from PocketCoffea.parameters.cuts.baseline_cuts import passthrough
-from config.fatjet_base.custom_cuts import mutag_presel, get_ptmsdtau
+from config.fatjet_base.custom_cuts import mutag_presel, get_ptmsd
 #from PocketCoffea.PocketCoffea.lib.cut_functions import get_nObj
 from PocketCoffea.lib.cut_functions import get_nObj
-from config.fatjet_base.functions import get_tagger_passfail
 from workflows.pt_reweighting_EOY import ptReweightProcessor
 from math import pi
 import numpy as np
@@ -22,17 +21,17 @@ cfg =  {
 
     # Input and output files
     "workflow" : ptReweightProcessor,
-    "output"   : "output/pt_reweighting/pt_reweighting_2018EOY",
-    "output_reweighting" : "correction_files/pt_reweighting/pt_reweighting_2018EOY",
+    "output"   : "output/pt_reweighting/pt_reweighting_2018EOY_pt350",
+    "output_reweighting" : "correction_files/pt_reweighting/pt_reweighting_2018EOY_pt350",
     "output_PUreweighting" : "correction_files/pu_reweighting/pu_reweighting_2018EOY",
     "nTrueFile"            : "correction_files/pu_reweighting/pu_reweighting_2018EOY/nTrueInt_2018.coffea",
-    "JECfolder": "correction_files/tmp",
+    "JECfolder": "correction_files/tmp_2018",
 
     # Executor parameters
     "run_options" : {
-        "executor"       : "futures",
+        "executor"       : "dask/slurm",
         "workers"        : 1,
-        "scaleout"       : 100,
+        "scaleout"       : 125,
         "partition"      : "standard",
         "walltime"       : "12:00:00",
         "mem_per_worker" : "5GB", # GB
@@ -43,7 +42,7 @@ cfg =  {
         "max"            : None,
         "skipbadfiles"   : None,
         "voms"           : None,
-        "limit"          : 5,
+        "limit"          : None,
     },
 
     # Cuts and plots settings
@@ -51,10 +50,10 @@ cfg =  {
     "skim" : [ get_nObj(1, 200., "FatJet"), get_nObj(2, 3., "Muon")],
     "preselections" : [mutag_presel],
     "categories": {
-        "msd40tau06" : [get_ptmsdtau(350., 40., 0.6)],
-        "msd60tau06" : [get_ptmsdtau(350., 60., 0.6)],
-        "msd80tau06" : [get_ptmsdtau(350., 80., 0.6)],
-        "msd100tau06" : [get_ptmsdtau(350., 100., 0.6)],
+        "pt350msd40" : [get_ptmsd(350., 40.)],
+        "pt350msd60" : [get_ptmsd(350., 60.)],
+        "pt350msd80" : [get_ptmsd(350., 80.)],
+        "pt350msd100" : [get_ptmsd(350., 100.)],
         "inclusive" : [passthrough],
     },
 

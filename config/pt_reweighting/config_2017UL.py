@@ -1,7 +1,7 @@
 import sys
 #from PocketCoffea.PocketCoffea.parameters.cuts.baseline_cuts import passthrough
 from PocketCoffea.parameters.cuts.baseline_cuts import passthrough
-from config.fatjet_base.custom_cuts import mutag_presel, get_ptmsdtau
+from config.fatjet_base.custom_cuts import mutag_presel, get_ptmsd
 #from PocketCoffea.PocketCoffea.lib.cut_functions import get_nObj
 from PocketCoffea.lib.cut_functions import get_nObj
 from config.fatjet_base.functions import get_tagger_passfail
@@ -22,14 +22,14 @@ cfg =  {
 
     # Input and output files
     "workflow" : ptReweightProcessor,
-    "output"   : "output/pt_reweighting/pt_reweighting_2017UL",
-    "output_reweighting" : "correction_files/pt_reweighting/pt_reweighting_2017UL",
+    "output"   : "output/pt_reweighting/pt_reweighting_2017UL_pt350",
+    "output_reweighting" : "correction_files/pt_reweighting/pt_reweighting_2017UL_pt350",
 
     # Executor parameters
     "run_options" : {
         "executor"       : "dask/slurm",
         "workers"        : 1,
-        "scaleout"       : 100,
+        "scaleout"       : 125,
         "partition"      : "standard",
         "walltime"       : "12:00:00",
         "mem_per_worker" : "5GB", # GB
@@ -48,10 +48,10 @@ cfg =  {
     "skim" : [ get_nObj(1, 200., "FatJet"), get_nObj(2, 3., "Muon")],
     "preselections" : [mutag_presel],
     "categories": {
-        "msd40tau06" : [get_ptmsdtau(350., 40., 0.6)],
-        "msd60tau06" : [get_ptmsdtau(350., 60., 0.6)],
-        "msd80tau06" : [get_ptmsdtau(350., 80., 0.6)],
-        "msd100tau06" : [get_ptmsdtau(350., 100., 0.6)],
+        "pt350msd40" : [get_ptmsd(350., 40.)],
+        "pt350msd60" : [get_ptmsd(350., 60.)],
+        "pt350msd80" : [get_ptmsd(350., 80.)],
+        "pt350msd100" : [get_ptmsd(350., 100.)],
         "inclusive" : [passthrough],
     },
 
@@ -66,7 +66,7 @@ cfg =  {
     "plot_options" : {
         #"only" : "hist_electron_",
         "only" : None,
-        "workers" : 32,
+        "workers" : 8,
         "scale" : None,
         "fontsize" : 18,
         "fontsize_map" : 10,
