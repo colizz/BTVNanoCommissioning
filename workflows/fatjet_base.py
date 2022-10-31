@@ -54,6 +54,7 @@ class fatjetBaseProcessor(processor.ProcessorABC):
         self._preselections  = self.cfg.preselections
         self._cuts = self.cfg.cut_functions
         self._categories = self.cfg.categories
+        self.define_pt_reweighting_maps()
         ### Define PackedSelector to save per-event cuts and dictionary of selections
         # The skim mask is applied on baseline nanoaod before any object is corrected
         self._skim_masks = PackedSelection()
@@ -140,6 +141,22 @@ class fatjetBaseProcessor(processor.ProcessorABC):
         if not self._accumulator:
             self._accumulator = dict_accumulator(self._accum_dict)
         return self._accumulator
+
+    def define_pt_reweighting_maps(self):
+        self._pt_reweighting_map = {}
+        for category in self._categories.keys():
+            if 'msd40' in category:
+                self._pt_reweighting_map[category] = 'pt350msd40'
+            elif 'msd60' in category:
+                self._pt_reweighting_map[category] = 'pt350msd60'
+            elif 'msd80' in category:
+                self._pt_reweighting_map[category] = 'pt350msd80'
+            elif 'msd100' in category:
+                self._pt_reweighting_map[category] = 'pt350msd100'
+            elif category == 'inclusive':
+                self._pt_reweighting_map[category] = 'inclusive'
+            else:
+                sys.exit(f"The association of the category '{category}' to a pt reweighting key is ambiguous")
 
     def add_additional_histograms(self, histograms_dict):
         '''Helper function to add additional histograms to the dict_accumulator.
