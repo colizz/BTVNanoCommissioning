@@ -34,10 +34,10 @@ cfg =  {
     "run_options" : {
         "executor"       : "dask/slurm",
         "workers"        : 1,
-        "scaleout"       : 125,
+        "scaleout"       : 175,
         "partition"      : "standard",
         "walltime"       : "12:00:00",
-        "mem_per_worker" : "5GB", # GB
+        "mem_per_worker" : "6GB", # GB
         "exclusive"      : False,
         "chunk"          : 50000,
         "retries"        : 30,
