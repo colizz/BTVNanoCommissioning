@@ -37,6 +37,19 @@ def tagger_mask_exclusive_wp(events, params, **kwargs):
 
     return mask
 
+def tagger_mask_inclusive_wp(events, params, **kwargs):
+    assert (len(params["wp"]) == 2), "The 'wp' parameter has to be a 2D tuple"
+    cut_low, cut_high = params["wp"]
+    assert (cut_low < cut_high), "The lower bound of the WP has to be smaller than the higher bound"
+    mask = np.zeros(len(events), dtype='bool')
+    mask = (events.FatJetLeading[params["tagger"]] > cut_low)
+
+    assert (params["category"] in ["pass", "fail"]), "The allowed categories for the tagger selection are 'pass' and 'fail'"
+    if params["category"] == "fail":
+        mask = ~mask & (events.FatJetLeading[params["tagger"]] >= 0) & (events.FatJetLeading[params["tagger"]] <= 1)
+
+    return mask
+
 def get_tagger_pass(taggers, wp):
     return Cut(
         name=f"{'_'.join(taggers)}_pass",
@@ -63,6 +76,13 @@ def get_exclusive_wp(tagger, wp, category):
         name=f"{'_'.join(tagger)}_{category}",
         params={"tagger": tagger, "wp" : wp, "category": category},
         function=tagger_mask_exclusive_wp
+    )
+
+def get_inclusive_wp(tagger, wp, category):
+    return Cut(
+        name=f"{'_'.join(tagger)}_{category}",
+        params={"tagger": tagger, "wp" : wp, "category": category},
+        function=tagger_mask_inclusive_wp
     )
 
 def mutag(events, params, **kwargs):

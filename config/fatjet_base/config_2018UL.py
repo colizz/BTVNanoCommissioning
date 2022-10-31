@@ -37,7 +37,7 @@ cfg =  {
         "scaleout"       : 175,
         "partition"      : "standard",
         "walltime"       : "12:00:00",
-        "mem_per_worker" : "6GB", # GB
+        "mem_per_worker" : "8GB", # GB
         "exclusive"      : False,
         "chunk"          : 50000,
         "retries"        : 30,
@@ -50,7 +50,7 @@ cfg =  {
 
     # Cuts and plots settings
     "finalstate" : "mutag",
-    "skim" : [ get_nObj(1, 200., "FatJet"), get_nObj(2, 3., "Muon")],
+    "skim" : [ get_nObj(1, minpt=200., coll="FatJet"), get_nObj(1, minmsd=30., coll="FatJet"), get_nObj(2, minpt=3., coll="Muon")],
     "preselections" : [mutag_presel],
     "categories": {
         "inclusive" : [passthrough],
@@ -382,9 +382,8 @@ cfg =  {
     "plot_options" : {
         #"sum_over" : ['cat', 'year', 'flavor'],
         "sum_over" : ['cat', 'year', 'sample'],
-        #"only" : "hist_electron_",
         "only" : None,
-        "workers" : 32,
+        "workers" : 8,
         "scale" : None,
         "fontsize" : 18,
         "fontsize_map" : 10,
@@ -396,6 +395,17 @@ cfg =  {
             'sv_logsv1mass'        : {'binning' : {'n_or_arr' : 60, 'lo' : -6, 'hi' : 6},   'xlim' : (-4,4),   'xlabel' : r"FatJet log($m_{SV,1}$/GeV)"},
             'sv_logprojmass'       : {'binning' : {'n_or_arr' : 60, 'lo' : -6, 'hi' : 6},   'xlim' : (-2.5,6), 'xlabel' : r"FatJet log($m_{SV}^{proj}$) [GeV]"},
             'sv_logsumcorrmass'    : {'binning' : {'n_or_arr' : 60, 'lo' : -6, 'hi' : 6},   'xlim' : (-2.5,6), 'xlabel' : r"FatJet log($\sum({m^{corr}_{SV}})$) [GeV]"},
-        },
+        }
+    },
+    "sf_options" : {
+        "parameters" : None,
+        "merge_x_xx" : True,
+        "categories" : {"filter" : ["msd40btagDDCvLV2", "LwpPt-400to600"]},
+        "rebin" : {
+            'sv_logsummass'        : {'binning' : {'n_or_arr' : 30, 'lo' : -6, 'hi' : 6},   'xlim' : (-2.5,6), 'xlabel' : r"FatJet log($\sum({m_{SV}})$) [GeV]"},
+            'sv_logsv1mass'        : {'binning' : {'n_or_arr' : 30, 'lo' : -6, 'hi' : 6},   'xlim' : (-4,4),   'xlabel' : r"FatJet log($m_{SV,1}$/GeV)"},
+            'sv_logprojmass'       : {'binning' : {'n_or_arr' : 30, 'lo' : -6, 'hi' : 6},   'xlim' : (-2.5,6), 'xlabel' : r"FatJet log($m_{SV}^{proj}$) [GeV]"},
+            'sv_logsumcorrmass'    : {'binning' : {'n_or_arr' : 30, 'lo' : -6, 'hi' : 6},   'xlim' : (-2.5,6), 'xlabel' : r"FatJet log($\sum({m^{corr}_{SV}})$) [GeV]"},
+        }
     }
 }

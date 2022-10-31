@@ -37,7 +37,7 @@ cfg =  {
         "scaleout"       : 175,
         "partition"      : "standard",
         "walltime"       : "12:00:00",
-        "mem_per_worker" : "6GB", # GB
+        "mem_per_worker" : "8GB", # GB
         "exclusive"      : False,
         "chunk"          : 50000,
         "retries"        : 30,
@@ -50,7 +50,7 @@ cfg =  {
 
     # Cuts and plots settings
     "finalstate" : "mutag",
-    "skim" : [ get_nObj(1, 200., "FatJet"), get_nObj(2, 3., "Muon")],
+    "skim" : [ get_nObj(1, minpt=200., coll="FatJet"), get_nObj(1, minmsd=30., coll="FatJet"), get_nObj(2, minpt=3., coll="Muon")],
     "preselections" : [mutag_presel],
     "categories": {
         "inclusive" : [passthrough],
@@ -382,8 +382,8 @@ cfg =  {
     "plot_options" : {
         #"sum_over" : ['cat', 'year', 'flavor'],
         "sum_over" : ['cat', 'year', 'sample'],
-        "only" : "hist_leadfatjet_tau21",
-        "workers" : 32,
+        "only" : None,
+        "workers" : 8,
         "scale" : None,
         "fontsize" : 18,
         "fontsize_map" : 10,
