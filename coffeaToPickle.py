@@ -1,125 +1,123 @@
+import sys
 import argparse
+import json
 import numpy as np
 from coffea.util import load
 import argparse
 import numpy as np
-from coffea.util import load
 from coffea.hist import plot
 import coffea.hist as hist
 import itertools
 import os
 import pickle
-#from lib.luminosity import rescale
-from parameters import histogram_settings, xsecs, FinalMask, PtBinning, AK8TaggerWP, lumi
 
-parser = argparse.ArgumentParser(description='Plot histograms from coffea file')
-parser.add_argument('-i', '--input', type=str, help='Input histogram filename', required=True)
-parser.add_argument('-o', '--output', type=str, default='', help='Output file')
-parser.add_argument('--outputDir', type=str, default=None, help='Output directory')
-parser.add_argument('--campaign', type=str, choices={'EOY', 'UL'}, help='Dataset campaign.', required=True)
-parser.add_argument('--year', type=str, choices=['2016', '2017', '2018'], help='Year of data/MC samples', required=True)
-parser.add_argument('--vfp', type=str, default=None, choices=['pre', 'post'], help='Year of data/MC samples', required=False)
-parser.add_argument('--data', type=str, default='BTagMu', help='Data sample name')
-#parser.add_argument('--pt', type=int, default=500, help='Pt cut.')
-parser.add_argument('--lumiscale', action='store_true', default=False, help='Scale MC by x-section times luminoisity.', required=False)
-parser.add_argument('--mergebbcc', action='store_true', default=False, help='Merge bb+cc')
+# Include PocketCoffea to python paths (needed if running from outside PocketCoffea)
+PATH_TO_SCRIPT = '/'.join(sys.argv[0].split('/')[:-1])
+PATH_TO_MODULE = os.path.abspath(os.path.join(os.path.abspath(PATH_TO_SCRIPT), "PocketCoffea"))
+if not PATH_TO_MODULE in sys.path:
+    sys.path.append(PATH_TO_MODULE)
+
+print(sys.path)
+
+from PocketCoffea.utils.Configurator import Configurator
+
+parser = argparse.ArgumentParser(description='Save histograms in pickle format for combine fit')
+parser.add_argument('--cfg', default=os.getcwd() + "/config/test.json", help='Config file with parameters specific to the current run', required=False)
+parser.add_argument('-v', '--version', type=str, default=None, help='Version of output (e.g. `v01`, `v02`, etc.)')
+parser.add_argument('-l', '--label', type=str, default=None, help='Extra label for output file')
 
 args = parser.parse_args()
-print("Running with options:")
-print("    ", args)
+config = Configurator(args.cfg, plot=True, plot_version=args.version)
+year = config.dataset["filter"]["year"]
+if len(year) > 1:
+    raise NotImplementedError
+else: year = year[0]
 
-if (args.campaign == 'UL') & (args.year == '2016'):
-    if args.vfp == parser.get_default('vfp'):
-        sys.exit("For 2016UL, specify if 'pre' or 'post' VFP.")
-    else:
-        vfp_label = {'pre' : '-PreVFP', 'post' : '-PostVFP'}[args.vfp]
-        totalLumi = lumi[args.campaign][f"{args.year}{vfp_label}"]
-else:
-    totalLumi = lumi[args.campaign][args.year]
-
-if os.path.isfile( args.input ): accumulator = load(args.input)
-else:
-    files_list = [ifile for ifile in os.listdir(args.input) if ifile != args.output]
-    accumulator = load(args.input + files_list[0])
-    histograms = accumulator.keys()
-    for ifile in files_list[1:]:
-        output = load(args.input + ifile)
-        for histname in histograms:
-            accumulator[histname].add(output[histname])
-
-scaleXS = {}
-for isam in accumulator[next(iter(accumulator))].identifiers('dataset'):
-    isam = str(isam)
-    if args.lumiscale:
-        scaleXS[isam] = 1 if isam.startswith('BTag') else xsecs[isam]/accumulator['sumw'][isam] * 1000 * totalLumi
-    else:
-        scaleXS[isam] = 1 if isam.startswith('BTag') else xsecs[isam]/accumulator['sumw'][isam]
+if os.path.isfile( config.outfile ): accumulator = load(config.outfile)
+else: raise NotImplementedError
 
 print(accumulator.keys())
 
 outputDict = {}
-fit_variables = [ 'sv_logsv1mass', 'sv_logsv1mass_maxdxySig', 'nd_projmass', 'nd_logprojmass' ]
+outputDict_bbcc = {}
+fit_variables = [ 'sv_logsummass',  'sv_logprojmass', 'sv_logsv1mass', 'sv_logsumcorrmass' ]
 fit_variables_veto = [ 'sv_logsv1massratio', 'sv_logsv1massres' ]
 for histname, h in accumulator.items():
-    if histname.startswith(tuple(fit_variables)) & (not histname.startswith(tuple(fit_variables_veto))):
+    if not histname.startswith('hist_'): continue
+    variable = histname.split('hist_')[1]
+    if variable.startswith(tuple(fit_variables)) & (not variable.startswith(tuple(fit_variables_veto))):
         print(sorted([varname for varname in fit_variables if varname in histname]))
         ivar = sorted([varname for varname in fit_variables if varname in histname])[-1]
         print(histname, ivar)
     else:
         continue
-    h.scale( scaleXS, axis='dataset' )
-    h = h.rebin(h.fields[-1], hist.Bin(h.fields[-1], h.axis(h.fields[-1]).label, **histogram_settings[args.campaign]['variables'][ivar]['binning']))
+    if h.dense_dim() > 1: raise NotImplementedError
+    print(f"Rebinning {histname}")
+    h = h.rebin(h.dense_axes()[0], hist.Bin(h.dense_axes()[0].name, config.sf_options["rebin"][variable]['xlabel'], **config.sf_options["rebin"][variable]["binning"]))
+    #h = h.rebin(h.fields[-1], hist.Bin(h.fields[-1], h.axis(h.fields[-1]).label, **histogram_settings[args.campaign]['variables'][ivar]['binning']))
 
     ##### grouping flavor
-    flavors = [str(s) for s in h.axis('flavor').identifiers() if str(s) != 'flavor']
-    mapping_flavor = {f : [f] for f in flavors}
-    flavors_to_merge = ['bb', 'b', 'cc', 'c']
-    for flav in flavors_to_merge:
-        mapping_flavor.pop(flav)
-    if args.mergebbcc:
-        mapping_flavor['bb_cc'] = ['b', 'bb', 'c', 'cc']
-    else:
-        mapping_flavor['b_bb'] = ['b', 'bb']
-        mapping_flavor['c_cc'] = ['c', 'cc']
-    h = h.group("flavor", hist.Cat("flavor", "Flavor"), mapping_flavor)
+    mapping_flavor = {'l' : ['l'], 'bb' : ['b', 'bb'], 'cc' : ['c', 'cc']}
+    h_bbcc = h.group("flavor", hist.Cat("flavor", "Flavor"), mapping_flavor)
+    print(mapping_flavor)
 
     ##### grouping data and QCD histos
-    datasets = [str(s) for s in h.axis('dataset').identifiers() if str(s) != 'dataset']
+    samples = [str(s) for s in h.axis('sample').identifiers() if str(s) != 'sample']
     mapping = {
-        r'QCD ($\mu$ enriched)' : [dataset for dataset in datasets if 'QCD_Pt' in dataset],
-        r'BTagMu': [ idata for idata in datasets if args.data in idata ],
+        r'QCD ($\mu$ enriched)' : [sample for sample in samples if 'QCD_Pt' in sample],
+        r'DATA': [ idata for idata in samples if 'DATA' in idata ],
     }
-    datasets = mapping.keys()
-    datasets_data = [dataset for dataset in datasets if args.data in dataset]
-    datasets_QCD  = [dataset for dataset in datasets if ((args.data not in dataset) & ('GluGlu' not in dataset))]
+    samples = mapping.keys()
+    samples_data = [sample for sample in samples if 'DATA' in sample]
+    samples_QCD  = [sample for sample in samples if (('DATA' not in sample) & ('GluGlu' not in sample))]
     
-    h = h.group("dataset", hist.Cat("dataset", "Dataset"), mapping)
-    #### rescaling QCD to data
-    if not args.lumiscale:
-        dataSum = np.sum( h_fail[args.data].sum('flavor').values()[('BTagMu',)] )
-        QCDSum = np.sum( h_fail[datasets_QCD].sum('dataset', 'flavor').values()[()] )
-        QCD = h[datasets_QCD].sum('dataset')
-        QCD.scale( dataSum/QCDSum )
-    else:
-        QCD = h[datasets_QCD].sum('dataset')
+    h = h.group("sample", hist.Cat("sample", "sample"), mapping)
+    h_bbcc = h_bbcc.group("sample", hist.Cat("sample", "sample"), mapping)
+    QCD  = h[samples_QCD].sum('sample')
+    DATA = h[samples_data].sum('sample')
+    QCD_bbcc  = h_bbcc[samples_QCD].sum('sample')
+    DATA_bbcc = h_bbcc[samples_data].sum('sample')
+    print(QCD.sparse_axes())
 
-    #### storing into dict for each region
-    regions = [str(s) for s in h.axis('region').identifiers() if str(s) != 'region']
-    for region in regions:
-        for iflav in QCD.sum('region').values():
-            #print(region, iflav[0])
-            #print(QCD.values())
-            tmpValue, sumw2 = QCD[(iflav[0], region)].sum('region', 'flavor').values(sumw2=True)[()]
-            outputDict[ histname+'_'+region+'_QCD_'+iflav[0] ] = [ tmpValue, sumw2 ]
-        #print(h.values(sumw2=True))
-        tmpValue, sumw2 = h[(args.data, 'Data', region, )].sum('region', 'flavor').values(sumw2=True)[('BTagMu', )]
-        outputDict[ histname+'_'+region+'_BtagMu' ] = [ tmpValue, sumw2 ]
+    #### storing into dict for each cat
+    cats    = [str(s) for s in h.axis('cat').identifiers() if str(s) != 'cat']
+    flavors = [str(s) for s in h.axis('flavor').identifiers() if str(s) != 'Data']
+    flavors_bbcc = [str(s) for s in h_bbcc.axis('flavor').identifiers() if str(s) != 'Data']
+    years   = [str(s) for s in h.axis('year').identifiers() if str(s) != 'year']
+    categories_to_sum_over = ['cat', 'year', 'flavor']
+    for cat in cats:
+        print("Category:", cat)
+        for flavor in flavors:
+            tmpValue, sumw2 = QCD[(cat, year, flavor)].sum(*categories_to_sum_over).values(sumw2=True)[()]
+            outputDict[ histname+'_'+cat+'_QCD_'+flavor+'_'+year ] = [ tmpValue, sumw2 ]
+        for flavor in flavors_bbcc:
+            ### HARDCODED: when rebinning the flavor axis, it becomes the first sparse axis
+            tmpValue, sumw2 = QCD_bbcc[(flavor, cat, year)].sum(*categories_to_sum_over).values(sumw2=True)[()]
+            outputDict_bbcc[ histname+'_'+cat+'_QCD_'+flavor+'_'+year ] = [ tmpValue, sumw2 ]
+        tmpValue, sumw2 = DATA[(cat, year, 'Data')].sum(*categories_to_sum_over).values(sumw2=True)[()]
+        outputDict[ histname+'_'+cat+'_Data'+'_'+year ]      = [ tmpValue, sumw2 ]
+        outputDict_bbcc[ histname+'_'+cat+'_Data'+'_'+year ] = [ tmpValue, sumw2 ]
 
 #### Saving into pickle
-output_dir = args.outputDir if args.outputDir else os.getcwd()+"/histograms/"
-if not os.path.exists(output_dir):
-    os.makedirs(output_dir)
-outputFileName = output_dir + ( args.output if args.output else args.input.split('/')[-1].replace(args.input.split('.')[-1], 'pkl')  )
-outputFile = open( outputFileName, 'wb'  )
-pickle.dump( outputDict, outputFile, protocol=2 )
-outputFile.close()
+output_dir = config.output
+if not os.path.exists(config.output):
+    os.makedirs(config.output)
+outputFileName = config.outfile.replace('.coffea', '.pkl')
+outputFileName_bbcc = outputFileName.replace('.pkl', '_bbcc.pkl')
+for fname, d in zip([outputFileName, outputFileName_bbcc], [outputDict, outputDict_bbcc]):
+    if args.label:
+        fname = fname.replace('.pkl', f'_{args.label}.pkl')
+    print("Saving config file to " + fname)
+    outputFile = open( fname, 'wb' )
+    pickle.dump( d, outputFile, protocol=2 )
+    outputFile.close()
+
+key = 'hist_leadfatjet_pt'
+if not key in accumulator.keys():
+    raise NotImplementedError
+h = accumulator[key]
+cats = [str(s) for s in h.axis('cat').identifiers() if str(s) != 'cat']
+categoriesFileName = '/'.join( config.outfile.split('/')[:-1] ) + '/categories.json'
+print("Saving categories file to " + categoriesFileName)
+categoriesFile = open( categoriesFileName, 'w' )
+json.dump(cats, categoriesFile, indent=1)
