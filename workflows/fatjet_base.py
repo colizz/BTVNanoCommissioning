@@ -88,7 +88,9 @@ class fatjetBaseProcessor(processor.ProcessorABC):
 
         # Accumulator with seed number used for the stochastic smearing, for each processed chunk
         self._seed_dict = {"seed_chunk" : processor.defaultdict_accumulator(int)}
+        self._seed_fatjet_dict = {"seed_fatjet_chunk" : processor.defaultdict_accumulator(int)}
         self._accum_dict.update(self._seed_dict)
+        self._accum_dict.update(self._seed_fatjet_dict)
 
         #for var in self._vars_to_plot.keys():
         #       self._accumulator.add(processor.dict_accumulator({var : processor.column_accumulator(np.array([]))}))
@@ -237,9 +239,12 @@ class fatjetBaseProcessor(processor.ProcessorABC):
             sys.exit("Warning: Run 3 JEC are not implemented yet.")
         if JER:
             self.events.Jet, seed_dict = jet_correction(self.events, "Jet", "AK4PFchs", self._year, self._JECversion, self._JERversion, verbose=verbose)
+            self.events.FatJet, seed_fatjet_dict = jet_correction(self.events, "FatJet", "AK8PFPuppi", self._year, self._JECversion, self._JERversion, verbose=verbose)
             self.output['seed_chunk'].update(seed_dict)
+            self.output['seed_fatjet_chunk'].update(seed_fatjet_dict)
         else:
             self.events.Jet = jet_correction(self.events, "Jet", "AK4PFchs", self._year, self._JECversion, verbose=verbose)
+            self.events.FatJet = jet_correction(self.events, "FatJet", "AK8PFPuppi", self._year, self._JECversion, verbose=verbose)
 
     # Function to compute masks to preselect objects and save them as attributes of `events`
     def apply_object_preselection(self):
