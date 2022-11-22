@@ -1,5 +1,6 @@
 import numpy as np
 import awkward as ak
+from collections import defaultdict
 
 from pocket_coffea.workflows.base import BaseProcessorABC
 from pocket_coffea.utils.configurator import Configurator
@@ -20,6 +21,9 @@ from pocket_coffea.lib.hist_manager import HistManager, Axis, HistConf
 class fatjetBaseProcessor(BaseProcessorABC):
     def __init__(self, cfg: Configurator):
         super().__init__(cfg)
+        # Define dictionary to save fatjet JER seeds
+        self.output_format.update({"seed_fatjet_chunk": defaultdict(str)})
+
         # Additional axis for the year
         self.custom_axes.append(
             Axis(
@@ -30,17 +34,6 @@ class fatjetBaseProcessor(BaseProcessorABC):
                 type="strcat",
                 growth=False,
                 label="Year",
-            )
-        )
-        self.custom_axes.append(
-            Axis(
-                coll="metadata",
-                field="flavor",
-                name="flavor",
-                bins={'l', 'c', 'b', 'cc', 'bb'},
-                type="strcat",
-                growth=False,
-                label="Flavor",
             )
         )
 
@@ -134,10 +127,8 @@ class fatjetBaseProcessor(BaseProcessorABC):
 
         # Apply di-muon pT ratio cut on FatJets
         dimuon_pt_ratio = 0.6
-        mask_ptratio = (self.events.dimuon.pt / self.events.FatJet.pt < dimuon_pt_ratio)
-        mask_ptratio = ak.where( ak.is_none(mask_ptratio), False, mask_ptratio )
-        print("******************") 
-        print(mask_ptratio)
+        mask_ptratio = (self.events.dimuon.pt / self.events.FatJetGood.pt < dimuon_pt_ratio)
+        mask_ptratio = ak.where( ak.is_none(mask_ptratio), ak.zeros_like(self.events.FatJetGood.pt, dtype=bool), mask_ptratio )
         self.events["FatJetGood"] = self.events.FatJetGood[mask_ptratio]
 
     def count_objects(self):
@@ -152,15 +143,12 @@ class fatjetBaseProcessor(BaseProcessorABC):
 
     # Function that defines common variables employed in analyses and save them as attributes of `events`
     def define_common_variables_before_presel(self):
-        Xbb = self.events.FatJet.particleNetMD_Xbb
-        Xcc = self.events.FatJet.particleNetMD_Xcc
-        QCD = self.events.FatJet.particleNetMD_QCD
+        '''
+        In this function we define the variables that are needed for the event preselection.
+        '''
         fatjet_fields = {
-            "tau21"   : self.events.FatJet.tau2 / self.events.FatJet.tau1,
             "subjet1" : self.events.FatJet.subjets[:, :, 0],
             "subjet2" : self.events.FatJet.subjets[:, :, 1],
-            "particleNetMD_Xbb_QCD" : Xbb / (Xbb + QCD),
-            "particleNetMD_Xcc_QCD" : Xcc / (Xcc + QCD),
         }
 
         for field, value in fatjet_fields.items():
@@ -174,20 +162,31 @@ class fatjetBaseProcessor(BaseProcessorABC):
         }
 
         for field, value in fatjet_subjet_fields.items():
-            #print("*********************")
-            #print(ak.num(self.events.FatJet.subjet1, axis=1))
-            #print(ak.num(value, axis=1))
-            #print(value)
-            self.events[field] = ak.with_field(self.events, value, field)
+            self.events = ak.with_field(self.events, value, field)
 
-        self.events.FatJet.subjet1 = ak.with_field(self.events.FatJet.subjet1, self.events.FatJet.subjet1.nearest(self.events.MuonGood, threshold=0.4)[:, 0], "MuonLeading")
-        self.events.FatJet.subjet2 = ak.with_field(self.events.FatJet.subjet2, self.events.FatJet.subjet2.nearest(self.events.MuonGood, threshold=0.4)[:, 0], "MuonLeading")
+    def define_common_variables_after_presel(self):
+        Xbb = self.events.FatJetGood.particleNetMD_Xbb
+        Xcc = self.events.FatJetGood.particleNetMD_Xcc
+        QCD = self.events.FatJetGood.particleNetMD_QCD
+        fatjet_fields = {
+            "tau21"   : self.events.FatJetGood.tau2 / self.events.FatJetGood.tau1,
+            "subjet1" : self.events.FatJetGood.subjets[:, :, 0],
+            "subjet2" : self.events.FatJetGood.subjets[:, :, 1],
+            "particleNetMD_Xbb_QCD" : Xbb / (Xbb + QCD),
+            "particleNetMD_Xcc_QCD" : Xcc / (Xcc + QCD),
+        }
+
+        for field, value in fatjet_fields.items():
+            self.events["FatJetGood"] = ak.with_field(self.events.FatJetGood, value, field)
+
+        self.events.FatJetGood.subjet1 = ak.with_field(self.events.FatJetGood.subjet1, self.events.FatJetGood.subjet1.nearest(self.events.MuonGood, threshold=0.4)[:, 0], "MuonLeading")
+        self.events.FatJetGood.subjet2 = ak.with_field(self.events.FatJetGood.subjet2, self.events.FatJetGood.subjet2.nearest(self.events.MuonGood, threshold=0.4)[:, 0], "MuonLeading")
 
         # Define SV observables
         def project(a, b):
             return a.dot(b)/b.dot(b) * b
 
-        self.events.SV = self.events.SV[get_sv_in_jet(self.events.FatJet[:,0], self.events.SV)]
+        self.events.SV = self.events.SV[get_sv_in_jet(self.events.FatJetGood[:,0], self.events.SV)]
         i_maxPt     = ak.argsort(self.events.SV.pt, ascending=False)
         i_maxdxySig = ak.argsort(self.events.SV.dxySig, ascending=False)
         sv_pt_sorted = self.events.SV[i_maxPt]
@@ -197,8 +196,8 @@ class fatjetBaseProcessor(BaseProcessorABC):
         sv_fields = {
             "summass" : sv_pt_sorted.p4.sum().mass,
             "logsummass" : np.log(sv_pt_sorted.p4.sum().mass),
-            "projmass" : project(sv_pt_sorted.p4.sum(), self.events.FatJet[:,0]).mass,
-            "logprojmass" : np.log(project(sv_pt_sorted.p4.sum(), self.events.FatJet[:,0]).mass),
+            "projmass" : project(sv_pt_sorted.p4.sum(), self.events.FatJetGood[:,0]).mass,
+            "logprojmass" : np.log(project(sv_pt_sorted.p4.sum(), self.events.FatJetGood[:,0]).mass),
             "sv1mass" : leadsv.mass,
             "logsv1mass" : np.log(leadsv.mass),
         }
@@ -219,31 +218,46 @@ class fatjetBaseProcessor(BaseProcessorABC):
         # The function assigns a flavor to the fatjets depending on the hadron flavor, and the number of B and C hadrons
         self._flavors = {}
         if self._isMC:
-            self._flavors['b'] = (self.events.FatJet[:,0].hadronFlavour == 5)
-            self._flavors['c'] = (self.events.FatJet[:,0].hadronFlavour == 4)
-            self._flavors['l'] = (self.events.FatJet[:,0].hadronFlavour < 4)
-            self._flavors['bb'] = abs(self.events.FatJet[:,0].hadronFlavour == 5) & (self.events.FatJet[:,0].nBHadrons >= 2) #& (self.events.FatJet[:,0].nCHadrons == 0)
-            self._flavors['cc'] = abs(self.events.FatJet[:,0].hadronFlavour == 4) & (self.events.FatJet[:,0].nBHadrons == 0) & (self.events.FatJet[:,0].nCHadrons >= 2)
-            #self._flavors['ll'] = abs(self.events.FatJet[:,0].hadronFlavour < 4) & (self.events.FatJet[:,0].nBHadrons == 0) & (self.events.FatJet[:,0].nCHadrons == 0)
+            self._flavors['b'] = (self.events.FatJetGood[:,0].hadronFlavour == 5)
+            self._flavors['c'] = (self.events.FatJetGood[:,0].hadronFlavour == 4)
+            self._flavors['l'] = (self.events.FatJetGood[:,0].hadronFlavour < 4)
+            self._flavors['bb'] = abs(self.events.FatJetGood[:,0].hadronFlavour == 5) & (self.events.FatJetGood[:,0].nBHadrons >= 2) #& (self.events.FatJetGood[:,0].nCHadrons == 0)
+            self._flavors['cc'] = abs(self.events.FatJetGood[:,0].hadronFlavour == 4) & (self.events.FatJetGood[:,0].nBHadrons == 0) & (self.events.FatJetGood[:,0].nCHadrons >= 2)
+            #self._flavors['ll'] = abs(self.events.FatJetGood[:,0].hadronFlavour < 4) & (self.events.FatJetGood[:,0].nBHadrons == 0) & (self.events.FatJetGood[:,0].nCHadrons == 0)
             self._flavors['b'] = self._flavors['b'] & ~self._flavors['bb']
             self._flavors['c'] = self._flavors['c'] & ~self._flavors['cc']
             self._flavors['l'] = self._flavors['l'] & ~self._flavors['bb'] & ~self._flavors['cc'] & ~self._flavors['b'] & ~self._flavors['c']
             #self._flavors['others'] = ~self._flavors['l'] & ~self._flavors['bb'] & ~self._flavors['cc'] & ~self._flavors['b'] & ~self._flavors['c']
-        else:
-            self._flavors['Data'] = np.ones(self.nEvents_after_presel, dtype='bool')
+        #else:
+        #    self._flavors['Data'] = np.ones(self.nEvents_after_presel, dtype='bool')
+
+    def define_custom_axes_extra(self):
+        # Add 'flavor' axis for MC samples
+        if self._isMC:
+            self.custom_axes.append(
+                Axis(
+                    coll="custom",
+                    field="flavor",
+                    name="flavor",
+                    bins=5,
+                    start=0,
+                    stop=5,
+                    type="int",
+                    lim=(0,5),
+                    growth=False,
+                    label="Flavor",
+                )
+            )
 
     def define_histograms_extra(self):
-        '''
-        Function that get called after the creation of the HistManager.
-        The user can redefine this function to manipulate the HistManager
-        histogram configuration to add customizations directly to the histogram
-        objects before the filling.
-        This function should also be redefined to fill the `self.custom_histogram_fields`
-        that are passed to the histogram filling.
-        '''
-        flavor_array = ak.Array(self.nevents*['others'])
-        for flavor, mask in self._flavors.items():
-            flavor_array = ak.where(mask, flavor, flavor_array)
-        self.custom_histogram_fields = {
-            'flavor' : flavor_array
-        }
+        if self._isMC:
+            flavor_array = ak.Array(self.nevents*['others'])
+            flavor_to_int = {'l' : 0, 'c' : 1, 'b' : 2, 'cc' : 3, 'bb' : 4}
+            for flavor, mask in self._flavors.items():
+                flavor_array = ak.where(mask, flavor_to_int[flavor], flavor_array)
+            self.custom_histogram_fields = {
+                'flavor' : flavor_array
+            }
+
+            print("********************")
+            print(flavor_array)
