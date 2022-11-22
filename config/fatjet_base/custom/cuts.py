@@ -2,7 +2,7 @@
 import awkward as ak
 import pocket_coffea.lib.cut_functions as cuts_f
 from pocket_coffea.lib.cut_definition import Cut
-from config.fatjet_base.custom.functions import mutag, ptbin, ptmsd, ptmsdtau, min_nObj_minmsd
+from config.fatjet_base.custom.functions import mutag, ptbin, ptmsd, ptmsdtau, min_nObj_minmsd, flavor_mask
 
 mutag_presel = Cut(
 	name="mutag",
@@ -65,3 +65,10 @@ def get_nObj_minmsd(N, minmsd=None, coll="JetGood", name=None):
     else:
     	raise NotImplementedError
         #return Cut(name=name, params={"N": N, "coll": coll}, function=min_nObj)
+
+def get_flavor(flavor):
+    return Cut(
+        name=flavor,
+        params={"flavor": flavor},
+        function=flavor_mask
+    )

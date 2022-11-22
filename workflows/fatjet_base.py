@@ -37,6 +37,10 @@ class fatjetBaseProcessor(BaseProcessorABC):
             )
         )
 
+    def load_metadata_extra(self):
+        self._JECversion = JECversions[self._year]['MC' if self._isMC else 'Data']
+        self._JERversion = JERversions[self._year]['MC' if self._isMC else 'Data']
+
     def apply_JERC(self, JER=True, verbose=False):
         if not self._isMC:
             return
@@ -214,50 +218,8 @@ class fatjetBaseProcessor(BaseProcessorABC):
         for field, value in sv_fields.items():
             self.events["SVLeading"] = ak.with_field(self.events.SVLeading, value, field)
 
-    def process_extra_after_presel(self):
-        # The function assigns a flavor to the fatjets depending on the hadron flavor, and the number of B and C hadrons
-        self._flavors = {}
-        if self._isMC:
-            self._flavors['b'] = (self.events.FatJetGood[:,0].hadronFlavour == 5)
-            self._flavors['c'] = (self.events.FatJetGood[:,0].hadronFlavour == 4)
-            self._flavors['l'] = (self.events.FatJetGood[:,0].hadronFlavour < 4)
-            self._flavors['bb'] = abs(self.events.FatJetGood[:,0].hadronFlavour == 5) & (self.events.FatJetGood[:,0].nBHadrons >= 2) #& (self.events.FatJetGood[:,0].nCHadrons == 0)
-            self._flavors['cc'] = abs(self.events.FatJetGood[:,0].hadronFlavour == 4) & (self.events.FatJetGood[:,0].nBHadrons == 0) & (self.events.FatJetGood[:,0].nCHadrons >= 2)
-            #self._flavors['ll'] = abs(self.events.FatJetGood[:,0].hadronFlavour < 4) & (self.events.FatJetGood[:,0].nBHadrons == 0) & (self.events.FatJetGood[:,0].nCHadrons == 0)
-            self._flavors['b'] = self._flavors['b'] & ~self._flavors['bb']
-            self._flavors['c'] = self._flavors['c'] & ~self._flavors['cc']
-            self._flavors['l'] = self._flavors['l'] & ~self._flavors['bb'] & ~self._flavors['cc'] & ~self._flavors['b'] & ~self._flavors['c']
-            #self._flavors['others'] = ~self._flavors['l'] & ~self._flavors['bb'] & ~self._flavors['cc'] & ~self._flavors['b'] & ~self._flavors['c']
-        #else:
-        #    self._flavors['Data'] = np.ones(self.nEvents_after_presel, dtype='bool')
+    def define_column_accumulators(self):
+        pass
 
-    def define_custom_axes_extra(self):
-        # Add 'flavor' axis for MC samples
-        if self._isMC:
-            self.custom_axes.append(
-                Axis(
-                    coll="custom",
-                    field="flavor",
-                    name="flavor",
-                    bins=5,
-                    start=0,
-                    stop=5,
-                    type="int",
-                    lim=(0,5),
-                    growth=False,
-                    label="Flavor",
-                )
-            )
-
-    def define_histograms_extra(self):
-        if self._isMC:
-            flavor_array = ak.Array(self.nevents*['others'])
-            flavor_to_int = {'l' : 0, 'c' : 1, 'b' : 2, 'cc' : 3, 'bb' : 4}
-            for flavor, mask in self._flavors.items():
-                flavor_array = ak.where(mask, flavor_to_int[flavor], flavor_array)
-            self.custom_histogram_fields = {
-                'flavor' : flavor_array
-            }
-
-            print("********************")
-            print(flavor_array)
+    def fill_column_accumulators(self):
+        pass

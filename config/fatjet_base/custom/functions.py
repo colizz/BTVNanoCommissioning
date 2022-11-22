@@ -229,3 +229,23 @@ def get_trigger_mask(events, key, year, isMC, primaryDatasets=None, invert=False
     if invert:
         trigger_mask = ~trigger_mask
     return trigger_mask
+
+def flavor_mask(events, params, **kwargs):
+    mask = {
+        "l"  : events.FatJetGood[:,0].hadronFlavour < 4,
+        "c"  : events.FatJetGood[:,0].hadronFlavour == 4,
+        "b"  : events.FatJetGood[:,0].hadronFlavour == 5,
+        "cc" : abs(events.FatJetGood[:,0].hadronFlavour == 4) & (events.FatJetGood[:,0].nBHadrons == 0) & (events.FatJetGood[:,0].nCHadrons >= 2),
+        "bb" : abs(events.FatJetGood[:,0].hadronFlavour == 5) & (events.FatJetGood[:,0].nBHadrons >= 2)
+    }
+
+    if params["flavor"] in ["bb", "cc"]:
+        return mask[params["flavor"]]
+    elif params["flavor"] == "b":
+        return mask[params["flavor"]] & ~mask["bb"]
+    elif params["flavor"] == "c":
+        return mask[params["flavor"]] & ~mask["cc"]
+    elif params["flavor"] == "l":
+        return mask[params["flavor"]] & ~mask["bb"] & ~mask["cc"] & ~mask["b"] & ~mask["c"]
+    else:
+        raise NotImplementedError
