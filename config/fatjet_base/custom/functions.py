@@ -5,7 +5,7 @@ from pocket_coffea.lib.cut_definition import Cut
 def tagger_mask(events, params, **kwargs):
     mask = np.zeros(len(events), dtype='bool')
     for tagger in params["taggers"]:
-        mask = mask | (events.FatJetLeading[tagger] > params["wp"])
+        mask = mask | (events.FatJet[:,0][tagger] > params["wp"])
     assert (params["category"] in ["pass", "fail"]), "The allowed categories for the tagger selection are 'pass' and 'fail'"
     if params["category"] == "fail":
         mask = ~mask
@@ -14,14 +14,14 @@ def tagger_mask(events, params, **kwargs):
 def tagger_pass(events, params, **kwargs):
     mask = np.zeros(len(events), dtype='bool')
     for tagger in params["taggers"]:
-        mask = mask | (events.FatJetLeading[tagger] > params["wp"])
+        mask = mask | (events.FatJet[:,0][tagger] > params["wp"])
 
     return mask
 
 def tagger_fail(events, params, **kwargs):
     mask = np.zeros(len(events), dtype='bool')
     for tagger in params["taggers"]:
-        mask = mask | (events.FatJetLeading[tagger] < params["wp"])
+        mask = mask | (events.FatJet[:,0][tagger] < params["wp"])
 
     return mask
 
@@ -30,11 +30,11 @@ def tagger_mask_exclusive_wp(events, params, **kwargs):
     cut_low, cut_high = params["wp"]
     assert (cut_low < cut_high), "The lower bound of the WP has to be smaller than the higher bound"
     mask = np.zeros(len(events), dtype='bool')
-    mask = (events.FatJetLeading[params["tagger"]] > cut_low) & (events.FatJetLeading[params["tagger"]] <= cut_high)
+    mask = (events.FatJet[:,0][params["tagger"]] > cut_low) & (events.FatJet[:,0][params["tagger"]] <= cut_high)
 
     assert (params["category"] in ["pass", "fail"]), "The allowed categories for the tagger selection are 'pass' and 'fail'"
     if params["category"] == "fail":
-        mask = ~mask & (events.FatJetLeading[params["tagger"]] >= 0) & (events.FatJetLeading[params["tagger"]] <= 1)
+        mask = ~mask & (events.FatJet[:,0][params["tagger"]] >= 0) & (events.FatJet[:,0][params["tagger"]] <= 1)
 
     return mask
 
@@ -43,11 +43,11 @@ def tagger_mask_inclusive_wp(events, params, **kwargs):
     cut_low, cut_high = params["wp"]
     assert (cut_low < cut_high), "The lower bound of the WP has to be smaller than the higher bound"
     mask = np.zeros(len(events), dtype='bool')
-    mask = (events.FatJetLeading[params["tagger"]] > cut_low)
+    mask = (events.FatJet[:,0][params["tagger"]] > cut_low)
 
     assert (params["category"] in ["pass", "fail"]), "The allowed categories for the tagger selection are 'pass' and 'fail'"
     if params["category"] == "fail":
-        mask = ~mask & (events.FatJetLeading[params["tagger"]] >= 0) & (events.FatJetLeading[params["tagger"]] <= 1)
+        mask = ~mask & (events.FatJet[:,0][params["tagger"]] >= 0) & (events.FatJet[:,0][params["tagger"]] <= 1)
 
     return mask
 
@@ -90,30 +90,30 @@ def mutag(events, params, **kwargs):
     # Mask to select events with leading fatjet having at least `nmusj1` subjets in its leading subjet
     # and `nmusj2` subjets in its subleading subjet. Additionally, a requirement on the dimuon pt ratio to the fatjet pt is required.
     #fatjet_mutag = (events.nmusj1 >= params["nmusj1"]) & (events.nmusj2 >= params["nmusj2"]) & (events.dimuon.pt/events.FatJetLeading.pt < params["dimuon_pt_ratio"])
-    fatjet_mutag = (events.nmusj1 >= params["nmusj1"]) & (events.nmusj2 >= params["nmusj2"])
+    fatjet_mutag = (events.nFatJetGood > 0) & ak.any(events.nmusj1 >= params["nmusj1"], axis=1) & ak.any(events.nmusj2 >= params["nmusj2"], axis=1)
 
     return fatjet_mutag
 
 def ptbin(events, params, **kwargs):
     # Mask to select events in a fatjet pt bin
     if params["pt_high"] == 'Inf':
-        return (events.FatJetLeading.pt > params["pt_low"])
+        return (events.FatJet[:,0].pt > params["pt_low"])
     elif type(params["pt_high"]) != str:
-        return (events.FatJetLeading.pt > params["pt_low"]) & (events.FatJetLeading.pt < params["pt_high"])
+        return (events.FatJet[:,0].pt > params["pt_low"]) & (events.FatJet[:,0].pt < params["pt_high"])
     else:
         raise NotImplementedError
 
 def ptmsd(events, params, **kwargs):
     # Mask to select events with a fatjet with minimum softdrop mass and maximum tau21
-    return (events.FatJetLeading.pt > params["pt"]) & (events.FatJetLeading.msoftdrop > params["msd"])
+    return (events.FatJet[:,0].pt > params["pt"]) & (events.FatJet[:,0].msoftdrop > params["msd"])
 
 def ptmsdtau(events, params, **kwargs):
     # Mask to select events with a fatjet with minimum softdrop mass and maximum tau21
-    return (events.FatJetLeading.pt > params["pt"]) & (events.FatJetLeading.msoftdrop > params["msd"]) & (events.FatJetLeading.tau21 < params["tau21"])
+    return (events.FatJet[:,0].pt > params["pt"]) & (events.FatJet[:,0].msoftdrop > params["msd"]) & (events.FatJet[:,0].tau21 < params["tau21"])
 
 def ptmsdtauDDCvB(events, params, **kwargs):
     # Mask to select events with a fatjet with minimum softdrop mass and maximum tau21 and a requirement on the DDCvB score
-    return (events.FatJetLeading.pt > params["pt"]) & (events.FatJetLeading.msoftdrop > params["msd"]) & (events.FatJetLeading.tau21 < params["tau21"]) & (events.FatJetLeading.btagDDCvBV2 > params["DDCvB"])
+    return (events.FatJet[:,0].pt > params["pt"]) & (events.FatJet[:,0].msoftdrop > params["msd"]) & (events.FatJet[:,0].tau21 < params["tau21"]) & (events.FatJet[:,0].btagDDCvBV2 > params["DDCvB"])
 
 def min_nObj_minmsd(events, params, **kwargs):
     return ak.sum(events[params["coll"]].msoftdrop >= params["minmsd"], axis=1) >= params["N"]
@@ -214,6 +214,12 @@ def get_trigger_mask(events, key, year, isMC, primaryDatasets=None, invert=False
             print(f"The HLT path '{trigger}' is not included in the Branches.")
             continue
         elif year=="2018" and ((trigger == 'BTagMu_AK4Jet300_Mu5') & ('BTagMu_AK4Jet300_Mu5' not in events.HLT.fields)):
+            print(f"The HLT path '{trigger}' is not included in the Branches.")
+            continue
+        elif year=="2018" and ((trigger == 'BTagMu_AK8Jet300_Mu5_noalgo') & ('BTagMu_AK8Jet300_Mu5_noalgo' not in events.HLT.fields)):
+            print(f"The HLT path '{trigger}' is not included in the Branches.")
+            continue
+        elif year=="2018" and ((trigger == 'BTagMu_AK4Jet300_Mu5_noalgo') & ('BTagMu_AK4Jet300_Mu5_noalgo' not in events.HLT.fields)):
             print(f"The HLT path '{trigger}' is not included in the Branches.")
             continue
         else:

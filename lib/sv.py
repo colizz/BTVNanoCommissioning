@@ -10,9 +10,6 @@ def get_nsv(sj, sv, R=0.4):
     # and return the concatenated array
     sv_dr1 = ak.pad_none(sj, 2)[:,0].delta_r(sv.p4)
     sv_dr2 = ak.pad_none(sj, 2)[:,1].delta_r(sv.p4)
-    print(sv_dr1)
-    print(ak.count(ak.pad_none(sj, 2)[:,0]))
-    print(ak.num(sv))
     nsv1 = ak.unflatten( ak.count(sv_dr1[sv_dr1 < R], axis=1), counts=1 )
     nsv2 = ak.unflatten( ak.count(sv_dr2[sv_dr2 < R], axis=1), counts=1 )
 
