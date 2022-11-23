@@ -20,8 +20,9 @@ samples = ["QCD_Pt-170to300",
            "QCD_Pt-800to1000",
            "QCD_Pt-1000toInf",
            "DATA"]
-flavor_cuts = {f : [get_flavor(f)] for f in ['l', 'c', 'b', 'cc', 'bb']}
-subsamples = {s : flavor_cuts for s in samples if 'DATA' not in s}
+subsamples = {}
+for s in filter(lambda x: 'DATA' not in x, samples):
+    subsamples[s] = {f"{s}_{f}" : [get_flavor(f)] for f in ['l', 'c', 'b', 'cc', 'bb']}
 
 cfg =  {
     "dataset" : {
@@ -38,12 +39,12 @@ cfg =  {
 
     # Input and output files
     "workflow" : fatjetBaseProcessor,
-    "output"   : "output/test/fatjet_base_2018UL",
+    "output"   : "output/test/flavorsplit",
     "workflow_options" : {},
 
     "run_options" : {
-        "executor"       : "dask/slurm",
-        "workers"        : 1,
+        "executor"       : "futures",
+        "workers"        : 16,
         "scaleout"       : 125,
         "queue"          : "standard",
         "walltime"       : "8:00:00",
@@ -161,7 +162,7 @@ cfg =  {
     "weights": {
         "common": {
             "inclusive": ["genWeight","lumi","XS",
-                          "pileup",
+                          "pileup"#, "sf_L1prefiring"
                           ],
             "bycategory" : {
             }
@@ -173,7 +174,7 @@ cfg =  {
     "variations": {
         "weights": {
             "common": {
-                "inclusive": [  "pileup" ],
+                "inclusive": [ "pileup"],#, "sf_L1prefiring" ],
                 "bycategory" : {
                 }
             },
@@ -185,24 +186,24 @@ cfg =  {
 
    "variables":
     {
-        **muon_hists(coll="MuonGood"),
-        **muon_hists(coll="MuonGood", pos=0),
-        **jet_hists(coll="JetGood"),
-        **jet_hists(coll="JetGood", pos=0),
+        #**muon_hists(coll="MuonGood"),
+        #**muon_hists(coll="MuonGood", pos=0),
+        #**jet_hists(coll="JetGood"),
+        #**jet_hists(coll="JetGood", pos=0),
         **fatjet_hists(coll="FatJetGood"),
         **fatjet_hists(coll="FatJetGood", pos=0),
-        **sv_hists(coll="SVLeading"),
-        **count_hist(name="nElectronGood", coll="ElectronGood",bins=10, start=0, stop=10),
-        **count_hist(name="nMuonGood", coll="MuonGood",bins=10, start=0, stop=10),
-        **count_hist(name="nJets", coll="JetGood",bins=10, start=0, stop=10),
-        **count_hist(name="nFatJets", coll="FatJetGood",bins=10, start=0, stop=10),
-        **count_hist(name="nSV", coll="SV",bins=10, start=0, stop=10),
-        "nmusj1": HistConf(
-            [ Axis(coll="events", field="nmusj1", label=r"$N_{\mu, SJ1}$", bins=10, start=0, stop=10) ]
-        ),
-        "nmusj2": HistConf(
-            [ Axis(coll="events", field="nmusj2", label=r"$N_{\mu, SJ2}$", bins=10, start=0, stop=10) ]
-        ),
+        **sv_hists(coll="events"),
+        #**count_hist(name="nElectronGood", coll="ElectronGood",bins=10, start=0, stop=10),
+        #**count_hist(name="nMuonGood", coll="MuonGood",bins=10, start=0, stop=10),
+        #**count_hist(name="nJets", coll="JetGood",bins=10, start=0, stop=10),
+        #**count_hist(name="nFatJets", coll="FatJetGood",bins=10, start=0, stop=10),
+        #**count_hist(name="nSV", coll="SV",bins=10, start=0, stop=10),
+        #"nmusj1": HistConf(
+        #    [ Axis(coll="events", field="nmusj1", label=r"$N_{\mu, SJ1}$", bins=10, start=0, stop=10) ]
+        #),
+        #"nmusj2": HistConf(
+        #    [ Axis(coll="events", field="nmusj2", label=r"$N_{\mu, SJ2}$", bins=10, start=0, stop=10) ]
+        #),
     },
 
     "columns" : {}

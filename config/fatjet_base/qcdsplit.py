@@ -20,8 +20,6 @@ samples = ["QCD_Pt-170to300",
            "QCD_Pt-800to1000",
            "QCD_Pt-1000toInf",
            "DATA"]
-flavor_cuts = {f : [get_flavor(f)] for f in ['l', 'c', 'b', 'cc', 'bb']}
-subsamples = {s : flavor_cuts for s in samples if 'DATA' not in s}
 
 cfg =  {
     "dataset" : {
@@ -32,13 +30,13 @@ cfg =  {
             "samples_exclude" : [],
             "year": ['2018']
         },
-        "subsamples": subsamples
+        "subsamples": {}
     },
     
 
     # Input and output files
     "workflow" : fatjetBaseProcessor,
-    "output"   : "output/test/fatjet_base_2018UL",
+    "output"   : "output/test/qcdsplit",
     "workflow_options" : {},
 
     "run_options" : {

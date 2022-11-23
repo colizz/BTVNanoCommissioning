@@ -14,7 +14,7 @@ from pocket_coffea.lib.objects import (
     get_dilepton,
 )
 from config.fatjet_base.custom.leptons import lepton_selection_noniso
-from lib.sv import get_nsv, get_sv_in_jet, get_nmu_in_subjet
+from lib.sv import *
 from pocket_coffea.lib.hist_manager import HistManager, Axis, HistConf
 
 
@@ -187,39 +187,59 @@ class fatjetBaseProcessor(BaseProcessorABC):
         self.events.FatJetGood.subjet2 = ak.with_field(self.events.FatJetGood.subjet2, self.events.FatJetGood.subjet2.nearest(self.events.MuonGood, threshold=0.4)[:, 0], "MuonLeading")
 
         # Define SV observables
-        def project(a, b):
-            return a.dot(b)/b.dot(b) * b
 
-        self.events.SV = self.events.SV[get_sv_in_jet(self.events.FatJetGood[:,0], self.events.SV)]
-        i_maxPt     = ak.argsort(self.events.SV.pt, ascending=False)
-        i_maxdxySig = ak.argsort(self.events.SV.dxySig, ascending=False)
-        sv_pt_sorted = self.events.SV[i_maxPt]
-        leadsv = ak.firsts(sv_pt_sorted)
-        self.events["SVLeading"] = leadsv
-        
-        sv_fields = {
-            "summass" : sv_pt_sorted.p4.sum().mass,
-            "logsummass" : np.log(sv_pt_sorted.p4.sum().mass),
-            "projmass" : project(sv_pt_sorted.p4.sum(), self.events.FatJetGood[:,0]).mass,
-            "logprojmass" : np.log(project(sv_pt_sorted.p4.sum(), self.events.FatJetGood[:,0]).mass),
-            "sv1mass" : leadsv.mass,
-            "logsv1mass" : np.log(leadsv.mass),
-        }
+        #self.events.SV = self.events.SV[get_sv_in_jet(self.events.FatJetGood[:,0], self.events.SV)]
+        sv_in_jet1 = self.events.SV[get_sv_in_jet(self.events.FatJetGood, self.events.SV, pos=0)]
+        sv_in_jet2 = self.events.SV[get_sv_in_jet(self.events.FatJetGood, self.events.SV, pos=1)]
+        i1_maxPt     = ak.argsort(sv_in_jet1.pt, ascending=False)
+        i2_maxPt     = ak.argsort(sv_in_jet2.pt, ascending=False)
+        sv_in_jet1_sorted = sv_in_jet1[i1_maxPt]
+        sv_in_jet2_sorted = sv_in_jet2[i2_maxPt]
 
-        corrmass = np.sqrt(sv_pt_sorted.p4.mass**2 + sv_pt_sorted.p4.pt**2 * np.sin(sv_pt_sorted.pAngle)**2) + sv_pt_sorted.p4.pt * np.sin(sv_pt_sorted.pAngle)
-        sv_pt_sorted['mass'] = corrmass
+        sv_fields = {}
+        position = {'jet1' : 0, 'jet2' : 1}
+        for jet_key, sv_in_jet_sorted in zip(['jet1', 'jet2'], [sv_in_jet1_sorted, sv_in_jet2_sorted]):
+            summass, logsummass = get_summass(sv_in_jet_sorted)
+            projmass, logprojmass = get_projmass(self.events.FatJetGood, sv_in_jet_sorted, pos=position[jet_key])
+            sv1mass, logsv1mass = get_sv1mass(sv_in_jet_sorted)
+            sumcorrmass, logsumcorrmass = get_sumcorrmass(sv_in_jet_sorted)
+            sv_fields[jet_key] = {
+                "summass" : summass,
+                "logsummass" : logsummass,
+                "projmass" : projmass,
+                "logprojmass" : logprojmass,
+                "sv1mass" : sv1mass,
+                "logsv1mass" : logsv1mass,
+                "sumcorrmass" : sumcorrmass,
+                "logsumcorrmass" : logsumcorrmass,
+            }
 
-        sv_corrmass_fields = {
-            "sumcorrmass" : sv_pt_sorted.p4.sum().mass,
-            "logsumcorrmass" : np.log(sv_pt_sorted.p4.sum().mass),
-        }
-        sv_fields.update(sv_corrmass_fields)
-
-        for field, value in sv_fields.items():
-            self.events["SVLeading"] = ak.with_field(self.events.SVLeading, value, field)
+        for field in sv_fields['jet1'].keys():
+            value1_unflattened = ak.unflatten( sv_fields['jet1'][field], ak.ones_like(self.events.FatJetGood[:,0].pt, dtype=int) )
+            value2_unflattened = ak.unflatten( sv_fields['jet2'][field], ak.ones_like(self.events.FatJetGood[:,0].pt, dtype=int) )
+            value_concat = ak.concatenate( (value1_unflattened, value2_unflattened), axis=1 )
+            self.events = ak.with_field(self.events, value_concat, field)
 
     def define_column_accumulators(self):
         pass
 
     def fill_column_accumulators(self):
         pass
+
+    def postprocess(self, accumulator):
+        super().postprocess(accumulator=accumulator)
+
+        for histname, h in accumulator['variables'].items():
+            samples = h.keys()
+            print(samples)
+            h_byflavor = {'DATA' : h['DATA']}
+            for f in ['l', 'c', 'b', 'cc', 'bb']:
+                subsamples_flavor = filter(lambda x : x.endswith(f"_{f}"), samples)
+                for (i, s) in enumerate(subsamples_flavor):
+                    if i==0:
+                        h_byflavor[f] = h[s]
+                    else:
+                        h_byflavor[f] += h[s]
+            accumulator['variables'][histname] = h_byflavor
+
+        return accumulator
