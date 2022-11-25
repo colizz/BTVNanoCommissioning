@@ -44,9 +44,10 @@ class fatjetBaseProcessor(BaseProcessorABC):
     def apply_JERC(self, JER=True, verbose=False):
         if not self._isMC:
             return
-        if int(self._year) > 2018:
+        if int(self._year.split('_')[0]) > 2018:
             sys.exit("Warning: Run 3 JEC are not implemented yet.")
-        if JER:
+        # N.B.: We don't apply JER to 2017 MC since the JER scale factor and resolution are not saved in the JSON
+        if JER & (self._year != '2017'):
             self.events.Jet, seed_dict = jet_correction(
                 self.events,
                 "Jet",
@@ -106,6 +107,9 @@ class fatjetBaseProcessor(BaseProcessorABC):
         self.events["MuonGood"] = lepton_selection_noniso(
             self.events, "Muon", self.cfg.finalstate
         )
+        # Define di-muon object used for di-muon pT ratio object selection
+        self.events = ak.with_field(self.events, ak.pad_none(self.events.MuonGood, 2)[:, 0] + ak.pad_none(self.events.MuonGood, 2)[:, 1], "dimuon")
+        self.events["dimuon"] = ak.with_field(self.events.dimuon, self.events.dimuon.mass, "mass")
         ################################################
         self.events["ElectronGood"] = lepton_selection(
             self.events, "Electron", self.cfg.finalstate
@@ -121,19 +125,10 @@ class fatjetBaseProcessor(BaseProcessorABC):
         self.events["JetGood"], self.jetGoodMask = jet_selection(
             self.events, "Jet", self.cfg.finalstate
         )
+
         self.events["FatJetGood"], self.fatjetGoodMask = jet_selection(
             self.events, "FatJet", self.cfg.finalstate
         )
-
-        # Define di-muon object used for di-muon pT ratio object selection
-        self.events = ak.with_field(self.events, ak.pad_none(self.events.MuonGood, 2)[:, 0] + ak.pad_none(self.events.MuonGood, 2)[:, 1], "dimuon")
-        self.events["dimuon"] = ak.with_field(self.events.dimuon, self.events.dimuon.mass, "mass")
-
-        # Apply di-muon pT ratio cut on FatJets
-        dimuon_pt_ratio = 0.6
-        mask_ptratio = (self.events.dimuon.pt / self.events.FatJetGood.pt < dimuon_pt_ratio)
-        mask_ptratio = ak.where( ak.is_none(mask_ptratio), ak.zeros_like(self.events.FatJetGood.pt, dtype=bool), mask_ptratio )
-        self.events["FatJetGood"] = self.events.FatJetGood[mask_ptratio]
 
     def count_objects(self):
         self.events["nMuonGood"] = ak.num(self.events.MuonGood)
@@ -145,30 +140,16 @@ class fatjetBaseProcessor(BaseProcessorABC):
         self.events["nFatJetGood"] = ak.num(self.events.FatJetGood)
         self.events["nSV"] = ak.num(self.events.SV)
 
-    # Function that defines common variables employed in analyses and save them as attributes of `events`
-    def define_common_variables_before_presel(self):
-        '''
-        In this function we define the variables that are needed for the event preselection.
-        '''
-        fatjet_fields = {
-            "subjet1" : self.events.FatJet.subjets[:, :, 0],
-            "subjet2" : self.events.FatJet.subjets[:, :, 1],
+    def define_common_variables_after_presel(self):
+        
+        fatjet_sv_fields = {
+            "nsv1"    : get_nsv(self.events.FatJetGood, self.events.SV, pos=0),
+            "nsv2"    : get_nsv(self.events.FatJetGood, self.events.SV, pos=1),
         }
 
-        for field, value in fatjet_fields.items():
-            self.events["FatJet"] = ak.with_field(self.events.FatJet, value, field)
-
-        fatjet_subjet_fields = {
-            "nsv1"    : get_nsv(self.events.FatJet.subjet1, self.events.SV),
-            "nsv2"    : get_nsv(self.events.FatJet.subjet2, self.events.SV),
-            "nmusj1"  : get_nmu_in_subjet(self.events.FatJet.subjet1, self.events.MuonGood),
-            "nmusj2"  : get_nmu_in_subjet(self.events.FatJet.subjet2, self.events.MuonGood),
-        }
-
-        for field, value in fatjet_subjet_fields.items():
+        for field, value in fatjet_sv_fields.items():
             self.events = ak.with_field(self.events, value, field)
 
-    def define_common_variables_after_presel(self):
         Xbb = self.events.FatJetGood.particleNetMD_Xbb
         Xcc = self.events.FatJetGood.particleNetMD_Xcc
         QCD = self.events.FatJetGood.particleNetMD_QCD
@@ -200,14 +181,14 @@ class fatjetBaseProcessor(BaseProcessorABC):
         position = {'jet1' : 0, 'jet2' : 1}
         for jet_key, sv_in_jet_sorted in zip(['jet1', 'jet2'], [sv_in_jet1_sorted, sv_in_jet2_sorted]):
             summass, logsummass = get_summass(sv_in_jet_sorted)
-            projmass, logprojmass = get_projmass(self.events.FatJetGood, sv_in_jet_sorted, pos=position[jet_key])
+            #projmass, logprojmass = get_projmass(self.events.FatJetGood, sv_in_jet_sorted, pos=position[jet_key])
             sv1mass, logsv1mass = get_sv1mass(sv_in_jet_sorted)
             sumcorrmass, logsumcorrmass = get_sumcorrmass(sv_in_jet_sorted)
             sv_fields[jet_key] = {
                 "summass" : summass,
                 "logsummass" : logsummass,
-                "projmass" : projmass,
-                "logprojmass" : logprojmass,
+                #"projmass" : projmass,
+                #"logprojmass" : logprojmass,
                 "sv1mass" : sv1mass,
                 "logsv1mass" : logsv1mass,
                 "sumcorrmass" : sumcorrmass,
@@ -215,8 +196,8 @@ class fatjetBaseProcessor(BaseProcessorABC):
             }
 
         for field in sv_fields['jet1'].keys():
-            value1_unflattened = ak.unflatten( sv_fields['jet1'][field], ak.ones_like(self.events.FatJetGood[:,0].pt, dtype=int) )
-            value2_unflattened = ak.unflatten( sv_fields['jet2'][field], ak.ones_like(self.events.FatJetGood[:,0].pt, dtype=int) )
+            value1_unflattened = ak.unflatten( sv_fields['jet1'][field], counts=1 )
+            value2_unflattened = ak.unflatten( sv_fields['jet2'][field], counts=1 )
             value_concat = ak.concatenate( (value1_unflattened, value2_unflattened), axis=1 )
             self.events = ak.with_field(self.events, value_concat, field)
 
