@@ -7,12 +7,21 @@ import awkward as ak
 def project(a, b):
     return a.dot(b)/b.dot(b) * b
 
-def get_nsv(sj, sv, R=0.4):
+def get_nsv(jet, sv, pos, R=0.4):
 
     # Compute the number of SV inside the subjet of the leading and subleading FatJet (nsv1, nsv2)
     # and return the concatenated array
-    sv_dr1 = ak.pad_none(sj, 2)[:,0].delta_r(sv.p4)
-    sv_dr2 = ak.pad_none(sj, 2)[:,1].delta_r(sv.p4)
+    if pos == 0:
+        jet = jet[:,0]
+    elif pos == 1:
+        jet = ak.pad_none(jet,2)[:,1]
+    else:
+        raise Exception("Only the leading and subleading jets can be considered.")
+
+    sj1 = jet.subjets[:, 0]
+    sj2 = jet.subjets[:, 1]
+    sv_dr1 = sj1.delta_r(sv.p4)
+    sv_dr2 = sj2.delta_r(sv.p4)
     nsv1 = ak.unflatten( ak.count(sv_dr1[sv_dr1 < R], axis=1), counts=1 )
     nsv2 = ak.unflatten( ak.count(sv_dr2[sv_dr2 < R], axis=1), counts=1 )
 
@@ -34,12 +43,21 @@ def get_sv_in_jet(jet, sv, pos, R=0.8):
 
     return sv_in_jet
 
-def get_nmu_in_subjet(sj, muon, R=0.4):
+def get_nmu_in_subjet(jet, muon, pos, R=0.4):
 
-    # Compute the number of muons inside the subjet of the leading and subleading FatJet (nmusj1, nmusj2)
-    # and return the concatenated array
-    mu_dr1 = ak.pad_none(sj, 2)[:,0].delta_r(muon)
-    mu_dr2 = ak.pad_none(sj, 2)[:,1].delta_r(muon)
+    # Compute the number of muons inside the subjet of the leading and subleading FatJet (nmusj1, nmusj2).
+    # The concatenated array is returned.
+    if pos == 0:
+        jet = jet[:,0]
+    elif pos == 1:
+        jet = ak.pad_none(jet,2)[:,1]
+    else:
+        raise Exception("Only the leading and subleading jets can be considered.")
+
+    sj1 = jet.subjets[:, 0]
+    sj2 = jet.subjets[:, 1]
+    mu_dr1 = sj1.delta_r(muon)
+    mu_dr2 = sj2.delta_r(muon)
     nmusj1 = ak.unflatten( ak.count(mu_dr1[mu_dr1 < R], axis=1), counts=1 )
     nmusj2 = ak.unflatten( ak.count(mu_dr2[mu_dr2 < R], axis=1), counts=1 )
 
