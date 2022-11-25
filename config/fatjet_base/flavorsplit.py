@@ -193,6 +193,7 @@ cfg =  {
         **fatjet_hists(coll="FatJetGood"),
         **fatjet_hists(coll="FatJetGood", pos=0),
         **sv_hists(coll="events"),
+        **sv_hists(coll="events", pos=0),
         #**count_hist(name="nElectronGood", coll="ElectronGood",bins=10, start=0, stop=10),
         #**count_hist(name="nMuonGood", coll="MuonGood",bins=10, start=0, stop=10),
         #**count_hist(name="nJets", coll="JetGood",bins=10, start=0, stop=10),
