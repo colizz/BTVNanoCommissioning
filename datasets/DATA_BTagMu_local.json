@@ -8933,12 +8933,12 @@
             "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/user/mmarcheg/PFNano/BTagMu/Run2017F-UL2017_MiniAODv2-v1_v01/210521_124409/0000/nano_data2017_131.root"
         ]
     },
-    "DATA_BTagMu_2016-PostVFP_EraF": {
+    "DATA_BTagMu_2016_PostVFP_EraF": {
         "metadata": {
             "das_names": "['/BTagMu/mmarcheg-Run2016F-UL2016_MiniAODv2-v1_PFNanoAOD-ad24b2120d149f794cf1bc769f1be239/USER']",
             "dbs_instance": "prod/phys03",
             "sample": "DATA",
-            "year": "2016-PostVFP",
+            "year": "2016_PostVFP",
             "isMC": "False",
             "primaryDataset": "BTagMu",
             "era": "F",
@@ -9002,12 +9002,12 @@
             "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/user/mmarcheg/PFNano/BTagMu/Run2016F-UL2016_MiniAODv2-v1_PFNanoAOD/211213_175008/0000/nano_data2016_50.root"
         ]
     },
-    "DATA_BTagMu_2016-PostVFP_EraG": {
+    "DATA_BTagMu_2016_PostVFP_EraG": {
         "metadata": {
             "das_names": "['/BTagMu/mmarcheg-Run2016G-UL2016_MiniAODv2-v1_v01-ad24b2120d149f794cf1bc769f1be239/USER']",
             "dbs_instance": "prod/phys03",
             "sample": "DATA",
-            "year": "2016-PostVFP",
+            "year": "2016_PostVFP",
             "isMC": "False",
             "primaryDataset": "BTagMu",
             "era": "G",
@@ -9956,12 +9956,12 @@
             "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/user/mmarcheg/PFNano/BTagMu/Run2016G-UL2016_MiniAODv2-v1_v01/220314_222713/0000/nano_data2016_32.root"
         ]
     },
-    "DATA_BTagMu_2016-PostVFP_EraH": {
+    "DATA_BTagMu_2016_PostVFP_EraH": {
         "metadata": {
             "das_names": "['/BTagMu/mmarcheg-Run2016H-UL2016_MiniAODv2-v1_v01-ad24b2120d149f794cf1bc769f1be239/USER']",
             "dbs_instance": "prod/phys03",
             "sample": "DATA",
-            "year": "2016-PostVFP",
+            "year": "2016_PostVFP",
             "isMC": "False",
             "primaryDataset": "BTagMu",
             "era": "H",
@@ -11037,12 +11037,12 @@
             "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/user/mmarcheg/PFNano/BTagMu/Run2016H-UL2016_MiniAODv2-v1_v01/220314_222723/0000/nano_data2016_209.root"
         ]
     },
-    "DATA_BTagMu_2016-PreVFP_EraB": {
+    "DATA_BTagMu_2016_PreVFP_EraB": {
         "metadata": {
             "das_names": "['/BTagMu/mmarcheg-Run2016B-ver2_HIPM_UL2016_MiniAODv2-v1_v01-ad24b2120d149f794cf1bc769f1be239/USER']",
             "dbs_instance": "prod/phys03",
             "sample": "DATA",
-            "year": "2016-PreVFP",
+            "year": "2016_PreVFP",
             "isMC": "False",
             "primaryDataset": "BTagMu",
             "era": "B",
@@ -12253,12 +12253,12 @@
             "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/user/mmarcheg/PFNano/BTagMu/Run2016B-ver2_HIPM_UL2016_MiniAODv2-v1_v01/220311_144252/0000/nano_data2016_882.root"
         ]
     },
-    "DATA_BTagMu_2016-PreVFP_EraC": {
+    "DATA_BTagMu_2016_PreVFP_EraC": {
         "metadata": {
             "das_names": "['/BTagMu/mmarcheg-Run2016C-HIPM_UL2016_MiniAODv2-v1_PFNanoAOD-ad24b2120d149f794cf1bc769f1be239/USER']",
             "dbs_instance": "prod/phys03",
             "sample": "DATA",
-            "year": "2016-PreVFP",
+            "year": "2016_PreVFP",
             "isMC": "False",
             "primaryDataset": "BTagMu",
             "era": "C",
@@ -12651,12 +12651,12 @@
             "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/user/mmarcheg/PFNano/BTagMu/Run2016C-HIPM_UL2016_MiniAODv2-v1_PFNanoAOD/211213_174802/0000/nano_data2016_142.root"
         ]
     },
-    "DATA_BTagMu_2016-PreVFP_EraD": {
+    "DATA_BTagMu_2016_PreVFP_EraD": {
         "metadata": {
             "das_names": "['/BTagMu/mmarcheg-Run2016D-HIPM_UL2016_MiniAODv2-v1_PFNanoAOD-ad24b2120d149f794cf1bc769f1be239/USER']",
             "dbs_instance": "prod/phys03",
             "sample": "DATA",
-            "year": "2016-PreVFP",
+            "year": "2016_PreVFP",
             "isMC": "False",
             "primaryDataset": "BTagMu",
             "era": "D",
@@ -13277,12 +13277,12 @@
             "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/user/mmarcheg/PFNano/BTagMu/Run2016D-HIPM_UL2016_MiniAODv2-v1_PFNanoAOD/211213_174814/0000/nano_data2016_474.root"
         ]
     },
-    "DATA_BTagMu_2016-PreVFP_EraE": {
+    "DATA_BTagMu_2016_PreVFP_EraE": {
         "metadata": {
             "das_names": "['/BTagMu/mmarcheg-Run2016E-HIPM_UL2016_MiniAODv2-v1_PFNanoAOD-ad24b2120d149f794cf1bc769f1be239/USER']",
             "dbs_instance": "prod/phys03",
             "sample": "DATA",
-            "year": "2016-PreVFP",
+            "year": "2016_PreVFP",
             "isMC": "False",
             "primaryDataset": "BTagMu",
             "era": "E",
@@ -13838,12 +13838,12 @@
             "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/user/mmarcheg/PFNano/BTagMu/Run2016E-HIPM_UL2016_MiniAODv2-v1_PFNanoAOD/211213_174828/0000/nano_data2016_546.root"
         ]
     },
-    "DATA_BTagMu_2016-PreVFP_EraF": {
+    "DATA_BTagMu_2016_PreVFP_EraF": {
         "metadata": {
             "das_names": "['/BTagMu/mmarcheg-Run2016F-HIPM_UL2016_MiniAODv2-v1_v01-ad24b2120d149f794cf1bc769f1be239/USER']",
             "dbs_instance": "prod/phys03",
             "sample": "DATA",
-            "year": "2016-PreVFP",
+            "year": "2016_PreVFP",
             "isMC": "False",
             "primaryDataset": "BTagMu",
             "era": "F",

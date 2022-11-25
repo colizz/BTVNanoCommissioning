@@ -427,12 +427,12 @@
             "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/user/mmarcheg/PFNano/QCD_Pt-170to300_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIISummer19UL17PFNanoAOD-106X_mc2017_realistic_v9-v1/210407_162205/0000/nano_mc2017_3-39.root"
         ]
     },
-    "QCD_Pt-170to300_2016-PostVFP": {
+    "QCD_Pt-170to300_2016_PostVFP": {
         "metadata": {
             "das_names": "['/QCD_Pt-170To300_MuEnrichedPt5_TuneCP5_13TeV-pythia8/mmarcheg-RunIISummer20UL16PostVFP-v01-106X_mcRun2_asymptotic_v17-v1-12e8d363a00a279e86caeaeb78d5b507/USER']",
             "dbs_instance": "prod/phys03",
             "sample": "QCD_Pt-170to300",
-            "year": "2016-PostVFP",
+            "year": "2016_PostVFP",
             "isMC": "True",
             "nevents": "33880928",
             "size": "173260072838"
@@ -656,12 +656,12 @@
             "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/user/mmarcheg/PFNano/QCD_Pt-170To300_MuEnrichedPt5_TuneCP5_13TeV-pythia8/RunIISummer20UL16PostVFP-v01-106X_mcRun2_asymptotic_v17-v1/220311_144949/0000/nano_mc2016post_2-4.root"
         ]
     },
-    "QCD_Pt-170to300_2016-PreVFP": {
+    "QCD_Pt-170to300_2016_PreVFP": {
         "metadata": {
             "das_names": "['/QCD_Pt-170To300_MuEnrichedPt5_TuneCP5_13TeV-pythia8/mmarcheg-RunIISummer20UL16PreVFP-v01-106X_mcRun2_asymptotic_v17-v1-76d81dd118f180e420da7b2c5c1ae224/USER']",
             "dbs_instance": "prod/phys03",
             "sample": "QCD_Pt-170to300",
-            "year": "2016-PreVFP",
+            "year": "2016_PreVFP",
             "isMC": "True",
             "nevents": "33880928",
             "size": "173600366356"
@@ -1287,12 +1287,12 @@
             "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/user/mmarcheg/PFNano/QCD_Pt-300to470_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIISummer19UL17PFNanoAOD-106X_mc2017_realistic_v9-v1/210409_084819/0000/nano_mc2017_1.root"
         ]
     },
-    "QCD_Pt-300to470_2016-PostVFP": {
+    "QCD_Pt-300to470_2016_PostVFP": {
         "metadata": {
             "das_names": "['/QCD_Pt-300To470_MuEnrichedPt5_TuneCP5_13TeV-pythia8/mmarcheg-RunIISummer20UL16PostVFP-106X_mcRun2_asymptotic_v17-v1-12e8d363a00a279e86caeaeb78d5b507/USER']",
             "dbs_instance": "prod/phys03",
             "sample": "QCD_Pt-300to470",
-            "year": "2016-PostVFP",
+            "year": "2016_PostVFP",
             "isMC": "True",
             "nevents": "29908653",
             "size": "204062678659"
@@ -1524,12 +1524,12 @@
             "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/user/mmarcheg/PFNano/QCD_Pt-300To470_MuEnrichedPt5_TuneCP5_13TeV-pythia8/RunIISummer20UL16PostVFP-106X_mcRun2_asymptotic_v17-v1/211213_174113/0000/nano_mc2016post_1-10.root"
         ]
     },
-    "QCD_Pt-300to470_2016-PreVFP": {
+    "QCD_Pt-300to470_2016_PreVFP": {
         "metadata": {
             "das_names": "['/QCD_Pt-300To470_MuEnrichedPt5_TuneCP5_13TeV-pythia8/mmarcheg-RunIISummer20UL16PreVFP-106X_mcRun2_asymptotic_v17-v1-76d81dd118f180e420da7b2c5c1ae224/USER']",
             "dbs_instance": "prod/phys03",
             "sample": "QCD_Pt-300to470",
-            "year": "2016-PreVFP",
+            "year": "2016_PreVFP",
             "isMC": "True",
             "nevents": "29908653",
             "size": "204693172616"
@@ -2118,12 +2118,12 @@
             "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/user/mmarcheg/PFNano/QCD_Pt-470to600_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIISummer19UL17PFNanoAOD-106X_mc2017_realistic_v9-v1/210409_084838/0000/nano_mc2017_12.root"
         ]
     },
-    "QCD_Pt-470to600_2016-PostVFP": {
+    "QCD_Pt-470to600_2016_PostVFP": {
         "metadata": {
             "das_names": "['/QCD_Pt-470To600_MuEnrichedPt5_TuneCP5_13TeV-pythia8/mmarcheg-RunIISummer20UL16PostVFP-v01-106X_mcRun2_asymptotic_v17-v1-12e8d363a00a279e86caeaeb78d5b507/USER']",
             "dbs_instance": "prod/phys03",
             "sample": "QCD_Pt-470to600",
-            "year": "2016-PostVFP",
+            "year": "2016_PostVFP",
             "isMC": "True",
             "nevents": "14220650",
             "size": "110791347368"
@@ -2333,12 +2333,12 @@
             "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/user/mmarcheg/PFNano/QCD_Pt-470To600_MuEnrichedPt5_TuneCP5_13TeV-pythia8/RunIISummer20UL16PostVFP-v01-106X_mcRun2_asymptotic_v17-v1/220311_145001/0000/nano_mc2016post_1-2.root"
         ]
     },
-    "QCD_Pt-470to600_2016-PreVFP": {
+    "QCD_Pt-470to600_2016_PreVFP": {
         "metadata": {
             "das_names": "['/QCD_Pt-470To600_MuEnrichedPt5_TuneCP5_13TeV-pythia8/mmarcheg-RunIISummer20UL16PreVFP-v01-106X_mcRun2_asymptotic_v17-v1-76d81dd118f180e420da7b2c5c1ae224/USER']",
             "dbs_instance": "prod/phys03",
             "sample": "QCD_Pt-470to600",
-            "year": "2016-PreVFP",
+            "year": "2016_PreVFP",
             "isMC": "True",
             "nevents": "14220650",
             "size": "110643135810"
@@ -2889,12 +2889,12 @@
             "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/user/mmarcheg/PFNano/QCD_Pt-600to800_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIISummer19UL17PFNanoAOD-106X_mc2017_realistic_v9-v1/210409_084856/0000/nano_mc2017_1-6.root"
         ]
     },
-    "QCD_Pt-600to800_2016-PostVFP": {
+    "QCD_Pt-600to800_2016_PostVFP": {
         "metadata": {
             "das_names": "['/QCD_Pt-600To800_MuEnrichedPt5_TuneCP5_13TeV-pythia8/mmarcheg-RunIISummer20UL16PostVFP-106X_mcRun2_asymptotic_v17-v1-12e8d363a00a279e86caeaeb78d5b507/USER']",
             "dbs_instance": "prod/phys03",
             "sample": "QCD_Pt-600to800",
-            "year": "2016-PostVFP",
+            "year": "2016_PostVFP",
             "isMC": "True",
             "nevents": "18763139",
             "size": "156574931031"
@@ -3109,12 +3109,12 @@
             "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/user/mmarcheg/PFNano/QCD_Pt-600To800_MuEnrichedPt5_TuneCP5_13TeV-pythia8/RunIISummer20UL16PostVFP-106X_mcRun2_asymptotic_v17-v1/211213_174144/0000/nano_mc2016post_3-8.root"
         ]
     },
-    "QCD_Pt-600to800_2016-PreVFP": {
+    "QCD_Pt-600to800_2016_PreVFP": {
         "metadata": {
             "das_names": "['/QCD_Pt-600To800_MuEnrichedPt5_TuneCP5_13TeV-pythia8/mmarcheg-RunIISummer20UL16PreVFP-106X_mcRun2_asymptotic_v17-v1-76d81dd118f180e420da7b2c5c1ae224/USER']",
             "dbs_instance": "prod/phys03",
             "sample": "QCD_Pt-600to800",
-            "year": "2016-PreVFP",
+            "year": "2016_PreVFP",
             "isMC": "True",
             "nevents": "18763139",
             "size": "156713004906"
@@ -3740,12 +3740,12 @@
             "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/user/mmarcheg/PFNano/QCD_Pt-800to1000_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIISummer19UL17PFNanoAOD-106X_mc2017_realistic_v9-v1/210409_084916/0000/nano_mc2017_1-51.root"
         ]
     },
-    "QCD_Pt-800to1000_2016-PostVFP": {
+    "QCD_Pt-800to1000_2016_PostVFP": {
         "metadata": {
             "das_names": "['/QCD_Pt-800To1000_MuEnrichedPt5_TuneCP5_13TeV-pythia8/mmarcheg-RunIISummer20UL16PostVFP-106X_mcRun2_asymptotic_v17-v1-12e8d363a00a279e86caeaeb78d5b507/USER']",
             "dbs_instance": "prod/phys03",
             "sample": "QCD_Pt-800to1000",
-            "year": "2016-PostVFP",
+            "year": "2016_PostVFP",
             "isMC": "True",
             "nevents": "38921526",
             "size": "345978357513"
@@ -4127,12 +4127,12 @@
             "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/user/mmarcheg/PFNano/QCD_Pt-800To1000_MuEnrichedPt5_TuneCP5_13TeV-pythia8/RunIISummer20UL16PostVFP-106X_mcRun2_asymptotic_v17-v1/211213_174158/0000/nano_mc2016post_250.root"
         ]
     },
-    "QCD_Pt-800to1000_2016-PreVFP": {
+    "QCD_Pt-800to1000_2016_PreVFP": {
         "metadata": {
             "das_names": "['/QCD_Pt-800To1000_MuEnrichedPt5_TuneCP5_13TeV-pythia8/mmarcheg-RunIISummer20UL16PreVFP-106X_mcRun2_asymptotic_v17-v1-76d81dd118f180e420da7b2c5c1ae224/USER']",
             "dbs_instance": "prod/phys03",
             "sample": "QCD_Pt-800to1000",
-            "year": "2016-PreVFP",
+            "year": "2016_PreVFP",
             "isMC": "True",
             "nevents": "38921526",
             "size": "346375896197"
@@ -4911,12 +4911,12 @@
             "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/user/mmarcheg/PFNano/QCD_Pt-1000toInf_MuEnrichedPt5_TuneCP5_13TeV_pythia8/RunIISummer19UL17PFNanoAOD-106X_mc2017_realistic_v9-v1/210409_084935/0000/nano_mc2017_2-22.root"
         ]
     },
-    "QCD_Pt-1000toInf_2016-PostVFP": {
+    "QCD_Pt-1000toInf_2016_PostVFP": {
         "metadata": {
             "das_names": "['/QCD_Pt-1000_MuEnrichedPt5_TuneCP5_13TeV-pythia8/mmarcheg-RunIISummer20UL16PostVFP-106X_mcRun2_asymptotic_v17-v1-12e8d363a00a279e86caeaeb78d5b507/USER']",
             "dbs_instance": "prod/phys03",
             "sample": "QCD_Pt-1000toInf",
-            "year": "2016-PostVFP",
+            "year": "2016_PostVFP",
             "isMC": "True",
             "nevents": "14243204",
             "size": "130492761964"
@@ -5083,12 +5083,12 @@
             "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/user/mmarcheg/PFNano/QCD_Pt-1000_MuEnrichedPt5_TuneCP5_13TeV-pythia8/RunIISummer20UL16PostVFP-106X_mcRun2_asymptotic_v17-v1/211213_174211/0000/nano_mc2016post_3-7.root"
         ]
     },
-    "QCD_Pt-1000toInf_2016-PreVFP": {
+    "QCD_Pt-1000toInf_2016_PreVFP": {
         "metadata": {
             "das_names": "['/QCD_Pt-1000_MuEnrichedPt5_TuneCP5_13TeV-pythia8/mmarcheg-RunIISummer20UL16PreVFP-106X_mcRun2_asymptotic_v17-v1-76d81dd118f180e420da7b2c5c1ae224/USER']",
             "dbs_instance": "prod/phys03",
             "sample": "QCD_Pt-1000toInf",
-            "year": "2016-PreVFP",
+            "year": "2016_PreVFP",
             "isMC": "True",
             "nevents": "14243204",
             "size": "130417554601"
