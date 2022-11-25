@@ -10,8 +10,8 @@ lumi = {
     },
     # https://twiki.cern.ch/twiki/bin/viewauth/CMS/PdmVRun2LegacyAnalysis
     'UL': {
-        '2016-PreVFP' : 19.52,
-        '2016-PostVFP' : 16.81,
+        '2016_PreVFP' : 19.52,
+        '2016_PostVFP' : 16.81,
         '2017' : 41.48,
         '2018' : 59.83,
     }
@@ -209,7 +209,13 @@ AK8Tagger_parameters = {'binning' : {'n_or_arr' : 20,  'lo' : 0,      'hi' : 1},
 
 PtBinning = {
     'UL': {
-        '2016' : {
+        '2016_PreVFP' : {
+            'L' : (400, 600),
+            'M' : (600, 800),
+            'H' : (800, 'Inf'),
+            'M+H' : (600, 'Inf'),
+        },
+        '2016_PostVFP' : {
             'L' : (400, 600),
             'M' : (600, 800),
             'H' : (800, 'Inf'),
@@ -379,7 +385,7 @@ AK8TaggerWP = {
     },
     # 2016 UL WPs are copied from 2017 since they have not been computed yet
     'UL' : {
-        '2016APV' : {
+        '2016_PreVFP' : {
             'btagDDBvLV2' : {
                 'L' : (0.0256, 0.1180),
                 'M' : (0.1180, 0.2739),
@@ -401,7 +407,7 @@ AK8TaggerWP = {
                 'H' : (0.9909, 1),
             },
         },
-        '2016' : {
+        '2016_PostVFP' : {
             'btagDDBvLV2' : {
                 'L' : (0.0270, 0.1213),
                 'M' : (0.1213, 0.2786),
