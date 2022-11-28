@@ -5,7 +5,7 @@ from collections import defaultdict
 from pocket_coffea.workflows.base import BaseProcessorABC
 from pocket_coffea.utils.configurator import Configurator
 
-from pocket_coffea.parameters.jec import JECversions, JERversions
+#from pocket_coffea.parameters.jec import JECversions, JERversions
 from pocket_coffea.lib.objects import (
     jet_correction,
     lepton_selection,
@@ -36,7 +36,7 @@ class fatjetBaseProcessor(BaseProcessorABC):
                 label="Year",
             )
         )
-
+    """
     def load_metadata_extra(self):
         self._JECversion = JECversions[self._year]['MC' if self._isMC else 'Data']
         self._JERversion = JERversions[self._year]['MC' if self._isMC else 'Data']
@@ -85,8 +85,8 @@ class fatjetBaseProcessor(BaseProcessorABC):
                 self._JECversion,
                 verbose=verbose,
             )
-
-    def apply_object_preselection(self):
+    """
+    def apply_object_preselection(self, variation):
         '''
         The ttHbb processor cleans
           - Electrons
@@ -121,7 +121,7 @@ class fatjetBaseProcessor(BaseProcessorABC):
         self.events["LeptonGood"] = leptons[ak.argsort(leptons.pt, ascending=False)]
 
         # Apply JEC + JER
-        self.apply_JERC()
+        #self.apply_JERC()
         self.events["JetGood"], self.jetGoodMask = jet_selection(
             self.events, "Jet", self.cfg.finalstate
         )
@@ -130,7 +130,7 @@ class fatjetBaseProcessor(BaseProcessorABC):
             self.events, "FatJet", self.cfg.finalstate
         )
 
-    def count_objects(self):
+    def count_objects(self, variation):
         self.events["nMuonGood"] = ak.num(self.events.MuonGood)
         self.events["nElectronGood"] = ak.num(self.events.ElectronGood)
         self.events["nLeptonGood"] = (
@@ -140,7 +140,7 @@ class fatjetBaseProcessor(BaseProcessorABC):
         self.events["nFatJetGood"] = ak.num(self.events.FatJetGood)
         self.events["nSV"] = ak.num(self.events.SV)
 
-    def define_common_variables_after_presel(self):
+    def define_common_variables_after_presel(self, variation):
         
         fatjet_sv_fields = {
             "nsv1"    : get_nsv(self.events.FatJetGood, self.events.SV, pos=0),
@@ -204,7 +204,7 @@ class fatjetBaseProcessor(BaseProcessorABC):
     def define_column_accumulators(self):
         pass
 
-    def fill_column_accumulators(self):
+    def fill_column_accumulators(self, variation):
         pass
 
     def postprocess(self, accumulator):
