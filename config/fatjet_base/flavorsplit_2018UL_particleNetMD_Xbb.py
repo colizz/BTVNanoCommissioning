@@ -40,11 +40,11 @@ for wp in ["L", "M", "H"]:
 categories_to_reweight = { cat : v for cat, v in categories.items() if cat not in ["inclusive", "pt350msd40"]}
 
 samples = ["QCD_Pt-170to300",
-           "QCD_Pt-300to470",
-           "QCD_Pt-470to600",
-           "QCD_Pt-600to800",
-           "QCD_Pt-800to1000",
-           "QCD_Pt-1000toInf",
+           #"QCD_Pt-300to470",
+           #"QCD_Pt-470to600",
+           #"QCD_Pt-600to800",
+           #"QCD_Pt-800to1000",
+           #"QCD_Pt-1000toInf",
            "DATA"]
 subsamples = {}
 for s in filter(lambda x: 'DATA' not in x, samples):
@@ -65,7 +65,7 @@ cfg =  {
 
     # Input and output files
     "workflow" : fatjetBaseProcessor,
-    "output"   : "output/pocket_coffea/flavorsplit/particleNetMD_Xbb_2018UL",
+    "output"   : "output/pocket_coffea/test/particleNetMD_Xbb_2018UL_shapes",
     "workflow_options" : {},
 
     "run_options" : {
@@ -117,7 +117,11 @@ cfg =  {
         "bysample": {
         }    
         },
-        
+        "shape": {
+            "common":{
+                "inclusive": [ "JES_Total" ]
+            }
+        }
     },
 
    "variables":

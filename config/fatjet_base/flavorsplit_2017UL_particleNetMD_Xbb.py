@@ -99,7 +99,7 @@ cfg =  {
     "weights": {
         "common": {
             "inclusive": ["genWeight","lumi","XS",
-                          "pileup"#, "sf_L1prefiring"
+                          "pileup", "sf_L1prefiring"
                           ],
             "bycategory" : { cat : ["pt_reweighting"] for cat in categories_to_reweight.keys()}
         },
@@ -110,7 +110,7 @@ cfg =  {
     "variations": {
         "weights": {
             "common": {
-                "inclusive": [ "pileup" ],#, "sf_L1prefiring" ],
+                "inclusive": [ "pileup", "sf_L1prefiring" ],
                 "bycategory" : {
                 }
             },

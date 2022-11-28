@@ -76,7 +76,7 @@ cfg =  {
         "walltime"       : "8:00:00",
         "mem_per_worker" : "6GB", # GB
         "exclusive"      : False,
-        "chunk"          : 100000,
+        "chunk"          : 50000,
         "retries"        : 50,
         "treereduction"  : 10,
         "max"            : None,
@@ -99,7 +99,7 @@ cfg =  {
     "weights": {
         "common": {
             "inclusive": ["genWeight","lumi","XS",
-                          "pileup"#, "sf_L1prefiring"
+                          "pileup", "sf_L1prefiring"
                           ],
             "bycategory" : { cat : ["pt_reweighting"] for cat in categories_to_reweight.keys()}
         },
@@ -110,7 +110,7 @@ cfg =  {
     "variations": {
         "weights": {
             "common": {
-                "inclusive": [ "pileup" ],#, "sf_L1prefiring" ],
+                "inclusive": [ "pileup", "sf_L1prefiring" ],
                 "bycategory" : {
                 }
             },

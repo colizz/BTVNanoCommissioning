@@ -50,7 +50,7 @@ cfg =  {
         "walltime"       : "8:00:00",
         "mem_per_worker" : "6GB", # GB
         "exclusive"      : False,
-        "chunk"          : 100000,
+        "chunk"          : 75000,
         "retries"        : 50,
         "treereduction"  : 10,
         "max"            : None,
