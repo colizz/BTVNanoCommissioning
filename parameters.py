@@ -202,7 +202,7 @@ jecTarFiles = {
 
 FinalMask = ['msd100tau06']
 
-AK8Taggers = ['btagDDBvLV2', 'btagDDCvLV2', 'particleNetMD_Xbb_QCD', 'particleNetMD_Xcc_QCD']
+AK8Taggers = ['btagDDBvLV2', 'btagDDCvLV2', 'particleNetMD_Xbb_QCD', 'particleNetMD_Xcc_QCD', 'deepTagMD_ZHbbvsQCD', 'deepTagMD_ZHccvsQCD', 'btagHbb']
 #AK8Taggers = ['btagDDBvLV2', 'btagDDCvLV2', 'btagDDCvBV2', 'btagHbb', 'particleNetMD_Xbb', 'particleNetMD_Xcc', 'deepTag_H', 'deepTagMD_ccvsLight']
 
 #logsv1mass_bins = np.concatenate( ( (-4, -3.6, -3.2, -2.8, -2.4, -2, -1.59, -1.2, -0.8, -0.4), np.arange(0., 1.8, 0.1), (1.8, 2.5, 3.2) ) )
@@ -211,28 +211,24 @@ AK8Tagger_parameters = {'binning' : {'n_or_arr' : 20,  'lo' : 0,      'hi' : 1},
 PtBinning = {
     'UL': {
         '2016_PreVFP' : {
-            'L' : (400, 600),
-            #'M' : (600, 800),
-            #'H' : (800, 'Inf'),
-            'M+H' : (600, 'Inf'),
+            'L' : (450, 500),
+            'M' : (500, 600),
+            'H' : (600, 'Inf'),
         },
         '2016_PostVFP' : {
-            'L' : (400, 600),
-            #'M' : (600, 800),
-            #'H' : (800, 'Inf'),
-            'M+H' : (600, 'Inf'),
+            'L' : (450, 500),
+            'M' : (500, 600),
+            'H' : (600, 'Inf'),
         },
         '2017' : {
-            'L' : (400, 600),
-            #'M' : (600, 800),
-            #'H' : (800, 'Inf'),
-            'M+H' : (600, 'Inf'),
+            'L' : (450, 500),
+            'M' : (500, 600),
+            'H' : (600, 'Inf'),
         },
         '2018' : {
-            'L' : (400, 600),
-            #'M' : (600, 800),
-            #'H' : (800, 'Inf'),
-            'M+H' : (600, 'Inf'),
+            'L' : (450, 500),
+            'M' : (500, 600),
+            'H' : (600, 'Inf'),
         }
     },
     'EOY': {
@@ -407,6 +403,21 @@ AK8TaggerWP = {
                 'M' : (0.9751, 0.9909),
                 'H' : (0.9909, 1),
             },
+            'deepTagMD_ZHbbvsQCD' : {
+                'L' : (0.7021, 0.8940),
+                'M' : (0.8940, 0.9521),
+                'H' : (0.9521, 1),
+            },
+            'deepTagMD_ZHccvsQCD' : {
+                'L' : (0.6733, 0.8496),
+                'M' : (0.8496, 0.9326),
+                'H' : (0.9326, 1),
+            },
+            'btagHbb' : {
+                'L' : (0.3104, 0.7559),
+                'M' : (0.7559, 0.8926),
+                'H' : (0.8926, 1),
+            },
         },
         '2016_PostVFP' : {
             'btagDDBvLV2' : {
@@ -428,6 +439,21 @@ AK8TaggerWP = {
                 'L' : (0.9252, 0.9743),
                 'M' : (0.9743, 0.9905),
                 'H' : (0.9905, 1),
+            },
+            'deepTagMD_ZHbbvsQCD' : {
+                'L' : (0.6890, 0.8877),
+                'M' : (0.8877, 0.9507),
+                'H' : (0.9507, 1),
+            },
+            'deepTagMD_ZHccvsQCD' : {
+                'L' : (0.6458, 0.8369),
+                'M' : (0.8369, 0.9277),
+                'H' : (0.9277, 1),
+            },
+            'btagHbb' : {
+                'L' : (0.3279, 0.7646),
+                'M' : (0.7646, 0.8955),
+                'H' : (0.8955, 1),
             },
         },
         '2017' : {
@@ -451,6 +477,21 @@ AK8TaggerWP = {
                 'M' : (0.9765, 0.9909),
                 'H' : (0.9909, 1),
             },
+            'deepTagMD_ZHbbvsQCD' : {
+                'L' : (0.7422, 0.9033),
+                'M' : (0.9033, 0.9546),
+                'H' : (0.9546, 1),
+            },
+            'deepTagMD_ZHccvsQCD' : {
+                'L' : (0.7100, 0.8677),
+                'M' : (0.8677, 0.9390),
+                'H' : (0.9390, 1),
+            },
+            'btagHbb' : {
+                'L' : (0.5068, 0.8237),
+                'M' : (0.8237, 0.9185),
+                'H' : (0.9185, 1),
+            },
         },
         '2018' : {
             'btagDDBvLV2' : {
@@ -472,6 +513,21 @@ AK8TaggerWP = {
                 'L' : (0.9368, 0.9777),
                 'M' : (0.9777, 0.9917),
                 'H' : (0.9917, 1),
+            },
+            'deepTagMD_ZHbbvsQCD' : {
+                'L' : (0.7432, 0.9058),
+                'M' : (0.9058, 0.9551),
+                'H' : (0.9551, 1),
+            },
+            'deepTagMD_ZHccvsQCD' : {
+                'L' : (0.7017, 0.8662),
+                'M' : (0.8662, 0.9390),
+                'H' : (0.9390, 1),
+            },
+            'btagHbb' : {
+                'L' : (0.4939, 0.8193),
+                'M' : (0.8193, 0.9175),
+                'H' : (0.9175, 1),
             },
         },
     }
