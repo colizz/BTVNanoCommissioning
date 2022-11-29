@@ -39,7 +39,7 @@ cfg =  {
 
     # Input and output files
     "workflow" : ptReweightProcessor,
-    "output"   : "output/pocket_coffea/pt_reweighting/pt_reweighting_2017UL",
+    "output"   : "output/pocket_coffea/test/pt_reweighting_2017UL_bugged_events",
     "workflow_options" : {},
 
     "run_options" : {
@@ -98,7 +98,11 @@ cfg =  {
         "bysample": {
         }    
         },
-        
+        "shape": {
+            "common":{
+                "inclusive": [ ]
+            }
+        }
     },
 
    "variables":
