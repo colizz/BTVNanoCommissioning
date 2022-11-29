@@ -8,36 +8,34 @@ from config.fatjet_base.custom.cuts import mutag_presel, get_ptbin, get_ptmsd, g
 from config.fatjet_base.custom.functions import get_inclusive_wp, get_HLTsel
 import numpy as np
 
-from parameters import PtBinning, AK8TaggerWP
+from parameters import PtBinning, AK8TaggerWP, AK8Taggers
 PtBinning = PtBinning['UL']['2018']
 wps = AK8TaggerWP['UL']['2018']
-
-tagger = "particleNetMD_Xbb_QCD"
 
 categories = {
     "inclusive" : [passthrough],
     "pt350msd40" : [get_ptmsd(350., 40.)],
     "pt350msd40_ptreweight" : [get_ptmsd(350., 40.)],
+    "pt400msd40" : [get_ptmsd(400., 40.)],
+    "pt400msd40_ptreweight" : [get_ptmsd(400., 40.)],
 }
 
-for wp in ["L", "M", "H"]:
-    for pt_low, pt_high in PtBinning.values():
-        cat = f"msd40Pt-{pt_low}to{pt_high}"
-        categories.update({ cat : [
-                                        get_ptmsd(350., 40.),
-                                        get_ptbin(pt_low, pt_high),
-                                        ]
-                                })
-        for region in ["pass", "fail"]:
-            cat = f"msd40{tagger}{region}{wp}wpPt-{pt_low}to{pt_high}"
-            categories.update({ cat : [
-                                        get_ptmsd(350., 40.),
-                                        get_ptbin(pt_low, pt_high),
-                                        get_inclusive_wp(tagger, wps[tagger][wp], region)
-                                        ]
-                                })
+for tagger in AK8Taggers:
+    for wp in ["L", "M", "H"]:
+        for pt_low, pt_high in PtBinning.values():
+            for region in ["pass", "fail"]:
+                cat = f"msd40{tagger}{region}{wp}wpPt-{pt_low}to{pt_high}"
+                categories.update({ cat : [
+                                            get_ptmsd(350., 40.),
+                                            get_ptbin(pt_low, pt_high),
+                                            get_inclusive_wp(tagger, wps[tagger][wp], region)
+                                            ]
+                                    })
+print("# categories =", len(categories.keys()))
+for item in categories.keys():
+    print(item)
 
-categories_to_reweight = { cat : v for cat, v in categories.items() if cat not in ["inclusive", "pt350msd40"]}
+categories_to_reweight = { cat : v for cat, v in categories.items() if cat not in ["inclusive", "pt350msd40", "pt400msd40"]}
 
 samples = ["QCD_Pt-170to300",
            "QCD_Pt-300to470",
@@ -65,18 +63,18 @@ cfg =  {
 
     # Input and output files
     "workflow" : fatjetBaseProcessor,
-    "output"   : "output/pocket_coffea/test/particleNetMD_Xbb_2018UL_shapes",
+    "output"   : "output/pocket_coffea/flavorsplit/flavorsplit_2018UL_shapes",
     "workflow_options" : {},
 
     "run_options" : {
-        "executor"       : "futures",
-        "workers"        : 16,
+        "executor"       : "dask/slurm",
+        "workers"        : 1,
         "scaleout"       : 125,
         "queue"          : "standard",
         "walltime"       : "8:00:00",
         "mem_per_worker" : "6GB", # GB
         "exclusive"      : False,
-        "chunk"          : 100000,
+        "chunk"          : 150000,
         "retries"        : 50,
         "treereduction"  : 10,
         "max"            : None,
