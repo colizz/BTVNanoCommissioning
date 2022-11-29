@@ -202,7 +202,8 @@ jecTarFiles = {
 
 FinalMask = ['msd100tau06']
 
-AK8Taggers = ['btagDDBvLV2', 'btagDDCvLV2', 'btagDDCvBV2', 'btagHbb', 'particleNetMD_Xbb', 'particleNetMD_Xcc', 'deepTag_H', 'deepTagMD_ccvsLight']
+AK8Taggers = ['btagDDBvLV2', 'btagDDCvLV2', 'particleNetMD_Xbb_QCD', 'particleNetMD_Xcc_QCD']
+#AK8Taggers = ['btagDDBvLV2', 'btagDDCvLV2', 'btagDDCvBV2', 'btagHbb', 'particleNetMD_Xbb', 'particleNetMD_Xcc', 'deepTag_H', 'deepTagMD_ccvsLight']
 
 #logsv1mass_bins = np.concatenate( ( (-4, -3.6, -3.2, -2.8, -2.4, -2, -1.59, -1.2, -0.8, -0.4), np.arange(0., 1.8, 0.1), (1.8, 2.5, 3.2) ) )
 AK8Tagger_parameters = {'binning' : {'n_or_arr' : 20,  'lo' : 0,      'hi' : 1},     'xlim' : {'xmin' : 0, 'xmax' : 1}}
@@ -211,26 +212,26 @@ PtBinning = {
     'UL': {
         '2016_PreVFP' : {
             'L' : (400, 600),
-            'M' : (600, 800),
-            'H' : (800, 'Inf'),
+            #'M' : (600, 800),
+            #'H' : (800, 'Inf'),
             'M+H' : (600, 'Inf'),
         },
         '2016_PostVFP' : {
             'L' : (400, 600),
-            'M' : (600, 800),
-            'H' : (800, 'Inf'),
+            #'M' : (600, 800),
+            #'H' : (800, 'Inf'),
             'M+H' : (600, 'Inf'),
         },
         '2017' : {
             'L' : (400, 600),
-            'M' : (600, 800),
-            'H' : (800, 'Inf'),
+            #'M' : (600, 800),
+            #'H' : (800, 'Inf'),
             'M+H' : (600, 'Inf'),
         },
         '2018' : {
             'L' : (400, 600),
-            'M' : (600, 800),
-            'H' : (800, 'Inf'),
+            #'M' : (600, 800),
+            #'H' : (800, 'Inf'),
             'M+H' : (600, 'Inf'),
         }
     },
