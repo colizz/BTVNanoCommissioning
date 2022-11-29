@@ -104,7 +104,10 @@ def ptbin(events, params, **kwargs):
 
 def ptmsd(events, params, **kwargs):
     # Mask to select events with a fatjet with minimum softdrop mass and maximum tau21
-    return (events.FatJetGood[:,0].pt > params["pt"]) & (events.FatJetGood[:,0].msoftdrop > params["msd"])
+    #return (events.FatJetGood[:,0].pt > params["pt"]) & (events.FatJetGood[:,0].msoftdrop > params["msd"])
+    mask = (ak.firsts(events.FatJetGood.pt) > params["pt"]) & (ak.firsts(events.FatJetGood.msoftdrop) > params["msd"])
+    return ak.where(~ak.is_none(mask), mask, False)
+    
 
 def ptmsdtau(events, params, **kwargs):
     # Mask to select events with a fatjet with minimum softdrop mass and maximum tau21
