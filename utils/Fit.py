@@ -8,6 +8,8 @@ import rhalphalib as rl
 import uproot
 import ROOT
 
+from parameters_fit import fit_parameters
+
 AK8taggers = ['btagDDBvLV2', 'btagDDCvLV2', 'particleNetMD_Xbb_QCD', 'particleNetMD_Xcc_QCD']
 regions = ['pass', 'fail']
 
@@ -26,8 +28,9 @@ def rebin(h_vals, h_sumw2, bins, lo, hi):
     return h_vals, h_sumw2, bins
 
 class Fit():
-    def __init__(self, cfg, categories, var, xlim):
+    def __init__(self, cfg, categories, var, xlim, scheme='3f'):
         self.cfg = cfg
+        self.scheme = scheme
         self.year = cfg["dataset"]["filter"]["year"]
         if len(self.year) > 1:
             raise NotImplementedError
@@ -36,13 +39,7 @@ class Fit():
         self.lo = xlim[0]
         self.hi = xlim[1]
         self.define_flavors()
-        if self.cfg["sf_options"]["label"]:
-            self.templates = np.load(os.path.abspath(os.path.join(self.cfg["output"], 'output_{}.pkl'.format(self.cfg["sf_options"]["label"]))), allow_pickle=True)
-            if self.merge_x_xx & (not self.cfg["sf_options"]["label"].startswith('bbcc')):
-                raise NotImplementedError
-        else:
-            self.templates = np.load(os.path.abspath(os.path.join(self.cfg["output"], 'output.pkl')), allow_pickle=True)
-        #self.categories = json.load( open(os.path.join(self.cfg["output"], 'categories.json')) )
+        self.templates = np.load(os.path.abspath(os.path.join(self.cfg["output"], 'output_templates_{}.pkl'.format(self.scheme))), allow_pickle=True)
         self.categories = categories
         self.fitResults = {
             'bb' : os.path.join(os.getcwd(), self.cfg["output"], 'fitResults_bb.csv'),
@@ -54,6 +51,7 @@ class Fit():
         self.initialize_models_dict()
         self.load_parameters()
         self.define_independent_parameters()
+        self.define_nuisance_parameters()
         self.define_frozen_parameters()
         self.build_fit_models()
         self.build_combine_script()
@@ -61,17 +59,17 @@ class Fit():
         #self.save_results()
 
     def define_flavors(self):
-        self.merge_x_xx = self.cfg["sf_options"]["merge_x_xx"]
-        if self.merge_x_xx:
-            self.flavors = ['bb', 'cc', 'l']
-        else:
+        if self.scheme == '3f':
+            self.flavors = ['b+bb', 'c+cc', 'l']
+        elif self.scheme == '5f':
             self.flavors = ['bb', 'cc', 'b', 'c', 'l']
+        else:
+            raise Exception("Flavor scheme '{}' is not allowed.".format(self.scheme))
 
     def define_bins(self):
-        name_map = {'n_or_arr' : 'num', 'lo' : 'start', 'hi' : 'stop'}
-        arguments = dict((name_map[name], val) for name, val in self.cfg['sf_options']['rebin'][self.var]['binning'].items())
-        arguments['num'] += 1
-        self.bins = np.linspace(**arguments)
+        # Here we assume a 1D histogram therefore we take the first axis
+        num, start, stop = ( self.cfg['variables'][self.var]['axes'][0][key] for key in ['bins', 'start', 'stop'] )
+        self.bins = np.linspace(start, stop, num+1)
 
     def define_observable(self):
         self.observable = rl.Observable(self.var, self.bins)
@@ -91,7 +89,7 @@ class Fit():
                 self.models[model_name] = rl.Model("sfModel")
 
     def load_parameters(self):
-        self.parameters = self.cfg["sf_options"]["parameters"]
+        self.parameters = fit_parameters
         for model_name in self.models.keys():
             if not model_name in self.parameters.keys():
                 self.parameters[model_name] = {}
@@ -105,6 +103,15 @@ class Fit():
             for flavor in self.flavors:
                 self.indep_pars[model_name][flavor] = rl.IndependentParameter(flavor, **self.parameters[model_name][flavor])
 
+    def define_nuisance_parameters(self):
+        self.nuisance_pars = {}
+        for model_name in self.models.keys():
+            self.nuisance_pars[model_name] = {}
+            self.nuisance_pars[model_name]["pileup"] = rl.NuisanceParameter("pileup", "shape")
+            self.nuisance_pars[model_name]["JES_Total"] = rl.NuisanceParameter("JES_Total", "shape")
+            if self.year != '2018':
+                self.nuisance_pars[model_name]["sfL1prefiring"] = rl.NuisanceParameter("sfL1prefiring", "shape")
+
     def define_frozen_parameters(self):
         self.freeze = {}
         for model_name in self.models.keys():
@@ -117,9 +124,9 @@ class Fit():
     def define_signal_name(self, model_name):
         self.tagger = [tagger for tagger in AK8taggers if tagger in model_name][0]
         if self.tagger in ['btagDDBvLV2', 'particleNetMD_Xbb_QCD']:
-            self.signal_name[model_name] = 'bb'
+            self.signal_name[model_name] = 'b+bb'
         elif self.tagger in ['btagDDCvLV2', 'particleNetMD_Xcc_QCD']:
-            self.signal_name[model_name] = 'cc'
+            self.signal_name[model_name] = 'c+cc'
         else:
             sys.exit("There is no known tagger to calibrate in the given category")
 
@@ -138,13 +145,15 @@ class Fit():
     def build_fit_models(self):
         self.fitdirs = {}
 
+        # Define fit templates for MC and observation
         for region in regions:
             for cat in self.categories_region[region]:
                 model_name = cat.replace(region, '')
                 self.define_signal_name(model_name)
                 channel = rl.Channel("sf{}".format(region))
                 for flavor in self.flavors:
-                    template = self.get_templ("hist_{}_{}_QCD_{}_{}".format(self.var, cat, flavor, self.year), self.lo, self.hi)
+                    histname = "{}_{}_{}_QCD_{}_{}".format(self.var, self.year, cat, flavor, "nominal")
+                    template = self.get_templ(histname, self.lo, self.hi)
 
                     is_signal = True if flavor == self.signal_name[model_name] else False
                     sType = rl.Sample.SIGNAL if is_signal else rl.Sample.BACKGROUND
@@ -152,11 +161,12 @@ class Fit():
                     sample.autoMCStats(epsilon=epsilon)
                     channel.addSample(sample)
 
-                template_obs = self.get_templ("hist_{}_{}_Data_{}".format(self.var, cat, self.year), self.lo, self.hi, sumw2=False)
+                template_obs = self.get_templ("{}_{}_{}_DATA".format(self.var, self.year, cat), self.lo, self.hi, sumw2=False)
                 channel.setObservation(template_obs)
 
                 self.models[model_name].addChannel(channel)
 
+        # Define effect of independent parameters on the templates
         for model_name, model in self.models.items():
             for flavor, SF in self.indep_pars[model_name].items():
                 sample_pass = self.models[model_name]['sfpass'][flavor]
@@ -165,11 +175,27 @@ class Fit():
                 sample_pass.setParamEffect(SF, 1.0 * SF)
                 sample_fail.setParamEffect(SF, (1 - SF) * pass_fail + 1)
 
-            fitdir = os.path.abspath(os.path.join(self.cfg["output"], 'fitdir', model_name))
-            if not os.path.exists(fitdir):
-                os.makedirs(fitdir)
-            self.models[model_name].renderCombine(fitdir)
-            self.fitdirs[model_name] = fitdir
+        # Define effect of nuisance parameters on the templates
+        # N.B.: the nuisance parameters are fully correlated between flavors and in pass/fail regions
+        for region in regions:
+            for cat in self.categories_region[region]:
+                model_name = cat.replace(region, '')
+                for nuisance_name, nuisance in self.nuisance_pars[model_name].items():
+                    for flavor in self.flavors:
+                        sample = self.models[model_name]["sf{}".format(region)][flavor]
+                        syst = nuisance.name.split('_{}'.format(flavor))[0]
+                        histname_up   = "{}_{}_{}_QCD_{}_{}".format(self.var, self.year, cat, flavor, syst+"Up")
+                        histname_down = "{}_{}_{}_QCD_{}_{}".format(self.var, self.year, cat, flavor, syst+"Down")
+                        h_up, _bins, _obs_name = self.get_templ(histname_up, self.lo, self.hi, sumw2=False)
+                        h_down, _bins, _obs_name = self.get_templ(histname_down, self.lo, self.hi, sumw2=False)
+                        sample.setParamEffect(nuisance, h_up, h_down)
+
+                # Save the combine fit models to output folder
+                fitdir = os.path.abspath(os.path.join(self.cfg["output"], 'fitdir', model_name))
+                if not os.path.exists(fitdir):
+                    os.makedirs(fitdir)
+                self.models[model_name].renderCombine(fitdir)
+                self.fitdirs[model_name] = fitdir
 
     def build_combine_script(self):
         for model_name, model in self.models.items():
