@@ -69,7 +69,7 @@ cfg =  {
 
     # Input and output files
     "workflow" : fatjetBaseProcessor,
-    "output"   : "output/pocket_coffea/test/flavorsplit_2018UL_shapes_multicut",
+    "output"   : "output/pocket_coffea/flavorsplit/flavorsplit_2018UL_shapes_multicut",
     "workflow_options" : {},
 
     "run_options" : {
