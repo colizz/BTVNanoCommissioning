@@ -5,11 +5,11 @@ from pocket_coffea.parameters.histograms import *
 from pocket_coffea.parameters.btag import btag_variations
 from pocket_coffea.lib.weights_manager import WeightCustom
 from pocket_coffea.lib.cartesian_categories import CartesianSelection, MultiCut
-from config.fatjet_base.custom.cuts import mutag_presel, get_ptbin, get_ptmsd, get_nObj_minmsd, get_flavor
-from config.fatjet_base.custom.functions import get_inclusive_wp, get_HLTsel
+from pocket_coffea.parameters.custom.cuts import mutag_presel, get_ptbin, get_ptmsd, get_nObj_minmsd, get_flavor
+from pocket_coffea.parameters.custom.functions import get_inclusive_wp, get_HLTsel
+from pocket_coffea.parameters.custom.parameters import PtBinning, AK8TaggerWP, AK8Taggers
 import numpy as np
 
-from parameters import PtBinning, AK8TaggerWP, AK8Taggers
 PtBinning = PtBinning['UL']['2018']
 wps = AK8TaggerWP['UL']['2018']
 
@@ -73,8 +73,8 @@ cfg =  {
     "workflow_options" : {},
 
     "run_options" : {
-        "executor"       : "futures",
-        "workers"        : 16,
+        "executor"       : "dask/slurm",
+        "workers"        : 1,
         "scaleout"       : 125,
         "queue"          : "standard",
         "walltime"       : "8:00:00",
@@ -130,17 +130,17 @@ cfg =  {
 
    "variables":
     {
-        **muon_hists(coll="MuonGood"),
         **muon_hists(coll="MuonGood", pos=0),
-        **jet_hists(coll="JetGood"),
-        **jet_hists(coll="JetGood", pos=0),
+        **muon_hists(coll="MuonGood", pos=1),
+        #**jet_hists(coll="JetGood"),
+        #**jet_hists(coll="JetGood", pos=0),
         **fatjet_hists(coll="FatJetGood"),
         **fatjet_hists(coll="FatJetGood", pos=0),
         **sv_hists(coll="events"),
         **sv_hists(coll="events", pos=0),
-        **count_hist(name="nElectronGood", coll="ElectronGood",bins=10, start=0, stop=10),
+        #**count_hist(name="nElectronGood", coll="ElectronGood",bins=10, start=0, stop=10),
         **count_hist(name="nMuonGood", coll="MuonGood",bins=10, start=0, stop=10),
-        **count_hist(name="nJets", coll="JetGood",bins=10, start=0, stop=10),
+        #**count_hist(name="nJets", coll="JetGood",bins=10, start=0, stop=10),
         **count_hist(name="nFatJets", coll="FatJetGood",bins=10, start=0, stop=10),
         **count_hist(name="nSV", coll="SV",bins=10, start=0, stop=10),
         "nmusj_fatjet1": HistConf(
@@ -155,7 +155,7 @@ cfg =  {
 
 }
 
-# Here we update the weights such that only some of the categories are pt-reweighted
+# Here we update the weights dictionary such that 3 cross-check categories are not pt-reweighted
 categories = cfg["categories"].categories
 categories_to_reweight = [ cat for cat in categories if cat not in ["inclusive", "pt350msd40", "pt450msd40"] ]
 cfg["weights"]["common"]["bycategory"] = { cat : ["pt_reweighting"] for cat in categories_to_reweight}
