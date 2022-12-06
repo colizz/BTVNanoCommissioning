@@ -6,6 +6,9 @@ import hist
 from coffea.lookup_tools.dense_lookup import dense_lookup
 from coffea.util import save, load
 
+import correctionlib, rich
+import correctionlib.convert
+
 from workflows.fatjet_base import fatjetBaseProcessor
 from pocket_coffea.utils.configurator import Configurator
 
@@ -33,25 +36,31 @@ def overwrite_check(outfile):
 class ptReweightProcessor(fatjetBaseProcessor):
     def __init__(self, cfg: Configurator):
         super().__init__(cfg)
-        self.histname_pt = 'FatJetGood_pt_1'
-        if not self.histname_pt in self.cfg.variables.keys():
-            raise Exception(f"'{self.histname_pt}' is not present in the histogram keys.")
+        self.histname_pt_1d = 'FatJetGood_pt_1'
+        self.histname_pt_2d = 'FatJetGood_pt_1_FatJetGood_pt_2'
+        if not self.histname_pt_1d in self.cfg.variables.keys():
+            raise Exception(f"'{self.histname_pt_1d}' is not present in the histogram keys.")
 
-    def postprocess(self, accumulator):
-        super().postprocess(accumulator=accumulator)
-
-        h = accumulator['variables'][self.histname_pt]
+    def pt_reweighting(self, accumulator, mode):
+        if mode == '1D':
+            histname = self.histname_pt_1d
+        elif mode == '2D':
+            histname = self.histname_pt_2d
+        else:
+            raise Exception("pT reweighting mode not recognized. Available modes: '1D', '2D'")
+        h = accumulator['variables'][histname]
         samples = h.keys()
         samples_data = list(filter(lambda d: 'DATA' in d, samples))
         samples_mc = list(filter(lambda d: 'DATA' not in d, samples))
 
         h_mc = h[samples_mc[0]]
 
-        dense_axis = dense_axes(h_mc)[0]
+        axes = dense_axes(h_mc)
         years = get_axis_items(h_mc, 'year')
         categories = get_axis_items(h_mc, 'cat')
 
-        corr_dict = defaultdict(float)
+        #corr_dict = defaultdict(float)
+        ratio_dict = defaultdict(float)
 
         for year in years:
             for cat in categories:
@@ -74,25 +83,55 @@ class ptReweightProcessor(fatjetBaseProcessor):
                     h_data = stack_data[0]
                 ratio, unc = get_data_mc_ratio(stack_data, stack_mc_nominal)
                 mod_ratio  = np.nan_to_num(ratio)
-                bins = dense_axis.edges
                 if cat not in pt_low.keys():
                     pt_low[cat] = 350.
-                mod_ratio[bins[:-1] < pt_low[cat]] = 1
-                mod_ratio[bins[:-1] > 1500] = 1
+                if mode == '1D':
+                    bins = axes[0].edges
+                    mod_ratio[bins[:-1] < pt_low[cat]] = 1
+                    mod_ratio[bins[:-1] > 1500] = 1
+                elif mode == '2D':
+                    mod_ratio[mod_ratio == 0.0] = 1
 
-                efflookup = dense_lookup(mod_ratio, [bins])
-                print(f"{cat}:")
-                print(efflookup(np.array([50, 100, 400, 500, 2000, 10000])))
-                corr_dict.update({ cat : efflookup })
+                ratio_dict.update({ cat : mod_ratio })
 
-            outfile_reweighting = os.path.join(self.cfg.output, f'pt_corr_{year}.coffea')
+            axis_category = hist.axis.StrCategory(list(ratio_dict.keys()), name="cat")
+            sfhist = hist.Hist(axis_category, *axes, data=np.stack(list(ratio_dict.values())))
+            sfhist.label = "out"
+            sfhist.name = f"pt_corr_{year}"
+            clibcorr = correctionlib.convert.from_histogram(sfhist)
+            clibcorr.description = "Reweighting SF matching the leading fatjet pT MC distribution to data."
+            cset = correctionlib.schemav2.CorrectionSet(
+                schema_version=2,
+                description="Semileptonic trigger efficiency SF",
+                corrections=[clibcorr],
+            )
+            rich.print(cset)
+
+            outfile_reweighting = os.path.join(self.cfg.output, f'pt_corr_{mode}_{year}.json')
             outfile_reweighting = overwrite_check(outfile_reweighting)
             print(f"Saving pt reweighting factors in {outfile_reweighting}")
-            save(corr_dict, outfile_reweighting)
+            with open(outfile_reweighting, "w") as fout:
+                fout.write(cset.json(exclude_unset=True))
+            fout.close()
             print(f"Loading correction from {outfile_reweighting}...")
-            efflookup_check = load(outfile_reweighting)
+            cset = correctionlib.CorrectionSet.from_file(outfile_reweighting)
             print("inclusive:")
-            pt_corr = efflookup_check['inclusive']
-            print(pt_corr(np.array([50, 100, 400, 500, 2000, 10000])))
+            pt_corr = cset[f'pt_corr_{year}']
+            if mode == '1D':
+                pt1 = np.array([50, 100, 400, 500, 1000], dtype=float)
+                print("pt1 =", pt1)
+                print(pt_corr.evaluate('inclusive', pt1))
+            elif mode == '2D':
+                pt1 = np.array([50, 100, 400, 500, 1000], dtype=float)
+                pt2 = np.array([40, 75, 300, 400, 750], dtype=float)
+                print("pt1 =", pt1)
+                print("pt2 =", pt2)
+                print(pt_corr.evaluate('inclusive', pt1, pt2))
+
+    def postprocess(self, accumulator):
+        super().postprocess(accumulator=accumulator)
+
+        self.pt_reweighting(accumulator=accumulator, mode='1D')
+        self.pt_reweighting(accumulator=accumulator, mode='2D')
 
         return accumulator
