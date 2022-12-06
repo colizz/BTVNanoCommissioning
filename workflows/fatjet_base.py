@@ -198,8 +198,14 @@ class fatjetBaseProcessor(BaseProcessorABC):
         for field in sv_fields['jet1'].keys():
             value1_unflattened = ak.unflatten( sv_fields['jet1'][field], counts=1 )
             value2_unflattened = ak.unflatten( sv_fields['jet2'][field], counts=1 )
-            value_concat = ak.concatenate( (value1_unflattened, value2_unflattened), axis=1 )
+            value_concat = ak.concatenate((value1_unflattened, value2_unflattened), axis=1)
+            # Pad to FatJetGood dims
+            padded = ak.concatenate((value_concat, 
+                                     ak.zeros_like(self.events['FatJetGood'].pt)[:, 2:]), axis=1)
+            # Clip to FatJetGood size
+            padded = padded[ak.local_index(self.events['FatJetGood'].pt)]
             self.events = ak.with_field(self.events, value_concat, field)
+            self.events['FatJetGood'] = ak.with_field(self.events['FatJetGood'], padded, field)
 
     def define_column_accumulators(self):
         pass
