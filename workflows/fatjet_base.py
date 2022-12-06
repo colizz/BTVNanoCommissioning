@@ -210,17 +210,17 @@ class fatjetBaseProcessor(BaseProcessorABC):
     def postprocess(self, accumulator):
         super().postprocess(accumulator=accumulator)
 
-        for histname, h in accumulator['variables'].items():
-            samples = h.keys()
-            print(samples)
-            h_byflavor = {'DATA' : h['DATA']}
-            for f in ['l', 'c', 'b', 'cc', 'bb']:
-                subsamples_flavor = filter(lambda x : x.endswith(f"_{f}"), samples)
-                for (i, s) in enumerate(subsamples_flavor):
-                    if i==0:
-                        h_byflavor[f] = h[s]
-                    else:
-                        h_byflavor[f] += h[s]
-            accumulator['variables'][histname] = h_byflavor
+        #for histname, h in accumulator['variables'].items():
+        #    samples = h.keys()
+        #    print(samples)
+        #    h_byflavor = {'DATA' : h['DATA']}
+        #    for f in ['l', 'c', 'b', 'cc', 'bb']:
+        #        subsamples_flavor = filter(lambda x : x.endswith(f"_{f}"), samples)
+        #        for (i, s) in enumerate(subsamples_flavor):
+        #            if i==0:
+        #                h_byflavor[f] = h[s]
+        #            else:
+        #                h_byflavor[f] += h[s]
+        #    accumulator['variables'][histname] = h_byflavor
 
         return accumulator
