@@ -13,6 +13,7 @@ from workflows.fatjet_base import fatjetBaseProcessor
 from pocket_coffea.utils.configurator import Configurator
 
 from pocket_coffea.utils.plot_utils import dense_axes, get_axis_items, get_data_mc_ratio
+from pocket_coffea.parameters.custom.genweights.genweights import genweights_files
 
 pt_low = {
     'inclusive' : 350.,
@@ -62,74 +63,108 @@ class ptReweightProcessor(fatjetBaseProcessor):
         #corr_dict = defaultdict(float)
         ratio_dict = defaultdict(float)
 
-        for year in years:
-            for cat in categories:
-                #slicing_mc = {'year': year, 'cat': cat}
-                slicing_mc_nominal = {'year': year, 'cat': cat, 'variation': 'nominal'}
-                #dict_mc = {d: h[d][slicing_mc] for d in samples_mc}
-                dict_mc_nominal = {d: h[d][slicing_mc_nominal] for d in samples_mc}
-                #stack_mc = hist.Stack.from_dict(dict_mc)
-                stack_mc_nominal = hist.Stack.from_dict(dict_mc_nominal)
+        year = self.get_year(accumulator)
 
-                if 'era' in h[samples_data[0]].axes.name:
-                    slicing_data = {'year': year, 'cat': cat, 'era': sum}
-                else:
-                    slicing_data = {'year': year, 'cat': cat}
-                dict_data = {d: h[d][slicing_data] for d in samples_data}
-                stack_data = hist.Stack.from_dict(dict_data)
-                if len(stack_data) > 1:
-                    raise NotImplementedError
-                else:
-                    h_data = stack_data[0]
-                ratio, unc = get_data_mc_ratio(stack_data, stack_mc_nominal)
-                mod_ratio  = np.nan_to_num(ratio)
-                if cat not in pt_low.keys():
-                    pt_low[cat] = 350.
-                if mode == '1D':
-                    bins = axes[0].edges
-                    mod_ratio[bins[:-1] < pt_low[cat]] = 1
-                    mod_ratio[bins[:-1] > 1500] = 1
-                elif mode == '2D':
-                    mod_ratio[mod_ratio == 0.0] = 1
+        for cat in categories:
+            #slicing_mc = {'year': year, 'cat': cat}
+            slicing_mc_nominal = {'year': year, 'cat': cat, 'variation': 'nominal'}
+            #dict_mc = {d: h[d][slicing_mc] for d in samples_mc}
+            dict_mc_nominal = {d: h[d][slicing_mc_nominal] for d in samples_mc}
+            #stack_mc = hist.Stack.from_dict(dict_mc)
+            stack_mc_nominal = hist.Stack.from_dict(dict_mc_nominal)
 
-                ratio_dict.update({ cat : mod_ratio })
-
-            axis_category = hist.axis.StrCategory(list(ratio_dict.keys()), name="cat")
-            sfhist = hist.Hist(axis_category, *axes, data=np.stack(list(ratio_dict.values())))
-            sfhist.label = "out"
-            sfhist.name = f"pt_corr_{year}"
-            clibcorr = correctionlib.convert.from_histogram(sfhist)
-            clibcorr.description = "Reweighting SF matching the leading fatjet pT MC distribution to data."
-            cset = correctionlib.schemav2.CorrectionSet(
-                schema_version=2,
-                description="Semileptonic trigger efficiency SF",
-                corrections=[clibcorr],
-            )
-            rich.print(cset)
-
-            outfile_reweighting = os.path.join(self.cfg.output, f'pt_corr_{mode}_{year}.json')
-            outfile_reweighting = overwrite_check(outfile_reweighting)
-            print(f"Saving pt reweighting factors in {outfile_reweighting}")
-            with open(outfile_reweighting, "w") as fout:
-                fout.write(cset.json(exclude_unset=True))
-            fout.close()
-            print(f"Loading correction from {outfile_reweighting}...")
-            cset = correctionlib.CorrectionSet.from_file(outfile_reweighting)
-            print("inclusive:")
-            pt_corr = cset[f'pt_corr_{year}']
+            if 'era' in h[samples_data[0]].axes.name:
+                slicing_data = {'year': year, 'cat': cat, 'era': sum}
+            else:
+                slicing_data = {'year': year, 'cat': cat}
+            dict_data = {d: h[d][slicing_data] for d in samples_data}
+            stack_data = hist.Stack.from_dict(dict_data)
+            if len(stack_data) > 1:
+                raise NotImplementedError
+            else:
+                h_data = stack_data[0]
+            ratio, unc = get_data_mc_ratio(stack_data, stack_mc_nominal)
+            mod_ratio  = np.nan_to_num(ratio)
+            if cat not in pt_low.keys():
+                pt_low[cat] = 350.
             if mode == '1D':
-                pt1 = np.array([50, 100, 400, 500, 1000], dtype=float)
-                print("pt1 =", pt1)
-                print(pt_corr.evaluate('inclusive', pt1))
+                bins = axes[0].edges
+                mod_ratio[bins[:-1] < pt_low[cat]] = 1
+                mod_ratio[bins[:-1] > 1500] = 1
             elif mode == '2D':
-                pt1 = np.array([50, 100, 400, 500, 1000], dtype=float)
-                pt2 = np.array([40, 75, 300, 400, 750], dtype=float)
-                print("pt1 =", pt1)
-                print("pt2 =", pt2)
-                print(pt_corr.evaluate('inclusive', pt1, pt2))
+                mod_ratio[mod_ratio == 0.0] = 1
+
+            ratio_dict.update({ cat : mod_ratio })
+
+        axis_category = hist.axis.StrCategory(list(ratio_dict.keys()), name="cat")
+        sfhist = hist.Hist(axis_category, *axes, data=np.stack(list(ratio_dict.values())))
+        sfhist.label = "out"
+        sfhist.name = f"pt_corr_{year}"
+        clibcorr = correctionlib.convert.from_histogram(sfhist)
+        clibcorr.description = "Reweighting SF matching the leading fatjet pT MC distribution to data."
+        cset = correctionlib.schemav2.CorrectionSet(
+            schema_version=2,
+            description="Semileptonic trigger efficiency SF",
+            corrections=[clibcorr],
+        )
+        rich.print(cset)
+
+        outfile_reweighting = os.path.join(self.cfg.output, f'pt_corr_{mode}_{year}.json')
+        outfile_reweighting = overwrite_check(outfile_reweighting)
+        print(f"Saving pt reweighting factors in {outfile_reweighting}")
+        with open(outfile_reweighting, "w") as fout:
+            fout.write(cset.json(exclude_unset=True))
+        fout.close()
+        print(f"Loading correction from {outfile_reweighting}...")
+        cset = correctionlib.CorrectionSet.from_file(outfile_reweighting)
+        print("inclusive:")
+        pt_corr = cset[f'pt_corr_{year}']
+        if mode == '1D':
+            pt1 = np.array([50, 100, 400, 500, 1000], dtype=float)
+            print("pt1 =", pt1)
+            print(pt_corr.evaluate('inclusive', pt1))
+        elif mode == '2D':
+            pt1 = np.array([50, 100, 400, 500, 1000], dtype=float)
+            pt2 = np.array([40, 75, 300, 400, 750], dtype=float)
+            print("pt1 =", pt1)
+            print("pt2 =", pt2)
+            print(pt_corr.evaluate('inclusive', pt1, pt2))
 
     def postprocess(self, accumulator):
-        super().postprocess(accumulator=accumulator)
+        '''
+        Rescale MC histograms by the total sum of the genweights, read from the
+        output computed before skimming.
+        '''
+
+        years = self.cfg.dataset["filter"]["year"]
+        if len(years) > 1:
+            raise Exception("Only one data-taking year can be processed at a time.")
+        else:
+            year = years[0]
+        genweights_dict = load(genweights_files[year])['sum_genweights']
+
+        scale_genweight = {}
+
+        for sample in self._totalSamplesSet:
+            if (not sample.startswith('DATA')) & (sample not in genweights_dict):
+                continue
+            scale_genweight[sample] = (
+                1
+                if sample.startswith('DATA')  # BEAWARE OF THIS HARDCODING
+                else 1.0 / genweights_dict[sample]
+            )
+            # correct also the sumw (sum of weighted events) accumulator
+            for cat in self._categories:
+                if sample in accumulator["sumw"][cat]:
+                    accumulator["sumw"][cat][sample] *= scale_genweight[sample]
+
+        for var, hists in accumulator["variables"].items():
+            # Rescale only histogram without no_weights option
+            if self.cfg.variables[var].no_weights:
+                continue
+            for sample, h in hists.items():
+                h *= scale_genweight[sample]
+        accumulator["scale_genweight"] = scale_genweight
 
         self.pt_reweighting(accumulator=accumulator, mode='1D')
         self.pt_reweighting(accumulator=accumulator, mode='2D')

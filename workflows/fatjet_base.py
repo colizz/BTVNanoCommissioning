@@ -1,6 +1,7 @@
 import numpy as np
 import awkward as ak
 from collections import defaultdict
+from coffea.util import load
 
 from pocket_coffea.workflows.base import BaseProcessorABC
 from pocket_coffea.utils.configurator import Configurator
@@ -16,7 +17,7 @@ from pocket_coffea.lib.objects import (
 from config.fatjet_base.custom.leptons import lepton_selection_noniso
 from lib.sv import *
 from pocket_coffea.lib.hist_manager import HistManager, Axis, HistConf
-
+from pocket_coffea.parameters.custom.genweights.genweights import genweights_files
 
 class fatjetBaseProcessor(BaseProcessorABC):
     def __init__(self, cfg: Configurator):
@@ -36,6 +37,7 @@ class fatjetBaseProcessor(BaseProcessorABC):
                 label="Year",
             )
         )
+
     """
     def load_metadata_extra(self):
         self._JECversion = JECversions[self._year]['MC' if self._isMC else 'Data']
@@ -214,19 +216,39 @@ class fatjetBaseProcessor(BaseProcessorABC):
         pass
 
     def postprocess(self, accumulator):
-        super().postprocess(accumulator=accumulator)
+        '''
+        Rescale MC histograms by the total sum of the genweights, read from the
+        output computed before skimming.
+        '''
 
-        #for histname, h in accumulator['variables'].items():
-        #    samples = h.keys()
-        #    print(samples)
-        #    h_byflavor = {'DATA' : h['DATA']}
-        #    for f in ['l', 'c', 'b', 'cc', 'bb']:
-        #        subsamples_flavor = filter(lambda x : x.endswith(f"_{f}"), samples)
-        #        for (i, s) in enumerate(subsamples_flavor):
-        #            if i==0:
-        #                h_byflavor[f] = h[s]
-        #            else:
-        #                h_byflavor[f] += h[s]
-        #    accumulator['variables'][histname] = h_byflavor
+        years = self.cfg.dataset["filter"]["year"]
+        if len(years) > 1:
+            raise Exception("Only one data-taking year can be processed at a time.")
+        else:
+            year = years[0]
+        genweights_dict = load(genweights_files[year])['sum_genweights']
+
+        scale_genweight = {}
+
+        for sample in self._totalSamplesSet:
+            if (not sample.startswith('DATA')) & (sample not in genweights_dict):
+                continue
+            scale_genweight[sample] = (
+                1
+                if sample.startswith('DATA')  # BEAWARE OF THIS HARDCODING
+                else 1.0 / genweights_dict[sample]
+            )
+            # correct also the sumw (sum of weighted events) accumulator
+            for cat in self._categories:
+                if sample in accumulator["sumw"][cat]:
+                    accumulator["sumw"][cat][sample] *= scale_genweight[sample]
+
+        for var, hists in accumulator["variables"].items():
+            # Rescale only histogram without no_weights option
+            if self.cfg.variables[var].no_weights:
+                continue
+            for sample, h in hists.items():
+                h *= scale_genweight[sample]
+        accumulator["scale_genweight"] = scale_genweight
 
         return accumulator
