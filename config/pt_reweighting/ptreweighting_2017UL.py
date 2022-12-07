@@ -26,7 +26,7 @@ for s in filter(lambda x: 'DATA' not in x, samples):
 
 cfg =  {
     "dataset" : {
-        "jsons": ["datasets/skimmed_datasets_RunIISummer20UL17.json"],
+        "jsons": ["datasets/skim/datasets_definition_skim.json"],
         "filter" : {
             "samples": samples,
             "samples_exclude" : [],
@@ -43,12 +43,12 @@ cfg =  {
     "run_options" : {
         "executor"       : "dask/slurm",
         "workers"        : 1,
-        "scaleout"       : 125,
-        "queue"          : "standard",
-        "walltime"       : "8:00:00",
-        "mem_per_worker" : "6GB", # GB
+        "scaleout"       : 200,
+        "queue"          : "short",
+        "walltime"       : "0:10:00",
+        "mem_per_worker" : "2GB", # GB
         "exclusive"      : False,
-        "chunk"          : 400000,
+        "chunk"          : 50000,
         "retries"        : 50,
         "treereduction"  : 10,
         "max"            : None,
@@ -56,6 +56,7 @@ cfg =  {
         "voms"           : None,
         "limit"          : None,
         "adapt"          : False,
+        "env"            : "conda",
     },
 
     # Cuts and plots settings

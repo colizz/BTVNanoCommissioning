@@ -10,8 +10,8 @@ from pocket_coffea.parameters.custom.functions import get_inclusive_wp, get_HLTs
 from pocket_coffea.parameters.custom.parameters import PtBinning, AK8TaggerWP, AK8Taggers
 import numpy as np
 
-PtBinning = PtBinning['UL']['2018']
-wps = AK8TaggerWP['UL']['2018']
+PtBinning = PtBinning['UL']['2017']
+wps = AK8TaggerWP['UL']['2017']
 
 common_cats = {
     "inclusive" : passthrough,
@@ -60,7 +60,7 @@ cfg =  {
         "filter" : {
             "samples": samples,
             "samples_exclude" : [],
-            "year": ['2018']
+            "year": ['2017']
         },
         "subsamples": subsamples
     },
@@ -68,7 +68,7 @@ cfg =  {
 
     # Input and output files
     "workflow" : fatjetBaseProcessor,
-    "output"   : "output/pocket_coffea/templates/templates_2018UL",
+    "output"   : "output/pocket_coffea/templates/templates_2017UL",
     "workflow_options" : {},
 
     "run_options" : {
@@ -103,7 +103,7 @@ cfg =  {
     "weights": {
         "common": {
             "inclusive": ["genWeight","lumi","XS",
-                          "pileup"#, "sf_L1prefiring"
+                          "pileup", "sf_L1prefiring"
                           ],
             "bycategory" : {
             }
@@ -115,7 +115,7 @@ cfg =  {
     "variations": {
         "weights": {
             "common": {
-                "inclusive": [ "pileup" ],#, "sf_L1prefiring" ],
+                "inclusive": [ "pileup" , "sf_L1prefiring" ],
                 "bycategory" : {
                 }
             },
