@@ -1,0 +1,43 @@
+{
+  "DATA_BTagMu_2018_EraB": {
+    "files": [
+      "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraB/DATA_BTagMu_2018_EraB_1.root",
+      "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraB/DATA_BTagMu_2018_EraB_2.root"
+    ]
+  },
+  "DATA_BTagMu_2018_EraD": {
+    "files": [
+      "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_1.root",
+      "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_2.root",
+      "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_3.root",
+      "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_4.root",
+      "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_5.root",
+      "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_6.root",
+      "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_7.root",
+      "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_8.root",
+      "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_9.root",
+      "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_10.root",
+      "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_11.root",
+      "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_12.root",
+      "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_13.root",
+      "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_14.root",
+      "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_15.root",
+      "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_16.root",
+      "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_17.root"
+    ]
+  },
+  "DATA_BTagMu_2018_EraC": {
+    "files": [
+      "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraC/DATA_BTagMu_2018_EraC_1.root",
+      "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraC/DATA_BTagMu_2018_EraC_2.root"
+    ]
+  },
+  "DATA_BTagMu_2018_EraA": {
+    "files": [
+      "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraA/DATA_BTagMu_2018_EraA_1.root",
+      "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraA/DATA_BTagMu_2018_EraA_2.root",
+      "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraA/DATA_BTagMu_2018_EraA_3.root",
+      "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraA/DATA_BTagMu_2018_EraA_4.root"
+    ]
+  }
+}

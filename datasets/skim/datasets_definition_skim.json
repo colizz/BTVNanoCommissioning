@@ -1,0 +1,823 @@
+{
+    "DATA_BTagMu_2018_EraB": {
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraB/DATA_BTagMu_2018_EraB_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraB/DATA_BTagMu_2018_EraB_2.root"
+        ],
+        "metadata": {
+            "sample": "DATA",
+            "year": "2018",
+            "isMC": "False",
+            "primaryDataset": "BTagMu",
+            "era": "B"
+        }
+    },
+    "DATA_BTagMu_2018_EraD": {
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_3.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_4.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_5.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_6.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_7.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_8.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_9.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_10.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_11.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_12.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_13.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_14.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_15.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_16.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraD/DATA_BTagMu_2018_EraD_17.root"
+        ],
+        "metadata": {
+            "sample": "DATA",
+            "year": "2018",
+            "isMC": "False",
+            "primaryDataset": "BTagMu",
+            "era": "D"
+        }
+    },
+    "DATA_BTagMu_2018_EraC": {
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraC/DATA_BTagMu_2018_EraC_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraC/DATA_BTagMu_2018_EraC_2.root"
+        ],
+        "metadata": {
+            "sample": "DATA",
+            "year": "2018",
+            "isMC": "False",
+            "primaryDataset": "BTagMu",
+            "era": "C"
+        }
+    },
+    "DATA_BTagMu_2018_EraA": {
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraA/DATA_BTagMu_2018_EraA_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraA/DATA_BTagMu_2018_EraA_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraA/DATA_BTagMu_2018_EraA_3.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/DATA_BTagMu_2018_EraA/DATA_BTagMu_2018_EraA_4.root"
+        ],
+        "metadata": {
+            "sample": "DATA",
+            "year": "2018",
+            "isMC": "False",
+            "primaryDataset": "BTagMu",
+            "era": "A"
+        }
+    },
+    "QCD_Pt-600to800_2018": {
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_3.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_4.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_5.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_6.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_7.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_8.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_9.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_10.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_11.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_12.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_13.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_14.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_15.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_16.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_17.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_18.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_19.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_20.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_21.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_22.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_23.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_24.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_25.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_26.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_27.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_28.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_29.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_30.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_31.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_32.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_33.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_34.root"
+        ],
+        "metadata": {
+            "sample": "QCD_Pt-600to800",
+            "year": "2018",
+            "isMC": "True"
+        }
+    },
+    "QCD_Pt-170to300_2018": {
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-170to300_2018/QCD_Pt-170to300_2018_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-170to300_2018/QCD_Pt-170to300_2018_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-170to300_2018/QCD_Pt-170to300_2018_3.root"
+        ],
+        "metadata": {
+            "sample": "QCD_Pt-170to300",
+            "year": "2018",
+            "isMC": "True"
+        }
+    },
+    "QCD_Pt-470to600_2018": {
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-470to600_2018/QCD_Pt-470to600_2018_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-470to600_2018/QCD_Pt-470to600_2018_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-470to600_2018/QCD_Pt-470to600_2018_3.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-470to600_2018/QCD_Pt-470to600_2018_4.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-470to600_2018/QCD_Pt-470to600_2018_5.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-470to600_2018/QCD_Pt-470to600_2018_6.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-470to600_2018/QCD_Pt-470to600_2018_7.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-470to600_2018/QCD_Pt-470to600_2018_8.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-470to600_2018/QCD_Pt-470to600_2018_9.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-470to600_2018/QCD_Pt-470to600_2018_10.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-470to600_2018/QCD_Pt-470to600_2018_11.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-470to600_2018/QCD_Pt-470to600_2018_12.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-470to600_2018/QCD_Pt-470to600_2018_13.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-470to600_2018/QCD_Pt-470to600_2018_14.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-470to600_2018/QCD_Pt-470to600_2018_15.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-470to600_2018/QCD_Pt-470to600_2018_16.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-470to600_2018/QCD_Pt-470to600_2018_17.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-470to600_2018/QCD_Pt-470to600_2018_18.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-470to600_2018/QCD_Pt-470to600_2018_19.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-470to600_2018/QCD_Pt-470to600_2018_20.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-470to600_2018/QCD_Pt-470to600_2018_21.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-470to600_2018/QCD_Pt-470to600_2018_22.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-470to600_2018/QCD_Pt-470to600_2018_23.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-470to600_2018/QCD_Pt-470to600_2018_24.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-470to600_2018/QCD_Pt-470to600_2018_25.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-470to600_2018/QCD_Pt-470to600_2018_26.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-470to600_2018/QCD_Pt-470to600_2018_27.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-470to600_2018/QCD_Pt-470to600_2018_28.root"
+        ],
+        "metadata": {
+            "sample": "QCD_Pt-470to600",
+            "year": "2018",
+            "isMC": "True"
+        }
+    },
+    "QCD_Pt-800to1000_2018": {
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_3.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_4.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_5.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_6.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_7.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_8.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_9.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_10.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_11.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_12.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_13.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_14.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_15.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_16.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_17.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_18.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_19.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_20.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_21.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_22.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_23.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_24.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_25.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_26.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_27.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_28.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_29.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_30.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_31.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_32.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_33.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_34.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_35.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_36.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_37.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_38.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_39.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_40.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_41.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_42.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_43.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_44.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_45.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_46.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_47.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_48.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_49.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_50.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_51.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_52.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_53.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_54.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_55.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_56.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_57.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_58.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_59.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_60.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_61.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_62.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_63.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_64.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_65.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_66.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_67.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_68.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_69.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_70.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_71.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_72.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_73.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_74.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_75.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_76.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_77.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_78.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_79.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_80.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_81.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_82.root"
+        ],
+        "metadata": {
+            "sample": "QCD_Pt-800to1000",
+            "year": "2018",
+            "isMC": "True"
+        }
+    },
+    "QCD_Pt-300to470_2018": {
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-300to470_2018/QCD_Pt-300to470_2018_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-300to470_2018/QCD_Pt-300to470_2018_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-300to470_2018/QCD_Pt-300to470_2018_3.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-300to470_2018/QCD_Pt-300to470_2018_4.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-300to470_2018/QCD_Pt-300to470_2018_5.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-300to470_2018/QCD_Pt-300to470_2018_6.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-300to470_2018/QCD_Pt-300to470_2018_7.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-300to470_2018/QCD_Pt-300to470_2018_8.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-300to470_2018/QCD_Pt-300to470_2018_9.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-300to470_2018/QCD_Pt-300to470_2018_10.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-300to470_2018/QCD_Pt-300to470_2018_11.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-300to470_2018/QCD_Pt-300to470_2018_12.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-300to470_2018/QCD_Pt-300to470_2018_13.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-300to470_2018/QCD_Pt-300to470_2018_14.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-300to470_2018/QCD_Pt-300to470_2018_15.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-300to470_2018/QCD_Pt-300to470_2018_16.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-300to470_2018/QCD_Pt-300to470_2018_17.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-300to470_2018/QCD_Pt-300to470_2018_18.root"
+        ],
+        "metadata": {
+            "sample": "QCD_Pt-300to470",
+            "year": "2018",
+            "isMC": "True"
+        }
+    },
+    "QCD_Pt-1000toInf_2018": {
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_3.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_4.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_5.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_6.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_7.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_8.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_9.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_10.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_11.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_12.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_13.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_14.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_15.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_16.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_17.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_18.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_19.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_20.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_21.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_22.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_23.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_24.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_25.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_26.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_27.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_28.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_29.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_30.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_31.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_32.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_33.root"
+        ],
+        "metadata": {
+            "sample": "QCD_Pt-1000toInf",
+            "year": "2018",
+            "isMC": "True"
+        }
+    },
+    "QCD_Pt-170to300_2017": {
+        "metadata": {
+            "sample": "QCD_Pt-170to300",
+            "year": "2017",
+            "isMC": "True"
+        },
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-170to300_2017/QCD_Pt-170to300_2017_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-170to300_2017/QCD_Pt-170to300_2017_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-170to300_2017/QCD_Pt-170to300_2017_3.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-170to300_2017/QCD_Pt-170to300_2017_4.root"
+        ]
+    },
+    "QCD_Pt-470to600_2017": {
+        "metadata": {
+            "sample": "QCD_Pt-400to600",
+            "year": "2017",
+            "isMC": "True"
+        },
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-470to600_2017/QCD_Pt-470to600_2017_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-470to600_2017/QCD_Pt-470to600_2017_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-470to600_2017/QCD_Pt-470to600_2017_3.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-470to600_2017/QCD_Pt-470to600_2017_4.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-470to600_2017/QCD_Pt-470to600_2017_5.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-470to600_2017/QCD_Pt-470to600_2017_6.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-470to600_2017/QCD_Pt-470to600_2017_7.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-470to600_2017/QCD_Pt-470to600_2017_8.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-470to600_2017/QCD_Pt-470to600_2017_9.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-470to600_2017/QCD_Pt-470to600_2017_10.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-470to600_2017/QCD_Pt-470to600_2017_11.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-470to600_2017/QCD_Pt-470to600_2017_12.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-470to600_2017/QCD_Pt-470to600_2017_13.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-470to600_2017/QCD_Pt-470to600_2017_14.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-470to600_2017/QCD_Pt-470to600_2017_15.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-470to600_2017/QCD_Pt-470to600_2017_16.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-470to600_2017/QCD_Pt-470to600_2017_17.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-470to600_2017/QCD_Pt-470to600_2017_18.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-470to600_2017/QCD_Pt-470to600_2017_19.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-470to600_2017/QCD_Pt-470to600_2017_20.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-470to600_2017/QCD_Pt-470to600_2017_21.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-470to600_2017/QCD_Pt-470to600_2017_22.root"
+        ]
+    },
+    "QCD_Pt-300to470_2017": {
+        "metadata": {
+            "sample": "QCD_Pt-300to470",
+            "year": "2017",
+            "isMC": "True"
+        },
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-300to470_2017/QCD_Pt-300to470_2017_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-300to470_2017/QCD_Pt-300to470_2017_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-300to470_2017/QCD_Pt-300to470_2017_3.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-300to470_2017/QCD_Pt-300to470_2017_4.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-300to470_2017/QCD_Pt-300to470_2017_5.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-300to470_2017/QCD_Pt-300to470_2017_6.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-300to470_2017/QCD_Pt-300to470_2017_7.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-300to470_2017/QCD_Pt-300to470_2017_8.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-300to470_2017/QCD_Pt-300to470_2017_9.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-300to470_2017/QCD_Pt-300to470_2017_10.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-300to470_2017/QCD_Pt-300to470_2017_11.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-300to470_2017/QCD_Pt-300to470_2017_12.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-300to470_2017/QCD_Pt-300to470_2017_13.root"
+        ]
+    },
+    "QCD_Pt-600to800_2017": {
+        "metadata": {
+            "sample": "QCD_Pt-600to800",
+            "year": "2017",
+            "isMC": "True"
+        },
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-600to800_2017/QCD_Pt-600to800_2017_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-600to800_2017/QCD_Pt-600to800_2017_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-600to800_2017/QCD_Pt-600to800_2017_3.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-600to800_2017/QCD_Pt-600to800_2017_4.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-600to800_2017/QCD_Pt-600to800_2017_5.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-600to800_2017/QCD_Pt-600to800_2017_6.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-600to800_2017/QCD_Pt-600to800_2017_7.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-600to800_2017/QCD_Pt-600to800_2017_8.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-600to800_2017/QCD_Pt-600to800_2017_9.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-600to800_2017/QCD_Pt-600to800_2017_10.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-600to800_2017/QCD_Pt-600to800_2017_11.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-600to800_2017/QCD_Pt-600to800_2017_12.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-600to800_2017/QCD_Pt-600to800_2017_13.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-600to800_2017/QCD_Pt-600to800_2017_14.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-600to800_2017/QCD_Pt-600to800_2017_15.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-600to800_2017/QCD_Pt-600to800_2017_16.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-600to800_2017/QCD_Pt-600to800_2017_17.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-600to800_2017/QCD_Pt-600to800_2017_18.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-600to800_2017/QCD_Pt-600to800_2017_19.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-600to800_2017/QCD_Pt-600to800_2017_20.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-600to800_2017/QCD_Pt-600to800_2017_21.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-600to800_2017/QCD_Pt-600to800_2017_22.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-600to800_2017/QCD_Pt-600to800_2017_23.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-600to800_2017/QCD_Pt-600to800_2017_24.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-600to800_2017/QCD_Pt-600to800_2017_25.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-600to800_2017/QCD_Pt-600to800_2017_26.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-600to800_2017/QCD_Pt-600to800_2017_27.root"
+        ]
+    },
+    "DATA_BTagMu_2017_EraF": {
+        "metadata": {
+            "sample": "DATA",
+            "year": "2017",
+            "isMC": "False",
+            "primaryDataset": "BTagMu",
+            "era": "F"
+        },
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraF/DATA_BTagMu_2017_EraF_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraF/DATA_BTagMu_2017_EraF_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraF/DATA_BTagMu_2017_EraF_3.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraF/DATA_BTagMu_2017_EraF_4.root"
+        ]
+    },
+    "DATA_BTagMu_2017_EraE": {
+        "metadata": {
+            "sample": "DATA",
+            "year": "2017",
+            "isMC": "False",
+            "primaryDataset": "BTagMu",
+            "era": "E"
+        },
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraE/DATA_BTagMu_2017_EraE_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraE/DATA_BTagMu_2017_EraE_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraE/DATA_BTagMu_2017_EraE_3.root"
+        ]
+    },
+    "DATA_BTagMu_2017_EraD": {
+        "metadata": {
+            "sample": "DATA",
+            "year": "2017",
+            "isMC": "False",
+            "primaryDataset": "BTagMu",
+            "era": "D"
+        },
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraD/DATA_BTagMu_2017_EraD_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraD/DATA_BTagMu_2017_EraD_2.root"
+        ]
+    },
+    "DATA_BTagMu_2017_EraC": {
+        "metadata": {
+            "sample": "DATA",
+            "year": "2017",
+            "isMC": "False",
+            "primaryDataset": "BTagMu",
+            "era": "C"
+        },
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraC/DATA_BTagMu_2017_EraC_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraC/DATA_BTagMu_2017_EraC_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraC/DATA_BTagMu_2017_EraC_3.root"
+        ]
+    },
+    "DATA_BTagMu_2017_EraB": {
+        "metadata": {
+            "sample": "DATA",
+            "year": "2017",
+            "isMC": "False",
+            "primaryDataset": "BTagMu",
+            "era": "B"
+        },
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraB/DATA_BTagMu_2017_EraB_1.root"
+        ]
+    },
+    "QCD_Pt-1000toInf_2017": {
+        "metadata": {
+            "sample": "QCD_Pt-1000toInf",
+            "year": "2017",
+            "isMC": "True"
+        },
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-1000toInf_2017/QCD_Pt-1000toInf_2017_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-1000toInf_2017/QCD_Pt-1000toInf_2017_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-1000toInf_2017/QCD_Pt-1000toInf_2017_3.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-1000toInf_2017/QCD_Pt-1000toInf_2017_4.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-1000toInf_2017/QCD_Pt-1000toInf_2017_5.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-1000toInf_2017/QCD_Pt-1000toInf_2017_6.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-1000toInf_2017/QCD_Pt-1000toInf_2017_7.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-1000toInf_2017/QCD_Pt-1000toInf_2017_8.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-1000toInf_2017/QCD_Pt-1000toInf_2017_9.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-1000toInf_2017/QCD_Pt-1000toInf_2017_10.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-1000toInf_2017/QCD_Pt-1000toInf_2017_11.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-1000toInf_2017/QCD_Pt-1000toInf_2017_12.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-1000toInf_2017/QCD_Pt-1000toInf_2017_13.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-1000toInf_2017/QCD_Pt-1000toInf_2017_14.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-1000toInf_2017/QCD_Pt-1000toInf_2017_15.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-1000toInf_2017/QCD_Pt-1000toInf_2017_16.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-1000toInf_2017/QCD_Pt-1000toInf_2017_17.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-1000toInf_2017/QCD_Pt-1000toInf_2017_18.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-1000toInf_2017/QCD_Pt-1000toInf_2017_19.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-1000toInf_2017/QCD_Pt-1000toInf_2017_20.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-1000toInf_2017/QCD_Pt-1000toInf_2017_21.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-1000toInf_2017/QCD_Pt-1000toInf_2017_22.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-1000toInf_2017/QCD_Pt-1000toInf_2017_23.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-1000toInf_2017/QCD_Pt-1000toInf_2017_24.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-1000toInf_2017/QCD_Pt-1000toInf_2017_25.root"
+        ]
+    },
+    "QCD_Pt-800to1000_2017": {
+        "metadata": {
+            "sample": "QCD_Pt-800to1000",
+            "year": "2017",
+            "isMC": "True"
+        },
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_3.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_4.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_5.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_6.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_7.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_8.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_9.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_10.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_11.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_12.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_13.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_14.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_15.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_16.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_17.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_18.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_19.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_20.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_21.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_22.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_23.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_24.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_25.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_26.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_27.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_28.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_29.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_30.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_31.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_32.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_33.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_34.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_35.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_36.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_37.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_38.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_39.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_40.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_41.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_42.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_43.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_44.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_45.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_46.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_47.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_48.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_49.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_50.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_51.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_52.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_53.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_54.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_55.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_56.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_57.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_58.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_59.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_60.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_61.root"
+        ]
+    },
+    "QCD_Pt-170to300_2016_PostVFP": {
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-170to300_2016_PostVFP/QCD_Pt-170to300_2016_PostVFP_1.root"
+        ],
+        "metadata": {
+            "sample": "QCD_Pt-170to300",
+            "year": "2016_PostVFP",
+            "isMC": "True"
+        }
+    },
+    "QCD_Pt-300to470_2016_PostVFP": {
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-300to470_2016_PostVFP/QCD_Pt-300to470_2016_PostVFP_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-300to470_2016_PostVFP/QCD_Pt-300to470_2016_PostVFP_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-300to470_2016_PostVFP/QCD_Pt-300to470_2016_PostVFP_3.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-300to470_2016_PostVFP/QCD_Pt-300to470_2016_PostVFP_4.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-300to470_2016_PostVFP/QCD_Pt-300to470_2016_PostVFP_5.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-300to470_2016_PostVFP/QCD_Pt-300to470_2016_PostVFP_6.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-300to470_2016_PostVFP/QCD_Pt-300to470_2016_PostVFP_7.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-300to470_2016_PostVFP/QCD_Pt-300to470_2016_PostVFP_8.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-300to470_2016_PostVFP/QCD_Pt-300to470_2016_PostVFP_9.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-300to470_2016_PostVFP/QCD_Pt-300to470_2016_PostVFP_10.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-300to470_2016_PostVFP/QCD_Pt-300to470_2016_PostVFP_11.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-300to470_2016_PostVFP/QCD_Pt-300to470_2016_PostVFP_12.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-300to470_2016_PostVFP/QCD_Pt-300to470_2016_PostVFP_13.root"
+        ],
+        "metadata": {
+            "sample": "QCD_Pt-300to470",
+            "year": "2016_PostVFP",
+            "isMC": "True"
+        }
+    },
+    "QCD_Pt-470to600_2016_PostVFP": {
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-470to600_2016_PostVFP/QCD_Pt-470to600_2016_PostVFP_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-470to600_2016_PostVFP/QCD_Pt-470to600_2016_PostVFP_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-470to600_2016_PostVFP/QCD_Pt-470to600_2016_PostVFP_3.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-470to600_2016_PostVFP/QCD_Pt-470to600_2016_PostVFP_4.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-470to600_2016_PostVFP/QCD_Pt-470to600_2016_PostVFP_5.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-470to600_2016_PostVFP/QCD_Pt-470to600_2016_PostVFP_6.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-470to600_2016_PostVFP/QCD_Pt-470to600_2016_PostVFP_7.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-470to600_2016_PostVFP/QCD_Pt-470to600_2016_PostVFP_8.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-470to600_2016_PostVFP/QCD_Pt-470to600_2016_PostVFP_9.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-470to600_2016_PostVFP/QCD_Pt-470to600_2016_PostVFP_10.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-470to600_2016_PostVFP/QCD_Pt-470to600_2016_PostVFP_11.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-470to600_2016_PostVFP/QCD_Pt-470to600_2016_PostVFP_12.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-470to600_2016_PostVFP/QCD_Pt-470to600_2016_PostVFP_13.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-470to600_2016_PostVFP/QCD_Pt-470to600_2016_PostVFP_14.root"
+        ],
+        "metadata": {
+            "sample": "QCD_Pt-470to600",
+            "year": "2016_PostVFP",
+            "isMC": "True"
+        }
+    },
+    "QCD_Pt-600to800_2016_PostVFP": {
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-600to800_2016_PostVFP/QCD_Pt-600to800_2016_PostVFP_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-600to800_2016_PostVFP/QCD_Pt-600to800_2016_PostVFP_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-600to800_2016_PostVFP/QCD_Pt-600to800_2016_PostVFP_3.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-600to800_2016_PostVFP/QCD_Pt-600to800_2016_PostVFP_4.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-600to800_2016_PostVFP/QCD_Pt-600to800_2016_PostVFP_5.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-600to800_2016_PostVFP/QCD_Pt-600to800_2016_PostVFP_6.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-600to800_2016_PostVFP/QCD_Pt-600to800_2016_PostVFP_7.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-600to800_2016_PostVFP/QCD_Pt-600to800_2016_PostVFP_8.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-600to800_2016_PostVFP/QCD_Pt-600to800_2016_PostVFP_9.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-600to800_2016_PostVFP/QCD_Pt-600to800_2016_PostVFP_10.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-600to800_2016_PostVFP/QCD_Pt-600to800_2016_PostVFP_11.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-600to800_2016_PostVFP/QCD_Pt-600to800_2016_PostVFP_12.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-600to800_2016_PostVFP/QCD_Pt-600to800_2016_PostVFP_13.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-600to800_2016_PostVFP/QCD_Pt-600to800_2016_PostVFP_14.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-600to800_2016_PostVFP/QCD_Pt-600to800_2016_PostVFP_15.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-600to800_2016_PostVFP/QCD_Pt-600to800_2016_PostVFP_16.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-600to800_2016_PostVFP/QCD_Pt-600to800_2016_PostVFP_17.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-600to800_2016_PostVFP/QCD_Pt-600to800_2016_PostVFP_18.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-600to800_2016_PostVFP/QCD_Pt-600to800_2016_PostVFP_19.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-600to800_2016_PostVFP/QCD_Pt-600to800_2016_PostVFP_20.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-600to800_2016_PostVFP/QCD_Pt-600to800_2016_PostVFP_21.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-600to800_2016_PostVFP/QCD_Pt-600to800_2016_PostVFP_22.root"
+        ],
+        "metadata": {
+            "sample": "QCD_Pt-600to800",
+            "year": "2016_PostVFP",
+            "isMC": "True"
+        }
+    },
+    "QCD_Pt-1000toInf_2016_PostVFP": {
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-1000toInf_2016_PostVFP/QCD_Pt-1000toInf_2016_PostVFP_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-1000toInf_2016_PostVFP/QCD_Pt-1000toInf_2016_PostVFP_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-1000toInf_2016_PostVFP/QCD_Pt-1000toInf_2016_PostVFP_3.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-1000toInf_2016_PostVFP/QCD_Pt-1000toInf_2016_PostVFP_4.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-1000toInf_2016_PostVFP/QCD_Pt-1000toInf_2016_PostVFP_5.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-1000toInf_2016_PostVFP/QCD_Pt-1000toInf_2016_PostVFP_6.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-1000toInf_2016_PostVFP/QCD_Pt-1000toInf_2016_PostVFP_7.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-1000toInf_2016_PostVFP/QCD_Pt-1000toInf_2016_PostVFP_8.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-1000toInf_2016_PostVFP/QCD_Pt-1000toInf_2016_PostVFP_9.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-1000toInf_2016_PostVFP/QCD_Pt-1000toInf_2016_PostVFP_10.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-1000toInf_2016_PostVFP/QCD_Pt-1000toInf_2016_PostVFP_11.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-1000toInf_2016_PostVFP/QCD_Pt-1000toInf_2016_PostVFP_12.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-1000toInf_2016_PostVFP/QCD_Pt-1000toInf_2016_PostVFP_13.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-1000toInf_2016_PostVFP/QCD_Pt-1000toInf_2016_PostVFP_14.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-1000toInf_2016_PostVFP/QCD_Pt-1000toInf_2016_PostVFP_15.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-1000toInf_2016_PostVFP/QCD_Pt-1000toInf_2016_PostVFP_16.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-1000toInf_2016_PostVFP/QCD_Pt-1000toInf_2016_PostVFP_17.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-1000toInf_2016_PostVFP/QCD_Pt-1000toInf_2016_PostVFP_18.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-1000toInf_2016_PostVFP/QCD_Pt-1000toInf_2016_PostVFP_19.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-1000toInf_2016_PostVFP/QCD_Pt-1000toInf_2016_PostVFP_20.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-1000toInf_2016_PostVFP/QCD_Pt-1000toInf_2016_PostVFP_21.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-1000toInf_2016_PostVFP/QCD_Pt-1000toInf_2016_PostVFP_22.root"
+        ],
+        "metadata": {
+            "sample": "QCD_Pt-1000toInf",
+            "year": "2016_PostVFP",
+            "isMC": "True"
+        }
+    },
+    "QCD_Pt-800to1000_2016_PostVFP": {
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_3.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_4.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_5.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_6.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_7.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_8.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_9.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_10.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_11.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_12.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_13.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_14.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_15.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_16.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_17.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_18.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_19.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_20.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_21.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_22.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_23.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_24.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_25.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_26.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_27.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_28.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_29.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_30.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_31.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_32.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_33.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_34.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_35.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_36.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_37.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_38.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_39.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_40.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_41.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_42.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_43.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_44.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_45.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_46.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_47.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_48.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_49.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_50.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_51.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_52.root"
+        ],
+        "metadata": {
+            "sample": "QCD_Pt-800to1000",
+            "year": "2016_PostVFP",
+            "isMC": "True"
+        }
+    },
+    "DATA_BTagMu_2016_PostVFP_EraG": {
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraG/DATA_BTagMu_2016_PostVFP_EraG_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraG/DATA_BTagMu_2016_PostVFP_EraG_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraG/DATA_BTagMu_2016_PostVFP_EraG_3.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraG/DATA_BTagMu_2016_PostVFP_EraG_4.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraG/DATA_BTagMu_2016_PostVFP_EraG_5.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraG/DATA_BTagMu_2016_PostVFP_EraG_6.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraG/DATA_BTagMu_2016_PostVFP_EraG_7.root"
+        ],
+        "metadata": {
+            "sample": "DATA",
+            "year": "2016_PostVFP",
+            "isMC": "False",
+            "primaryDataset": "BTagMu",
+            "era": "G"
+        }
+    },
+    "DATA_BTagMu_2016_PostVFP_EraH": {
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraH/DATA_BTagMu_2016_PostVFP_EraH_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraH/DATA_BTagMu_2016_PostVFP_EraH_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraH/DATA_BTagMu_2016_PostVFP_EraH_3.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraH/DATA_BTagMu_2016_PostVFP_EraH_4.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraH/DATA_BTagMu_2016_PostVFP_EraH_5.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraH/DATA_BTagMu_2016_PostVFP_EraH_6.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraH/DATA_BTagMu_2016_PostVFP_EraH_7.root"
+        ],
+        "metadata": {
+            "sample": "DATA",
+            "year": "2016_PostVFP",
+            "isMC": "False",
+            "primaryDataset": "BTagMu",
+            "era": "H"
+        }
+    },
+    "DATA_BTagMu_2016_PostVFP_EraF": {
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraF/DATA_BTagMu_2016_PostVFP_EraF_1.root"
+        ],
+        "metadata": {
+            "sample": "DATA",
+            "year": "2016_PostVFP",
+            "isMC": "False",
+            "primaryDataset": "BTagMu",
+            "era": "F"
+        }
+    }
+}
