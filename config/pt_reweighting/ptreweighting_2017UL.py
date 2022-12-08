@@ -37,7 +37,7 @@ cfg =  {
 
     # Input and output files
     "workflow" : ptReweightProcessor,
-    "output"   : "output/pocket_coffea/pt_reweighting/pt_reweighting_2d_2017UL",
+    "output"   : "output/pocket_coffea/pt_reweighting/pt_reweighting_2d_2017UL_FIXED",
     "workflow_options" : {},
 
     "run_options" : {
