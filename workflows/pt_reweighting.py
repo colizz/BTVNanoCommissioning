@@ -42,7 +42,7 @@ class ptReweightProcessor(fatjetBaseProcessor):
         if not self.histname_pt_1d in self.cfg.variables.keys():
             raise Exception(f"'{self.histname_pt_1d}' is not present in the histogram keys.")
 
-    def pt_reweighting(self, accumulator, mode):
+    def pt_reweighting(self, accumulator, year, mode):
         if mode == '1D':
             histname = self.histname_pt_1d
         elif mode == '2D':
@@ -57,13 +57,10 @@ class ptReweightProcessor(fatjetBaseProcessor):
         h_mc = h[samples_mc[0]]
 
         axes = dense_axes(h_mc)
-        years = get_axis_items(h_mc, 'year')
         categories = get_axis_items(h_mc, 'cat')
 
         #corr_dict = defaultdict(float)
         ratio_dict = defaultdict(float)
-
-        year = self.get_year(accumulator)
 
         for cat in categories:
             #slicing_mc = {'year': year, 'cat': cat}
@@ -166,7 +163,7 @@ class ptReweightProcessor(fatjetBaseProcessor):
                 h *= scale_genweight[sample]
         accumulator["scale_genweight"] = scale_genweight
 
-        self.pt_reweighting(accumulator=accumulator, mode='1D')
-        self.pt_reweighting(accumulator=accumulator, mode='2D')
+        self.pt_reweighting(accumulator=accumulator, year=year, mode='1D')
+        self.pt_reweighting(accumulator=accumulator, year=year, mode='2D')
 
         return accumulator
