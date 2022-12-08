@@ -49,7 +49,8 @@ samples = ["QCD_Pt-170to300",
            "QCD_Pt-600to800",
            "QCD_Pt-800to1000",
            "QCD_Pt-1000toInf",
-           "DATA"]
+           #"DATA"
+           ]
 subsamples = {}
 for s in filter(lambda x: 'DATA' not in x, samples):
     subsamples[s] = {f"{s}_{f}" : [get_flavor(f)] for f in ['l', 'c', 'b', 'cc', 'bb']}
@@ -68,7 +69,7 @@ cfg =  {
 
     # Input and output files
     "workflow" : fatjetBaseProcessor,
-    "output"   : "output/pocket_coffea/templates/templates_2017UL",
+    "output"   : "output/pocket_coffea/templates/templates_2017UL_QCD_FIXED",
     "workflow_options" : {},
 
     "run_options" : {
@@ -79,7 +80,7 @@ cfg =  {
         "walltime"       : "12:00:00",
         "mem_per_worker" : "12GB", # GB
         "exclusive"      : False,
-        "chunk"          : 10000,
+        "chunk"          : 20000,
         "retries"        : 50,
         "treereduction"  : 10,
         "max"            : None,
