@@ -26,8 +26,7 @@ for s in filter(lambda x: 'DATA' not in x, samples):
 
 cfg =  {
     "dataset" : {
-        "jsons": ["datasets/MC_QCD_MuEnriched_local.json",
-                  "datasets/DATA_BTagMu_local.json"],
+        "jsons": ["datasets/skim/datasets_definition_skim.json"],
         "filter" : {
             "samples": samples,
             "samples_exclude" : [],
@@ -35,22 +34,21 @@ cfg =  {
         },
         "subsamples": subsamples
     },
-    
 
     # Input and output files
     "workflow" : ptReweightProcessor,
-    "output"   : "output/pocket_coffea/pt_reweighting/pt_reweighting_2016UL_PreVFP",
+    "output"   : "output/pocket_coffea/pt_reweighting/pt_reweighting_2d_2016UL_PreVFP",
     "workflow_options" : {},
 
     "run_options" : {
         "executor"       : "dask/slurm",
         "workers"        : 1,
-        "scaleout"       : 125,
-        "queue"          : "standard",
-        "walltime"       : "8:00:00",
-        "mem_per_worker" : "6GB", # GB
+        "scaleout"       : 200,
+        "queue"          : "short",
+        "walltime"       : "0:10:00",
+        "mem_per_worker" : "2GB", # GB
         "exclusive"      : False,
-        "chunk"          : 75000,
+        "chunk"          : 50000,
         "retries"        : 50,
         "treereduction"  : 10,
         "max"            : None,
@@ -58,6 +56,7 @@ cfg =  {
         "voms"           : None,
         "limit"          : None,
         "adapt"          : False,
+        "env"            : "conda",
     },
 
     # Cuts and plots settings
@@ -67,6 +66,7 @@ cfg =  {
              get_nObj_minmsd(1, 30., "FatJet"),
              get_nObj_min(2, 3., "Muon"),
              get_HLTsel("mutag")],
+    "save_skimmed_files": None,
     "preselections" : [mutag_presel],
     "categories": {
         "inclusive" : [passthrough],
@@ -98,7 +98,11 @@ cfg =  {
         "bysample": {
         }    
         },
-        
+        "shape": {
+            "common":{
+                "inclusive": [ ]
+            }
+        }
     },
 
    "variables":
@@ -108,6 +112,10 @@ cfg =  {
         **sv_hists(coll="events"),
         **sv_hists(coll="events", pos=0),
         **count_hist(name="nFatJets", coll="FatJetGood",bins=10, start=0, stop=10),
+        "FatJetGood_pt_1_FatJetGood_pt_2": HistConf(
+            [ Axis(name="FatJetGood_pt_1", coll="FatJetGood", field="pt", pos=0, label=r"Leading FatJet $p_{T}$ [GeV]", bins=150, start=0, stop=1500),
+              Axis(name="FatJetGood_pt_2", coll="FatJetGood", field="pt", pos=1, label=r"Subleading FatJet $p_{T}$ [GeV]", bins=75, start=0, stop=1500) ]
+        ),
     },
 
     "columns" : {}
