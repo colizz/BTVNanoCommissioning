@@ -15,36 +15,29 @@ regions = ['pass', 'fail']
 
 epsilon = 1e-3
 
-def rebin(h_vals, h_sumw2, bins, lo, hi):
-    binwidth = bins[1] - bins[0]
-    bin_centers = (bins + 0.5*binwidth)[:-1]
-    mask = (bin_centers >= lo) & (bin_centers <= hi)
-    idx = np.argwhere(mask)[0][0]
-    mask_bins = np.concatenate((mask[:idx],[True],mask[idx:]))      # Add an extra True value for `bins` array
-    h_vals = h_vals[mask]
-    h_sumw2 = h_sumw2[mask]
-    bins = bins[mask_bins]
-
-    return h_vals, h_sumw2, bins
-
 class Fit():
-    def __init__(self, cfg, categories, var, xlim, scheme='3f'):
-        self.cfg = cfg
+    def __init__(self, input, output, categories, var, year, xlim, binwidth, scheme='3f'):
+        self.input = input
+        self.output = output
         self.scheme = scheme
-        self.year = cfg["dataset"]["filter"]["year"]
-        if len(self.year) > 1:
-            raise NotImplementedError
-        else: self.year = self.year[0]
+        self.year = year
         self.var = var
         self.lo = xlim[0]
         self.hi = xlim[1]
+        self.binwidth = binwidth
         self.define_flavors()
-        self.templates = np.load(os.path.abspath(os.path.join(self.cfg["output"], 'output_templates_{}.pkl'.format(self.scheme))), allow_pickle=True)
+        self.templates = np.load(os.path.abspath(self.input), allow_pickle=True)
         self.categories = categories
-        self.fitResults = {
-            'bb' : os.path.join(os.getcwd(), self.cfg["output"], 'fitResults_bb.csv'),
-            'cc' : os.path.join(os.getcwd(), self.cfg["output"], 'fitResults_cc.csv'),
-        }
+        if self.scheme == '3f':
+            self.fitResults = {
+                'b+bb' : os.path.join(os.getcwd(), self.output, 'fitResults_bb.csv'),
+                'c+cc' : os.path.join(os.getcwd(), self.output, 'fitResults_cc.csv'),
+            }
+        elif self.scheme == '5f':
+            self.fitResults = {
+                'bb' : os.path.join(os.getcwd(), self.output, 'fitResults_bb.csv'),
+                'cc' : os.path.join(os.getcwd(), self.output, 'fitResults_cc.csv'),
+            }
         self.signal_name = {}
         self.define_bins()
         self.define_observable()
@@ -58,6 +51,18 @@ class Fit():
         #self.run_fits()
         #self.save_results()
 
+    def rebin(self, h_vals, h_sumw2, bins):
+        binwidth = bins[1] - bins[0]
+        bin_centers = (bins + 0.5*binwidth)[:-1]
+        mask = (bin_centers >= self.lo) & (bin_centers <= self.hi)
+        idx = np.argwhere(mask)[0][0]
+        mask_bins = np.concatenate((mask[:idx],[True],mask[idx:]))      # Add an extra True value for `bins` array
+        h_vals = h_vals[mask]
+        h_sumw2 = h_sumw2[mask]
+        bins = bins[mask_bins]
+
+        return h_vals, h_sumw2, bins
+
     def define_flavors(self):
         if self.scheme == '3f':
             self.flavors = ['b+bb', 'c+cc', 'l']
@@ -68,8 +73,8 @@ class Fit():
 
     def define_bins(self):
         # Here we assume a 1D histogram therefore we take the first axis
-        num, start, stop = ( self.cfg['variables'][self.var]['axes'][0][key] for key in ['bins', 'start', 'stop'] )
-        self.bins = np.linspace(start, stop, num+1)
+        #num, start, stop = ( self.cfg['variables'][self.var]['axes'][0][key] for key in ['bins', 'start', 'stop'] )
+        self.bins = np.linspace(-6, 6, 121)
 
     def define_observable(self):
         self.observable = rl.Observable(self.var, self.bins)
@@ -104,13 +109,21 @@ class Fit():
                 self.indep_pars[model_name][flavor] = rl.IndependentParameter(flavor, **self.parameters[model_name][flavor])
 
     def define_nuisance_parameters(self):
-        self.nuisance_pars = {}
+        self.nuisance_shapes = {}
         for model_name in self.models.keys():
-            self.nuisance_pars[model_name] = {}
-            self.nuisance_pars[model_name]["pileup"] = rl.NuisanceParameter("pileup", "shape")
-            self.nuisance_pars[model_name]["JES_Total"] = rl.NuisanceParameter("JES_Total", "shape")
+            self.nuisance_shapes[model_name] = {}
+            self.nuisance_shapes[model_name]["pileup"] = rl.NuisanceParameter("pileup", "shape")
+            self.nuisance_shapes[model_name]["JES_Total"] = rl.NuisanceParameter("JES_Total", "shape")
             if self.year != '2018':
-                self.nuisance_pars[model_name]["sfL1prefiring"] = rl.NuisanceParameter("sfL1prefiring", "shape")
+                self.nuisance_shapes[model_name]["sfL1prefiring"] = rl.NuisanceParameter("sfL1prefiring", "shape")
+
+        self.nuisance_lnN = {}
+        self.nuisance_lnN_effect = {}
+        for model_name in self.models.keys():
+            self.nuisance_lnN[model_name] = {}
+            self.nuisance_lnN_effect[model_name] = {}
+            self.nuisance_lnN[model_name]["lumi"] = rl.NuisanceParameter("lumi", "lnN")
+            self.nuisance_lnN_effect[model_name]["lumi"] = 1.023
 
     def define_frozen_parameters(self):
         self.freeze = {}
@@ -135,7 +148,7 @@ class Fit():
         h_sumw2 = self.templates[histname][1]
         bins = self.observable.binning
         
-        h_vals, h_sumw2, bins = rebin(h_vals, h_sumw2, bins, lo, hi)
+        h_vals, h_sumw2, bins = self.rebin(h_vals, h_sumw2, bins)
 
         if not sumw2:
             return (h_vals, bins, self.observable.name)
@@ -180,18 +193,21 @@ class Fit():
         for region in regions:
             for cat in self.categories_region[region]:
                 model_name = cat.replace(region, '')
-                for nuisance_name, nuisance in self.nuisance_pars[model_name].items():
+                for nuisance_name, nuisance in self.nuisance_shapes[model_name].items():
                     for flavor in self.flavors:
                         sample = self.models[model_name]["sf{}".format(region)][flavor]
-                        syst = nuisance.name.split('_{}'.format(flavor))[0]
-                        histname_up   = "{}_{}_{}_QCD_{}_{}".format(self.var, self.year, cat, flavor, syst+"Up")
-                        histname_down = "{}_{}_{}_QCD_{}_{}".format(self.var, self.year, cat, flavor, syst+"Down")
+                        histname_up   = "{}_{}_{}_QCD_{}_{}".format(self.var, self.year, cat, flavor, nuisance.name+"Up")
+                        histname_down = "{}_{}_{}_QCD_{}_{}".format(self.var, self.year, cat, flavor, nuisance.name+"Down")
                         h_up, _bins, _obs_name = self.get_templ(histname_up, self.lo, self.hi, sumw2=False)
                         h_down, _bins, _obs_name = self.get_templ(histname_down, self.lo, self.hi, sumw2=False)
                         sample.setParamEffect(nuisance, h_up, h_down)
 
+                for nuisance_name, nuisance in self.nuisance_lnN[model_name].items():
+                    for flavor in self.flavors:
+                        sample = self.models[model_name]["sf{}".format(region)][flavor]
+                        sample.setParamEffect(nuisance, self.nuisance_lnN_effect[model_name][nuisance_name])
                 # Save the combine fit models to output folder
-                fitdir = os.path.abspath(os.path.join(self.cfg["output"], 'fitdir', model_name))
+                fitdir = os.path.abspath(os.path.join(self.output, 'fitdir', model_name))
                 if not os.path.exists(fitdir):
                     os.makedirs(fitdir)
                 self.models[model_name].renderCombine(fitdir)
@@ -214,7 +230,10 @@ class Fit():
     def run_fits(self):
         command = 'bash build.sh'
         parent_dir = os.getcwd()
-        self.first = {'bb' : True, 'cc' : True}
+        if self.scheme == '3f':
+            self.first = {'b+bb' : True, 'c+cc' : True}
+        elif self.scheme == '5f':
+            self.first = {'bb' : True, 'cc' : True}
         for model_name, fitdir in self.fitdirs.items():
             if fitdir:
                 os.chdir(fitdir)
