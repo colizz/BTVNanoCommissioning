@@ -5,30 +5,27 @@ import json
 
 import numpy as np
 
-#print(sys.path)
 sys.path.append('/work/mmarcheg/BTVNanoCommissioning')
-sys.path.append('/work/mmarcheg/BTVNanoCommissioning/PocketCoffea')
 
 from utils.Fit import Fit
+from parameters import categories
 
 parser = argparse.ArgumentParser(description='Save histograms in pickle format for combine fit')
-parser.add_argument('--cfg', default=os.getcwd() + "/config/test.json", help='Config file with parameters specific to the current run', required=False)
-parser.add_argument('-v', '--version', type=str, default=None, help='Version of output (e.g. `v01`, `v02`, etc.)', required=True)
+parser.add_argument('-i', '--input', default=None, help='Input templates', required=True)
+parser.add_argument('-o', '--output', default="/work/mmarcheg/BTVNanoCommissioning/output/fit", help='Output folder', required=True)
 parser.add_argument('--only', type=str, default=None, help='Filter categories by key', required=True)
-parser.add_argument('--scheme', type=str, default=None, choices=['3f', '5f'],  help='3-flavor scheme', required=False)
+parser.add_argument('--scheme', type=str, choices=['3f', '5f'],  help='3-flavor scheme', required=True)
+parser.add_argument('--binwidth', type=float, default=0.2, choices=[0.1, 0.2, 0.4],  help='Specify the binwidth of the logsumcorrmass distribution', required=False)
+parser.add_argument('--year', type=str, choices=["2016_PreVFP", "2016_PostVFP", "2017", "2018"],  help='Specify the data-taking year', required=True)
 
 args = parser.parse_args()
 
-config = json.load(open(args.cfg, 'r'))
-if args.version:
-    config['output'] = config['output'] + '_{}'.format(args.version)
-
-categories = config["categories"]
 if args.only:
     categories = list(filter(lambda cat : all(f in cat for f in [args.only]), categories))
 
-print(categories)
+if os.path.exists(args.output):
+    sys.exit("The output folder {} is already existing. Please choose a different folder name.".format(args.output))
 
-for var in ['events_logsumcorrmass']:
-    fit = Fit(config, categories, var, (-1.0, 5.0), scheme=args.scheme)
+for var in ['events_logsumcorrmass_1']:
+    fit = Fit(args.input, args.output, categories, var, args.year, xlim=(-1.0, 5.0), binwidth=args.binwidth, scheme=args.scheme)
     fit.run_fits()
