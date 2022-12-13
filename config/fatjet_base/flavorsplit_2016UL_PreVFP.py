@@ -49,15 +49,15 @@ samples = ["QCD_Pt-170to300",
            "QCD_Pt-600to800",
            "QCD_Pt-800to1000",
            "QCD_Pt-1000toInf",
-           "DATA"]
+           "DATA"
+           ]
 subsamples = {}
 for s in filter(lambda x: 'DATA' not in x, samples):
     subsamples[s] = {f"{s}_{f}" : [get_flavor(f)] for f in ['l', 'c', 'b', 'cc', 'bb']}
 
 cfg =  {
     "dataset" : {
-        "jsons": ["datasets/MC_QCD_MuEnriched_RunIISummer20UL_local.json",
-                  "datasets/DATA_BTagMu_RunIISummer20UL_local.json"],
+        "jsons": ["datasets/skim/datasets_definition_skim.json"],
         "filter" : {
             "samples": samples,
             "samples_exclude" : [],
@@ -69,18 +69,18 @@ cfg =  {
 
     # Input and output files
     "workflow" : fatjetBaseProcessor,
-    "output"   : "output/pocket_coffea/flavorsplit/flavorsplit_2016UL_PreVFP_shapes_multicut",
+    "output"   : "output/pocket_coffea/templates/templates_2016UL_PreVFP",
     "workflow_options" : {},
 
     "run_options" : {
         "executor"       : "dask/slurm",
         "workers"        : 1,
-        "scaleout"       : 100,
+        "scaleout"       : 250,
         "queue"          : "standard",
-        "walltime"       : "8:00:00",
-        "mem_per_worker" : "6GB", # GB
+        "walltime"       : "12:00:00",
+        "mem_per_worker" : "12GB", # GB
         "exclusive"      : False,
-        "chunk"          : 400000,
+        "chunk"          : 20000,
         "retries"        : 50,
         "treereduction"  : 10,
         "max"            : None,
@@ -97,6 +97,7 @@ cfg =  {
              get_nObj_minmsd(1, 30., "FatJet"),
              get_nObj_min(2, 3., "Muon"),
              get_HLTsel("mutag")],
+    "save_skimmed_files" : None,
     "preselections" : [mutag_presel, get_ptmsd(250, 40)],
     "categories": CartesianSelection(multicuts=multicuts, common_cats=common_cats),
 
@@ -115,7 +116,7 @@ cfg =  {
     "variations": {
         "weights": {
             "common": {
-                "inclusive": [ "pileup", "sf_L1prefiring" ],
+                "inclusive": [ "pileup" , "sf_L1prefiring" ],
                 "bycategory" : {
                 }
             },
@@ -124,7 +125,7 @@ cfg =  {
         },
         "shape": {
             "common":{
-                "inclusive": [ "JES_Total" ]
+                "inclusive": [ "JES_Total", "JER" ]
             }
         }
     },
