@@ -203,6 +203,8 @@ jecTarFiles = {
 FinalMask = ['msd100tau06']
 
 AK8Taggers = ['btagDDBvLV2', 'btagDDCvLV2', 'particleNetMD_Xbb_QCD', 'particleNetMD_Xcc_QCD', 'deepTagMD_ZHbbvsQCD', 'deepTagMD_ZHccvsQCD', 'btagHbb']
+AK8Taggers_bb = ['btagDDBvLV2', 'particleNetMD_Xbb_QCD', 'deepTagMD_ZHbbvsQCD', 'btagHbb']
+AK8Taggers_cc = ['btagDDCvLV2', 'particleNetMD_Xcc_QCD', 'deepTagMD_ZHccvsQCD']
 #AK8Taggers = ['btagDDBvLV2', 'btagDDCvLV2', 'btagDDCvBV2', 'btagHbb', 'particleNetMD_Xbb', 'particleNetMD_Xcc', 'deepTag_H', 'deepTagMD_ccvsLight']
 
 #logsv1mass_bins = np.concatenate( ( (-4, -3.6, -3.2, -2.8, -2.4, -2, -1.59, -1.2, -0.8, -0.4), np.arange(0., 1.8, 0.1), (1.8, 2.5, 3.2) ) )
@@ -753,7 +755,7 @@ flavors_order = {
     #'particleNetMD_Xbb' : ['l', 'c_cc', 'b_bb'],
     #'particleNetMD_Xcc' : ['l', 'b_bb', 'c_cc'],
     }
-flavors_color = {'l' : 'blue', 'b' : 'red', 'c' : 'green', 'bb' : 'cyan', 'cc' : 'magenta'}
+flavors_color = {'l' : 'blue', 'b' : 'red', 'c' : 'green', 'bb' : 'cyan', 'cc' : 'magenta', 'b+bb' : 'cyan', 'c+cc' : 'magenta'}
 flavor_opts = {
     'facecolor': [flavors_color[f] for f in flavors_color.keys()],
     'edgecolor': 'black',
