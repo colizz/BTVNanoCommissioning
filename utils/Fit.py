@@ -9,11 +9,22 @@ import uproot
 import ROOT
 
 from parameters_fit import fit_parameters
+from parameters import AK8Taggers, AK8Taggers_bb, AK8Taggers_cc
 
-AK8taggers = ['btagDDBvLV2', 'btagDDCvLV2', 'particleNetMD_Xbb_QCD', 'particleNetMD_Xcc_QCD']
 regions = ['pass', 'fail']
 
 epsilon = 1e-3
+
+def merge_bins(values, rebin_size):
+    values_rebinned = []
+    for i in np.arange(0, len(values), rebin_size):
+        values_sum = 0
+        for j in range(rebin_size):
+            values_sum += values[i+j]
+        values_rebinned.append(values_sum)
+
+    return np.array(values_rebinned)
+
 
 class Fit():
     def __init__(self, input, output, categories, var, year, xlim, binwidth, scheme='3f'):
@@ -52,13 +63,18 @@ class Fit():
         #self.save_results()
 
     def rebin(self, h_vals, h_sumw2, bins):
-        binwidth = bins[1] - bins[0]
-        bin_centers = (bins + 0.5*binwidth)[:-1]
+        bins_original = np.linspace(-6, 6, 121)
+        binwidth_original = bins_original[1] - bins_original[0]
+        rebin_size = int(self.binwidth / binwidth_original)
+        h_vals_rebinned  = merge_bins(h_vals, rebin_size)
+        h_sumw2_rebinned = merge_bins(h_sumw2, rebin_size)
+
+        bin_centers = (bins + 0.5*self.binwidth)[:-1]
         mask = (bin_centers >= self.lo) & (bin_centers <= self.hi)
         idx = np.argwhere(mask)[0][0]
         mask_bins = np.concatenate((mask[:idx],[True],mask[idx:]))      # Add an extra True value for `bins` array
-        h_vals = h_vals[mask]
-        h_sumw2 = h_sumw2[mask]
+        h_vals = h_vals_rebinned[mask]
+        h_sumw2 = h_sumw2_rebinned[mask]
         bins = bins[mask_bins]
 
         return h_vals, h_sumw2, bins
@@ -74,7 +90,10 @@ class Fit():
     def define_bins(self):
         # Here we assume a 1D histogram therefore we take the first axis
         #num, start, stop = ( self.cfg['variables'][self.var]['axes'][0][key] for key in ['bins', 'start', 'stop'] )
-        self.bins = np.linspace(-6, 6, 121)
+        nbins = 12/self.binwidth
+        self.bins = np.linspace(-6, 6, nbins+1)
+        #if (self.lo not in self.bins) | (self.hi not in self.bins):
+        #    raise Exception("The low and high bounds of the interval have to be present in the new bin edges.")
 
     def define_observable(self):
         self.observable = rl.Observable(self.var, self.bins)
@@ -106,7 +125,7 @@ class Fit():
         for model_name in self.models.keys():
             self.indep_pars[model_name] = {}
             for flavor in self.flavors:
-                self.indep_pars[model_name][flavor] = rl.IndependentParameter(flavor, **self.parameters[model_name][flavor])
+                self.indep_pars[model_name][flavor] = rl.IndependentParameter(flavor.replace('+', '_'), **self.parameters[model_name][flavor])
 
     def define_nuisance_parameters(self):
         self.nuisance_shapes = {}
@@ -114,8 +133,13 @@ class Fit():
             self.nuisance_shapes[model_name] = {}
             self.nuisance_shapes[model_name]["pileup"] = rl.NuisanceParameter("pileup", "shape")
             self.nuisance_shapes[model_name]["JES_Total"] = rl.NuisanceParameter("JES_Total", "shape")
+            self.nuisance_shapes[model_name]["JER"] = rl.NuisanceParameter("JER", "shape")
+            self.nuisance_shapes[model_name]["frac_bb"] = rl.NuisanceParameter("frac_bb", "shape")
+            self.nuisance_shapes[model_name]["frac_cc"] = rl.NuisanceParameter("frac_cc", "shape")
+            self.nuisance_shapes[model_name]["frac_l"] = rl.NuisanceParameter("frac_l", "shape")
+            self.frac_effect = 0.2
             if self.year != '2018':
-                self.nuisance_shapes[model_name]["sfL1prefiring"] = rl.NuisanceParameter("sfL1prefiring", "shape")
+                self.nuisance_shapes[model_name]["sf_L1prefiring"] = rl.NuisanceParameter("sf_L1prefiring", "shape")
 
         self.nuisance_lnN = {}
         self.nuisance_lnN_effect = {}
@@ -135,13 +159,13 @@ class Fit():
             #print(model_name, ": Freeze parameters :", self.freeze)
 
     def define_signal_name(self, model_name):
-        self.tagger = [tagger for tagger in AK8taggers if tagger in model_name][0]
-        if self.tagger in ['btagDDBvLV2', 'particleNetMD_Xbb_QCD']:
-            self.signal_name[model_name] = 'b+bb'
-        elif self.tagger in ['btagDDCvLV2', 'particleNetMD_Xcc_QCD']:
-            self.signal_name[model_name] = 'c+cc'
+        self.tagger = [tagger for tagger in AK8Taggers if tagger in model_name][0]
+        if self.tagger in AK8Taggers_bb:
+            self.signal_name[model_name] = ["b+bb" if self.scheme == '3f' else "bb"][0]
+        elif self.tagger in AK8Taggers_cc:
+            self.signal_name[model_name] = ["c+cc" if self.scheme == '3f' else "cc"][0]
         else:
-            sys.exit("There is no known tagger to calibrate in the given category")
+            raise Exception("There is no known tagger to calibrate in the given category")
 
     def get_templ(self, histname, lo, hi, sumw2=True):
         h_vals = self.templates[histname][0]
@@ -194,13 +218,33 @@ class Fit():
             for cat in self.categories_region[region]:
                 model_name = cat.replace(region, '')
                 for nuisance_name, nuisance in self.nuisance_shapes[model_name].items():
-                    for flavor in self.flavors:
-                        sample = self.models[model_name]["sf{}".format(region)][flavor]
-                        histname_up   = "{}_{}_{}_QCD_{}_{}".format(self.var, self.year, cat, flavor, nuisance.name+"Up")
-                        histname_down = "{}_{}_{}_QCD_{}_{}".format(self.var, self.year, cat, flavor, nuisance.name+"Down")
-                        h_up, _bins, _obs_name = self.get_templ(histname_up, self.lo, self.hi, sumw2=False)
-                        h_down, _bins, _obs_name = self.get_templ(histname_down, self.lo, self.hi, sumw2=False)
-                        sample.setParamEffect(nuisance, h_up, h_down)
+                    if nuisance_name == "frac_bb":
+                        sample = self.models[model_name]["sf{}".format(region)][["b+bb" if self.scheme == '3f' else "bb"][0]]
+                        sample.setParamEffect(nuisance, 1+self.frac_effect, 1-self.frac_effect)
+                        continue
+                    elif nuisance_name == "frac_cc":
+                        sample = self.models[model_name]["sf{}".format(region)][["c+cc" if self.scheme == '3f' else "cc"][0]]
+                        sample.setParamEffect(nuisance, 1+self.frac_effect, 1-self.frac_effect)
+                        continue
+                    elif nuisance_name == "frac_l":
+                        sample = self.models[model_name]["sf{}".format(region)]["l"]
+                        sample.setParamEffect(nuisance, 1+self.frac_effect, 1-self.frac_effect)
+                        continue
+                    else:
+                        for flavor in self.flavors:
+                            sample = self.models[model_name]["sf{}".format(region)][flavor]
+                            histname_nominal = "{}_{}_{}_QCD_{}_{}".format(self.var, self.year, cat, flavor, "nominal")
+                            histname_up   = "{}_{}_{}_QCD_{}_{}".format(self.var, self.year, cat, flavor, nuisance.name+"Up")
+                            histname_down = "{}_{}_{}_QCD_{}_{}".format(self.var, self.year, cat, flavor, nuisance.name+"Down")
+                            h_nominal, _bins, _obs_name = self.get_templ(histname_nominal, self.lo, self.hi, sumw2=False)
+                            h_up, _bins, _obs_name = self.get_templ(histname_up, self.lo, self.hi, sumw2=False)
+                            h_down, _bins, _obs_name = self.get_templ(histname_down, self.lo, self.hi, sumw2=False)
+                            bin_centers = _bins[:-1] + 0.5*self.binwidth
+                            r_up = h_up / h_nominal
+                            r_down = h_down / h_nominal
+                            effect_up = np.where(~(np.isnan(r_up) | np.isinf(r_up)), r_up, 1)
+                            effect_down = np.where(~(np.isnan(r_down) | np.isinf(r_down)), r_down, 1)
+                            sample.setParamEffect(nuisance, effect_up, effect_down)
 
                 for nuisance_name, nuisance in self.nuisance_lnN[model_name].items():
                     for flavor in self.flavors:
@@ -215,9 +259,12 @@ class Fit():
 
     def build_combine_script(self):
         for model_name, model in self.models.items():
-            bash_script = os.path.join(self.fitdirs[model_name], 'build.sh')
-            with open(bash_script, 'a') as file:
-                combineCommand = '\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --name _{} --cminDefaultMinimizerStrategy 2 --robustFit=1 --saveShapes --saveWithUncertainties --saveOverallShapes --redefineSignalPOIs={} --setParameters r=1 --freezeParameters r --rMin 1 --rMax 1'.format(model_name, self.signal_name[model_name])
+            script_FitDiagnostics = os.path.join(self.fitdirs[model_name], 'build.sh')
+            script_MultiDimFit = os.path.join(self.fitdirs[model_name], 'build_MultiDimFit.sh')
+            os.system("cp {} {}".format(script_FitDiagnostics, script_MultiDimFit))
+            with open(script_FitDiagnostics, 'a') as file:
+                combineCommand = '\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --saveWorkspace --name _{} --cminDefaultMinimizerStrategy 2 --robustFit=1 --saveShapes --saveWithUncertainties --saveOverallShapes --redefineSignalPOIs={} --setParameters r=1 --freezeParameters r --rMin 1 --rMax 1'.format(model_name, self.signal_name[model_name].replace('+', '_'))
+                combineCommand_MultiDimFit = '\ncombine -M MultiDimFit --expectSignal 1 -d model_combined.root --saveWorkspace --name _{} --cminDefaultMinimizerStrategy 2 --robustFit=1 --redefineSignalPOIs={} --setParameters r=1 --freezeParameters r --rMin 1 --rMax 1'.format(model_name, self.signal_name[model_name].replace('+', '_'))
                 setParameters = 'r=1'
                 freezeParameters = 'r'
                 for par in self.freeze[model_name]:
@@ -225,10 +272,18 @@ class Fit():
                     freezeParameters += ',{}'.format(par)
                 combineCommand = combineCommand.replace('--setParameters r=1', '--setParameters {}'.format(setParameters))
                 combineCommand = combineCommand.replace('--freezeParameters r', '--freezeParameters {}'.format(freezeParameters))
+                combineCommand_MultiDimFit = combineCommand_MultiDimFit.replace('--setParameters r=1', '--setParameters {}'.format(setParameters))
+                combineCommand_MultiDimFit = combineCommand_MultiDimFit.replace('--freezeParameters r', '--freezeParameters {}'.format(freezeParameters))
                 file.write(combineCommand)
+            with open(script_MultiDimFit, 'a') as file:
+                file.write(combineCommand_MultiDimFit)
 
-    def run_fits(self):
-        command = 'bash build.sh'
+    def run_fits(self, mode):
+        if mode == "FitDiagnostics":
+            command = 'bash build.sh'
+        elif mode == "MultiDimFit":
+            command = 'bash build_{}.sh'.format(mode)
+
         parent_dir = os.getcwd()
         if self.scheme == '3f':
             self.first = {'b+bb' : True, 'c+cc' : True}
@@ -242,13 +297,43 @@ class Fit():
             print("Running fit of model '{}'".format(model_name))
             print("parameters:", self.parameters[model_name])
             os.system(command)
-            self.save_results(model_name, fitdir)
+            if mode == "FitDiagnostics":
+                self.save_results(model_name, fitdir, mode)
+            elif mode == "MultiDimFit":
+                self.save_scans(model_name, fitdir)
         os.chdir(parent_dir)
 
-    def save_results(self, model_name, fitdir):
+    def save_scans(self, model_name, fitdir):
+        combineFile = "higgsCombine_{}.MultiDimFit.mH120.root".format(model_name)
+        combineCommand = "combine {} -M MultiDimFit -n .scan.total --algo grid\
+                          --snapshotName MultiDimFit --setParameterRanges r=0,2".format(combineFile)
+        print("Scanning all nuisances...")
+        os.system(combineCommand)
+        nuisances = list(self.nuisance_shapes[model_name].keys()) + list(self.nuisance_lnN[model_name].keys())
+        nuisances_to_freeze = []
+        for nuisance_name in nuisances:
+            nuisances_to_freeze.append(nuisance_name)
+            combineCommand = "combine {} -M MultiDimFit -n .freeze.{} --algo grid\
+                              --snapshotName MultiDimFit --setParameterRanges r=0,2\
+                              --freezeParameters {}".format(combineFile, nuisance_name, ','.join(nuisances_to_freeze))
+            print("Freezing {}...".format(','.join(nuisances_to_freeze)))
+            os.system(combineCommand)
+        files = ["higgsCombine.freeze.{}.MultiDimFit.mH120.root".format(nuisance_name) for nuisance_name in nuisances]
+        others = ' '.join(["{}:{}:{}".format(files[i], nuisances[i], i+2) for i in range(len(files))])
+        scriptName = '/work/mmarcheg/BTVNanoCommissioning/scripts/fit/plot1DScanWithOutput.py'
+        combineCommand = 'python {} higgsCombine.scan.total.MultiDimFit.mH120.root --main-label "Total Uncert."\
+                          --others {} --output breakdown --y-max 10 --y-cut 40 --breakdown "{},stat" --POI {}'.format(scriptName, others, ','.join(nuisances), self.signal_name[model_name].replace('+', '_'))
+        print(combineCommand)
+        os.system(combineCommand)        
+        #nuisances_to_freeze = nuisances
+        #combineCommand = "combine {} -M MultiDimFit -n scan.freeze_all --algo grid --snapshotName MultiDimFit --setParameterRanges r=0,2 --freezeParameters {}".format(combineFile, ','.join(nuisances_to_freeze))
+        #print(combineCommand)
+        #print("Freezing all nuisances...".format(nuisance_name))
+
+    def save_results(self, model_name, fitdir, mode):
         wp = model_name.split('wp')[0][-1]
         wpt = model_name.split('Pt-')[1]
-        combineFile = uproot.open(os.path.join(fitdir, "higgsCombine_{}.FitDiagnostics.mH120.root".format(model_name)))
+        combineFile = uproot.open(os.path.join(fitdir, "higgsCombine_{}.{}.mH120.root".format(model_name, mode)))
 
         combineTree = combineFile['limit']
         combineBranches = combineTree.arrays()
@@ -256,6 +341,7 @@ class Fit():
 
         if len(results) < 4:
             print("FIT FAILED : ", model_name)
+            return
 
         combineCont, low, high, temp = results
         combineErrUp = high - combineCont
@@ -282,7 +368,7 @@ class Fit():
 
         for flavor in self.flavors:
             if (flavor == POI): continue
-            par_result = fit_s.floatParsFinal().find(flavor)
+            par_result = fit_s.floatParsFinal().find(flavor.replace('+', '_'))
             columns.append(flavor)
             columns.append('{}Err'.format(flavor))
             columns.append('SF({})'.format(flavor))
