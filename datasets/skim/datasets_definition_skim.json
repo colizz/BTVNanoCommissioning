@@ -108,7 +108,8 @@
         "metadata": {
             "sample": "QCD_Pt-600to800",
             "year": "2018",
-            "isMC": "True"
+            "isMC": "True",
+            "xsec": 18.21
         }
     },
     "QCD_Pt-170to300_2018": {
@@ -120,7 +121,8 @@
         "metadata": {
             "sample": "QCD_Pt-170to300",
             "year": "2018",
-            "isMC": "True"
+            "isMC": "True",
+            "xsec": 7055.0
         }
     },
     "QCD_Pt-470to600_2018": {
@@ -157,7 +159,8 @@
         "metadata": {
             "sample": "QCD_Pt-470to600",
             "year": "2018",
-            "isMC": "True"
+            "isMC": "True",
+            "xsec": 59.24
         }
     },
     "QCD_Pt-800to1000_2018": {
@@ -248,7 +251,8 @@
         "metadata": {
             "sample": "QCD_Pt-800to1000",
             "year": "2018",
-            "isMC": "True"
+            "isMC": "True",
+            "xsec": 3.275
         }
     },
     "QCD_Pt-300to470_2018": {
@@ -275,7 +279,8 @@
         "metadata": {
             "sample": "QCD_Pt-300to470",
             "year": "2018",
-            "isMC": "True"
+            "isMC": "True",
+            "xsec": 619.3
         }
     },
     "QCD_Pt-1000toInf_2018": {
@@ -317,14 +322,16 @@
         "metadata": {
             "sample": "QCD_Pt-1000toInf",
             "year": "2018",
-            "isMC": "True"
+            "isMC": "True",
+            "xsec": 1.078
         }
     },
     "QCD_Pt-170to300_2017": {
         "metadata": {
             "sample": "QCD_Pt-170to300",
             "year": "2017",
-            "isMC": "True"
+            "isMC": "True",
+            "xsec": 7055.0
         },
         "files": [
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-170to300_2017/QCD_Pt-170to300_2017_1.root",
@@ -337,7 +344,8 @@
         "metadata": {
             "sample": "QCD_Pt-470to600",
             "year": "2017",
-            "isMC": "True"
+            "isMC": "True",
+            "xsec": 59.24
         },
         "files": [
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-470to600_2017/QCD_Pt-470to600_2017_1.root",
@@ -368,7 +376,8 @@
         "metadata": {
             "sample": "QCD_Pt-300to470",
             "year": "2017",
-            "isMC": "True"
+            "isMC": "True",
+            "xsec": 619.3
         },
         "files": [
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-300to470_2017/QCD_Pt-300to470_2017_1.root",
@@ -390,7 +399,8 @@
         "metadata": {
             "sample": "QCD_Pt-600to800",
             "year": "2017",
-            "isMC": "True"
+            "isMC": "True",
+            "xsec": 18.21
         },
         "files": [
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-600to800_2017/QCD_Pt-600to800_2017_1.root",
@@ -494,7 +504,8 @@
         "metadata": {
             "sample": "QCD_Pt-1000toInf",
             "year": "2017",
-            "isMC": "True"
+            "isMC": "True",
+            "xsec": 1.078
         },
         "files": [
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-1000toInf_2017/QCD_Pt-1000toInf_2017_1.root",
@@ -528,7 +539,8 @@
         "metadata": {
             "sample": "QCD_Pt-800to1000",
             "year": "2017",
-            "isMC": "True"
+            "isMC": "True",
+            "xsec": 3.275
         },
         "files": [
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_1.root",
@@ -601,7 +613,8 @@
         "metadata": {
             "sample": "QCD_Pt-170to300",
             "year": "2016_PostVFP",
-            "isMC": "True"
+            "isMC": "True",
+            "xsec": 7055.0
         }
     },
     "QCD_Pt-300to470_2016_PostVFP": {
@@ -623,7 +636,8 @@
         "metadata": {
             "sample": "QCD_Pt-300to470",
             "year": "2016_PostVFP",
-            "isMC": "True"
+            "isMC": "True",
+            "xsec": 619.3
         }
     },
     "QCD_Pt-470to600_2016_PostVFP": {
@@ -646,7 +660,8 @@
         "metadata": {
             "sample": "QCD_Pt-470to600",
             "year": "2016_PostVFP",
-            "isMC": "True"
+            "isMC": "True",
+            "xsec": 59.24
         }
     },
     "QCD_Pt-600to800_2016_PostVFP": {
@@ -677,7 +692,8 @@
         "metadata": {
             "sample": "QCD_Pt-600to800",
             "year": "2016_PostVFP",
-            "isMC": "True"
+            "isMC": "True",
+            "xsec": 18.21
         }
     },
     "QCD_Pt-1000toInf_2016_PostVFP": {
@@ -708,7 +724,8 @@
         "metadata": {
             "sample": "QCD_Pt-1000toInf",
             "year": "2016_PostVFP",
-            "isMC": "True"
+            "isMC": "True",
+            "xsec": 1.078
         }
     },
     "QCD_Pt-800to1000_2016_PostVFP": {
@@ -769,7 +786,8 @@
         "metadata": {
             "sample": "QCD_Pt-800to1000",
             "year": "2016_PostVFP",
-            "isMC": "True"
+            "isMC": "True",
+            "xsec": 3.275
         }
     },
     "DATA_BTagMu_2016_PostVFP_EraG": {
@@ -912,7 +930,8 @@
         "metadata": {
             "sample": "QCD_Pt-470to600",
             "year": "2016_PreVFP",
-            "isMC": "True"
+            "isMC": "True",
+            "xsec": 59.24
         }
     },
     "QCD_Pt-1000toInf_2016_PreVFP": {
@@ -943,7 +962,8 @@
         "metadata": {
             "sample": "QCD_Pt-1000toInf",
             "year": "2016_PreVFP",
-            "isMC": "True"
+            "isMC": "True",
+            "xsec": 1.078
         }
     },
     "QCD_Pt-600to800_2016_PreVFP": {
@@ -974,7 +994,8 @@
         "metadata": {
             "sample": "QCD_Pt-600to800",
             "year": "2016_PreVFP",
-            "isMC": "True"
+            "isMC": "True",
+            "xsec": 18.21
         }
     },
     "QCD_Pt-170to300_2016_PreVFP": {
@@ -985,7 +1006,8 @@
         "metadata": {
             "sample": "QCD_Pt-170to300",
             "year": "2016_PreVFP",
-            "isMC": "True"
+            "isMC": "True",
+            "xsec": 7055.0
         }
     },
     "QCD_Pt-300to470_2016_PreVFP": {
@@ -1008,7 +1030,8 @@
         "metadata": {
             "sample": "QCD_Pt-300to470",
             "year": "2016_PreVFP",
-            "isMC": "True"
+            "isMC": "True",
+            "xsec": 619.3
         }
     },
     "QCD_Pt-800to1000_2016_PreVFP": {
@@ -1069,7 +1092,96 @@
         "metadata": {
             "sample": "QCD_Pt-800to1000",
             "year": "2016_PreVFP",
-            "isMC": "True"
+            "isMC": "True",
+            "xsec": 3.275
         }
+    },
+    "GluGluHToBB_2018": {
+        "metadata": {
+            "sample": "GluGluHToBB",
+            "year": "2018",
+            "isMC": "True",
+            "xsec": 27.8
+        },
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018_regrouped/GluGluHToBB_2018/GluGluHToBB_2018_1.root"
+        ]
+    },
+    "GluGluHToCC_2018": {
+        "metadata": {
+            "sample": "GluGluHToCC",
+            "year": "2018",
+            "isMC": "True",
+            "xsec": 27.8
+        },
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018_regrouped/GluGluHToCC_2018/GluGluHToCC_2018_1.root"
+        ]
+    },
+    "GluGluHToBB_2017": {
+        "metadata": {
+            "sample": "GluGluHToBB",
+            "year": "2017",
+            "isMC": "True",
+            "xsec": 27.8
+        },
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2017_regrouped/GluGluHToBB_2017/GluGluHToBB_2017_1.root"
+        ]
+    },
+    "GluGluHToCC_2017": {
+        "metadata": {
+            "sample": "GluGluHToCC",
+            "year": "2017",
+            "isMC": "True",
+            "xsec": 27.8
+        },
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2017_regrouped/GluGluHToCC_2017/GluGluHToCC_2017_1.root"
+        ]
+    },
+    "GluGluHToBB_2016_PostVFP": {
+        "metadata": {
+            "sample": "GluGluHToBB",
+            "year": "2016_PostVFP",
+            "isMC": "True",
+            "xsec": 27.8
+        },
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2016_PostVFP_regrouped/GluGluHToBB_2016_PostVFP/GluGluHToBB_2016_PostVFP_1.root"
+        ]
+    },
+    "GluGluHToCC_2016_PostVFP": {
+        "metadata": {
+            "sample": "GluGluHToCC",
+            "year": "2016_PostVFP",
+            "isMC": "True",
+            "xsec": 27.8
+        },
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2016_PostVFP_regrouped/GluGluHToCC_2016_PostVFP/GluGluHToCC_2016_PostVFP_1.root"
+        ]
+    },
+    "GluGluHToBB_2016_PreVFP": {
+        "metadata": {
+            "sample": "GluGluHToBB",
+            "year": "2016_PreVFP",
+            "isMC": "True",
+            "xsec": 27.8
+        },
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2016_PreVFP_regrouped/GluGluHToBB_2016_PreVFP/GluGluHToBB_2016_PreVFP_1.root"
+        ]
+    },
+    "GluGluHToCC_2016_PreVFP": {
+        "metadata": {
+            "sample": "GluGluHToCC",
+            "year": "2016_PreVFP",
+            "isMC": "True",
+            "xsec": 27.8
+        },
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2016_PreVFP_regrouped/GluGluHToCC_2016_PreVFP/GluGluHToCC_2016_PreVFP_1.root"
+        ]
     }
 }
