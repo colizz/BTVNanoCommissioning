@@ -109,7 +109,8 @@
             "sample": "QCD_Pt-600to800",
             "year": "2018",
             "isMC": "True",
-            "xsec": 18.21
+            "xsec": 18.21,
+            "sum_genweights": 37158776.0
         }
     },
     "QCD_Pt-170to300_2018": {
@@ -122,7 +123,8 @@
             "sample": "QCD_Pt-170to300",
             "year": "2018",
             "isMC": "True",
-            "xsec": 7055.0
+            "xsec": 7055.0,
+            "sum_genweights": 69282280.0
         }
     },
     "QCD_Pt-470to600_2018": {
@@ -160,7 +162,8 @@
             "sample": "QCD_Pt-470to600",
             "year": "2018",
             "isMC": "True",
-            "xsec": 59.24
+            "xsec": 59.24,
+            "sum_genweights": 38645928.0
         }
     },
     "QCD_Pt-800to1000_2018": {
@@ -252,7 +255,8 @@
             "sample": "QCD_Pt-800to1000",
             "year": "2018",
             "isMC": "True",
-            "xsec": 3.275
+            "xsec": 3.275,
+            "sum_genweights": 78314176.0
         }
     },
     "QCD_Pt-300to470_2018": {
@@ -280,7 +284,8 @@
             "sample": "QCD_Pt-300to470",
             "year": "2018",
             "isMC": "True",
-            "xsec": 619.3
+            "xsec": 619.3,
+            "sum_genweights": 58771420.0
         }
     },
     "QCD_Pt-1000toInf_2018": {
@@ -323,7 +328,8 @@
             "sample": "QCD_Pt-1000toInf",
             "year": "2018",
             "isMC": "True",
-            "xsec": 1.078
+            "xsec": 1.078,
+            "sum_genweights": 27369976.0
         }
     },
     "QCD_Pt-170to300_2017": {
@@ -331,7 +337,8 @@
             "sample": "QCD_Pt-170to300",
             "year": "2017",
             "isMC": "True",
-            "xsec": 7055.0
+            "xsec": 7055.0,
+            "sum_genweights": 73036080.0
         },
         "files": [
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-170to300_2017/QCD_Pt-170to300_2017_1.root",
@@ -345,7 +352,8 @@
             "sample": "QCD_Pt-470to600",
             "year": "2017",
             "isMC": "True",
-            "xsec": 59.24
+            "xsec": 59.24,
+            "sum_genweights": 39816956.0
         },
         "files": [
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-470to600_2017/QCD_Pt-470to600_2017_1.root",
@@ -377,7 +385,8 @@
             "sample": "QCD_Pt-300to470",
             "year": "2017",
             "isMC": "True",
-            "xsec": 619.3
+            "xsec": 619.3,
+            "sum_genweights": 58573944.0
         },
         "files": [
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-300to470_2017/QCD_Pt-300to470_2017_1.root",
@@ -400,7 +409,8 @@
             "sample": "QCD_Pt-600to800",
             "year": "2017",
             "isMC": "True",
-            "xsec": 18.21
+            "xsec": 18.21,
+            "sum_genweights": 39326156.0
         },
         "files": [
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-600to800_2017/QCD_Pt-600to800_2017_1.root",
@@ -505,7 +515,8 @@
             "sample": "QCD_Pt-1000toInf",
             "year": "2017",
             "isMC": "True",
-            "xsec": 1.078
+            "xsec": 1.078,
+            "sum_genweights": 27537496.0
         },
         "files": [
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-1000toInf_2017/QCD_Pt-1000toInf_2017_1.root",
@@ -540,7 +551,8 @@
             "sample": "QCD_Pt-800to1000",
             "year": "2017",
             "isMC": "True",
-            "xsec": 3.275
+            "xsec": 3.275,
+            "sum_genweights": 78133744.0
         },
         "files": [
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-800to1000_2017/QCD_Pt-800to1000_2017_1.root",
@@ -614,7 +626,8 @@
             "sample": "QCD_Pt-170to300",
             "year": "2016_PostVFP",
             "isMC": "True",
-            "xsec": 7055.0
+            "xsec": 7055.0,
+            "sum_genweights": 33880928.0
         }
     },
     "QCD_Pt-300to470_2016_PostVFP": {
@@ -637,7 +650,8 @@
             "sample": "QCD_Pt-300to470",
             "year": "2016_PostVFP",
             "isMC": "True",
-            "xsec": 619.3
+            "xsec": 619.3,
+            "sum_genweights": 29908656.0
         }
     },
     "QCD_Pt-470to600_2016_PostVFP": {
@@ -661,7 +675,8 @@
             "sample": "QCD_Pt-470to600",
             "year": "2016_PostVFP",
             "isMC": "True",
-            "xsec": 59.24
+            "xsec": 59.24,
+            "sum_genweights": 14220706.0
         }
     },
     "QCD_Pt-600to800_2016_PostVFP": {
@@ -693,7 +708,8 @@
             "sample": "QCD_Pt-600to800",
             "year": "2016_PostVFP",
             "isMC": "True",
-            "xsec": 18.21
+            "xsec": 18.21,
+            "sum_genweights": 18763140.0
         }
     },
     "QCD_Pt-1000toInf_2016_PostVFP": {
@@ -725,7 +741,8 @@
             "sample": "QCD_Pt-1000toInf",
             "year": "2016_PostVFP",
             "isMC": "True",
-            "xsec": 1.078
+            "xsec": 1.078,
+            "sum_genweights": 14243204.0
         }
     },
     "QCD_Pt-800to1000_2016_PostVFP": {
@@ -787,7 +804,8 @@
             "sample": "QCD_Pt-800to1000",
             "year": "2016_PostVFP",
             "isMC": "True",
-            "xsec": 3.275
+            "xsec": 3.275,
+            "sum_genweights": 38921528.0
         }
     },
     "DATA_BTagMu_2016_PostVFP_EraG": {
@@ -931,7 +949,8 @@
             "sample": "QCD_Pt-470to600",
             "year": "2016_PreVFP",
             "isMC": "True",
-            "xsec": 59.24
+            "xsec": 59.24,
+            "sum_genweights": 14220705.0
         }
     },
     "QCD_Pt-1000toInf_2016_PreVFP": {
@@ -963,7 +982,8 @@
             "sample": "QCD_Pt-1000toInf",
             "year": "2016_PreVFP",
             "isMC": "True",
-            "xsec": 1.078
+            "xsec": 1.078,
+            "sum_genweights": 14243204.0
         }
     },
     "QCD_Pt-600to800_2016_PreVFP": {
@@ -995,7 +1015,8 @@
             "sample": "QCD_Pt-600to800",
             "year": "2016_PreVFP",
             "isMC": "True",
-            "xsec": 18.21
+            "xsec": 18.21,
+            "sum_genweights": 18763140.0
         }
     },
     "QCD_Pt-170to300_2016_PreVFP": {
@@ -1007,7 +1028,8 @@
             "sample": "QCD_Pt-170to300",
             "year": "2016_PreVFP",
             "isMC": "True",
-            "xsec": 7055.0
+            "xsec": 7055.0,
+            "sum_genweights": 33880928.0
         }
     },
     "QCD_Pt-300to470_2016_PreVFP": {
@@ -1031,7 +1053,8 @@
             "sample": "QCD_Pt-300to470",
             "year": "2016_PreVFP",
             "isMC": "True",
-            "xsec": 619.3
+            "xsec": 619.3,
+            "sum_genweights": 29908658.0
         }
     },
     "QCD_Pt-800to1000_2016_PreVFP": {
@@ -1093,7 +1116,8 @@
             "sample": "QCD_Pt-800to1000",
             "year": "2016_PreVFP",
             "isMC": "True",
-            "xsec": 3.275
+            "xsec": 3.275,
+            "sum_genweights": 38921524.0
         }
     },
     "GluGluHToBB_2018": {
@@ -1101,7 +1125,8 @@
             "sample": "GluGluHToBB",
             "year": "2018",
             "isMC": "True",
-            "xsec": 27.8
+            "xsec": 27.8,
+            "sum_genweights": 234372.0
         },
         "files": [
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018_regrouped/GluGluHToBB_2018/GluGluHToBB_2018_1.root"
@@ -1112,7 +1137,8 @@
             "sample": "GluGluHToCC",
             "year": "2018",
             "isMC": "True",
-            "xsec": 27.8
+            "xsec": 27.8,
+            "sum_genweights": 235767.53125
         },
         "files": [
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018_regrouped/GluGluHToCC_2018/GluGluHToCC_2018_1.root"
@@ -1123,7 +1149,8 @@
             "sample": "GluGluHToBB",
             "year": "2017",
             "isMC": "True",
-            "xsec": 27.8
+            "xsec": 27.8,
+            "sum_genweights": 234354.078125
         },
         "files": [
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2017_regrouped/GluGluHToBB_2017/GluGluHToBB_2017_1.root"
@@ -1134,7 +1161,8 @@
             "sample": "GluGluHToCC",
             "year": "2017",
             "isMC": "True",
-            "xsec": 27.8
+            "xsec": 27.8,
+            "sum_genweights": 234358.765625
         },
         "files": [
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2017_regrouped/GluGluHToCC_2017/GluGluHToCC_2017_1.root"
@@ -1145,7 +1173,8 @@
             "sample": "GluGluHToBB",
             "year": "2016_PostVFP",
             "isMC": "True",
-            "xsec": 27.8
+            "xsec": 27.8,
+            "sum_genweights": 107495.9453125
         },
         "files": [
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2016_PostVFP_regrouped/GluGluHToBB_2016_PostVFP/GluGluHToBB_2016_PostVFP_1.root"
@@ -1156,7 +1185,8 @@
             "sample": "GluGluHToCC",
             "year": "2016_PostVFP",
             "isMC": "True",
-            "xsec": 27.8
+            "xsec": 27.8,
+            "sum_genweights": 108453.703125
         },
         "files": [
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2016_PostVFP_regrouped/GluGluHToCC_2016_PostVFP/GluGluHToCC_2016_PostVFP_1.root"
@@ -1167,7 +1197,8 @@
             "sample": "GluGluHToBB",
             "year": "2016_PreVFP",
             "isMC": "True",
-            "xsec": 27.8
+            "xsec": 27.8,
+            "sum_genweights": 127323.3203125
         },
         "files": [
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2016_PreVFP_regrouped/GluGluHToBB_2016_PreVFP/GluGluHToBB_2016_PreVFP_1.root"
@@ -1178,7 +1209,8 @@
             "sample": "GluGluHToCC",
             "year": "2016_PreVFP",
             "isMC": "True",
-            "xsec": 27.8
+            "xsec": 27.8,
+            "sum_genweights": 127310.09375
         },
         "files": [
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2016_PreVFP_regrouped/GluGluHToCC_2016_PreVFP/GluGluHToCC_2016_PreVFP_1.root"
