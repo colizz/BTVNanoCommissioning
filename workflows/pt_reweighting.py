@@ -39,14 +39,18 @@ class ptReweightProcessor(fatjetBaseProcessor):
         super().__init__(cfg)
         self.histname_pt_1d = 'FatJetGood_pt_1'
         self.histname_pt_2d = 'FatJetGood_pt_1_FatJetGood_pt_2'
-        if not self.histname_pt_1d in self.cfg.variables.keys():
-            raise Exception(f"'{self.histname_pt_1d}' is not present in the histogram keys.")
+        self.histname_pt_eta_2d = 'FatJetGood_pt_1_FatJetGood_eta_1'
+        for histname in [self.histname_pt_1d, self.histname_pt_eta_2d]:
+            if not histname in self.cfg.variables.keys():
+                raise Exception(f"'{histname}' is not present in the histogram keys.")
 
     def pt_reweighting(self, accumulator, year, mode):
         if mode == '1D':
             histname = self.histname_pt_1d
         elif mode == '2D':
             histname = self.histname_pt_2d
+        elif mode == '2D_pt_eta':
+            histname = self.histname_pt_eta_2d
         else:
             raise Exception("pT reweighting mode not recognized. Available modes: '1D', '2D'")
         h = accumulator['variables'][histname]
@@ -88,7 +92,7 @@ class ptReweightProcessor(fatjetBaseProcessor):
                 bins = axes[0].edges
                 mod_ratio[bins[:-1] < pt_low[cat]] = 1
                 mod_ratio[bins[:-1] > 1500] = 1
-            elif mode == '2D':
+            elif mode in ['2D', '2D_pt_eta']:
                 mod_ratio[mod_ratio == 0.0] = 1
 
             ratio_dict.update({ cat : mod_ratio })
@@ -96,12 +100,20 @@ class ptReweightProcessor(fatjetBaseProcessor):
         axis_category = hist.axis.StrCategory(list(ratio_dict.keys()), name="cat")
         sfhist = hist.Hist(axis_category, *axes, data=np.stack(list(ratio_dict.values())))
         sfhist.label = "out"
-        sfhist.name = f"pt_corr_{year}"
+        if mode == '1D':
+            sfhist.name = f"pt_corr_{year}"
+            description = "Reweighting SF matching the leading fatjet pT MC distribution to data."
+        elif mode == '2D':
+            sfhist.name = f"pt_2D_corr_{year}"
+            description = "Reweighting SF matching the leading and subleading fatjet pT MC distribution to data."
+        elif mode == '2D_pt_eta':
+            sfhist.name = f"pt_eta_2D_corr_{year}"
+            description = "Reweighting SF matching the leading fatjet pT and eta MC distribution to data."
         clibcorr = correctionlib.convert.from_histogram(sfhist)
-        clibcorr.description = "Reweighting SF matching the leading fatjet pT MC distribution to data."
+        clibcorr.description = description
         cset = correctionlib.schemav2.CorrectionSet(
             schema_version=2,
-            description="Semileptonic trigger efficiency SF",
+            description="MC to data reweighting SF",
             corrections=[clibcorr],
         )
         rich.print(cset)
@@ -115,7 +127,7 @@ class ptReweightProcessor(fatjetBaseProcessor):
         print(f"Loading correction from {outfile_reweighting}...")
         cset = correctionlib.CorrectionSet.from_file(outfile_reweighting)
         print("inclusive:")
-        pt_corr = cset[f'pt_corr_{year}']
+        pt_corr = cset[sfhist.name]
         if mode == '1D':
             pt1 = np.array([50, 100, 400, 500, 1000], dtype=float)
             print("pt1 =", pt1)
@@ -126,6 +138,12 @@ class ptReweightProcessor(fatjetBaseProcessor):
             print("pt1 =", pt1)
             print("pt2 =", pt2)
             print(pt_corr.evaluate('inclusive', pt1, pt2))
+        elif mode == '2D_pt_eta':
+            pt1  = np.array([50, 100, 400, 500, 1000], dtype=float)
+            eta1 = np.array([-2, -1, 0, 1, 2], dtype=float)
+            print("pt1 =", pt1)
+            print("eta1 =", eta1)
+            print(pt_corr.evaluate('inclusive', pt1, eta1))
 
     def postprocess(self, accumulator):
         '''
@@ -163,7 +181,7 @@ class ptReweightProcessor(fatjetBaseProcessor):
                 h *= scale_genweight[sample]
         accumulator["scale_genweight"] = scale_genweight
 
-        self.pt_reweighting(accumulator=accumulator, year=year, mode='1D')
-        self.pt_reweighting(accumulator=accumulator, year=year, mode='2D')
+        for mode in ['1D', '2D', '2D_pt_eta']:
+            self.pt_reweighting(accumulator=accumulator, year=year, mode=mode)
 
         return accumulator

@@ -5,19 +5,13 @@ from coffea.util import load
 
 from pocket_coffea.workflows.base import BaseProcessorABC
 from pocket_coffea.utils.configurator import Configurator
+from pocket_coffea.lib.leptons import lepton_selection
 
-#from pocket_coffea.parameters.jec import JECversions, JERversions
-from pocket_coffea.lib.objects import (
-    jet_correction,
-    lepton_selection,
-    jet_selection,
-    btagging,
-    get_dilepton,
-)
 from config.fatjet_base.custom.leptons import lepton_selection_noniso
+from config.fatjet_base.custom.jets import jet_selection
 from lib.sv import *
 from pocket_coffea.lib.hist_manager import HistManager, Axis, HistConf
-from pocket_coffea.parameters.custom.genweights.genweights import genweights_files
+from config.fatjet_base.custom.parameters.genweights.genweights import genweights_files
 
 class fatjetBaseProcessor(BaseProcessorABC):
     def __init__(self, cfg: Configurator):
@@ -38,56 +32,6 @@ class fatjetBaseProcessor(BaseProcessorABC):
             )
         )
 
-    """
-    def load_metadata_extra(self):
-        self._JECversion = JECversions[self._year]['MC' if self._isMC else 'Data']
-        self._JERversion = JERversions[self._year]['MC' if self._isMC else 'Data']
-
-    def apply_JERC(self, JER=True, verbose=False):
-        if not self._isMC:
-            return
-        if int(self._year.split('_')[0]) > 2018:
-            sys.exit("Warning: Run 3 JEC are not implemented yet.")
-        # N.B.: We don't apply JER to 2017 MC since the JER scale factor and resolution are not saved in the JSON
-        if JER & (self._year != '2017'):
-            self.events.Jet, seed_dict = jet_correction(
-                self.events,
-                "Jet",
-                "AK4PFchs",
-                self._year,
-                self._JECversion,
-                self._JERversion,
-                verbose=verbose,
-            )
-            self.events.FatJet, seed_fatjet_dict = jet_correction(
-                self.events,
-                "FatJet",
-                "AK8PFPuppi",
-                self._year,
-                self._JECversion,
-                self._JERversion,
-                verbose=verbose,
-            )
-            self.output['seed_chunk'].update(seed_dict)
-            self.output['seed_fatjet_chunk'].update(seed_fatjet_dict)
-        else:
-            self.events.Jet = jet_correction(
-                self.events,
-                "Jet",
-                "AK4PFchs",
-                self._year,
-                self._JECversion,
-                verbose=verbose,
-            )
-            self.events.FatJet = jet_correction(
-                self.events,
-                "FatJet",
-                "AK8PFPuppi",
-                self._year,
-                self._JECversion,
-                verbose=verbose,
-            )
-    """
     def apply_object_preselection(self, variation):
         '''
         The ttHbb processor cleans
@@ -228,27 +172,29 @@ class fatjetBaseProcessor(BaseProcessorABC):
             year = years[0]
         genweights_dict = load(genweights_files[year])['sum_genweights']
 
-        scale_genweight = {}
+        try:
+            scale_genweight = {}
+            for sample in self.cfg.total_samples_list:
+                if (not sample.startswith('DATA')) & (sample not in genweights_dict):
+                    continue
+                scale_genweight[sample] = (
+                    1
+                    if sample.startswith('DATA')  # BEAWARE OF THIS HARDCODING
+                    else 1.0 / genweights_dict[sample]
+                )
+                # correct also the sumw (sum of weighted events) accumulator
+                for cat in self._categories:
+                    if sample in accumulator["sumw"][cat]:
+                        accumulator["sumw"][cat][sample] *= scale_genweight[sample]
 
-        for sample in self._totalSamplesSet:
-            if (not sample.startswith('DATA')) & (sample not in genweights_dict):
-                continue
-            scale_genweight[sample] = (
-                1
-                if sample.startswith('DATA')  # BEAWARE OF THIS HARDCODING
-                else 1.0 / genweights_dict[sample]
-            )
-            # correct also the sumw (sum of weighted events) accumulator
-            for cat in self._categories:
-                if sample in accumulator["sumw"][cat]:
-                    accumulator["sumw"][cat][sample] *= scale_genweight[sample]
-
-        for var, hists in accumulator["variables"].items():
-            # Rescale only histogram without no_weights option
-            if self.cfg.variables[var].no_weights:
-                continue
-            for sample, h in hists.items():
-                h *= scale_genweight[sample]
-        accumulator["scale_genweight"] = scale_genweight
+            for var, hists in accumulator["variables"].items():
+                # Rescale only histogram without no_weights option
+                if self.cfg.variables[var].no_weights:
+                    continue
+                for sample, h in hists.items():
+                    h *= scale_genweight[sample]
+            accumulator["scale_genweight"] = scale_genweight
+        except Exception as e:
+            print(e)
 
         return accumulator
