@@ -44,13 +44,15 @@ multicuts = [
 ]
 
 samples = [
-          "QCD_Pt-170to300",          
-          "QCD_Pt-300to470",
-          "QCD_Pt-470to600",
-          "QCD_Pt-600to800",
-          "QCD_Pt-800to1000",
-          "QCD_Pt-1000toInf",
-          "DATA"
+          #"QCD_Pt-170to300",
+          #"QCD_Pt-300to470",
+          #"QCD_Pt-470to600",
+          #"QCD_Pt-600to800",
+          #"QCD_Pt-800to1000",
+          #"QCD_Pt-1000toInf",
+          "GluGluHToBB",
+          "GluGluHToCC",
+          #"DATA"
            ]
 subsamples = {}
 for s in filter(lambda x: 'DATA' not in x, samples):
@@ -71,7 +73,7 @@ cfg =  {
 
     # Input and output files
     "workflow" : genWeightsProcessor,
-    "output"   : "output/pocket_coffea/genweights/genweights_2017UL",
+    "output"   : "output/pocket_coffea/genweights/genweights_2017UL_GluGluH",
     "workflow_options" : {},
 
     "run_options" : {

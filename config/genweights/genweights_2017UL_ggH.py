@@ -5,13 +5,14 @@ from pocket_coffea.parameters.histograms import *
 from pocket_coffea.parameters.btag import btag_variations
 from pocket_coffea.lib.weights_manager import WeightCustom
 from pocket_coffea.lib.cartesian_categories import CartesianSelection, MultiCut
-from pocket_coffea.parameters.custom.cuts import mutag_presel, get_ptbin, get_ptmsd, get_nObj_minmsd, get_flavor
-from pocket_coffea.parameters.custom.functions import get_inclusive_wp, get_HLTsel
-from pocket_coffea.parameters.custom.parameters import PtBinning, AK8TaggerWP, AK8Taggers
+from config.fatjet_base.custom.cuts import mutag_presel, get_ptbin, get_ptmsd, get_nObj_minmsd, get_flavor
+from config.fatjet_base.custom.functions import get_inclusive_wp, get_HLTsel
+from config.fatjet_base.custom.parameters.parameters import PtBinning, AK8TaggerWP, AK8Taggers
+from config.fatjet_base.custom.weights import pt_weight, pteta_weight
 import numpy as np
 
-PtBinning = PtBinning['UL']['2016_PostVFP']
-wps = AK8TaggerWP['UL']['2016_PostVFP']
+PtBinning = PtBinning['UL']['2017']
+wps = AK8TaggerWP['UL']['2017']
 
 common_cats = {
     "inclusive" : passthrough,
@@ -44,15 +45,8 @@ multicuts = [
 ]
 
 samples = [
-          #"QCD_Pt-170to300",          
-          #"QCD_Pt-300to470",
-          #"QCD_Pt-470to600",
-          #"QCD_Pt-600to800",
-          #"QCD_Pt-800to1000",
-          #"QCD_Pt-1000toInf",
           "GluGluHToBB",
           "GluGluHToCC",
-          #"DATA"
            ]
 subsamples = {}
 for s in filter(lambda x: 'DATA' not in x, samples):
@@ -61,11 +55,12 @@ for s in filter(lambda x: 'DATA' not in x, samples):
 cfg =  {
     "dataset" : {
         "jsons": ["datasets/MC_QCD_MuEnriched_RunIISummer20UL_local.json",
+                  "datasets/MC_GluGluH_RunIISummer20UL_local.json",
                   "datasets/DATA_BTagMu_RunIISummer20UL_local.json"],
         "filter" : {
             "samples": samples,
             "samples_exclude" : [],
-            "year": ['2016_PostVFP']
+            "year": ['2017']
         },
         "subsamples": subsamples
     },
@@ -73,7 +68,7 @@ cfg =  {
 
     # Input and output files
     "workflow" : genWeightsProcessor,
-    "output"   : "output/pocket_coffea/genweights/genweights_2016UL_PostVFP_GluGluH",
+    "output"   : "output/test/genweights/genweights_2017UL_GluGluH",
     "workflow_options" : {},
 
     "run_options" : {
@@ -146,4 +141,4 @@ cfg =  {
 # Here we update the weights dictionary such that 3 cross-check categories are not pt-reweighted
 categories = cfg["categories"].categories
 categories_to_reweight = [ cat for cat in categories if cat not in ["inclusive", "pt350msd40", "pt450msd40"] ]
-cfg["weights"]["common"]["bycategory"] = { cat : ["pt_reweighting"] for cat in categories_to_reweight}
+cfg["weights"]["common"]["bycategory"] = { cat : [pt_weight] for cat in categories_to_reweight}

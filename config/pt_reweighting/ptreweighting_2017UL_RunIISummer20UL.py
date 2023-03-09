@@ -9,8 +9,8 @@ from config.fatjet_base.custom.functions import get_inclusive_wp, get_HLTsel
 import numpy as np
 
 from parameters import PtBinning, AK8TaggerWP
-PtBinning = PtBinning['UL']['2016_PostVFP']
-wp = AK8TaggerWP['UL']['2016_PostVFP']
+PtBinning = PtBinning['UL']['2017']
+wp = AK8TaggerWP['UL']['2017']
 
 
 samples = ["QCD_Pt-170to300",
@@ -26,29 +26,31 @@ for s in filter(lambda x: 'DATA' not in x, samples):
 
 cfg =  {
     "dataset" : {
-        "jsons": ["datasets/skim/datasets_definition_skim.json"],
+        "jsons": ["datasets/MC_QCD_MuEnriched_RunIISummer20UL_local.json",
+                  "datasets/DATA_BTagMu_RunIISummer20UL_local.json"],
         "filter" : {
             "samples": samples,
             "samples_exclude" : [],
-            "year": ['2016_PostVFP']
+            "year": ['2017']
         },
         "subsamples": subsamples
     },
+    
 
     # Input and output files
     "workflow" : ptReweightProcessor,
-    "output"   : "output/commissioning/pt_reweighting/pt_reweighting_2d_pt_eta_2016UL_PostVFP",
+    "output"   : "output/pocket_coffea/pt_reweighting/pt_reweighting_2017UL_RunIISummer20UL",
     "workflow_options" : {},
 
     "run_options" : {
         "executor"       : "dask/slurm",
         "workers"        : 1,
         "scaleout"       : 100,
-        "queue"          : "short",
-        "walltime"       : "1:00:00",
-        "mem_per_worker" : "2GB", # GB
+        "queue"          : "standard",
+        "walltime"       : "8:00:00",
+        "mem_per_worker" : "8GB", # GB
         "exclusive"      : False,
-        "chunk"          : 20000,
+        "chunk"          : 400000,
         "retries"        : 50,
         "treereduction"  : 10,
         "max"            : None,
@@ -56,7 +58,6 @@ cfg =  {
         "voms"           : None,
         "limit"          : None,
         "adapt"          : False,
-        "env"            : "conda",
     },
 
     # Cuts and plots settings
@@ -66,7 +67,6 @@ cfg =  {
              get_nObj_minmsd(1, 30., "FatJet"),
              get_nObj_min(2, 3., "Muon"),
              get_HLTsel("mutag")],
-    "save_skimmed_files": None,
     "preselections" : [mutag_presel],
     "categories": {
         "inclusive" : [passthrough],
@@ -98,11 +98,7 @@ cfg =  {
         "bysample": {
         }    
         },
-        "shape": {
-            "common":{
-                "inclusive": [ ]
-            }
-        }
+        
     },
 
    "variables":
@@ -112,14 +108,6 @@ cfg =  {
         **sv_hists(coll="events"),
         **sv_hists(coll="events", pos=0),
         **count_hist(name="nFatJets", coll="FatJetGood",bins=10, start=0, stop=10),
-        "FatJetGood_pt_1_FatJetGood_pt_2": HistConf(
-            [ Axis(name="FatJetGood_pt_1", coll="FatJetGood", field="pt", pos=0, label=r"Leading FatJet $p_{T}$ [GeV]", bins=150, start=0, stop=1500),
-              Axis(name="FatJetGood_pt_2", coll="FatJetGood", field="pt", pos=1, label=r"Subleading FatJet $p_{T}$ [GeV]", bins=75, start=0, stop=1500) ]
-        ),
-        "FatJetGood_pt_1_FatJetGood_eta_1": HistConf(
-            [ Axis(name="FatJetGood_pt_1", coll="FatJetGood", field="pt", pos=0, label=r"Leading FatJet $p_{T}$ [GeV]", bins=150, start=0, stop=1500),
-              Axis(name="FatJetGood_eta_1", coll="FatJetGood", field="eta", pos=0, label=r"Leading FatJet $\eta$", bins=40, start=-4, stop=4) ]
-        ),
     },
 
     "columns" : {}

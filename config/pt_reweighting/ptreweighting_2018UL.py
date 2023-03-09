@@ -37,13 +37,13 @@ cfg =  {
 
     # Input and output files
     "workflow" : ptReweightProcessor,
-    "output"   : "output/pocket_coffea/pt_reweighting/pt_reweighting_2d_2018UL",
+    "output"   : "output/commissioning/pt_reweighting/pt_reweighting_2d_pt_eta_2018UL",
     "workflow_options" : {},
 
     "run_options" : {
         "executor"       : "dask/slurm",
         "workers"        : 1,
-        "scaleout"       : 200,
+        "scaleout"       : 100,
         "queue"          : "short",
         "walltime"       : "0:10:00",
         "mem_per_worker" : "2GB", # GB
@@ -115,6 +115,10 @@ cfg =  {
         "FatJetGood_pt_1_FatJetGood_pt_2": HistConf(
             [ Axis(name="FatJetGood_pt_1", coll="FatJetGood", field="pt", pos=0, label=r"Leading FatJet $p_{T}$ [GeV]", bins=150, start=0, stop=1500),
               Axis(name="FatJetGood_pt_2", coll="FatJetGood", field="pt", pos=1, label=r"Subleading FatJet $p_{T}$ [GeV]", bins=75, start=0, stop=1500) ]
+        ),
+        "FatJetGood_pt_1_FatJetGood_eta_1": HistConf(
+            [ Axis(name="FatJetGood_pt_1", coll="FatJetGood", field="pt", pos=0, label=r"Leading FatJet $p_{T}$ [GeV]", bins=150, start=0, stop=1500),
+              Axis(name="FatJetGood_eta_1", coll="FatJetGood", field="eta", pos=0, label=r"Leading FatJet $\eta$", bins=40, start=-4, stop=4) ]
         ),
     },
 
