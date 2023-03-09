@@ -1,0 +1,71 @@
+{
+    "GluGluHToCC_2016_PostVFP": {
+        "files": [
+            "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/mc/RunIISummer20UL16NanoAODv9/GluGluHToCC_Pt-200ToInf_M-125_TuneCP5_MINLO_13TeV-powheg-pythia8/NANOAODSIM/106X_mcRun2_asymptotic_v17-v1/70000/2657ACA7-6E6B-B24A-9CB2-97A9222EE6B2.root"
+        ],
+        "metadata": {
+            "das_names": "['/GluGluHToCC_Pt-200ToInf_M-125_TuneCP5_MINLO_13TeV-powheg-pythia8/RunIISummer20UL16NanoAODv9-106X_mcRun2_asymptotic_v17-v1/NANOAODSIM']",
+            "dbs_instance": "prod/global",
+            "sample": "GluGluHToCC",
+            "year": "2016_PostVFP",
+            "isMC": "True",
+            "nevents": "230000",
+            "size": "484339696"
+        }
+    },
+    "GluGluHToCC_2016_PreVFP": {
+        "files": [
+            "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/mc/RunIISummer20UL16NanoAODAPVv9/GluGluHToCC_Pt-200ToInf_M-125_TuneCP5_MINLO_13TeV-powheg-pythia8/NANOAODSIM/106X_mcRun2_asymptotic_preVFP_v11-v1/70000/FD42AC70-C17C-A342-91AB-B4DD8FA942EC.root",
+            "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/mc/RunIISummer20UL16NanoAODAPVv9/GluGluHToCC_Pt-200ToInf_M-125_TuneCP5_MINLO_13TeV-powheg-pythia8/NANOAODSIM/106X_mcRun2_asymptotic_preVFP_v11-v1/2820000/D83E17FD-E9D3-0D48-9012-83B3DEAF808E.root",
+            "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/mc/RunIISummer20UL16NanoAODAPVv9/GluGluHToCC_Pt-200ToInf_M-125_TuneCP5_MINLO_13TeV-powheg-pythia8/NANOAODSIM/106X_mcRun2_asymptotic_preVFP_v11-v1/70000/F530237E-CC35-4F41-8648-AFF6E3E27FBE.root",
+            "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/mc/RunIISummer20UL16NanoAODAPVv9/GluGluHToCC_Pt-200ToInf_M-125_TuneCP5_MINLO_13TeV-powheg-pythia8/NANOAODSIM/106X_mcRun2_asymptotic_preVFP_v11-v1/80000/729CA148-23AC-E046-B987-39AC0C5CE225.root",
+            "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/mc/RunIISummer20UL16NanoAODAPVv9/GluGluHToCC_Pt-200ToInf_M-125_TuneCP5_MINLO_13TeV-powheg-pythia8/NANOAODSIM/106X_mcRun2_asymptotic_preVFP_v11-v1/80000/16412915-9410-2C45-9BD0-8EDC3BC8E543.root",
+            "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/mc/RunIISummer20UL16NanoAODAPVv9/GluGluHToCC_Pt-200ToInf_M-125_TuneCP5_MINLO_13TeV-powheg-pythia8/NANOAODSIM/106X_mcRun2_asymptotic_preVFP_v11-v1/80000/F9730BE9-F357-BF43-82EA-497E0AF79F04.root",
+            "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/mc/RunIISummer20UL16NanoAODAPVv9/GluGluHToCC_Pt-200ToInf_M-125_TuneCP5_MINLO_13TeV-powheg-pythia8/NANOAODSIM/106X_mcRun2_asymptotic_preVFP_v11-v1/2830000/E0189008-8984-6844-AEDC-F00ED452142B.root",
+            "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/mc/RunIISummer20UL16NanoAODAPVv9/GluGluHToCC_Pt-200ToInf_M-125_TuneCP5_MINLO_13TeV-powheg-pythia8/NANOAODSIM/106X_mcRun2_asymptotic_preVFP_v11-v1/80000/1D2EEC56-FA5F-2D44-AA66-E5F594F5F8EF.root",
+            "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/mc/RunIISummer20UL16NanoAODAPVv9/GluGluHToCC_Pt-200ToInf_M-125_TuneCP5_MINLO_13TeV-powheg-pythia8/NANOAODSIM/106X_mcRun2_asymptotic_preVFP_v11-v1/70000/8374E79F-F687-B046-89DD-FADBDEBF5823.root"
+        ],
+        "metadata": {
+            "das_names": "['/GluGluHToCC_Pt-200ToInf_M-125_TuneCP5_MINLO_13TeV-powheg-pythia8/RunIISummer20UL16NanoAODAPVv9-106X_mcRun2_asymptotic_preVFP_v11-v1/NANOAODSIM']",
+            "dbs_instance": "prod/global",
+            "sample": "GluGluHToCC",
+            "year": "2016_PreVFP",
+            "isMC": "True",
+            "nevents": "270000",
+            "size": "595616752"
+        }
+    },
+    "GluGluHToCC_2017": {
+        "files": [
+            "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/mc/RunIISummer20UL17NanoAODv9/GluGluHToCC_Pt-200ToInf_M-125_TuneCP5_MINLO_13TeV-powheg-pythia8/NANOAODSIM/106X_mc2017_realistic_v9-v1/70000/543CB502-7434-8C49-828A-4DD4B5D88B17.root",
+            "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/mc/RunIISummer20UL17NanoAODv9/GluGluHToCC_Pt-200ToInf_M-125_TuneCP5_MINLO_13TeV-powheg-pythia8/NANOAODSIM/106X_mc2017_realistic_v9-v1/70000/FF095A64-87D7-1341-8DE9-DE05BDA4CE73.root",
+            "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/mc/RunIISummer20UL17NanoAODv9/GluGluHToCC_Pt-200ToInf_M-125_TuneCP5_MINLO_13TeV-powheg-pythia8/NANOAODSIM/106X_mc2017_realistic_v9-v1/70000/612C64FC-550B-E84D-A8AD-AF0FB6550C4E.root",
+            "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/mc/RunIISummer20UL17NanoAODv9/GluGluHToCC_Pt-200ToInf_M-125_TuneCP5_MINLO_13TeV-powheg-pythia8/NANOAODSIM/106X_mc2017_realistic_v9-v1/80000/EC2FE66E-E8C0-8940-972F-DD802BDE56AF.root",
+            "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/mc/RunIISummer20UL17NanoAODv9/GluGluHToCC_Pt-200ToInf_M-125_TuneCP5_MINLO_13TeV-powheg-pythia8/NANOAODSIM/106X_mc2017_realistic_v9-v1/80000/9B9EB936-E3B1-A243-8D51-395C3095B756.root"
+        ],
+        "metadata": {
+            "das_names": "['/GluGluHToCC_Pt-200ToInf_M-125_TuneCP5_MINLO_13TeV-powheg-pythia8/RunIISummer20UL17NanoAODv9-106X_mc2017_realistic_v9-v1/NANOAODSIM']",
+            "dbs_instance": "prod/global",
+            "sample": "GluGluHToCC",
+            "year": "2017",
+            "isMC": "True",
+            "nevents": "497000",
+            "size": "1095578524"
+        }
+    },
+    "GluGluHToCC_2018": {
+        "files": [
+            "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/mc/RunIISummer20UL18NanoAODv9/GluGluHToCC_Pt-200ToInf_M-125_TuneCP5_MINLO_13TeV-powheg-pythia8/NANOAODSIM/106X_upgrade2018_realistic_v16_L1v1-v1/80000/1BA5B909-C8EC-A548-8DA6-3614C73E31BE.root",
+            "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/store/mc/RunIISummer20UL18NanoAODv9/GluGluHToCC_Pt-200ToInf_M-125_TuneCP5_MINLO_13TeV-powheg-pythia8/NANOAODSIM/106X_upgrade2018_realistic_v16_L1v1-v1/80000/524CDA99-0091-7443-8039-5CF0F5630189.root"
+        ],
+        "metadata": {
+            "das_names": "['/GluGluHToCC_Pt-200ToInf_M-125_TuneCP5_MINLO_13TeV-powheg-pythia8/RunIISummer20UL18NanoAODv9-106X_upgrade2018_realistic_v16_L1v1-v1/NANOAODSIM']",
+            "dbs_instance": "prod/global",
+            "sample": "GluGluHToCC",
+            "year": "2018",
+            "isMC": "True",
+            "nevents": "500000",
+            "size": "1075790642"
+        }
+    }
+}
