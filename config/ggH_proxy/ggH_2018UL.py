@@ -5,7 +5,7 @@ from pocket_coffea.parameters.histograms import *
 from pocket_coffea.parameters.btag import btag_variations
 from pocket_coffea.lib.weights_manager import WeightCustom
 from pocket_coffea.lib.categorization import StandardSelection, CartesianSelection, MultiCut
-from config.fatjet_base.custom.cuts import mutag_presel, get_ptbin, get_ptmsd, get_nObj_minmsd, get_flavor
+from config.fatjet_base.custom.cuts import mutag_presel, get_ptbin, get_msd, get_ptmsd, get_nObj_minmsd, get_flavor
 from config.fatjet_base.custom.functions import get_inclusive_wp, get_HLTsel
 from config.fatjet_base.custom.parameters.parameters import PtBinning, AK8TaggerWP, AK8Taggers
 from config.fatjet_base.custom.weights import pt_weight, pteta_weight
@@ -29,13 +29,17 @@ for pt_low, pt_high in PtBinning.values():
     cuts_names_pt.append(f'Pt-{pt_low}to{pt_high}')
 cuts_tagger = []
 cuts_names_tagger = []
-for tagger in AK8Taggers:
+#for tagger in AK8Taggers:
+for tagger in ['particleNetMD_Xbb_QCD', 'particleNetMD_Xcc_QCD']:
     for wp in ["L", "M", "H"]:
         for region in ["pass", "fail"]:
             cuts_tagger.append(get_inclusive_wp(tagger, wps[tagger][wp], region))
-            cuts_names_tagger.append(f"msd40{tagger}{region}{wp}wp")
+            cuts_names_tagger.append(f"{tagger}{region}{wp}wp")
 
 multicuts = [
+    #MultiCut(name="msd",
+    #         cuts=[get_msd(40.)],
+    #         cuts_names=["msd40"]),
     MultiCut(name="tagger",
              cuts=cuts_tagger,
              cuts_names=cuts_names_tagger),
@@ -44,12 +48,12 @@ multicuts = [
              cuts_names=cuts_names_pt),
 ]
 
-samples = [#"QCD_Pt-170to300",
-           #"QCD_Pt-300to470",
-           #"QCD_Pt-470to600",
-           #"QCD_Pt-600to800",
-           #"QCD_Pt-800to1000",
-           #"QCD_Pt-1000toInf",
+samples = ["QCD_Pt-170to300",
+           "QCD_Pt-300to470",
+           "QCD_Pt-470to600",
+           "QCD_Pt-600to800",
+           "QCD_Pt-800to1000",
+           "QCD_Pt-1000toInf",
            "GluGluHToBB",
            "GluGluHToCC",
            ]
@@ -71,20 +75,18 @@ cfg =  {
 
     # Input and output files
     "workflow" : fatjetBaseProcessor,
-    #"output"   : "output/pocket_coffea/ggH_proxy/ggH_proxy_2018UL_fromCommissioning",
-    "output"   : "output/test/ggH_proxy/ggH_proxy_2018UL",
-    #"output"   : "output/pocket_coffea/ggH_proxy/ggH_proxy_2018UL_GluGluH",
+    "output"   : "output/pocket_coffea/ggH_proxy/ggH_proxy_2018UL_twojets",
     "workflow_options" : {},
 
     "run_options" : {
         "executor"       : "dask/slurm",
         "workers"        : 1,
-        "scaleout"       : 125,
+        "scaleout"       : 500,
         "queue"          : "standard",
         "walltime"       : "12:00:00",
         "mem_per_worker" : "12GB", # GB
         "exclusive"      : False,
-        "chunk"          : 10000,
+        "chunk"          : 100000,
         "retries"        : 50,
         "treereduction"  : 10,
         "max"            : None,
@@ -102,8 +104,10 @@ cfg =  {
              get_nObj_min(2, 3., "Muon"),
              get_HLTsel("mutag")],
     "save_skimmed_files" : None,
-    "preselections" : [mutag_presel, get_ptmsd(250, 40)],
-    "categories": CartesianSelection(multicuts=multicuts, common_cats=common_cats),
+    "preselections" : [mutag_presel],
+    "categories": CartesianSelection(
+                    multicuts=multicuts,
+                    common_cats=common_cats),
 
     "weights": {
         "common": {
@@ -120,7 +124,7 @@ cfg =  {
     "variations": {
         "weights": {
             "common": {
-                "inclusive": [ "pileup" ],#, "sf_L1prefiring" ],
+                "inclusive": [ ],#, "sf_L1prefiring" ],
                 "bycategory" : {
                 }
             },
@@ -129,7 +133,7 @@ cfg =  {
         },
         "shape": {
             "common":{
-                "inclusive": [ "JES_Total", "JER" ]
+                "inclusive": [ ]
             }
         }
     },
@@ -141,9 +145,13 @@ cfg =  {
         #**jet_hists(coll="JetGood"),
         #**jet_hists(coll="JetGood", pos=0),
         #**fatjet_hists(coll="FatJetGood"),
+        **fatjet_hists(coll="FatJetGood"),
         **fatjet_hists(coll="FatJetGood", pos=0),
+        **fatjet_hists(coll="FatJetGood", pos=1),
         #**sv_hists(coll="events"),
-        **sv_hists(coll="events", pos=0),
+        #**sv_hists(coll="events"),
+        #**sv_hists(coll="events", pos=0),
+        #**sv_hists(coll="events", pos=1),
         #**count_hist(name="nElectronGood", coll="ElectronGood",bins=10, start=0, stop=10),
         **count_hist(name="nMuonGood", coll="MuonGood",bins=10, start=0, stop=10),
         #**count_hist(name="nJets", coll="JetGood",bins=10, start=0, stop=10),
