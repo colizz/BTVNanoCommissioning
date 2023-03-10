@@ -2,13 +2,15 @@
 import awkward as ak
 import pocket_coffea.lib.cut_functions as cuts_f
 from pocket_coffea.lib.cut_definition import Cut
-from config.fatjet_base.custom.functions import mutag, ptbin, ptmsd, ptmsdtau, min_nObj_minmsd, flavor_mask
+from config.fatjet_base.custom.functions import mutag, ptbin, msoftdrop, ptmsd, ptmsdtau, min_nObj_minmsd, flavor_mask
 
 mutag_presel = Cut(
 	name="mutag",
 	params={
 		"nmusj1" : 1,
 		"nmusj2" : 1,
+		"pt" : 250,
+		"msd" : 20,
 		#"dimuon_pt_ratio" : 0.6
 	},
 	function=mutag
@@ -20,7 +22,18 @@ def get_ptbin(pt_low, pt_high, name=None):
 	return Cut(
 		name=name,
 		params= {"pt_low" : pt_low, "pt_high" : pt_high},
-		function=ptbin
+		function=ptbin,
+		collection="FatJetGood"
+	)
+
+def get_msd(msd, name=None):
+	if name == None:
+		name = f"msd{msd}"
+	return Cut(
+		name=name,
+		params= {"msd" : msd},
+		function=msoftdrop,
+		collection="FatJetGood"
 	)
 
 def get_ptmsd(pt, msd, name=None):
@@ -29,7 +42,8 @@ def get_ptmsd(pt, msd, name=None):
 	return Cut(
 		name=name,
 		params= {"pt" : pt, "msd" : msd},
-		function=ptmsd
+		function=ptmsd,
+		collection="FatJetGood"
 	)
 
 def get_ptmsdtau(pt, msd, tau21, name=None):
