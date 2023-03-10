@@ -153,48 +153,5 @@ class fatjetBaseProcessor(BaseProcessorABC):
             self.events = ak.with_field(self.events, value_concat, field)
             self.events['FatJetGood'] = ak.with_field(self.events['FatJetGood'], padded, field)
 
-    def define_column_accumulators(self):
-        pass
-
     def fill_column_accumulators(self, variation):
         pass
-
-    def postprocess(self, accumulator):
-        '''
-        Rescale MC histograms by the total sum of the genweights, read from the
-        output computed before skimming.
-        '''
-
-        years = self.cfg.dataset["filter"]["year"]
-        if len(years) > 1:
-            raise Exception("Only one data-taking year can be processed at a time.")
-        else:
-            year = years[0]
-        genweights_dict = load(genweights_files[year])['sum_genweights']
-
-        try:
-            scale_genweight = {}
-            for sample in self.cfg.total_samples_list:
-                if (not sample.startswith('DATA')) & (sample not in genweights_dict):
-                    continue
-                scale_genweight[sample] = (
-                    1
-                    if sample.startswith('DATA')  # BEAWARE OF THIS HARDCODING
-                    else 1.0 / genweights_dict[sample]
-                )
-                # correct also the sumw (sum of weighted events) accumulator
-                for cat in self._categories:
-                    if sample in accumulator["sumw"][cat]:
-                        accumulator["sumw"][cat][sample] *= scale_genweight[sample]
-
-            for var, hists in accumulator["variables"].items():
-                # Rescale only histogram without no_weights option
-                if self.cfg.variables[var].no_weights:
-                    continue
-                for sample, h in hists.items():
-                    h *= scale_genweight[sample]
-            accumulator["scale_genweight"] = scale_genweight
-        except Exception as e:
-            print(e)
-
-        return accumulator
