@@ -58,8 +58,13 @@ def get_nmu_in_subjet(jet, muon, pos, R=0.4):
     sj2 = jet.subjets[:, 1]
     mu_dr1 = sj1.delta_r(muon)
     mu_dr2 = sj2.delta_r(muon)
-    nmusj1 = ak.unflatten( ak.count(mu_dr1[mu_dr1 < R], axis=1), counts=1 )
-    nmusj2 = ak.unflatten( ak.count(mu_dr2[mu_dr2 < R], axis=1), counts=1 )
+    nmusj1_flat = ak.fill_none(ak.count(mu_dr1[mu_dr1 < R], axis=1), 0, axis=0)
+    nmusj2_flat = ak.fill_none(ak.count(mu_dr2[mu_dr2 < R], axis=1), 0, axis=0)
+    nmusj1 = ak.unflatten( nmusj1_flat, counts=1 )
+    nmusj2 = ak.unflatten( nmusj2_flat, counts=1 )
+
+    assert not ak.any(ak.is_none(nmusj1, axis=1)), nmusj1[ak.any(ak.is_none(nmusj1, axis=1), axis=1)]
+    assert not ak.any(ak.is_none(nmusj2, axis=1)), nmusj2[ak.any(ak.is_none(nmusj2, axis=1), axis=1)]
 
     return ak.concatenate((nmusj1, nmusj2), axis=1)
 
