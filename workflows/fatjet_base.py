@@ -76,6 +76,10 @@ class fatjetBaseProcessor(BaseProcessorABC):
             self.events, "FatJet", self.cfg.finalstate
         )
 
+        # Restrict analysis to leading and subleading jets only
+        self.events["FatJetGood"] = self.events.FatJetGood[ak.local_index(self.events.FatJetGood, axis=1) < 2]
+
+
     def count_objects(self, variation):
         self.events["nMuonGood"] = ak.num(self.events.MuonGood)
         self.events["nElectronGood"] = ak.num(self.events.ElectronGood)
