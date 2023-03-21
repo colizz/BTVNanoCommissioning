@@ -1,0 +1,32 @@
+{
+  "WJetsToQQ_HT-400to600_2016_PreVFP": {
+    "files": [
+      "skim_2016_PreVFP_regrouped/WJetsToQQ_HT-400to600_2016_PreVFP/WJetsToQQ_HT-400to600_2016_PreVFP_1.root"
+    ]
+  },
+  "ZJetsToQQ_HT-800toInf_2016_PreVFP": {
+    "files": [
+      "skim_2016_PreVFP_regrouped/ZJetsToQQ_HT-800toInf_2016_PreVFP/ZJetsToQQ_HT-800toInf_2016_PreVFP_1.root"
+    ]
+  },
+  "ZJetsToQQ_HT-600to800_2016_PreVFP": {
+    "files": [
+      "skim_2016_PreVFP_regrouped/ZJetsToQQ_HT-600to800_2016_PreVFP/ZJetsToQQ_HT-600to800_2016_PreVFP_1.root"
+    ]
+  },
+  "ZJetsToQQ_HT-400to600_2016_PreVFP": {
+    "files": [
+      "skim_2016_PreVFP_regrouped/ZJetsToQQ_HT-400to600_2016_PreVFP/ZJetsToQQ_HT-400to600_2016_PreVFP_1.root"
+    ]
+  },
+  "WJetsToQQ_HT-800toInf_2016_PreVFP": {
+    "files": [
+      "skim_2016_PreVFP_regrouped/WJetsToQQ_HT-800toInf_2016_PreVFP/WJetsToQQ_HT-800toInf_2016_PreVFP_1.root"
+    ]
+  },
+  "WJetsToQQ_HT-600to800_2016_PreVFP": {
+    "files": [
+      "skim_2016_PreVFP_regrouped/WJetsToQQ_HT-600to800_2016_PreVFP/WJetsToQQ_HT-600to800_2016_PreVFP_1.root"
+    ]
+  }
+}

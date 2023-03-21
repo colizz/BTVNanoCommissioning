@@ -1,0 +1,32 @@
+{
+  "WJetsToQQ_HT-400to600_2018": {
+    "files": [
+      "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018_regrouped/WJetsToQQ_HT-400to600_2018/WJetsToQQ_HT-400to600_2018_1.root"
+    ]
+  },
+  "WJetsToQQ_HT-600to800_2018": {
+    "files": [
+      "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018_regrouped/WJetsToQQ_HT-600to800_2018/WJetsToQQ_HT-600to800_2018_1.root"
+    ]
+  },
+  "ZJetsToQQ_HT-800toInf_2018": {
+    "files": [
+      "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018_regrouped/ZJetsToQQ_HT-800toInf_2018/ZJetsToQQ_HT-800toInf_2018_1.root"
+    ]
+  },
+  "ZJetsToQQ_HT-600to800_2018": {
+    "files": [
+      "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018_regrouped/ZJetsToQQ_HT-600to800_2018/ZJetsToQQ_HT-600to800_2018_1.root"
+    ]
+  },
+  "ZJetsToQQ_HT-400to600_2018": {
+    "files": [
+      "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018_regrouped/ZJetsToQQ_HT-400to600_2018/ZJetsToQQ_HT-400to600_2018_1.root"
+    ]
+  },
+  "WJetsToQQ_HT-800toInf_2018": {
+    "files": [
+      "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018_regrouped/WJetsToQQ_HT-800toInf_2018/WJetsToQQ_HT-800toInf_2018_1.root"
+    ]
+  }
+}

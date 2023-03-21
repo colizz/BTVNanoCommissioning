@@ -1,0 +1,32 @@
+{
+  "WJetsToQQ_HT-400to600_2017": {
+    "files": [
+      "skim_2017_regrouped/WJetsToQQ_HT-400to600_2017/WJetsToQQ_HT-400to600_2017_1.root"
+    ]
+  },
+  "WJetsToQQ_HT-600to800_2017": {
+    "files": [
+      "skim_2017_regrouped/WJetsToQQ_HT-600to800_2017/WJetsToQQ_HT-600to800_2017_1.root"
+    ]
+  },
+  "ZJetsToQQ_HT-800toInf_2017": {
+    "files": [
+      "skim_2017_regrouped/ZJetsToQQ_HT-800toInf_2017/ZJetsToQQ_HT-800toInf_2017_1.root"
+    ]
+  },
+  "ZJetsToQQ_HT-600to800_2017": {
+    "files": [
+      "skim_2017_regrouped/ZJetsToQQ_HT-600to800_2017/ZJetsToQQ_HT-600to800_2017_1.root"
+    ]
+  },
+  "ZJetsToQQ_HT-400to600_2017": {
+    "files": [
+      "skim_2017_regrouped/ZJetsToQQ_HT-400to600_2017/ZJetsToQQ_HT-400to600_2017_1.root"
+    ]
+  },
+  "WJetsToQQ_HT-800toInf_2017": {
+    "files": [
+      "skim_2017_regrouped/WJetsToQQ_HT-800toInf_2017/WJetsToQQ_HT-800toInf_2017_1.root"
+    ]
+  }
+}

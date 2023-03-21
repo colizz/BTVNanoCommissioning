@@ -1,0 +1,30 @@
+{
+  "GluGluHToBB_2018": {
+    "files": {
+      "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018_regrouped/GluGluHToBB_2018/GluGluHToBB_2018_1.root": [
+        "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018/GluGluHToBB_2018/GluGluHToBB_2018__d97b00e4-a997-11ec-8e43-ac013c0abeef__0__12000.root",
+        "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018/GluGluHToBB_2018/GluGluHToBB_2018__d1c9a080-a997-11ec-bb9a-c7e9b392beef__0__12000.root",
+        "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018/GluGluHToBB_2018/GluGluHToBB_2018__ee855f3e-a997-11ec-ae39-3f8c0a0abeef__0__3000.root",
+        "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018/GluGluHToBB_2018/GluGluHToBB_2018__0d27e39a-a9a1-11ec-9343-0566210abeef__0__3000.root",
+        "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018/GluGluHToBB_2018/GluGluHToBB_2018__cea0643e-a997-11ec-81eb-20319e86beef__0__18000.root",
+        "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018/GluGluHToBB_2018/GluGluHToBB_2018__5a3379f6-a997-11ec-bb83-79a0a983beef__0__15000.root",
+        "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018/GluGluHToBB_2018/GluGluHToBB_2018__0c49b0c8-a999-11ec-b6ec-7392d380beef__0__12000.root",
+        "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018/GluGluHToBB_2018/GluGluHToBB_2018__af7dd514-a997-11ec-ba35-88cde183beef__0__102000.root",
+        "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018/GluGluHToBB_2018/GluGluHToBB_2018__d1ca573c-a997-11ec-b20c-632df682beef__0__12000.root",
+        "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018/GluGluHToBB_2018/GluGluHToBB_2018__8be5f2a8-a997-11ec-82d2-b70f010abeef__0__12000.root",
+        "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018/GluGluHToBB_2018/GluGluHToBB_2018__2008cf32-a998-11ec-90d7-ac090d0abeef__0__212000.root",
+        "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018/GluGluHToBB_2018/GluGluHToBB_2018__ebd03ec6-a997-11ec-9a77-a2b55c90beef__0__27000.root",
+        "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018/GluGluHToBB_2018/GluGluHToBB_2018__cdfccbc6-a997-11ec-9d09-59e15d9fbeef__0__6000.root",
+        "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018/GluGluHToBB_2018/GluGluHToBB_2018__322ebb40-ab0a-11ec-9963-020011acbeef__0__51000.root"
+      ]
+    }
+  },
+  "GluGluHToCC_2018": {
+    "files": {
+      "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018_regrouped/GluGluHToCC_2018/GluGluHToCC_2018_1.root": [
+        "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018/GluGluHToCC_2018/GluGluHToCC_2018__2ee1752e-ef00-11ec-b226-1f339e86beef__0__3000.root",
+        "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018/GluGluHToCC_2018/GluGluHToCC_2018__b87b643e-eef6-11ec-9b81-530110acbeef__0__497000.root"
+      ]
+    }
+  }
+}

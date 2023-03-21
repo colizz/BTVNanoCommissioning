@@ -1,0 +1,12 @@
+{
+  "GluGluHToBB_2017": {
+    "files": [
+      "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2017_regrouped/GluGluHToBB_2017/GluGluHToBB_2017_1.root"
+    ]
+  },
+  "GluGluHToCC_2017": {
+    "files": [
+      "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2017_regrouped/GluGluHToCC_2017/GluGluHToCC_2017_1.root"
+    ]
+  }
+}

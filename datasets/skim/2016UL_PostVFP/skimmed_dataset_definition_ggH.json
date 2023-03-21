@@ -1,0 +1,12 @@
+{
+  "GluGluHToBB_2016_PostVFP": {
+    "files": [
+      "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2016_PostVFP_regrouped/GluGluHToBB_2016_PostVFP/GluGluHToBB_2016_PostVFP_1.root"
+    ]
+  },
+  "GluGluHToCC_2016_PostVFP": {
+    "files": [
+      "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2016_PostVFP_regrouped/GluGluHToCC_2016_PostVFP/GluGluHToCC_2016_PostVFP_1.root"
+    ]
+  }
+}

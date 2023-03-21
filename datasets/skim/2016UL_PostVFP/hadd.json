@@ -1,0 +1,20 @@
+{
+  "GluGluHToBB_2016_PostVFP": {
+    "files": {
+      "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2016_PostVFP_regrouped/GluGluHToBB_2016_PostVFP/GluGluHToBB_2016_PostVFP_1.root": [
+        "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2016_PostVFP/GluGluHToBB_2016_PostVFP/GluGluHToBB_2016_PostVFP__d394c8ec-a981-11ec-849e-9ee36880beef__0__16000.root",
+        "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2016_PostVFP/GluGluHToBB_2016_PostVFP/GluGluHToBB_2016_PostVFP__946dd622-a981-11ec-960f-e1cde183beef__0__22000.root",
+        "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2016_PostVFP/GluGluHToBB_2016_PostVFP/GluGluHToBB_2016_PostVFP__b03211e8-a981-11ec-9e63-b6319e86beef__0__72000.root",
+        "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2016_PostVFP/GluGluHToBB_2016_PostVFP/GluGluHToBB_2016_PostVFP__ac4a7ed0-a981-11ec-8012-a4803c0abeef__0__2000.root",
+        "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2016_PostVFP/GluGluHToBB_2016_PostVFP/GluGluHToBB_2016_PostVFP__8a5b4ade-a9bd-11ec-b6a4-82bce183beef__0__116000.root"
+      ]
+    }
+  },
+  "GluGluHToCC_2016_PostVFP": {
+    "files": {
+      "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2016_PostVFP_regrouped/GluGluHToCC_2016_PostVFP/GluGluHToCC_2016_PostVFP_1.root": [
+        "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2016_PostVFP/GluGluHToCC_2016_PostVFP/GluGluHToCC_2016_PostVFP__1a56cbba-ca91-11ec-820d-99013c0abeef__0__230000.root"
+      ]
+    }
+  }
+}

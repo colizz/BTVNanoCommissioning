@@ -68,6 +68,194 @@
             "era": "A"
         }
     },
+    "DATA_BTagMu_2017_EraF": {
+        "metadata": {
+            "sample": "DATA",
+            "year": "2017",
+            "isMC": "False",
+            "primaryDataset": "BTagMu",
+            "era": "F"
+        },
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraF/DATA_BTagMu_2017_EraF_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraF/DATA_BTagMu_2017_EraF_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraF/DATA_BTagMu_2017_EraF_3.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraF/DATA_BTagMu_2017_EraF_4.root"
+        ]
+    },
+    "DATA_BTagMu_2017_EraE": {
+        "metadata": {
+            "sample": "DATA",
+            "year": "2017",
+            "isMC": "False",
+            "primaryDataset": "BTagMu",
+            "era": "E"
+        },
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraE/DATA_BTagMu_2017_EraE_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraE/DATA_BTagMu_2017_EraE_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraE/DATA_BTagMu_2017_EraE_3.root"
+        ]
+    },
+    "DATA_BTagMu_2017_EraD": {
+        "metadata": {
+            "sample": "DATA",
+            "year": "2017",
+            "isMC": "False",
+            "primaryDataset": "BTagMu",
+            "era": "D"
+        },
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraD/DATA_BTagMu_2017_EraD_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraD/DATA_BTagMu_2017_EraD_2.root"
+        ]
+    },
+    "DATA_BTagMu_2017_EraC": {
+        "metadata": {
+            "sample": "DATA",
+            "year": "2017",
+            "isMC": "False",
+            "primaryDataset": "BTagMu",
+            "era": "C"
+        },
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraC/DATA_BTagMu_2017_EraC_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraC/DATA_BTagMu_2017_EraC_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraC/DATA_BTagMu_2017_EraC_3.root"
+        ]
+    },
+    "DATA_BTagMu_2017_EraB": {
+        "metadata": {
+            "sample": "DATA",
+            "year": "2017",
+            "isMC": "False",
+            "primaryDataset": "BTagMu",
+            "era": "B"
+        },
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraB/DATA_BTagMu_2017_EraB_1.root"
+        ]
+    },
+    "DATA_BTagMu_2016_PostVFP_EraG": {
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraG/DATA_BTagMu_2016_PostVFP_EraG_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraG/DATA_BTagMu_2016_PostVFP_EraG_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraG/DATA_BTagMu_2016_PostVFP_EraG_3.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraG/DATA_BTagMu_2016_PostVFP_EraG_4.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraG/DATA_BTagMu_2016_PostVFP_EraG_5.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraG/DATA_BTagMu_2016_PostVFP_EraG_6.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraG/DATA_BTagMu_2016_PostVFP_EraG_7.root"
+        ],
+        "metadata": {
+            "sample": "DATA",
+            "year": "2016_PostVFP",
+            "isMC": "False",
+            "primaryDataset": "BTagMu",
+            "era": "G"
+        }
+    },
+    "DATA_BTagMu_2016_PostVFP_EraH": {
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraH/DATA_BTagMu_2016_PostVFP_EraH_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraH/DATA_BTagMu_2016_PostVFP_EraH_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraH/DATA_BTagMu_2016_PostVFP_EraH_3.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraH/DATA_BTagMu_2016_PostVFP_EraH_4.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraH/DATA_BTagMu_2016_PostVFP_EraH_5.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraH/DATA_BTagMu_2016_PostVFP_EraH_6.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraH/DATA_BTagMu_2016_PostVFP_EraH_7.root"
+        ],
+        "metadata": {
+            "sample": "DATA",
+            "year": "2016_PostVFP",
+            "isMC": "False",
+            "primaryDataset": "BTagMu",
+            "era": "H"
+        }
+    },
+    "DATA_BTagMu_2016_PostVFP_EraF": {
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraF/DATA_BTagMu_2016_PostVFP_EraF_1.root"
+        ],
+        "metadata": {
+            "sample": "DATA",
+            "year": "2016_PostVFP",
+            "isMC": "False",
+            "primaryDataset": "BTagMu",
+            "era": "F"
+        }
+    },
+    "DATA_BTagMu_2016_PreVFP_EraD": {
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraD/DATA_BTagMu_2016_PreVFP_EraD_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraD/DATA_BTagMu_2016_PreVFP_EraD_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraD/DATA_BTagMu_2016_PreVFP_EraD_3.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraD/DATA_BTagMu_2016_PreVFP_EraD_4.root"
+        ],
+        "metadata": {
+            "sample": "DATA",
+            "year": "2016_PreVFP",
+            "isMC": "False",
+            "primaryDataset": "BTagMu",
+            "era": "D"
+        }
+    },
+    "DATA_BTagMu_2016_PreVFP_EraF": {
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraF/DATA_BTagMu_2016_PreVFP_EraF_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraF/DATA_BTagMu_2016_PreVFP_EraF_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraF/DATA_BTagMu_2016_PreVFP_EraF_3.root"
+        ],
+        "metadata": {
+            "sample": "DATA",
+            "year": "2016_PreVFP",
+            "isMC": "False",
+            "primaryDataset": "BTagMu",
+            "era": "F"
+        }
+    },
+    "DATA_BTagMu_2016_PreVFP_EraC": {
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraC/DATA_BTagMu_2016_PreVFP_EraC_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraC/DATA_BTagMu_2016_PreVFP_EraC_2.root"
+        ],
+        "metadata": {
+            "sample": "DATA",
+            "year": "2016_PreVFP",
+            "isMC": "False",
+            "primaryDataset": "BTagMu",
+            "era": "C"
+        }
+    },
+    "DATA_BTagMu_2016_PreVFP_EraB": {
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraB/DATA_BTagMu_2016_PreVFP_EraB_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraB/DATA_BTagMu_2016_PreVFP_EraB_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraB/DATA_BTagMu_2016_PreVFP_EraB_3.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraB/DATA_BTagMu_2016_PreVFP_EraB_4.root"
+        ],
+        "metadata": {
+            "sample": "DATA",
+            "year": "2016_PreVFP",
+            "isMC": "False",
+            "primaryDataset": "BTagMu",
+            "era": "B"
+        }
+    },
+    "DATA_BTagMu_2016_PreVFP_EraE": {
+        "files": [
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraE/DATA_BTagMu_2016_PreVFP_EraE_1.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraE/DATA_BTagMu_2016_PreVFP_EraE_2.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraE/DATA_BTagMu_2016_PreVFP_EraE_3.root",
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraE/DATA_BTagMu_2016_PreVFP_EraE_4.root"
+        ],
+        "metadata": {
+            "sample": "DATA",
+            "year": "2016_PreVFP",
+            "isMC": "False",
+            "primaryDataset": "BTagMu",
+            "era": "E"
+        }
+    },
     "QCD_Pt-600to800_2018": {
         "files": [
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_1.root",
@@ -442,74 +630,6 @@
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/QCD_Pt-600to800_2017/QCD_Pt-600to800_2017_27.root"
         ]
     },
-    "DATA_BTagMu_2017_EraF": {
-        "metadata": {
-            "sample": "DATA",
-            "year": "2017",
-            "isMC": "False",
-            "primaryDataset": "BTagMu",
-            "era": "F"
-        },
-        "files": [
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraF/DATA_BTagMu_2017_EraF_1.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraF/DATA_BTagMu_2017_EraF_2.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraF/DATA_BTagMu_2017_EraF_3.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraF/DATA_BTagMu_2017_EraF_4.root"
-        ]
-    },
-    "DATA_BTagMu_2017_EraE": {
-        "metadata": {
-            "sample": "DATA",
-            "year": "2017",
-            "isMC": "False",
-            "primaryDataset": "BTagMu",
-            "era": "E"
-        },
-        "files": [
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraE/DATA_BTagMu_2017_EraE_1.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraE/DATA_BTagMu_2017_EraE_2.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraE/DATA_BTagMu_2017_EraE_3.root"
-        ]
-    },
-    "DATA_BTagMu_2017_EraD": {
-        "metadata": {
-            "sample": "DATA",
-            "year": "2017",
-            "isMC": "False",
-            "primaryDataset": "BTagMu",
-            "era": "D"
-        },
-        "files": [
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraD/DATA_BTagMu_2017_EraD_1.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraD/DATA_BTagMu_2017_EraD_2.root"
-        ]
-    },
-    "DATA_BTagMu_2017_EraC": {
-        "metadata": {
-            "sample": "DATA",
-            "year": "2017",
-            "isMC": "False",
-            "primaryDataset": "BTagMu",
-            "era": "C"
-        },
-        "files": [
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraC/DATA_BTagMu_2017_EraC_1.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraC/DATA_BTagMu_2017_EraC_2.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraC/DATA_BTagMu_2017_EraC_3.root"
-        ]
-    },
-    "DATA_BTagMu_2017_EraB": {
-        "metadata": {
-            "sample": "DATA",
-            "year": "2017",
-            "isMC": "False",
-            "primaryDataset": "BTagMu",
-            "era": "B"
-        },
-        "files": [
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2017_regrouped/DATA_BTagMu_2017_EraB/DATA_BTagMu_2017_EraB_1.root"
-        ]
-    },
     "QCD_Pt-1000toInf_2017": {
         "metadata": {
             "sample": "QCD_Pt-1000toInf",
@@ -808,126 +928,6 @@
             "sum_genweights": 38921528.0
         }
     },
-    "DATA_BTagMu_2016_PostVFP_EraG": {
-        "files": [
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraG/DATA_BTagMu_2016_PostVFP_EraG_1.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraG/DATA_BTagMu_2016_PostVFP_EraG_2.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraG/DATA_BTagMu_2016_PostVFP_EraG_3.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraG/DATA_BTagMu_2016_PostVFP_EraG_4.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraG/DATA_BTagMu_2016_PostVFP_EraG_5.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraG/DATA_BTagMu_2016_PostVFP_EraG_6.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraG/DATA_BTagMu_2016_PostVFP_EraG_7.root"
-        ],
-        "metadata": {
-            "sample": "DATA",
-            "year": "2016_PostVFP",
-            "isMC": "False",
-            "primaryDataset": "BTagMu",
-            "era": "G"
-        }
-    },
-    "DATA_BTagMu_2016_PostVFP_EraH": {
-        "files": [
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraH/DATA_BTagMu_2016_PostVFP_EraH_1.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraH/DATA_BTagMu_2016_PostVFP_EraH_2.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraH/DATA_BTagMu_2016_PostVFP_EraH_3.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraH/DATA_BTagMu_2016_PostVFP_EraH_4.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraH/DATA_BTagMu_2016_PostVFP_EraH_5.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraH/DATA_BTagMu_2016_PostVFP_EraH_6.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraH/DATA_BTagMu_2016_PostVFP_EraH_7.root"
-        ],
-        "metadata": {
-            "sample": "DATA",
-            "year": "2016_PostVFP",
-            "isMC": "False",
-            "primaryDataset": "BTagMu",
-            "era": "H"
-        }
-    },
-    "DATA_BTagMu_2016_PostVFP_EraF": {
-        "files": [
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/DATA_BTagMu_2016_PostVFP_EraF/DATA_BTagMu_2016_PostVFP_EraF_1.root"
-        ],
-        "metadata": {
-            "sample": "DATA",
-            "year": "2016_PostVFP",
-            "isMC": "False",
-            "primaryDataset": "BTagMu",
-            "era": "F"
-        }
-    },
-    "DATA_BTagMu_2016_PreVFP_EraD": {
-        "files": [
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraD/DATA_BTagMu_2016_PreVFP_EraD_1.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraD/DATA_BTagMu_2016_PreVFP_EraD_2.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraD/DATA_BTagMu_2016_PreVFP_EraD_3.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraD/DATA_BTagMu_2016_PreVFP_EraD_4.root"
-        ],
-        "metadata": {
-            "sample": "DATA",
-            "year": "2016_PreVFP",
-            "isMC": "False",
-            "primaryDataset": "BTagMu",
-            "era": "D"
-        }
-    },
-    "DATA_BTagMu_2016_PreVFP_EraF": {
-        "files": [
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraF/DATA_BTagMu_2016_PreVFP_EraF_1.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraF/DATA_BTagMu_2016_PreVFP_EraF_2.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraF/DATA_BTagMu_2016_PreVFP_EraF_3.root"
-        ],
-        "metadata": {
-            "sample": "DATA",
-            "year": "2016_PreVFP",
-            "isMC": "False",
-            "primaryDataset": "BTagMu",
-            "era": "F"
-        }
-    },
-    "DATA_BTagMu_2016_PreVFP_EraC": {
-        "files": [
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraC/DATA_BTagMu_2016_PreVFP_EraC_1.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraC/DATA_BTagMu_2016_PreVFP_EraC_2.root"
-        ],
-        "metadata": {
-            "sample": "DATA",
-            "year": "2016_PreVFP",
-            "isMC": "False",
-            "primaryDataset": "BTagMu",
-            "era": "C"
-        }
-    },
-    "DATA_BTagMu_2016_PreVFP_EraB": {
-        "files": [
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraB/DATA_BTagMu_2016_PreVFP_EraB_1.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraB/DATA_BTagMu_2016_PreVFP_EraB_2.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraB/DATA_BTagMu_2016_PreVFP_EraB_3.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraB/DATA_BTagMu_2016_PreVFP_EraB_4.root"
-        ],
-        "metadata": {
-            "sample": "DATA",
-            "year": "2016_PreVFP",
-            "isMC": "False",
-            "primaryDataset": "BTagMu",
-            "era": "B"
-        }
-    },
-    "DATA_BTagMu_2016_PreVFP_EraE": {
-        "files": [
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraE/DATA_BTagMu_2016_PreVFP_EraE_1.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraE/DATA_BTagMu_2016_PreVFP_EraE_2.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraE/DATA_BTagMu_2016_PreVFP_EraE_3.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/DATA_BTagMu_2016_PreVFP_EraE/DATA_BTagMu_2016_PreVFP_EraE_4.root"
-        ],
-        "metadata": {
-            "sample": "DATA",
-            "year": "2016_PreVFP",
-            "isMC": "False",
-            "primaryDataset": "BTagMu",
-            "era": "E"
-        }
-    },
     "QCD_Pt-470to600_2016_PreVFP": {
         "files": [
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/QCD_Pt-470to600_2016_PreVFP/QCD_Pt-470to600_2016_PreVFP_1.root",
@@ -1120,6 +1120,78 @@
             "sum_genweights": 38921524.0
         }
     },
+    "WJetsToQQ_HT-400to600_2018": {
+        "files": [
+            "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018_regrouped/WJetsToQQ_HT-400to600_2018/WJetsToQQ_HT-400to600_2018_1.root"
+        ],
+        "metadata": {
+            "sample": "VJets",
+            "year": "2018",
+            "isMC": "True",
+            "sum_genweights": 9335298.0,
+            "xsec": 314.8
+        }
+    },
+    "WJetsToQQ_HT-600to800_2018": {
+        "files": [
+            "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018_regrouped/WJetsToQQ_HT-600to800_2018/WJetsToQQ_HT-600to800_2018_1.root"
+        ],
+        "metadata": {
+            "sample": "VJets",
+            "year": "2018",
+            "isMC": "True",
+            "sum_genweights": 13633226.0,
+            "xsec": 68.64
+        }
+    },
+    "ZJetsToQQ_HT-800toInf_2018": {
+        "files": [
+            "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018_regrouped/ZJetsToQQ_HT-800toInf_2018/ZJetsToQQ_HT-800toInf_2018_1.root"
+        ],
+        "metadata": {
+            "sample": "VJets",
+            "year": "2018",
+            "isMC": "True",
+            "sum_genweights": 9681521.0,
+            "xsec": 18.57
+        }
+    },
+    "ZJetsToQQ_HT-600to800_2018": {
+        "files": [
+            "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018_regrouped/ZJetsToQQ_HT-600to800_2018/ZJetsToQQ_HT-600to800_2018_1.root"
+        ],
+        "metadata": {
+            "sample": "VJets",
+            "year": "2018",
+            "isMC": "True",
+            "sum_genweights": 12029507.0,
+            "xsec": 34.12
+        }
+    },
+    "ZJetsToQQ_HT-400to600_2018": {
+        "files": [
+            "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018_regrouped/ZJetsToQQ_HT-400to600_2018/ZJetsToQQ_HT-400to600_2018_1.root"
+        ],
+        "metadata": {
+            "sample": "VJets",
+            "year": "2018",
+            "isMC": "True",
+            "sum_genweights": 13930474.0,
+            "xsec": 145.0
+        }
+    },
+    "WJetsToQQ_HT-800toInf_2018": {
+        "files": [
+            "/pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2018_regrouped/WJetsToQQ_HT-800toInf_2018/WJetsToQQ_HT-800toInf_2018_1.root"
+        ],
+        "metadata": {
+            "sample": "VJets",
+            "year": "2018",
+            "isMC": "True",
+            "sum_genweights": 13581343.0,
+            "xsec": 34.7
+        }
+    },
     "GluGluHToBB_2018": {
         "metadata": {
             "sample": "GluGluHToBB",
@@ -1215,5 +1287,221 @@
         "files": [
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2016_PreVFP_regrouped/GluGluHToCC_2016_PreVFP/GluGluHToCC_2016_PreVFP_1.root"
         ]
+    },
+    "WJetsToQQ_HT-400to600_2017": {
+        "files": [
+            "skim_2017_regrouped/WJetsToQQ_HT-400to600_2017/WJetsToQQ_HT-400to600_2017_1.root"
+        ],
+        "metadata": {
+            "sample": "VJets",
+            "year": "2017",
+            "isMC": "True",
+            "sum_genweights": 9927793.0,
+            "xsec": 314.8
+        }
+    },
+    "WJetsToQQ_HT-600to800_2017": {
+        "files": [
+            "skim_2017_regrouped/WJetsToQQ_HT-600to800_2017/WJetsToQQ_HT-600to800_2017_1.root"
+        ],
+        "metadata": {
+            "sample": "VJets",
+            "year": "2017",
+            "isMC": "True",
+            "sum_genweights": 14510253.0,
+            "xsec": 68.64
+        }
+    },
+    "ZJetsToQQ_HT-800toInf_2017": {
+        "files": [
+            "skim_2017_regrouped/ZJetsToQQ_HT-800toInf_2017/ZJetsToQQ_HT-800toInf_2017_1.root"
+        ],
+        "metadata": {
+            "sample": "VJets",
+            "year": "2017",
+            "isMC": "True",
+            "sum_genweights": 9400574.0,
+            "xsec": 18.57
+        }
+    },
+    "ZJetsToQQ_HT-600to800_2017": {
+        "files": [
+            "skim_2017_regrouped/ZJetsToQQ_HT-600to800_2017/ZJetsToQQ_HT-600to800_2017_1.root"
+        ],
+        "metadata": {
+            "sample": "VJets",
+            "year": "2017",
+            "isMC": "True",
+            "sum_genweights": 11702567.0,
+            "xsec": 34.12
+        }
+    },
+    "ZJetsToQQ_HT-400to600_2017": {
+        "files": [
+            "skim_2017_regrouped/ZJetsToQQ_HT-400to600_2017/ZJetsToQQ_HT-400to600_2017_1.root"
+        ],
+        "metadata": {
+            "sample": "VJets",
+            "year": "2017",
+            "isMC": "True",
+            "sum_genweights": 14884962.0,
+            "xsec": 145.0
+        }
+    },
+    "WJetsToQQ_HT-800toInf_2017": {
+        "files": [
+            "skim_2017_regrouped/WJetsToQQ_HT-800toInf_2017/WJetsToQQ_HT-800toInf_2017_1.root"
+        ],
+        "metadata": {
+            "sample": "VJets",
+            "year": "2017",
+            "isMC": "True",
+            "sum_genweights": 14722417.0,
+            "xsec": 34.7
+        }
+    },
+    "WJetsToQQ_HT-400to600_2016_PostVFP": {
+        "files": [
+            "skim_2016_PostVFP_regrouped/WJetsToQQ_HT-400to600_2016_PostVFP/WJetsToQQ_HT-400to600_2016_PostVFP_1.root"
+        ],
+        "metadata": {
+            "sample": "VJets",
+            "year": "2016_PostVFP",
+            "isMC": "True",
+            "sum_genweights": 4455853.0,
+            "xsec": 314.8
+        }
+    },
+    "ZJetsToQQ_HT-800toInf_2016_PostVFP": {
+        "files": [
+            "skim_2016_PostVFP_regrouped/ZJetsToQQ_HT-800toInf_2016_PostVFP/ZJetsToQQ_HT-800toInf_2016_PostVFP_1.root"
+        ],
+        "metadata": {
+            "sample": "VJets",
+            "year": "2016_PostVFP",
+            "isMC": "True",
+            "sum_genweights": 4388402.0,
+            "xsec": 18.57
+        }
+    },
+    "ZJetsToQQ_HT-600to800_2016_PostVFP": {
+        "files": [
+            "skim_2016_PostVFP_regrouped/ZJetsToQQ_HT-600to800_2016_PostVFP/ZJetsToQQ_HT-600to800_2016_PostVFP_1.root"
+        ],
+        "metadata": {
+            "sample": "VJets",
+            "year": "2016_PostVFP",
+            "isMC": "True",
+            "sum_genweights": 5529896.0,
+            "xsec": 34.12
+        }
+    },
+    "ZJetsToQQ_HT-400to600_2016_PostVFP": {
+        "files": [
+            "skim_2016_PostVFP_regrouped/ZJetsToQQ_HT-400to600_2016_PostVFP/ZJetsToQQ_HT-400to600_2016_PostVFP_1.root"
+        ],
+        "metadata": {
+            "sample": "VJets",
+            "year": "2016_PostVFP",
+            "isMC": "True",
+            "sum_genweights": 6942718.0,
+            "xsec": 145.0
+        }
+    },
+    "WJetsToQQ_HT-800toInf_2016_PostVFP": {
+        "files": [
+            "skim_2016_PostVFP_regrouped/WJetsToQQ_HT-800toInf_2016_PostVFP/WJetsToQQ_HT-800toInf_2016_PostVFP_1.root"
+        ],
+        "metadata": {
+            "sample": "VJets",
+            "year": "2016_PostVFP",
+            "isMC": "True",
+            "sum_genweights": 6769101.0,
+            "xsec": 34.7
+        }
+    },
+    "WJetsToQQ_HT-600to800_2016_PostVFP": {
+        "files": [
+            "skim_2016_PostVFP_regrouped/WJetsToQQ_HT-600to800_2016_PostVFP/WJetsToQQ_HT-600to800_2016_PostVFP_1.root"
+        ],
+        "metadata": {
+            "sample": "VJets",
+            "year": "2016_PostVFP",
+            "isMC": "True",
+            "sum_genweights": 6804490.0,
+            "xsec": 68.64
+        }
+    },
+    "WJetsToQQ_HT-400to600_2016_PreVFP": {
+        "files": [
+            "skim_2016_PreVFP_regrouped/WJetsToQQ_HT-400to600_2016_PreVFP/WJetsToQQ_HT-400to600_2016_PreVFP_1.root"
+        ],
+        "metadata": {
+            "sample": "VJets",
+            "year": "2016_PreVFP",
+            "isMC": "True",
+            "sum_genweights": 5153588.0,
+            "xsec": 314.8
+        }
+    },
+    "ZJetsToQQ_HT-800toInf_2016_PreVFP": {
+        "files": [
+            "skim_2016_PreVFP_regrouped/ZJetsToQQ_HT-800toInf_2016_PreVFP/ZJetsToQQ_HT-800toInf_2016_PreVFP_1.root"
+        ],
+        "metadata": {
+            "sample": "VJets",
+            "year": "2016_PreVFP",
+            "isMC": "True",
+            "sum_genweights": 3726992.0,
+            "xsec": 18.57
+        }
+    },
+    "ZJetsToQQ_HT-600to800_2016_PreVFP": {
+        "files": [
+            "skim_2016_PreVFP_regrouped/ZJetsToQQ_HT-600to800_2016_PreVFP/ZJetsToQQ_HT-600to800_2016_PreVFP_1.root"
+        ],
+        "metadata": {
+            "sample": "VJets",
+            "year": "2016_PreVFP",
+            "isMC": "True",
+            "sum_genweights": 6093849.0,
+            "xsec": 34.12
+        }
+    },
+    "ZJetsToQQ_HT-400to600_2016_PreVFP": {
+        "files": [
+            "skim_2016_PreVFP_regrouped/ZJetsToQQ_HT-400to600_2016_PreVFP/ZJetsToQQ_HT-400to600_2016_PreVFP_1.root"
+        ],
+        "metadata": {
+            "sample": "VJets",
+            "year": "2016_PreVFP",
+            "isMC": "True",
+            "sum_genweights": 7709128.0,
+            "xsec": 145.0
+        }
+    },
+    "WJetsToQQ_HT-800toInf_2016_PreVFP": {
+        "files": [
+            "skim_2016_PreVFP_regrouped/WJetsToQQ_HT-800toInf_2016_PreVFP/WJetsToQQ_HT-800toInf_2016_PreVFP_1.root"
+        ],
+        "metadata": {
+            "sample": "VJets",
+            "year": "2016_PreVFP",
+            "isMC": "True",
+            "sum_genweights": 7758476.0,
+            "xsec": 34.7
+        }
+    },
+    "WJetsToQQ_HT-600to800_2016_PreVFP": {
+        "files": [
+            "skim_2016_PreVFP_regrouped/WJetsToQQ_HT-600to800_2016_PreVFP/WJetsToQQ_HT-600to800_2016_PreVFP_1.root"
+        ],
+        "metadata": {
+            "sample": "VJets",
+            "year": "2016_PreVFP",
+            "isMC": "True",
+            "sum_genweights": 7673043.0,
+            "xsec": 68.64
+        }
     }
 }
