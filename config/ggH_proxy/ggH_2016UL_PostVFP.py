@@ -5,6 +5,7 @@ from pocket_coffea.parameters.histograms import *
 from pocket_coffea.lib.categorization import StandardSelection, CartesianSelection
 from config.fatjet_base.custom.cuts import twojets_presel, mutag_sel, get_ptmsd, get_nObj_minmsd, get_flavor
 from config.fatjet_base.custom.functions import get_HLTsel
+from config.fatjet_base.custom.parameters.parameters import AK8Taggers
 
 common_cats = {
     "inclusive" : [passthrough],
@@ -130,3 +131,9 @@ cfg =  {
     "columns" : {}
 
 }
+
+for tagger in AK8Taggers:
+    setting = default_axis_settings[f"fatjet_{tagger}"]
+    for nbins in [10, 20, 40]:
+        setting["bins"] = nbins
+        cfg["variables"][f"fatjet_{tagger}_{nbins}bins"] = HistConf(axes=[Axis(**setting)])
