@@ -1244,7 +1244,7 @@
     },
     "WJetsToQQ_HT-400to600_2017": {
         "files": [
-            "skim_2017_regrouped/WJetsToQQ_HT-400to600_2017/WJetsToQQ_HT-400to600_2017_1.root"
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2017_regrouped/WJetsToQQ_HT-400to600_2017/WJetsToQQ_HT-400to600_2017_1.root"
         ],
         "metadata": {
             "sample": "VJets",
@@ -1256,7 +1256,7 @@
     },
     "WJetsToQQ_HT-600to800_2017": {
         "files": [
-            "skim_2017_regrouped/WJetsToQQ_HT-600to800_2017/WJetsToQQ_HT-600to800_2017_1.root"
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2017_regrouped/WJetsToQQ_HT-600to800_2017/WJetsToQQ_HT-600to800_2017_1.root"
         ],
         "metadata": {
             "sample": "VJets",
@@ -1268,7 +1268,7 @@
     },
     "ZJetsToQQ_HT-800toInf_2017": {
         "files": [
-            "skim_2017_regrouped/ZJetsToQQ_HT-800toInf_2017/ZJetsToQQ_HT-800toInf_2017_1.root"
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2017_regrouped/ZJetsToQQ_HT-800toInf_2017/ZJetsToQQ_HT-800toInf_2017_1.root"
         ],
         "metadata": {
             "sample": "VJets",
@@ -1280,7 +1280,7 @@
     },
     "ZJetsToQQ_HT-600to800_2017": {
         "files": [
-            "skim_2017_regrouped/ZJetsToQQ_HT-600to800_2017/ZJetsToQQ_HT-600to800_2017_1.root"
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2017_regrouped/ZJetsToQQ_HT-600to800_2017/ZJetsToQQ_HT-600to800_2017_1.root"
         ],
         "metadata": {
             "sample": "VJets",
@@ -1292,7 +1292,7 @@
     },
     "ZJetsToQQ_HT-400to600_2017": {
         "files": [
-            "skim_2017_regrouped/ZJetsToQQ_HT-400to600_2017/ZJetsToQQ_HT-400to600_2017_1.root"
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2017_regrouped/ZJetsToQQ_HT-400to600_2017/ZJetsToQQ_HT-400to600_2017_1.root"
         ],
         "metadata": {
             "sample": "VJets",
@@ -1304,7 +1304,7 @@
     },
     "WJetsToQQ_HT-800toInf_2017": {
         "files": [
-            "skim_2017_regrouped/WJetsToQQ_HT-800toInf_2017/WJetsToQQ_HT-800toInf_2017_1.root"
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2017_regrouped/WJetsToQQ_HT-800toInf_2017/WJetsToQQ_HT-800toInf_2017_1.root"
         ],
         "metadata": {
             "sample": "VJets",
@@ -1316,7 +1316,7 @@
     },
     "WJetsToQQ_HT-400to600_2016_PostVFP": {
         "files": [
-            "skim_2016_PostVFP_regrouped/WJetsToQQ_HT-400to600_2016_PostVFP/WJetsToQQ_HT-400to600_2016_PostVFP_1.root"
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2016_PostVFP_regrouped/WJetsToQQ_HT-400to600_2016_PostVFP/WJetsToQQ_HT-400to600_2016_PostVFP_1.root"
         ],
         "metadata": {
             "sample": "VJets",
@@ -1328,7 +1328,7 @@
     },
     "ZJetsToQQ_HT-800toInf_2016_PostVFP": {
         "files": [
-            "skim_2016_PostVFP_regrouped/ZJetsToQQ_HT-800toInf_2016_PostVFP/ZJetsToQQ_HT-800toInf_2016_PostVFP_1.root"
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2016_PostVFP_regrouped/ZJetsToQQ_HT-800toInf_2016_PostVFP/ZJetsToQQ_HT-800toInf_2016_PostVFP_1.root"
         ],
         "metadata": {
             "sample": "VJets",
@@ -1340,7 +1340,7 @@
     },
     "ZJetsToQQ_HT-600to800_2016_PostVFP": {
         "files": [
-            "skim_2016_PostVFP_regrouped/ZJetsToQQ_HT-600to800_2016_PostVFP/ZJetsToQQ_HT-600to800_2016_PostVFP_1.root"
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2016_PostVFP_regrouped/ZJetsToQQ_HT-600to800_2016_PostVFP/ZJetsToQQ_HT-600to800_2016_PostVFP_1.root"
         ],
         "metadata": {
             "sample": "VJets",
@@ -1352,7 +1352,7 @@
     },
     "ZJetsToQQ_HT-400to600_2016_PostVFP": {
         "files": [
-            "skim_2016_PostVFP_regrouped/ZJetsToQQ_HT-400to600_2016_PostVFP/ZJetsToQQ_HT-400to600_2016_PostVFP_1.root"
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2016_PostVFP_regrouped/ZJetsToQQ_HT-400to600_2016_PostVFP/ZJetsToQQ_HT-400to600_2016_PostVFP_1.root"
         ],
         "metadata": {
             "sample": "VJets",
@@ -1364,7 +1364,7 @@
     },
     "WJetsToQQ_HT-800toInf_2016_PostVFP": {
         "files": [
-            "skim_2016_PostVFP_regrouped/WJetsToQQ_HT-800toInf_2016_PostVFP/WJetsToQQ_HT-800toInf_2016_PostVFP_1.root"
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2016_PostVFP_regrouped/WJetsToQQ_HT-800toInf_2016_PostVFP/WJetsToQQ_HT-800toInf_2016_PostVFP_1.root"
         ],
         "metadata": {
             "sample": "VJets",
@@ -1376,7 +1376,7 @@
     },
     "WJetsToQQ_HT-600to800_2016_PostVFP": {
         "files": [
-            "skim_2016_PostVFP_regrouped/WJetsToQQ_HT-600to800_2016_PostVFP/WJetsToQQ_HT-600to800_2016_PostVFP_1.root"
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2016_PostVFP_regrouped/WJetsToQQ_HT-600to800_2016_PostVFP/WJetsToQQ_HT-600to800_2016_PostVFP_1.root"
         ],
         "metadata": {
             "sample": "VJets",
@@ -1388,7 +1388,7 @@
     },
     "WJetsToQQ_HT-400to600_2016_PreVFP": {
         "files": [
-            "skim_2016_PreVFP_regrouped/WJetsToQQ_HT-400to600_2016_PreVFP/WJetsToQQ_HT-400to600_2016_PreVFP_1.root"
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2016_PreVFP_regrouped/WJetsToQQ_HT-400to600_2016_PreVFP/WJetsToQQ_HT-400to600_2016_PreVFP_1.root"
         ],
         "metadata": {
             "sample": "VJets",
@@ -1400,7 +1400,7 @@
     },
     "ZJetsToQQ_HT-800toInf_2016_PreVFP": {
         "files": [
-            "skim_2016_PreVFP_regrouped/ZJetsToQQ_HT-800toInf_2016_PreVFP/ZJetsToQQ_HT-800toInf_2016_PreVFP_1.root"
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2016_PreVFP_regrouped/ZJetsToQQ_HT-800toInf_2016_PreVFP/ZJetsToQQ_HT-800toInf_2016_PreVFP_1.root"
         ],
         "metadata": {
             "sample": "VJets",
@@ -1412,7 +1412,7 @@
     },
     "ZJetsToQQ_HT-600to800_2016_PreVFP": {
         "files": [
-            "skim_2016_PreVFP_regrouped/ZJetsToQQ_HT-600to800_2016_PreVFP/ZJetsToQQ_HT-600to800_2016_PreVFP_1.root"
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2016_PreVFP_regrouped/ZJetsToQQ_HT-600to800_2016_PreVFP/ZJetsToQQ_HT-600to800_2016_PreVFP_1.root"
         ],
         "metadata": {
             "sample": "VJets",
@@ -1424,7 +1424,7 @@
     },
     "ZJetsToQQ_HT-400to600_2016_PreVFP": {
         "files": [
-            "skim_2016_PreVFP_regrouped/ZJetsToQQ_HT-400to600_2016_PreVFP/ZJetsToQQ_HT-400to600_2016_PreVFP_1.root"
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2016_PreVFP_regrouped/ZJetsToQQ_HT-400to600_2016_PreVFP/ZJetsToQQ_HT-400to600_2016_PreVFP_1.root"
         ],
         "metadata": {
             "sample": "VJets",
@@ -1436,7 +1436,7 @@
     },
     "WJetsToQQ_HT-800toInf_2016_PreVFP": {
         "files": [
-            "skim_2016_PreVFP_regrouped/WJetsToQQ_HT-800toInf_2016_PreVFP/WJetsToQQ_HT-800toInf_2016_PreVFP_1.root"
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2016_PreVFP_regrouped/WJetsToQQ_HT-800toInf_2016_PreVFP/WJetsToQQ_HT-800toInf_2016_PreVFP_1.root"
         ],
         "metadata": {
             "sample": "VJets",
@@ -1448,7 +1448,7 @@
     },
     "WJetsToQQ_HT-600to800_2016_PreVFP": {
         "files": [
-            "skim_2016_PreVFP_regrouped/WJetsToQQ_HT-600to800_2016_PreVFP/WJetsToQQ_HT-600to800_2016_PreVFP_1.root"
+            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/mmarcheg/BTVNanoCommissioning/skim/skim_2016_PreVFP_regrouped/WJetsToQQ_HT-600to800_2016_PreVFP/WJetsToQQ_HT-600to800_2016_PreVFP_1.root"
         ],
         "metadata": {
             "sample": "VJets",
