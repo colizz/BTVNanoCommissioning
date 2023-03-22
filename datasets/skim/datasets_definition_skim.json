@@ -294,7 +294,7 @@
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-600to800_2018/QCD_Pt-600to800_2018_34.root"
         ],
         "metadata": {
-            "sample": "QCD_Pt-600to800",
+            "sample": "QCD_MuEnriched",
             "year": "2018",
             "isMC": "True",
             "xsec": 18.21,
@@ -308,7 +308,7 @@
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-170to300_2018/QCD_Pt-170to300_2018_3.root"
         ],
         "metadata": {
-            "sample": "QCD_Pt-170to300",
+            "sample": "QCD_MuEnriched",
             "year": "2018",
             "isMC": "True",
             "xsec": 7055.0,
@@ -347,7 +347,7 @@
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-470to600_2018/QCD_Pt-470to600_2018_28.root"
         ],
         "metadata": {
-            "sample": "QCD_Pt-470to600",
+            "sample": "QCD_MuEnriched",
             "year": "2018",
             "isMC": "True",
             "xsec": 59.24,
@@ -440,7 +440,7 @@
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-800to1000_2018/QCD_Pt-800to1000_2018_82.root"
         ],
         "metadata": {
-            "sample": "QCD_Pt-800to1000",
+            "sample": "QCD_MuEnriched",
             "year": "2018",
             "isMC": "True",
             "xsec": 3.275,
@@ -469,7 +469,7 @@
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-300to470_2018/QCD_Pt-300to470_2018_18.root"
         ],
         "metadata": {
-            "sample": "QCD_Pt-300to470",
+            "sample": "QCD_MuEnriched",
             "year": "2018",
             "isMC": "True",
             "xsec": 619.3,
@@ -513,7 +513,7 @@
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2018_regrouped/QCD_Pt-1000toInf_2018/QCD_Pt-1000toInf_2018_33.root"
         ],
         "metadata": {
-            "sample": "QCD_Pt-1000toInf",
+            "sample": "QCD_MuEnriched",
             "year": "2018",
             "isMC": "True",
             "xsec": 1.078,
@@ -522,7 +522,7 @@
     },
     "QCD_Pt-170to300_2017": {
         "metadata": {
-            "sample": "QCD_Pt-170to300",
+            "sample": "QCD_MuEnriched",
             "year": "2017",
             "isMC": "True",
             "xsec": 7055.0,
@@ -537,7 +537,7 @@
     },
     "QCD_Pt-470to600_2017": {
         "metadata": {
-            "sample": "QCD_Pt-470to600",
+            "sample": "QCD_MuEnriched",
             "year": "2017",
             "isMC": "True",
             "xsec": 59.24,
@@ -570,7 +570,7 @@
     },
     "QCD_Pt-300to470_2017": {
         "metadata": {
-            "sample": "QCD_Pt-300to470",
+            "sample": "QCD_MuEnriched",
             "year": "2017",
             "isMC": "True",
             "xsec": 619.3,
@@ -594,7 +594,7 @@
     },
     "QCD_Pt-600to800_2017": {
         "metadata": {
-            "sample": "QCD_Pt-600to800",
+            "sample": "QCD_MuEnriched",
             "year": "2017",
             "isMC": "True",
             "xsec": 18.21,
@@ -632,7 +632,7 @@
     },
     "QCD_Pt-1000toInf_2017": {
         "metadata": {
-            "sample": "QCD_Pt-1000toInf",
+            "sample": "QCD_MuEnriched",
             "year": "2017",
             "isMC": "True",
             "xsec": 1.078,
@@ -668,7 +668,7 @@
     },
     "QCD_Pt-800to1000_2017": {
         "metadata": {
-            "sample": "QCD_Pt-800to1000",
+            "sample": "QCD_MuEnriched",
             "year": "2017",
             "isMC": "True",
             "xsec": 3.275,
@@ -743,7 +743,7 @@
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-170to300_2016_PostVFP/QCD_Pt-170to300_2016_PostVFP_1.root"
         ],
         "metadata": {
-            "sample": "QCD_Pt-170to300",
+            "sample": "QCD_MuEnriched",
             "year": "2016_PostVFP",
             "isMC": "True",
             "xsec": 7055.0,
@@ -767,7 +767,7 @@
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-300to470_2016_PostVFP/QCD_Pt-300to470_2016_PostVFP_13.root"
         ],
         "metadata": {
-            "sample": "QCD_Pt-300to470",
+            "sample": "QCD_MuEnriched",
             "year": "2016_PostVFP",
             "isMC": "True",
             "xsec": 619.3,
@@ -792,7 +792,7 @@
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-470to600_2016_PostVFP/QCD_Pt-470to600_2016_PostVFP_14.root"
         ],
         "metadata": {
-            "sample": "QCD_Pt-470to600",
+            "sample": "QCD_MuEnriched",
             "year": "2016_PostVFP",
             "isMC": "True",
             "xsec": 59.24,
@@ -825,7 +825,7 @@
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-600to800_2016_PostVFP/QCD_Pt-600to800_2016_PostVFP_22.root"
         ],
         "metadata": {
-            "sample": "QCD_Pt-600to800",
+            "sample": "QCD_MuEnriched",
             "year": "2016_PostVFP",
             "isMC": "True",
             "xsec": 18.21,
@@ -858,7 +858,7 @@
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-1000toInf_2016_PostVFP/QCD_Pt-1000toInf_2016_PostVFP_22.root"
         ],
         "metadata": {
-            "sample": "QCD_Pt-1000toInf",
+            "sample": "QCD_MuEnriched",
             "year": "2016_PostVFP",
             "isMC": "True",
             "xsec": 1.078,
@@ -921,7 +921,7 @@
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PostVFP_regrouped/QCD_Pt-800to1000_2016_PostVFP/QCD_Pt-800to1000_2016_PostVFP_52.root"
         ],
         "metadata": {
-            "sample": "QCD_Pt-800to1000",
+            "sample": "QCD_MuEnriched",
             "year": "2016_PostVFP",
             "isMC": "True",
             "xsec": 3.275,
@@ -946,7 +946,7 @@
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/QCD_Pt-470to600_2016_PreVFP/QCD_Pt-470to600_2016_PreVFP_14.root"
         ],
         "metadata": {
-            "sample": "QCD_Pt-470to600",
+            "sample": "QCD_MuEnriched",
             "year": "2016_PreVFP",
             "isMC": "True",
             "xsec": 59.24,
@@ -979,53 +979,7 @@
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/QCD_Pt-1000toInf_2016_PreVFP/QCD_Pt-1000toInf_2016_PreVFP_22.root"
         ],
         "metadata": {
-            "sample": "QCD_Pt-1000toInf",
-            "year": "2016_PreVFP",
-            "isMC": "True",
-            "xsec": 1.078,
-            "sum_genweights": 14243204.0
-        }
-    },
-    "QCD_Pt-600to800_2016_PreVFP": {
-        "files": [
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/QCD_Pt-600to800_2016_PreVFP/QCD_Pt-600to800_2016_PreVFP_1.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/QCD_Pt-600to800_2016_PreVFP/QCD_Pt-600to800_2016_PreVFP_2.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/QCD_Pt-600to800_2016_PreVFP/QCD_Pt-600to800_2016_PreVFP_3.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/QCD_Pt-600to800_2016_PreVFP/QCD_Pt-600to800_2016_PreVFP_4.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/QCD_Pt-600to800_2016_PreVFP/QCD_Pt-600to800_2016_PreVFP_5.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/QCD_Pt-600to800_2016_PreVFP/QCD_Pt-600to800_2016_PreVFP_6.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/QCD_Pt-600to800_2016_PreVFP/QCD_Pt-600to800_2016_PreVFP_7.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/QCD_Pt-600to800_2016_PreVFP/QCD_Pt-600to800_2016_PreVFP_8.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/QCD_Pt-600to800_2016_PreVFP/QCD_Pt-600to800_2016_PreVFP_9.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/QCD_Pt-600to800_2016_PreVFP/QCD_Pt-600to800_2016_PreVFP_10.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/QCD_Pt-600to800_2016_PreVFP/QCD_Pt-600to800_2016_PreVFP_11.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/QCD_Pt-600to800_2016_PreVFP/QCD_Pt-600to800_2016_PreVFP_12.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/QCD_Pt-600to800_2016_PreVFP/QCD_Pt-600to800_2016_PreVFP_13.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/QCD_Pt-600to800_2016_PreVFP/QCD_Pt-600to800_2016_PreVFP_14.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/QCD_Pt-600to800_2016_PreVFP/QCD_Pt-600to800_2016_PreVFP_15.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/QCD_Pt-600to800_2016_PreVFP/QCD_Pt-600to800_2016_PreVFP_16.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/QCD_Pt-600to800_2016_PreVFP/QCD_Pt-600to800_2016_PreVFP_17.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/QCD_Pt-600to800_2016_PreVFP/QCD_Pt-600to800_2016_PreVFP_18.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/QCD_Pt-600to800_2016_PreVFP/QCD_Pt-600to800_2016_PreVFP_19.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/QCD_Pt-600to800_2016_PreVFP/QCD_Pt-600to800_2016_PreVFP_20.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/QCD_Pt-600to800_2016_PreVFP/QCD_Pt-600to800_2016_PreVFP_21.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/QCD_Pt-600to800_2016_PreVFP/QCD_Pt-600to800_2016_PreVFP_22.root"
-        ],
-        "metadata": {
-            "sample": "QCD_Pt-600to800",
-            "year": "2016_PreVFP",
-            "isMC": "True",
-            "xsec": 18.21,
-            "sum_genweights": 18763140.0
-        }
-    },
-    "QCD_Pt-170to300_2016_PreVFP": {
-        "files": [
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/QCD_Pt-170to300_2016_PreVFP/QCD_Pt-170to300_2016_PreVFP_1.root",
-            "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/QCD_Pt-170to300_2016_PreVFP/QCD_Pt-170to300_2016_PreVFP_2.root"
-        ],
-        "metadata": {
-            "sample": "QCD_Pt-170to300",
+            "sample": "QCD_MuEnriched",
             "year": "2016_PreVFP",
             "isMC": "True",
             "xsec": 7055.0,
@@ -1050,7 +1004,7 @@
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/QCD_Pt-300to470_2016_PreVFP/QCD_Pt-300to470_2016_PreVFP_14.root"
         ],
         "metadata": {
-            "sample": "QCD_Pt-300to470",
+            "sample": "QCD_MuEnriched",
             "year": "2016_PreVFP",
             "isMC": "True",
             "xsec": 619.3,
@@ -1113,7 +1067,7 @@
             "root://t3dcachedb03.psi.ch:1094//pnfs/psi.ch/cms/trivcat/store/user/dvalsecc/BTV/skim/skim_2016_PreVFP_regrouped/QCD_Pt-800to1000_2016_PreVFP/QCD_Pt-800to1000_2016_PreVFP_52.root"
         ],
         "metadata": {
-            "sample": "QCD_Pt-800to1000",
+            "sample": "QCD_MuEnriched",
             "year": "2016_PreVFP",
             "isMC": "True",
             "xsec": 3.275,
