@@ -2,58 +2,68 @@
 import awkward as ak
 import pocket_coffea.lib.cut_functions as cuts_f
 from pocket_coffea.lib.cut_definition import Cut
-from config.fatjet_base.custom.functions import mutag, ptbin, msoftdrop, ptmsd, ptmsdtau, min_nObj_minmsd, flavor_mask
+from config.fatjet_base.custom.functions import twojets_ptmsd, mutag, ptbin, msoftdrop, ptmsd, ptmsdtau, min_nObj_minmsd, flavor_mask
 
-mutag_presel = Cut(
-	name="mutag",
-	params={
-		"nmusj1" : 1,
-		"nmusj2" : 1,
-		"pt" : 250,
-		"msd" : 20,
-		#"dimuon_pt_ratio" : 0.6
-	},
-	function=mutag
+twojets_presel = Cut(
+    name="twojets_ptmsd",
+    params={
+        "nmusj1" : 1,
+        "nmusj2" : 1,
+        "pt" : 250,
+        "msd" : 20,
+        #"dimuon_pt_ratio" : 0.6
+    },
+    function=twojets_ptmsd
+)
+
+mutag_sel = Cut(
+    name="mutag",
+    params={
+        "nsubjet" : 2,
+        "nmusj" : 1,
+        "dimuon_pt_ratio": 0.6
+    },
+    function=mutag
 )
 
 def get_ptbin(pt_low, pt_high, name=None):
-	if name == None:
-		name = f"Pt-{pt_low}to{pt_high}"
-	return Cut(
-		name=name,
-		params= {"pt_low" : pt_low, "pt_high" : pt_high},
-		function=ptbin,
-		collection="FatJetGood"
-	)
+    if name == None:
+        name = f"Pt-{pt_low}to{pt_high}"
+    return Cut(
+        name=name,
+        params= {"pt_low" : pt_low, "pt_high" : pt_high},
+        function=ptbin,
+        collection="FatJetGood"
+    )
 
 def get_msd(msd, name=None):
-	if name == None:
-		name = f"msd{msd}"
-	return Cut(
-		name=name,
-		params= {"msd" : msd},
-		function=msoftdrop,
-		collection="FatJetGood"
-	)
+    if name == None:
+        name = f"msd{msd}"
+    return Cut(
+        name=name,
+        params= {"msd" : msd},
+        function=msoftdrop,
+        collection="FatJetGood"
+    )
 
 def get_ptmsd(pt, msd, name=None):
-	if name == None:
-		name = f"pt{pt}msd{msd}"
-	return Cut(
-		name=name,
-		params= {"pt" : pt, "msd" : msd},
-		function=ptmsd,
-		collection="FatJetGood"
-	)
+    if name == None:
+        name = f"pt{pt}msd{msd}"
+    return Cut(
+        name=name,
+        params= {"pt" : pt, "msd" : msd},
+        function=ptmsd,
+        collection="FatJetGood"
+    )
 
 def get_ptmsdtau(pt, msd, tau21, name=None):
-	if name == None:
-		name = f"msd{msd}tau{tau21}"
-	return Cut(
-		name=name,
-		params= {"pt" : pt, "msd" : msd, "tau21" : tau21},
-		function=ptmsdtau
-	)
+    if name == None:
+        name = f"msd{msd}tau{tau21}"
+    return Cut(
+        name=name,
+        params= {"pt" : pt, "msd" : msd, "tau21" : tau21},
+        function=ptmsdtau
+    )
 
 def get_nObj_minmsd(N, minmsd=None, coll="JetGood", name=None):
     '''
@@ -77,7 +87,7 @@ def get_nObj_minmsd(N, minmsd=None, coll="JetGood", name=None):
             function=min_nObj_minmsd,
         )
     else:
-    	raise NotImplementedError
+        raise NotImplementedError
         #return Cut(name=name, params={"N": N, "coll": coll}, function=min_nObj)
 
 def get_flavor(flavor):

@@ -88,9 +88,9 @@ def get_inclusive_wp(tagger, wp, category):
         collection="FatJetGood"
     )
 
-def mutag(events, params, **kwargs):
-    # Mask to select events with leading fatjet having at least `nmusj1` subjets in its leading subjet
-    # and `nmusj2` subjets in its subleading subjet. Additionally, a requirement on the dimuon pt ratio to the fatjet pt is required.
+def twojets_ptmsd(events, params, **kwargs):
+    '''Mask to select events with at least one jet satisfying the pt, msd requirements
+    and events with exactly two jets satisfying the pt, msd requirements.'''
 
     mask_one_jet = (
         #(events.nmusj[:,0,0] >= params["nmusj1"]) &
@@ -114,6 +114,25 @@ def mutag(events, params, **kwargs):
     assert not ak.any(ak.is_none(fatjet_mutag)), f"None in mutag\n{fatjet_mutag}"
 
     return fatjet_mutag
+
+def mutag(events, params, **kwargs):
+    # Select jets with a minimum number of subjets
+    mask_nsubjet = (ak.count(events.FatJetGood.subjets.pt, axis=2) >= params["nsubjet"])
+    # Select jets with a minimum number of mu-tagged subjets
+    mask_nmusj = ak.all(events.nmusj >= params["nmusj"], axis=2)
+    # Apply di-muon pT ratio cut on FatJets
+    mask_ptratio = (events.dimuon.pt / events.FatJetGood.pt < params["dimuon_pt_ratio"])
+    mask_ptratio = ak.where( ak.is_none(mask_ptratio), ak.zeros_like(events.FatJetGood.pt, dtype=bool), mask_ptratio )
+
+    njet_max = ak.max(ak.count(events.FatJetGood.pt, axis=1))
+    mask_good_jets = ak.pad_none(ak.ones_like(events.FatJetGood.pt, dtype=bool), njet_max)
+    for mask in [mask_nsubjet, mask_nmusj, mask_ptratio]:
+        mask_good_jets = mask_good_jets & ak.pad_none(mask, njet_max)
+    mask_good_jets = mask_good_jets[~ak.is_none(mask, axis=1)]
+
+    #breakpoint()
+
+    return mask_good_jets
 
 def ptbin(events, params, **kwargs):
     # Mask to select events in a fatjet pt bin
