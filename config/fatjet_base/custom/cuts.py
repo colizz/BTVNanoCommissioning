@@ -94,5 +94,6 @@ def get_flavor(flavor):
     return Cut(
         name=flavor,
         params={"flavor": flavor},
-        function=flavor_mask
+        function=flavor_mask,
+        collection="FatJetGood"
     )

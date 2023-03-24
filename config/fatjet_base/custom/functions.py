@@ -168,7 +168,11 @@ def ptmsd(events, params, **kwargs):
 
 def ptmsdtau(events, params, **kwargs):
     # Mask to select events with a fatjet with minimum softdrop mass and maximum tau21
-    return (events.FatJetGood[:,0].pt > params["pt"]) & (events.FatJetGood[:,0].msoftdrop > params["msd"]) & (events.FatJetGood[:,0].tau21 < params["tau21"])
+    mask = (events.FatJetGood.pt > params["pt"]) & (events.FatJetGood.msoftdrop > params["msd"]) & (events.FatJetGood.tau21 < params["tau21"])
+
+    assert not ak.any(ak.is_none(mask, axis=1)), f"None in ptmsdtau\n{events.FatJetGood.pt[ak.is_none(mask, axis=1)]}"
+
+    return ak.where(~ak.is_none(mask, axis=1), mask, False)
 
 def ptmsdtauDDCvB(events, params, **kwargs):
     # Mask to select events with a fatjet with minimum softdrop mass and maximum tau21 and a requirement on the DDCvB score
@@ -297,11 +301,11 @@ def get_trigger_mask(events, key, year, isMC, primaryDatasets=None, invert=False
 
 def flavor_mask(events, params, **kwargs):
     mask = {
-        "l"  : events.FatJetGood[:,0].hadronFlavour < 4,
-        "c"  : events.FatJetGood[:,0].hadronFlavour == 4,
-        "b"  : events.FatJetGood[:,0].hadronFlavour == 5,
-        "cc" : abs(events.FatJetGood[:,0].hadronFlavour == 4) & (events.FatJetGood[:,0].nBHadrons == 0) & (events.FatJetGood[:,0].nCHadrons >= 2),
-        "bb" : abs(events.FatJetGood[:,0].hadronFlavour == 5) & (events.FatJetGood[:,0].nBHadrons >= 2)
+        "l"  : events.FatJetGood.hadronFlavour < 4,
+        "c"  : events.FatJetGood.hadronFlavour == 4,
+        "b"  : events.FatJetGood.hadronFlavour == 5,
+        "cc" : abs(events.FatJetGood.hadronFlavour == 4) & (events.FatJetGood.nBHadrons == 0) & (events.FatJetGood.nCHadrons >= 2),
+        "bb" : abs(events.FatJetGood.hadronFlavour == 5) & (events.FatJetGood.nBHadrons >= 2)
     }
 
     if params["flavor"] in ["bb", "cc"]:
