@@ -42,13 +42,13 @@ cfg =  {
 
     # Input and output files
     "workflow" : fatjetBaseProcessor,
-    "output"   : "output/pocket_coffea/ggH_proxy/ggH_proxy_2017UL_VJets",
+    "output"   : "output/pocket_coffea/ggH_proxy/ggH_proxy_2017UL_flavorfix",
     "workflow_options" : {},
 
     "run_options" : {
         "executor"       : "dask/slurm",
         "workers"        : 1,
-        "scaleout"       : 250,
+        "scaleout"       : 200,
         "queue"          : "standard",
         "walltime"       : "12:00:00",
         "mem_per_worker" : "12GB", # GB
@@ -112,6 +112,15 @@ cfg =  {
         **fatjet_hists(coll="FatJetGood"),
         **fatjet_hists(coll="FatJetGood", pos=0),
         **fatjet_hists(coll="FatJetGood", pos=1),
+        "FatJetGood_hadronFlavour": HistConf(
+            [ Axis(coll="FatJetGood", field="hadronFlavour", label="hadronFlavour", bins=10, start=0, stop=10) ]
+        ),
+        "FatJetGood_nBHadrons": HistConf(
+            [ Axis(coll="FatJetGood", field="nBHadrons", label="nBHadrons", bins=10, start=0, stop=10) ]
+        ),
+        "FatJetGood_nCHadrons": HistConf(
+            [ Axis(coll="FatJetGood", field="nCHadrons", label="nCHadrons", bins=10, start=0, stop=10) ]
+        ),
         **sv_hists(coll="events"),
         **sv_hists(coll="events", pos=0),
         **sv_hists(coll="events", pos=1),
@@ -136,4 +145,4 @@ for tagger in AK8Taggers:
     setting = default_axis_settings[f"fatjet_{tagger}"]
     for nbins in [10, 20, 40]:
         setting["bins"] = nbins
-        cfg["variables"][f"fatjet_{tagger}_{nbins}bins"] = HistConf(axes=[Axis(**setting)])
+        cfg["variables"][f"FatJetGood_{tagger}_{nbins}bins"] = HistConf(axes=[Axis(**setting)])

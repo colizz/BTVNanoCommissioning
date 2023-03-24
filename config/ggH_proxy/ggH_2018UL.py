@@ -42,13 +42,13 @@ cfg =  {
 
     # Input and output files
     "workflow" : fatjetBaseProcessor,
-    "output"   : "output/pocket_coffea/ggH_proxy/ggH_proxy_2018UL_VJets",
+    "output"   : "output/pocket_coffea/ggH_proxy/ggH_proxy_2018UL_flavorfix",
     "workflow_options" : {},
 
     "run_options" : {
         "executor"       : "dask/slurm",
         "workers"        : 1,
-        "scaleout"       : 250,
+        "scaleout"       : 200,
         "queue"          : "standard",
         "walltime"       : "12:00:00",
         "mem_per_worker" : "12GB", # GB
@@ -112,8 +112,14 @@ cfg =  {
         **fatjet_hists(coll="FatJetGood"),
         **fatjet_hists(coll="FatJetGood", pos=0),
         **fatjet_hists(coll="FatJetGood", pos=1),
-        "FatJetGood_particleNetMD_Xcc_QCD_coarse": HistConf(
-            [ Axis(coll="FatJetGood", field="nmusj_fatjet1", label=r"$N_{\mu, J1}$", bins=10, start=0, stop=1) ]
+        "FatJetGood_hadronFlavour": HistConf(
+            [ Axis(coll="FatJetGood", field="hadronFlavour", label="hadronFlavour", bins=10, start=0, stop=10) ]
+        ),
+        "FatJetGood_nBHadrons": HistConf(
+            [ Axis(coll="FatJetGood", field="nBHadrons", label="nBHadrons", bins=10, start=0, stop=10) ]
+        ),
+        "FatJetGood_nCHadrons": HistConf(
+            [ Axis(coll="FatJetGood", field="nCHadrons", label="nCHadrons", bins=10, start=0, stop=10) ]
         ),
         **sv_hists(coll="events"),
         **sv_hists(coll="events", pos=0),
@@ -129,6 +135,34 @@ cfg =  {
         "nmusj_fatjet2": HistConf(
             [ Axis(coll="events", field="nmusj_fatjet2", label=r"$N_{\mu, J2}$", bins=10, start=0, stop=10) ]
         ),
+        "FatJetGood_tau21_particleNetMD_Xcc_QCD": HistConf(
+            [ Axis(coll="FatJetGood", field="particleNetMD_Xcc_QCD", label="particleNetMD Xbb/(Xbb + QCD)", bins=20, start=0, stop=1),
+              Axis(coll="FatJetGood", field="tau21", label=r"$\tau_{21}$", bins=20, start=0, stop=1) ]
+        ),
+        "FatJetGood_tau21_particleNetMD_Xbb_QCD": HistConf(
+            [ Axis(coll="FatJetGood", field="particleNetMD_Xbb_QCD", label="particleNetMD Xbb/(Xbb + QCD)", bins=20, start=0, stop=1),
+              Axis(coll="FatJetGood", field="tau21", label=r"$\tau_{21}$", bins=20, start=0, stop=1) ]
+        ),
+        "FatJetGood_tau21_btagDDBvLV2": HistConf(
+            [ Axis(coll="FatJetGood", field="btagDDBvLV2", label="btagDDBvLV2", bins=20, start=0, stop=1),
+              Axis(coll="FatJetGood", field="tau21", label=r"$\tau_{21}$", bins=20, start=0, stop=1) ]
+        ),
+        "FatJetGood_tau21_btagDDCvLV2": HistConf(
+            [ Axis(coll="FatJetGood", field="btagDDCvLV2", label="btagDDCvLV2", bins=20, start=0, stop=1),
+              Axis(coll="FatJetGood", field="tau21", label=r"$\tau_{21}$", bins=20, start=0, stop=1) ]
+        ),
+        "FatJetGood_tau21_deepTagMD_ZHbbvsQCD": HistConf(
+            [ Axis(coll="FatJetGood", field="deepTagMD_ZHbbvsQCD", label="deepTagMD_ZHbbvsQCD", bins=20, start=0, stop=1),
+              Axis(coll="FatJetGood", field="tau21", label=r"$\tau_{21}$", bins=20, start=0, stop=1) ]
+        ),
+        "FatJetGood_tau21_deepTagMD_ZHccvsQCD": HistConf(
+            [ Axis(coll="FatJetGood", field="deepTagMD_ZHccvsQCD", label="deepTagMD_ZHccvsQCD", bins=20, start=0, stop=1),
+              Axis(coll="FatJetGood", field="tau21", label=r"$\tau_{21}$", bins=20, start=0, stop=1) ]
+        ),
+        "FatJetGood_tau21_btagHbb": HistConf(
+            [ Axis(coll="FatJetGood", field="btagHbb", label="btagHbb", bins=20, start=0, stop=1),
+              Axis(coll="FatJetGood", field="tau21", label=r"$\tau_{21}$", bins=20, start=0, stop=1) ]
+        ),
     },
 
     "columns" : {}
@@ -139,4 +173,4 @@ for tagger in AK8Taggers:
     setting = default_axis_settings[f"fatjet_{tagger}"]
     for nbins in [10, 20, 40]:
         setting["bins"] = nbins
-        cfg["variables"][f"fatjet_{tagger}_{nbins}bins"] = HistConf(axes=[Axis(**setting)])
+        cfg["variables"][f"FatJetGood_{tagger}_{nbins}bins"] = HistConf(axes=[Axis(**setting)])
