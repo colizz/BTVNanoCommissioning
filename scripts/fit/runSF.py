@@ -3,7 +3,7 @@ import sys
 import argparse
 import json
 
-sys.path.append('/work/mmarcheg/BTVNanoCommissioning')
+sys.path.append('/home/pku/licq/calib/mutag/BTVNanoCommissioning')
 
 from utils.Fit import Fit
 from parameters import categories
@@ -22,12 +22,12 @@ if args.only:
     args.only = args.only.split('*')
     categories = list(filter(lambda cat : all(f in cat for f in args.only), categories))
 
-if os.path.exists(args.output):
-    sys.exit("The output folder {} is already existing. Please choose a different folder name.".format(args.output))
+# if os.path.exists(args.output):
+#     sys.exit("The output folder {} is already existing. Please choose a different folder name.".format(args.output))
 
 failed_fits = []
 for var in ['events_logsumcorrmass_1']:
-    fit = Fit(args.input, args.output, categories, var, args.year, xlim=(-1.2, 4.8), binwidth=args.binwidth, scheme=args.scheme)
+    fit = Fit(args.input, args.output, categories, var, args.year, xlim=(-1.2, 5.2), binwidth=args.binwidth, scheme=args.scheme, rwgt_fitvar=False)
     if args.mode == "all":
         fit.run_fits("FitDiagnostics")
         fit.run_fits("MultiDimFit")

@@ -1,0 +1,53 @@
+## 2017
+[mutag_fit ][2023-06-01 16:44:21,752][ERROR  ]  Failed fit point found: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/fit_var_rwgt/events_logsumcorrmass_1_2017_msd40btagDDCvLV2Lwp_Pt-500to600/fit.log (runSF_launcher_sfbdt.py:74)
+[mutag_fit ][2023-06-01 16:44:21,753][WARNING]  Error running fit point in: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/fit_var_rwgt/events_logsumcorrmass_1_2017_msd40btagDDCvLV2Lwp_Pt-500to600
+Trying autoMC threshold: 50 (runSF_launcher_sfbdt.py:118)
+[mutag_fit ][2023-06-01 16:44:24,142][ERROR  ]  Failed fit point found: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/main/events_logsumcorrmass_1_2017_msd40btagDDBvLV2Lwp_Pt-600toInf/fit.log (runSF_launcher_sfbdt.py:74)
+[mutag_fit ][2023-06-01 16:44:24,143][WARNING]  Error running fit point in: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/main/events_logsumcorrmass_1_2017_msd40btagDDBvLV2Lwp_Pt-600toInf
+Trying autoMC threshold: 50 (runSF_launcher_sfbdt.py:118)
+[mutag_fit ][2023-06-01 16:44:24,147][ERROR  ]  Failed fit point found: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/main/events_logsumcorrmass_1_2017_msd40btagHbbLwp_Pt-600toInf/fit.log (runSF_launcher_sfbdt.py:74)
+[mutag_fit ][2023-06-01 16:44:24,148][WARNING]  Error running fit point in: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/main/events_logsumcorrmass_1_2017_msd40btagHbbLwp_Pt-600toInf
+Trying autoMC threshold: 50 (runSF_launcher_sfbdt.py:118)
+[mutag_fit ][2023-06-01 16:44:24,270][ERROR  ]  Failed fit point found: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/main/events_logsumcorrmass_1_2017_msd40btagDDBvLV2Hwp_Pt-500to600/fit.log (runSF_launcher_sfbdt.py:74)
+[mutag_fit ][2023-06-01 16:44:24,270][WARNING]  Error running fit point in: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/main/events_logsumcorrmass_1_2017_msd40btagDDBvLV2Hwp_Pt-500to600
+Trying autoMC threshold: 50 (runSF_launcher_sfbdt.py:118)
+ 14%|██████████▍                                                              | 63/441 [06:29<04:58,  1.27it/s][mutag_fit ][2023-06-01 16:45:12,632][ERROR  ]  Failed fit point found: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/main/events_logsumcorrmass_1_2017_msd40btagDDBvLV2Lwp_Pt-600toInf/fit.log (runSF_launcher_sfbdt.py:74)
+[mutag_fit ][2023-06-01 16:45:12,633][WARNING]  Error running fit point in: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/main/events_logsumcorrmass_1_2017_msd40btagDDBvLV2Lwp_Pt-600toInf
+Trying autoMC threshold: 100 (runSF_launcher_sfbdt.py:118)
+[mutag_fit ][2023-06-01 16:45:12,818][ERROR  ]  Failed fit point found: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/main/events_logsumcorrmass_1_2017_msd40btagHbbLwp_Pt-600toInf/fit.log (runSF_launcher_sfbdt.py:74)
+[mutag_fit ][2023-06-01 16:45:12,819][WARNING]  Error running fit point in: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/main/events_logsumcorrmass_1_2017_msd40btagHbbLwp_Pt-600toInf
+Trying autoMC threshold: 100 (runSF_launcher_sfbdt.py:118)
+[mutag_fit ][2023-06-01 16:45:15,856][ERROR  ]  Failed fit point found: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/main/events_logsumcorrmass_1_2017_msd40btagDDBvLV2Hwp_Pt-500to600/fit.log (runSF_launcher_sfbdt.py:74)
+[mutag_fit ][2023-06-01 16:45:15,856][ERROR  ]  Failed fit point found: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/fit_var_rwgt/events_logsumcorrmass_1_2017_msd40btagDDCvLV2Lwp_Pt-500to600/fit.log (runSF_launcher_sfbdt.py:74)
+[mutag_fit ][2023-06-01 16:45:15,856][WARNING]  Error running fit point in: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/main/events_logsumcorrmass_1_2017_msd40btagDDBvLV2Hwp_Pt-500to600
+Trying autoMC threshold: 100 (runSF_launcher_sfbdt.py:118)
+[mutag_fit ][2023-06-01 16:45:15,856][WARNING]  Error running fit point in: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/fit_var_rwgt/events_logsumcorrmass_1_2017_msd40btagDDCvLV2Lwp_Pt-500to600
+Trying autoMC threshold: 100 (runSF_launcher_sfbdt.py:118)
+[mutag_fit ][2023-06-01 16:45:49,789][ERROR  ]  Failed fit point found: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/main/events_logsumcorrmass_1_2017_msd40btagHbbLwp_Pt-600toInf/fit.log (runSF_launcher_sfbdt.py:74)
+[mutag_fit ][2023-06-01 16:45:49,790][WARNING]  Error running fit point in: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/main/events_logsumcorrmass_1_2017_msd40btagHbbLwp_Pt-600toInf
+Trying autoMC threshold: 200 (runSF_launcher_sfbdt.py:118)
+[mutag_fit ][2023-06-01 16:45:50,743][ERROR  ]  Failed fit point found: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/main/events_logsumcorrmass_1_2017_msd40btagDDBvLV2Lwp_Pt-600toInf/fit.log (runSF_launcher_sfbdt.py:74)
+[mutag_fit ][2023-06-01 16:45:50,744][WARNING]  Error running fit point in: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/main/events_logsumcorrmass_1_2017_msd40btagDDBvLV2Lwp_Pt-600toInf
+Trying autoMC threshold: 200 (runSF_launcher_sfbdt.py:118)
+[mutag_fit ][2023-06-01 16:45:52,501][ERROR  ]  Failed fit point found: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/fit_var_rwgt/events_logsumcorrmass_1_2017_msd40btagDDCvLV2Lwp_Pt-500to600/fit.log (runSF_launcher_sfbdt.py:74)
+[mutag_fit ][2023-06-01 16:45:52,502][WARNING]  Error running fit point in: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/fit_var_rwgt/events_logsumcorrmass_1_2017_msd40btagDDCvLV2Lwp_Pt-500to600
+Trying autoMC threshold: 200 (runSF_launcher_sfbdt.py:118)
+ 18%|████████████▉                                                            | 78/441 [07:53<21:18,  3.52s/it][mutag_fit ][2023-06-01 16:46:11,989][ERROR  ]  Failed fit point found: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/tau21p40/events_logsumcorrmass_1_2017_msd40btagDDCvLV2Hwp_Pt-500to600/fit.log (runSF_launcher_sfbdt.py:74)
+[mutag_fit ][2023-06-01 16:46:11,989][WARNING]  Error running fit point in: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/tau21p40/events_logsumcorrmass_1_2017_msd40btagDDCvLV2Hwp_Pt-500to600
+Trying autoMC threshold: 50 (runSF_launcher_sfbdt.py:118)
+ 24%|█████████████████▏                                                      | 105/441 [08:19<05:04,  1.10it/s][mutag_fit ][2023-06-01 16:46:44,355][ERROR  ]  Failed fit point found: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/fit_var_rwgt/events_logsumcorrmass_1_2017_msd40btagDDCvLV2Lwp_Pt-500to600/fit.log (runSF_launcher_sfbdt.py:74)
+[mutag_fit ][2023-06-01 16:46:44,355][WARNING]  Error running fit point in: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/fit_var_rwgt/events_logsumcorrmass_1_2017_msd40btagDDCvLV2Lwp_Pt-500to600
+Trying autoMC threshold: 500 (runSF_launcher_sfbdt.py:118)
+[mutag_fit ][2023-06-01 16:46:44,454][ERROR  ]  Failed fit point found: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/main/events_logsumcorrmass_1_2017_msd40btagDDBvLV2Lwp_Pt-600toInf/fit.log (runSF_launcher_sfbdt.py:74)
+[mutag_fit ][2023-06-01 16:46:44,454][WARNING]  Error running fit point in: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/main/events_logsumcorrmass_1_2017_msd40btagDDBvLV2Lwp_Pt-600toInf
+Trying autoMC threshold: 500 (runSF_launcher_sfbdt.py:118)
+ 24%|█████████████████▍                                                      | 107/441 [08:32<16:56,  3.04s/it][mutag_fit ][2023-06-01 16:47:08,640][ERROR  ]  Failed fit point found: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/tau21p40/events_logsumcorrmass_1_2017_msd40btagDDCvLV2Hwp_Pt-500to600/fit.log (runSF_launcher_sfbdt.py:74)
+[mutag_fit ][2023-06-01 16:47:08,640][WARNING]  Error running fit point in: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/tau21p40/events_logsumcorrmass_1_2017_msd40btagDDCvLV2Hwp_Pt-500to600
+Trying autoMC threshold: 100 (runSF_launcher_sfbdt.py:118)
+ 31%|██████████████████████▎                                                 | 137/441 [09:16<04:24,  1.15it/s][mutag_fit ][2023-06-01 16:47:35,921][ERROR  ]  Failed fit point found: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/fit_var_rwgt/events_logsumcorrmass_1_2017_msd40btagDDCvLV2Lwp_Pt-500to600/fit.log (runSF_launcher_sfbdt.py:74)
+[mutag_fit ][2023-06-01 16:47:35,922][WARNING]  Error running fit point in: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/fit_var_rwgt/events_logsumcorrmass_1_2017_msd40btagDDCvLV2Lwp_Pt-500to600
+Trying autoMC threshold: 1000 (runSF_launcher_sfbdt.py:118)
+100%|████████████████████████████████████████████████████████████████████████| 441/441 [14:46<00:00,  2.01s/it]
+[mutag_fit ][2023-06-01 16:53:26,535][INFO   ]  Summary write to file: ../output/fit/results/20230529_nMu1Inclusive_mcDataRwgtUnce_sep_2017/index.html (runSF_launcher_sfbdt.py:166)
+
+# 2018

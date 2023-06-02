@@ -8,9 +8,8 @@ import rhalphalib as rl
 import uproot
 import ROOT
 
-from parameters_fit_CL import fit_parameters
+from parameters_fit import fit_parameters
 from parameters import AK8Taggers, AK8Taggers_bb, AK8Taggers_cc
-from .Processor import StandaloneMultiThreadedUnit
 
 regions = ['pass', 'fail']
 
@@ -28,7 +27,7 @@ def merge_bins(values, rebin_size):
 
 
 class Fit():
-    def __init__(self, input, output, categories, var, year, xlim, binwidth, scheme='3f', rwgt_fitvar=False):
+    def __init__(self, input, output, categories, var, year, xlim, binwidth, scheme='3f'):
         self.input = input
         self.output = output
         self.scheme = scheme
@@ -37,7 +36,6 @@ class Fit():
         self.lo = xlim[0]
         self.hi = xlim[1]
         self.binwidth = binwidth
-        self.rwgt_fitvar = rwgt_fitvar
         self.define_flavors()
         self.templates = np.load(os.path.abspath(self.input), allow_pickle=True)
         self.categories = categories
@@ -117,11 +115,10 @@ class Fit():
     def load_parameters(self):
         self.parameters = fit_parameters
         for model_name in self.models.keys():
-            # if not model_name in self.parameters.keys():
-            if True:
+            if not model_name in self.parameters.keys():
                 self.parameters[model_name] = {}
                 for flavor in self.flavors:
-                    self.parameters[model_name][flavor] = {'value' : 1., 'lo' : 0.5, 'hi' : 2.}
+                    self.parameters[model_name][flavor] = {'value' : 1., 'lo' : 0., 'hi' : 2.}
 
     def define_independent_parameters(self):
         self.indep_pars = {}
@@ -135,16 +132,14 @@ class Fit():
         for model_name in self.models.keys():
             self.nuisance_shapes[model_name] = {}
             self.nuisance_shapes[model_name]["pileup"] = rl.NuisanceParameter("pileup", "shape")
-            self.nuisance_shapes[model_name]["l1PreFiring"] = rl.NuisanceParameter("l1PreFiring", "shape")
             self.nuisance_shapes[model_name]["JES_Total"] = rl.NuisanceParameter("JES_Total", "shape")
             self.nuisance_shapes[model_name]["JER"] = rl.NuisanceParameter("JER", "shape")
             self.nuisance_shapes[model_name]["frac_bb"] = rl.NuisanceParameter("frac_bb", "shape")
             self.nuisance_shapes[model_name]["frac_cc"] = rl.NuisanceParameter("frac_cc", "shape")
             self.nuisance_shapes[model_name]["frac_l"] = rl.NuisanceParameter("frac_l", "shape")
-            self.nuisance_shapes[model_name]["QCDFlvCompos"] = rl.NuisanceParameter("QCDFlvCompos", "shape")
-            if self.rwgt_fitvar:
-                self.nuisance_shapes[model_name]["fitVarRwgt"] = rl.NuisanceParameter("fitVarRwgt", "shape")
             self.frac_effect = 0.2
+            if self.year != '2018':
+                self.nuisance_shapes[model_name]["sf_L1prefiring"] = rl.NuisanceParameter("sf_L1prefiring", "shape")
 
         self.nuisance_lnN = {}
         self.nuisance_lnN_effect = {}
@@ -160,9 +155,7 @@ class Fit():
             self.freeze[model_name] = []
             for name, par in self.parameters[model_name].items():
                 if par['lo'] == par['hi']:
-                    self.freeze[model_name].append((name, 1))
-            if self.rwgt_fitvar:
-                self.freeze[model_name].append(('fitVarRwgt', 1))
+                    self.freeze[model_name].append(name)
             #print(model_name, ": Freeze parameters :", self.freeze)
 
     def define_signal_name(self, model_name):
@@ -225,20 +218,19 @@ class Fit():
             for cat in self.categories_region[region]:
                 model_name = cat.replace(region, '')
                 for nuisance_name, nuisance in self.nuisance_shapes[model_name].items():
-                    # if nuisance_name == "frac_bb":
-                    #     sample = self.models[model_name]["sf{}".format(region)][["b+bb" if self.scheme == '3f' else "bb"][0]]
-                    #     sample.setParamEffect(nuisance, 1+self.frac_effect, 1-self.frac_effect)
-                    #     continue
-                    # elif nuisance_name == "frac_cc":
-                    #     sample = self.models[model_name]["sf{}".format(region)][["c+cc" if self.scheme == '3f' else "cc"][0]]
-                    #     sample.setParamEffect(nuisance, 1+self.frac_effect, 1-self.frac_effect)
-                    #     continue
-                    # elif nuisance_name == "frac_l":
-                    #     sample = self.models[model_name]["sf{}".format(region)]["l"]
-                    #     sample.setParamEffect(nuisance, 1+self.frac_effect, 1-self.frac_effect)
-                    #     continue
-                    # else:
-                    if True:
+                    if nuisance_name == "frac_bb":
+                        sample = self.models[model_name]["sf{}".format(region)][["b+bb" if self.scheme == '3f' else "bb"][0]]
+                        sample.setParamEffect(nuisance, 1+self.frac_effect, 1-self.frac_effect)
+                        continue
+                    elif nuisance_name == "frac_cc":
+                        sample = self.models[model_name]["sf{}".format(region)][["c+cc" if self.scheme == '3f' else "cc"][0]]
+                        sample.setParamEffect(nuisance, 1+self.frac_effect, 1-self.frac_effect)
+                        continue
+                    elif nuisance_name == "frac_l":
+                        sample = self.models[model_name]["sf{}".format(region)]["l"]
+                        sample.setParamEffect(nuisance, 1+self.frac_effect, 1-self.frac_effect)
+                        continue
+                    else:
                         for flavor in self.flavors:
                             sample = self.models[model_name]["sf{}".format(region)][flavor]
                             histname_nominal = "{}_{}_{}_QCD_{}_{}".format(self.var, self.year, cat, flavor, "nominal")
@@ -271,12 +263,12 @@ class Fit():
             script_MultiDimFit = os.path.join(self.fitdirs[model_name], 'build_MultiDimFit.sh')
             os.system("cp {} {}".format(script_FitDiagnostics, script_MultiDimFit))
             with open(script_FitDiagnostics, 'a') as file:
-                combineCommand = '\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --saveWorkspace --name _{} --cminDefaultMinimizerStrategy 2 --robustFit=1 --saveShapes --saveWithUncertainties --saveOverallShapes --redefineSignalPOIs={} --setParameters r=1 --freezeParameters r --rMin 1 --rMax 1 > fit.log'.format(model_name, self.signal_name[model_name].replace('+', '_'))
-                combineCommand_MultiDimFit = '\ncombine -M MultiDimFit --expectSignal 1 -d model_combined.root --saveWorkspace --name _{} --cminDefaultMinimizerStrategy 2 --robustFit=1 --redefineSignalPOIs={} --setParameters r=1 --freezeParameters r --rMin 1 --rMax 1 > fit.log'.format(model_name, self.signal_name[model_name].replace('+', '_'))
+                combineCommand = '\ncombine -M FitDiagnostics --expectSignal 1 -d model_combined.root --saveWorkspace --name _{} --cminDefaultMinimizerStrategy 2 --robustFit=1 --saveShapes --saveWithUncertainties --saveOverallShapes --redefineSignalPOIs={} --setParameters r=1 --freezeParameters r --rMin 1 --rMax 1'.format(model_name, self.signal_name[model_name].replace('+', '_'))
+                combineCommand_MultiDimFit = '\ncombine -M MultiDimFit --expectSignal 1 -d model_combined.root --saveWorkspace --name _{} --cminDefaultMinimizerStrategy 2 --robustFit=1 --redefineSignalPOIs={} --setParameters r=1 --freezeParameters r --rMin 1 --rMax 1'.format(model_name, self.signal_name[model_name].replace('+', '_'))
                 setParameters = 'r=1'
                 freezeParameters = 'r'
-                for par, val in self.freeze[model_name]:
-                    setParameters += ',{}={}'.format(par, val)
+                for par in self.freeze[model_name]:
+                    setParameters += ',{}=1'.format(par)
                     freezeParameters += ',{}'.format(par)
                 combineCommand = combineCommand.replace('--setParameters r=1', '--setParameters {}'.format(setParameters))
                 combineCommand = combineCommand.replace('--freezeParameters r', '--freezeParameters {}'.format(freezeParameters))
@@ -287,19 +279,24 @@ class Fit():
                 file.write(combineCommand_MultiDimFit)
 
     def run_fits(self, mode):
+        if mode == "FitDiagnostics":
+            command = 'bash build.sh'
+        elif mode == "MultiDimFit":
+            command = 'bash build_{}.sh'.format(mode)
 
         parent_dir = os.getcwd()
         if self.scheme == '3f':
             self.first = {'b+bb' : True, 'c+cc' : True}
         elif self.scheme == '5f':
             self.first = {'bb' : True, 'cc' : True}
-
-        fit_handler = StandaloneMultiThreadedUnit(workers=80, use_unordered_mapping=True)
         for model_name, fitdir in self.fitdirs.items():
-            fit_handler.book((mode, model_name, self.parameters[model_name], fitdir,))
-        fit_handler.run(run_individual_fit)
-
-        for model_name, fitdir in self.fitdirs.items():
+            if fitdir:
+                os.chdir(fitdir)
+            else:
+                sys.exit("The fit directory is not well defined or does not exist")
+            print("Running fit of model '{}'".format(model_name))
+            print("parameters:", self.parameters[model_name])
+            os.system(command)
             if mode == "FitDiagnostics":
                 self.save_results(model_name, fitdir, mode)
             elif mode == "MultiDimFit":
@@ -399,19 +396,3 @@ class Fit():
             self.first[POI] = False
         else:
             df.to_csv(self.fitResults[POI], columns=columns, mode='a', header=False)
-
-
-def run_individual_fit(args):
-    mode, model_name, parameters, fitdir = args
-    if mode == "FitDiagnostics":
-        command = 'bash build.sh'
-    elif mode == "MultiDimFit":
-        command = 'bash build_{}.sh'.format(mode)
-
-    if fitdir:
-        os.chdir(fitdir)
-    else:
-        sys.exit("The fit directory is not well defined or does not exist")
-    print("Running fit of model '{}'".format(model_name))
-    print("parameters:", parameters)
-    os.system(command)
