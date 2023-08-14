@@ -130,27 +130,27 @@ class NanoProcessor(processor.ProcessorABC):
             ###########
             # Quarks #
             ###########
-            for quark_pdgid in [4, 5]:
-                # finding b or c quarks
-                quark_sel = (abs(events.GenPart.pdgId) == quark_pdgid) & (
-                    (events.GenPart.statusFlags & (1 << 13)) > 0
-                )  # is b/c-quark & is last copy
-                quark_index = ak.local_index(events.GenPart.pdgId)[quark_sel]
-                quarks = events.GenPart[quark_sel]
-                out = ak.zip(
-                    {
-                        "pT": quarks.pt,
-                        "eta": quarks.eta,
-                        "phi": quarks.phi,
-                        "pdgId": quarks.pdgId,
-                        "status": quarks.status,
-                        "fromGSP": is_from_GSP(quarks),
-                    }
-                )
-                if quark_pdgid == 4:
-                    cQuark = out
-                elif quark_pdgid == 5:
-                    bQuark = out
+            # for quark_pdgid in [4, 5]:
+            #     # finding b or c quarks
+            #     quark_sel = (abs(events.GenPart.pdgId) == quark_pdgid) & (
+            #         (events.GenPart.statusFlags & (1 << 13)) > 0
+            #     )  # is b/c-quark & is last copy
+            #     quark_index = ak.local_index(events.GenPart.pdgId)[quark_sel]
+            #     quarks = events.GenPart[quark_sel]
+            #     out = ak.zip(
+            #         {
+            #             "pT": quarks.pt,
+            #             "eta": quarks.eta,
+            #             "phi": quarks.phi,
+            #             "pdgId": quarks.pdgId,
+            #             "status": quarks.status,
+            #             # "fromGSP": is_from_GSP(quarks),
+            #         }
+            #     )
+            #     if quark_pdgid == 4:
+            #         cQuark = out
+            #     elif quark_pdgid == 5:
+            #         bQuark = out
 
             ###########
             # Hadrons #
@@ -321,54 +321,54 @@ class NanoProcessor(processor.ProcessorABC):
             )
 
             # V0
-            is_V0 = lambda p: (abs(p.pdgId) == 310) | (abs(p.pdgId) == 3122)
-            sel = is_V0(events.GenPart) & ((events.GenPart.statusFlags & (1 << 13)) > 0)
-            genV0 = events.GenPart[sel]
+            # is_V0 = lambda p: (abs(p.pdgId) == 310) | (abs(p.pdgId) == 3122)
+            # sel = is_V0(events.GenPart) & ((events.GenPart.statusFlags & (1 << 13)) > 0)
+            # genV0 = events.GenPart[sel]
 
-            # finding charged daughters with pT > 1
-            is_lep = (
-                lambda p: (abs(_fix(p.pdgId)) == 11)
-                | (abs(_fix(p.pdgId)) == 13)
-                | (abs(_fix(p.pdgId)) == 15)
-            )
-            is_charged_light_hadron = (
-                lambda p: (abs(p.pdgId) == 211)
-                | (abs(p.pdgId) == 213)
-                | (abs(p.pdgId) == 321)
-                | (abs(p.pdgId) == 323)
-            )
-            genV0_ch_charged = genV0.children[
-                (is_charged_light_hadron(genV0.children) | is_lep(genV0.children))
-                & (genV0.children.pt > 1.0)
-            ]
-            ncharged = ak.num(genV0_ch_charged, axis=2)
+            # # finding charged daughters with pT > 1
+            # is_lep = (
+            #     lambda p: (abs(_fix(p.pdgId)) == 11)
+            #     | (abs(_fix(p.pdgId)) == 13)
+            #     | (abs(_fix(p.pdgId)) == 15)
+            # )
+            # is_charged_light_hadron = (
+            #     lambda p: (abs(p.pdgId) == 211)
+            #     | (abs(p.pdgId) == 213)
+            #     | (abs(p.pdgId) == 321)
+            #     | (abs(p.pdgId) == 323)
+            # )
+            # genV0_ch_charged = genV0.children[
+            #     (is_charged_light_hadron(genV0.children) | is_lep(genV0.children))
+            #     & (genV0.children.pt > 1.0)
+            # ]
+            # ncharged = ak.num(genV0_ch_charged, axis=2)
 
-            # check acceptance (from the BTA code)
-            svx = ak.fill_none(ak.firsts(genV0_ch_charged.vx, axis=-1), 0)
-            svy = ak.fill_none(ak.firsts(genV0_ch_charged.vy, axis=-1), 0)
-            svz = ak.fill_none(ak.firsts(genV0_ch_charged.vz, axis=-1), 0)
-            radius = np.hypot(svx, svy)
-            abseta = abs(genV0.eta)
+            # # check acceptance (from the BTA code)
+            # svx = ak.fill_none(ak.firsts(genV0_ch_charged.vx, axis=-1), 0)
+            # svy = ak.fill_none(ak.firsts(genV0_ch_charged.vy, axis=-1), 0)
+            # svz = ak.fill_none(ak.firsts(genV0_ch_charged.vz, axis=-1), 0)
+            # radius = np.hypot(svx, svy)
+            # abseta = abs(genV0.eta)
 
-            in_acceptance = (ncharged > 0) & (
-                ((abseta < 2.0) & (radius < 7.3))
-                | ((abseta < 2.5) & (radius < 4.4))
-                | ((abseta > 1.8) & (abseta < 2.5) & (abs(svz) < 34.5))
-            )
+            # in_acceptance = (ncharged > 0) & (
+            #     ((abseta < 2.0) & (radius < 7.3))
+            #     | ((abseta < 2.5) & (radius < 4.4))
+            #     | ((abseta > 1.8) & (abseta < 2.5) & (abs(svz) < 34.5))
+            # )
 
-            genV0_inaccept = genV0[in_acceptance]
-            GenV0 = ak.zip(
-                {
-                    "pT": genV0_inaccept.pt,
-                    "eta": genV0_inaccept.eta,
-                    "phi": genV0_inaccept.phi,
-                    "pdgId": genV0_inaccept.pdgId,
-                    "nCharged": ncharged[in_acceptance],
-                    "SVx": svx[in_acceptance],
-                    "SVy": svy[in_acceptance],
-                    "SVz": svz[in_acceptance],
-                }
-            )
+            # genV0_inaccept = genV0[in_acceptance]
+            # GenV0 = ak.zip(
+            #     {
+            #         "pT": genV0_inaccept.pt,
+            #         "eta": genV0_inaccept.eta,
+            #         "phi": genV0_inaccept.phi,
+            #         "pdgId": genV0_inaccept.pdgId,
+            #         "nCharged": ncharged[in_acceptance],
+            #         "SVx": svx[in_acceptance],
+            #         "SVy": svy[in_acceptance],
+            #         "SVz": svz[in_acceptance],
+            #     }
+            # )
 
         ###############
         #     Jet     #
@@ -396,79 +396,80 @@ class NanoProcessor(processor.ProcessorABC):
                 # 'pileup_looseID': ak.values_astype((jet.puId & (1 << 2) > 0) | (jet.pt > 50.), int) ,
                 # taggers/vars // JP/JBP to be calibrated.. !!!
                 "area": jet.area,
-                "Proba": jet.Proba,
-                "ProbaN": jet.ProbaN,
-                "Bprob": jet.Bprob,
-                "BprobN": jet.BprobN,
+                # "Proba": jet.Proba,
+                # "ProbaN": jet.ProbaN,
+                # "Bprob": jet.Bprob,
+                # "BprobN": jet.BprobN,
                 # Deep Jet
                 "DeepFlavourBDisc": jet.btagDeepFlavB,
                 "DeepFlavourCvsLDisc": jet.btagDeepFlavCvL,
                 "DeepFlavourCvsBDisc": jet.btagDeepFlavCvB,
-                "DeepFlavourBDisc_b": jet.btagDeepFlavB_b,
-                "DeepFlavourBDisc_bb": jet.btagDeepFlavB_bb,
-                "DeepFlavourBDisc_lepb": jet.btagDeepFlavB_lepb,
-                "DeepFlavourCDisc": jet.btagDeepFlavC,
-                "DeepFlavourUDSDisc": jet.btagDeepFlavUDS,
-                "DeepFlavourGDisc": jet.btagDeepFlavG,
-                "DeepFlavourBDiscN": jet.btagNegDeepFlavB,
-                "DeepFlavourCvsLDiscN": jet.btagNegDeepFlavCvL,
-                "DeepFlavourCvsBDiscN": jet.btagNegDeepFlavCvB,
-                "DeepFlavourBDisc_bN": jet.btagNegDeepFlavB_b,
-                "DeepFlavourBDisc_bbN": jet.btagNegDeepFlavB_bb,
-                "DeepFlavourBDisc_lepbN": jet.btagNegDeepFlavB_lepb,
-                "DeepFlavourQGDiscN": jet.btagNegDeepFlavQG,
-                "DeepFlavourCDiscN": jet.btagNegDeepFlavC,
-                "DeepFlavourUDSDiscN": jet.btagNegDeepFlavUDS,
-                "DeepFlavourGDiscN": jet.btagNegDeepFlavG,
-                # Particle net
-                "PNetBDisc": jet.btagPNetB,
-                "PNetCvsLDisc": jet.btagPNetCvL,
-                "PNetCvsBDisc": jet.btagPNetCvB,
-                "PNetQvsGDisc": jet.btagPNetQvG,
-                "PNetTauvsJetDisc": jet.btagPNetTauVJet,
-                "PNetRegPtRawCorr": jet.PNetRegPtRawCorr,
-                "PNetRegPtRawCorrNeutrino": jet.PNetRegPtRawCorrNeutrino,
-                "PNetRegPtRawRes": jet.PNetRegPtRawRes,
-                "PNetBDisc_b": jet.btagPNetProbB,
-                "PNetCDisc": jet.btagPNetProbC,
-                "PNetUDSDisc": jet.btagPNetProbUDS,
-                "PNetGDisc": jet.btagPNetProbG,
-                "PNetBDiscN": jet.btagNegPNetB,
-                "PNetCvsLDiscN": jet.btagNegPNetCvL,
-                "PNetCvsBDiscN": jet.btagNegPNetCvB,
-                "PNetBDisc_bN": jet.btagNegPNetProbB,
-                "PNetCDiscN": jet.btagNegPNetProbC,
-                "PNetUDSDiscN": jet.btagNegPNetProbUDS,
-                "PNetGDiscN": jet.btagNegPNetProbG,
-                # ParT
-                "ParTBDisc": jet.btagRobustParTAK4B,
-                "ParTCvsLDisc": jet.btagRobustParTAK4CvL,
-                "ParTCvsBDisc": jet.btagRobustParTAK4CvB,
-                "ParTQvsGDisc": jet.btagRobustParTAK4QG,
-                "ParTBDisc_b": jet.btagRobustParTAK4B_b,
-                "ParTBDisc_bb": jet.btagRobustParTAK4B_bb,
-                "ParTBDisc_lepb": jet.btagRobustParTAK4B_lepb,
-                "ParTCDisc": jet.btagRobustParTAK4C,
-                "ParTUDSDisc": jet.btagRobustParTAK4UDS,
-                "ParTGDisc": jet.btagRobustParTAK4G,
-                "ParTBDiscN": jet.btagNegRobustParTAK4B,
-                "ParTCvsLDiscN": jet.btagNegRobustParTAK4CvL,
-                "ParTCvsBDiscN": jet.btagNegRobustParTAK4CvB,
-                "ParTQvsGDiscN": jet.btagNegRobustParTAK4QG,
-                "ParTBDisc_bN": jet.btagNegRobustParTAK4B_b,
-                "ParTBDisc_bbN": jet.btagNegRobustParTAK4B_bb,
-                "ParTBDisc_lepbN": jet.btagNegRobustParTAK4B_lepb,
-                "ParTCDiscN": jet.btagNegRobustParTAK4C,
-                "ParTUDSDiscN": jet.btagNegRobustParTAK4UDS,
-                "ParTGDiscN": jet.btagNegRobustParTAK4G,
+                # "DeepFlavourBDisc_b": jet.btagDeepFlavB_b,
+                # "DeepFlavourBDisc_bb": jet.btagDeepFlavB_bb,
+                # "DeepFlavourBDisc_lepb": jet.btagDeepFlavB_lepb,
+                # "DeepFlavourCDisc": jet.btagDeepFlavC,
+                # "DeepFlavourUDSDisc": jet.btagDeepFlavUDS,
+                # "DeepFlavourGDisc": jet.btagDeepFlavG,
+                # "DeepFlavourBDiscN": jet.btagNegDeepFlavB,
+                # "DeepFlavourCvsLDiscN": jet.btagNegDeepFlavCvL,
+                # "DeepFlavourCvsBDiscN": jet.btagNegDeepFlavCvB,
+                # "DeepFlavourBDisc_bN": jet.btagNegDeepFlavB_b,
+                # "DeepFlavourBDisc_bbN": jet.btagNegDeepFlavB_bb,
+                # "DeepFlavourBDisc_lepbN": jet.btagNegDeepFlavB_lepb,
+                # "DeepFlavourQGDiscN": jet.btagNegDeepFlavQG,
+                # "DeepFlavourCDiscN": jet.btagNegDeepFlavC,
+                # "DeepFlavourUDSDiscN": jet.btagNegDeepFlavUDS,
+                # "DeepFlavourGDiscN": jet.btagNegDeepFlavG,
+                # # Particle net
+                # "PNetBDisc": jet.btagPNetB,
+                # "PNetCvsLDisc": jet.btagPNetCvL,
+                # "PNetCvsBDisc": jet.btagPNetCvB,
+                # "PNetQvsGDisc": jet.btagPNetQvG,
+                # "PNetTauvsJetDisc": jet.btagPNetTauVJet,
+                # "PNetRegPtRawCorr": jet.PNetRegPtRawCorr,
+                # "PNetRegPtRawCorrNeutrino": jet.PNetRegPtRawCorrNeutrino,
+                # "PNetRegPtRawRes": jet.PNetRegPtRawRes,
+                # "PNetBDisc_b": jet.btagPNetProbB,
+                # "PNetCDisc": jet.btagPNetProbC,
+                # "PNetUDSDisc": jet.btagPNetProbUDS,
+                # "PNetGDisc": jet.btagPNetProbG,
+                # "PNetBDiscN": jet.btagNegPNetB,
+                # "PNetCvsLDiscN": jet.btagNegPNetCvL,
+                # "PNetCvsBDiscN": jet.btagNegPNetCvB,
+                # "PNetBDisc_bN": jet.btagNegPNetProbB,
+                # "PNetCDiscN": jet.btagNegPNetProbC,
+                # "PNetUDSDiscN": jet.btagNegPNetProbUDS,
+                # "PNetGDiscN": jet.btagNegPNetProbG,
+                # # ParT
+                # "ParTBDisc": jet.btagRobustParTAK4B,
+                # "ParTCvsLDisc": jet.btagRobustParTAK4CvL,
+                # "ParTCvsBDisc": jet.btagRobustParTAK4CvB,
+                # "ParTQvsGDisc": jet.btagRobustParTAK4QG,
+                # "ParTBDisc_b": jet.btagRobustParTAK4B_b,
+                # "ParTBDisc_bb": jet.btagRobustParTAK4B_bb,
+                # "ParTBDisc_lepb": jet.btagRobustParTAK4B_lepb,
+                # "ParTCDisc": jet.btagRobustParTAK4C,
+                # "ParTUDSDisc": jet.btagRobustParTAK4UDS,
+                # "ParTGDisc": jet.btagRobustParTAK4G,
+                # "ParTBDiscN": jet.btagNegRobustParTAK4B,
+                # "ParTCvsLDiscN": jet.btagNegRobustParTAK4CvL,
+                # "ParTCvsBDiscN": jet.btagNegRobustParTAK4CvB,
+                # "ParTQvsGDiscN": jet.btagNegRobustParTAK4QG,
+                # "ParTBDisc_bN": jet.btagNegRobustParTAK4B_b,
+                # "ParTBDisc_bbN": jet.btagNegRobustParTAK4B_bb,
+                # "ParTBDisc_lepbN": jet.btagNegRobustParTAK4B_lepb,
+                # "ParTCDiscN": jet.btagNegRobustParTAK4C,
+                # "ParTUDSDiscN": jet.btagNegRobustParTAK4UDS,
+                # "ParTGDiscN": jet.btagNegRobustParTAK4G,
             }
         )
         if isRealData:
             Jet["vetomap"] = jet.veto
 
         if not isRealData:
-            Jet["nbHadrons"] = jet.nBHadrons
-            Jet["ncHadrons"] = jet.nCHadrons
+            print(ak.fields(jet))
+            # Jet["nbHadrons"] = jet.nBHadrons
+            # Jet["ncHadrons"] = jet.nCHadrons
             Jet["partonFlavour"] = jet.partonFlavour
             Jet["hadronFlavour"] = jet.hadronFlavour
             # corrected flavours defined in BTA
@@ -512,19 +513,19 @@ class NanoProcessor(processor.ProcessorABC):
             )
 
         # CSV inputs per jets: retreived from the DeepCSV input given they are the same
-        TagVarCSV = ak.zip(
-            {
-                "trackJetPt": jet.DeepCSV_trackJetPt,
-                "vertexCategory": jet.DeepCSV_vertexCategory,
-                "jetNSecondaryVertices": jet.DeepCSV_jetNSecondaryVertices,
-                "trackSumJetEtRatio": jet.DeepCSV_trackSumJetEtRatio,
-                "trackSumJetDeltaR": jet.DeepCSV_trackSumJetDeltaR,
-                "vertexMass": jet.DeepCSV_vertexMass,
-                "vertexNTracks": jet.DeepCSV_vertexNTracks,
-                "vertexEnergyRatio": jet.DeepCSV_vertexEnergyRatio,
-                "vertexJetDeltaR": jet.DeepCSV_vertexJetDeltaR,
-            }
-        )
+        # TagVarCSV = ak.zip(
+        #     {
+        #         "trackJetPt": jet.DeepCSV_trackJetPt,
+        #         "vertexCategory": jet.DeepCSV_vertexCategory,
+        #         "jetNSecondaryVertices": jet.DeepCSV_jetNSecondaryVertices,
+        #         "trackSumJetEtRatio": jet.DeepCSV_trackSumJetEtRatio,
+        #         "trackSumJetDeltaR": jet.DeepCSV_trackSumJetDeltaR,
+        #         "vertexMass": jet.DeepCSV_vertexMass,
+        #         "vertexNTracks": jet.DeepCSV_vertexNTracks,
+        #         "vertexEnergyRatio": jet.DeepCSV_vertexEnergyRatio,
+        #         "vertexJetDeltaR": jet.DeepCSV_vertexJetDeltaR,
+        #     }
+        # )
 
         if self.addPFMuons:
             ################
@@ -991,7 +992,7 @@ class NanoProcessor(processor.ProcessorABC):
             **basic_vars,
             "PV": PV,
             "Jet": Jet,
-            "TagVarCSV": TagVarCSV,
+            # "TagVarCSV": TagVarCSV,
         }
         if self.addPFMuons:
             output["TrkInc"] = TrkInc
@@ -999,13 +1000,14 @@ class NanoProcessor(processor.ProcessorABC):
         if self.addAllTracks:
             output["Track"] = Track
         if not isRealData:
-            output["bQuark"] = bQuark
-            output["cQuark"] = cQuark
+            # output["bQuark"] = bQuark
+            # output["cQuark"] = cQuark
             output["BHadron"] = BHadron
             output["DHadron"] = DHadron
             output["Genlep"] = Genlep
-            output["GenV0"] = GenV0
-        fname = f"{dataset}_f{events.metadata['filename'].split('_')[-1].replace('.root','')}_{int(events.metadata['entrystop']/self.chunksize)}.root"
+            # output["GenV0"] = GenV0
+        # fname = f"{dataset}_f{events.metadata['filename'].split('_')[-1].replace('.root','')}_{int(events.metadata['entrystop']/self.chunksize)}.root"
+        fname = f"{dataset}_f{events.metadata['filename'].split('/')[-1].replace('.root','')}_{int(events.metadata['entrystop']/self.chunksize)}.root"
         with uproot.recreate(fname) as fout:
             output_root = {}
             for bname in output.keys():
